@@ -46,10 +46,10 @@ const CONFIG = {
 sequelize
 	.authenticate()
 	.then(() => {
-		console.log("mysql connected");
+		console.log("database connected");
 	})
 	.catch(err => {
-		console.error("mysql connect failed" + err);
+		console.error("database connect failed" + err);
 	});
 
 sequelize
