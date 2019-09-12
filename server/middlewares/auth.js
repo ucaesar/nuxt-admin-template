@@ -1,4 +1,5 @@
 const casbin = require("casbin");
+const path = require("path");
 const BaseAuthenticator = require("./BaseAuthenticator");
 const BasicAuthenticator = require("./BasicAuthenticator");
 const authorize = require("./authorization");
@@ -15,8 +16,8 @@ module.exports = authenticator => {
 		authentic(context, authen);
 
 		const enforcer = await casbin.newEnforcer(
-			"middlewares/casbin/model.conf",
-			"middlewares/casbin/policy.csv"
+			path.join(__dirname, 'casbin/model.conf'),
+			path.join(__dirname, 'casbin/policy.csv')
 		);
 
 		const allowed = await authorize(context, enforcer);
