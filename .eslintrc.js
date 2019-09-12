@@ -25,6 +25,11 @@ module.exports = {
         'quotes': 'off',
         'semi': 'off',
         'indent': 'off',
-        'space-before-function-paren': 'off'
+        'space-before-function-paren': 'off',
+        'no-tabs': 'off',
+        'no-unneeded-ternary': 'off',
+        'arrow-parens': 'off',
+
+        'unicorn/throw-new-error': 'off'
     }
 }
