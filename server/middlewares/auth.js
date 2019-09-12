@@ -1,5 +1,5 @@
-const casbin = require("casbin");
 const path = require("path");
+const casbin = require("casbin");
 const BaseAuthenticator = require("./BaseAuthenticator");
 const BasicAuthenticator = require("./BasicAuthenticator");
 const authorize = require("./authorization");
