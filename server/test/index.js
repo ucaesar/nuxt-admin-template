@@ -71,7 +71,7 @@ app.use(auth(authenticator));
 router.get("/aaa", async (ctx, next) => {
 	ctx.session.username = "aaa";
 	ctx.state.currentUser = { username: "aaa" };
-	next();
+	await next();
 });
 
 app.use(async (ctx, next) => {
