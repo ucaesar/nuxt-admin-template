@@ -90,3 +90,4 @@ sw.*
 # Vim swap files
 *.swp
 server/test/database/nuxtauth.sqlite
+server/test/database/nuxtauth.sqlite
