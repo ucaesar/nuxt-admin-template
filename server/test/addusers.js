@@ -22,5 +22,35 @@ sequelize
 		console.log("init db error", err);
 	});
 
-User.create({ username: "aaa", password: encodeWithoutDate("aaa") });
-User.create({ username: "bbb", password: encodeWithoutDate("bbb") });
+const arr = [
+	"aaa",
+	"bbb",
+	"ccc",
+	"ddd",
+	"eee",
+	"fff",
+	"ggg",
+	"hhh",
+	"iii",
+	"jjj",
+	"kkk"
+];
+
+async function PrepareData() {
+	for (let i = 0; i < arr.length; i++) {
+		const u = await User.findOne({
+			where: {
+				username: arr[i]
+			}
+		});
+		if (!u) {
+			User.create({
+				username: arr[i],
+				password: encodeWithoutDate(arr[i])
+			});
+		}
+	}
+}
+PrepareData();
+// User.create({ username: "aaa", password: encodeWithoutDate("aaa") });
+// User.create({ username: "bbb", password: encodeWithoutDate("bbb") });
