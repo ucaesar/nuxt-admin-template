@@ -19,7 +19,7 @@ class SessionAthenticator extends BaseAuthenticator {
 			}
 			const u = await User.findOne({
 				where: {
-					id: uid + "2"
+					id: uid
 				}
 			});
 			if (!u) {
