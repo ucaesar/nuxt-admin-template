@@ -2,6 +2,8 @@ const User = require("../model/user");
 
 const { sequelize } = require("../db");
 
+const { encodeWithoutDate } = require("../lib/encryption");
+
 sequelize
 	.authenticate()
 	.then(() => {
@@ -20,4 +22,5 @@ sequelize
 		console.log("init db error", err);
 	});
 
-User.create({ username: "bbb", password: "bbb" });
+User.create({ username: "aaa", password: encodeWithoutDate("aaa") });
+User.create({ username: "bbb", password: encodeWithoutDate("bbb") });

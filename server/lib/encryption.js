@@ -12,6 +12,20 @@ function encode(id) {
 	return encryptedStr;
 }
 
+function encodeWithoutDate(str) {
+	const encoder = crypto.createCipheriv(algorithm, secretKey, iv);
+	let encryptedStr = encoder.update(str, "utf8", "hex");
+	encryptedStr = encryptedStr + encoder.final("hex");
+	return encryptedStr;
+}
+
+function decodeWithoutDate(encryptedStr) {
+	const decoder = crypto.createDecipheriv(algorithm, secretKey, iv);
+	let decodedStr = decoder.update(encryptedStr, "hex", "utf8");
+	decodedStr = decodedStr + decoder.final("utf8");
+	return decodedStr;
+}
+
 function decode(encryptedStr) {
 	const decoder = crypto.createDecipheriv(algorithm, secretKey, iv);
 	let decodedStr = decoder.update(encryptedStr, "hex", "utf8");
@@ -25,5 +39,7 @@ function decode(encryptedStr) {
 
 module.exports = {
 	encode,
-	decode
+	encodeWithoutDate,
+	decode,
+	decodeWithoutDate
 };

@@ -1,5 +1,5 @@
 const BaseAuthenticator = require("./middlewares/BaseAuthenticator");
-const { decode } = require("./lib/encryption");
+const { encode, decode, encodeWithoutDate } = require("./lib/encryption");
 const User = require("./model/user");
 
 class SessionAthenticator extends BaseAuthenticator {
@@ -30,9 +30,29 @@ class SessionAthenticator extends BaseAuthenticator {
 		}
 	}
 
-	login() {}
+	async login(context) {
+		context.session.x_session = null;
+		context.state.currentUser = { id: "-1", username: "anonymous" };
+		// const username = context.getUsername;
+		// const password = context.getPassword;
+		const username = "aaa";
+		const password = "aaa";
+		const u = await User.findOne({
+			where: {
+				username,
+				password: encodeWithoutDate(password)
+			}
+		});
+		if (u) {
+			context.session.x_session = encode(u.id);
+			context.state.currentUser = { id: u.id, username: u.username };
+		}
+	}
 
-	logout() {}
+	logout(context) {
+		context.session.x_session = null;
+		context.state.currentUser = { id: "-1", username: "anonymous" };
+	}
 }
 
 module.exports = SessionAthenticator;

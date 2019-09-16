@@ -6,10 +6,11 @@ p, bob, /dataset2/folder1/*, POST
 p, dataset1_admin, /dataset1/*, *
 p, dataset1_admin, /dataset2/*, *
 p, dataset1_admin, /, *
-p, dataset1_admin, /aaa, *
+p, dataset1_admin, /login, *
+p, dataset1_admin, /logout, *
 p, anonymous, /, GET
 p, anonymous, /, POST
-p, anonymous, /aaa, GET
+p, anonymous, /login, GET
 g, cathy, dataset1_admin
 g, aaa, dataset1_admin
 g, anonymous, anonymous
