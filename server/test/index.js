@@ -70,7 +70,7 @@ app.use(auth(authenticator));
 
 router.get("/aaa", async (ctx, next) => {
 	ctx.session.x_session = encode('2e592d50-d535-11e9-881c-31c34ad71a1b');
-	ctx.session.username = "aaa";
+	// ctx.session.username = "aaa";
 	// ctx.state.currentUser = { username: "aaa" };
 	await next();
 });
