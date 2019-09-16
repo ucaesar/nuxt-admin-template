@@ -20,7 +20,7 @@ const { sequelize } = require("../db");
 
 const app = new Koa();
 
-const str = "1ef85f70-d2dd-11e9-bee8-63ec730cb846";
+const str = "2e592d50-d535-11e9-881c-31c34ad71a1b";
 
 const encryptedStr = encode(str);
 
@@ -69,8 +69,9 @@ const authenticator = new SessionAuthenticator();
 app.use(auth(authenticator));
 
 router.get("/aaa", async (ctx, next) => {
+	ctx.session.x_session = encode('2e592d50-d535-11e9-881c-31c34ad71a1b');
 	ctx.session.username = "aaa";
-	ctx.state.currentUser = { username: "aaa" };
+	// ctx.state.currentUser = { username: "aaa" };
 	await next();
 });
 

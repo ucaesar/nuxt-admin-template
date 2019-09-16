@@ -1,3 +1,3 @@
-module.exports = function(context, authenticator) {
-    authenticator.getUser(context);
+module.exports = async function(context, authenticator) {
+    await authenticator.getUser(context);
 };

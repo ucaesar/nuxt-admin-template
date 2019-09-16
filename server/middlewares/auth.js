@@ -13,7 +13,7 @@ module.exports = authenticator => {
 	}
 
 	return async function(context, next) {
-		authentic(context, authen);
+		await authentic(context, authen);
 
 		const enforcer = await casbin.newEnforcer(
 			path.join(__dirname, 'casbin/model.conf'),
