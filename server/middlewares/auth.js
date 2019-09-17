@@ -1,5 +1,6 @@
 const path = require("path");
 const casbin = require("casbin");
+const { SequelizeAdapter } = require("casbin-sequelize-adapter");
 const BaseAuthenticator = require("./BaseAuthenticator");
 const BasicAuthenticator = require("./BasicAuthenticator");
 const authorize = require("./authorization");
@@ -15,9 +16,20 @@ module.exports = authenticator => {
 	return async function(context, next) {
 		await authentic(context, authen);
 
+		const adpt = await SequelizeAdapter.newAdapter({
+			host: "localhost",
+			dialect: "sqlite",
+			storage: path.join(__dirname, "../test/database/policy.sqlite")
+		});
+
+		// const enforcer = await casbin.newEnforcer(
+		// 	path.join(__dirname, 'casbin/model.conf'),
+		// 	path.join(__dirname, 'casbin/policy.csv')
+		// );
+
 		const enforcer = await casbin.newEnforcer(
-			path.join(__dirname, 'casbin/model.conf'),
-			path.join(__dirname, 'casbin/policy.csv')
+			path.join(__dirname, "casbin/model.conf"),
+			adpt
 		);
 
 		const allowed = await authorize(context, enforcer);

@@ -7,6 +7,12 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Launch Policy test",
+            "program": "${workspaceFolder}\\server\\test\\addpolicy.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Launch Test",
             "program": "${workspaceFolder}\\server\\test\\index.js"
         }
