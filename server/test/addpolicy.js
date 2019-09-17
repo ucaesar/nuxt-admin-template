@@ -1,32 +1,18 @@
 const path = require("path");
 const casbin = require("casbin");
 const { SequelizeAdapter } = require("casbin-sequelize-adapter");
-// const policyArr = [
-// 	["p", "dataset1_admin", "/dataset1/*", "*"],
-// 	["p", "dataset1_admin", "/dataset2/*", "*"],
-// 	["p", "dataset1_admin", "/", "*"],
-// 	["p", "dataset1_admin", "/login", "*"],
-// 	["p", "dataset1_admin", "/logout", "*"],
-// 	["p", "anonymous", "/", "GET"],
-// 	["p", "anonymous", "/", "POST"],
-// 	["p", "anonymous", "/login", "GET"],
-// 	["g", "cathy", "dataset1_admin"],
-// 	["g", "aaa", "dataset1_admin"],
-// 	["g", "anonymous", "anonymous"]
-// ];
-
 const policyArr = [
-	["dataset1_admin", "/dataset1/*", "*"],
-	["dataset1_admin", "/dataset2/*", "*"],
-	["dataset1_admin", "/", "*"],
-	["dataset1_admin", "/login", "*"],
-	["dataset1_admin", "/logout", "*"],
-	["anonymous", "/", "GET"],
-	["anonymous", "/", "POST"],
-	["anonymous", "/login", "GET"]
-	// ["g", "cathy", "dataset1_admin"],
-	// ["g", "aaa", "dataset1_admin"],
-	// ["g", "anonymous", "anonymous"]
+	["p", "dataset1_admin", "/dataset1/*", "*"],
+	["p", "dataset1_admin", "/dataset2/*", "*"],
+	["p", "dataset1_admin", "/", "*"],
+	["p", "dataset1_admin", "/login", "*"],
+	["p", "dataset1_admin", "/logout", "*"],
+	["p", "anonymous", "/", "GET"],
+	["p", "anonymous", "/", "POST"],
+	["p", "anonymous", "/login", "GET"],
+	["g", "cathy", "dataset1_admin"],
+	["g", "aaa", "dataset1_admin"],
+	["g", "anonymous", "anonymous"]
 ];
 
 async function addPolicy() {
@@ -42,13 +28,15 @@ async function addPolicy() {
 	);
 
 	for (let index in policyArr) {
-		if (!(await e.hasPolicy(...policyArr[index]))) {
-			await e.addPolicy(...policyArr[index]);
+		const tp = policyArr[index].slice(0, 1)[0];
+		const params = policyArr[index].slice(1);
+		if (tp === "p") {
+			await e.addPolicy(...params);
 		}
-    }
-	e.addRoleForUser("cathy", "dataset1_admin");
-	e.addRoleForUser("aaa", "dataset1_admin");
-    e.addRoleForUser("anonymous", "anonymous");
+		if (tp === "g") {
+			await e.addGroupingPolicy(...params);
+		}
+	}
 }
 
 async function testPolicy() {
@@ -71,12 +59,12 @@ async function testPolicy() {
 	console.log(e1.getAllRoles());
 	console.log("------------------------------");
 	console.log(e2.getPolicy());
-    console.log(e2.getAllRoles());
-    const roles = await e2.getRolesForUser('aaa')
-    console.log(roles);
-    console.log(e2.getPermissionsForUser(roles[0]));
+	console.log(e2.getAllRoles());
+	const roles = await e2.getRolesForUser("aaa");
+	console.log(roles);
+	console.log(e2.getPermissionsForUser(roles[0]));
 	console.log(await e1.enforce("aaa", "/", "GET"));
 }
 
-addPolicy();
-// testPolicy();
+// addPolicy();
+testPolicy();
