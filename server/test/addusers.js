@@ -51,6 +51,6 @@ async function PrepareData() {
 		}
 	}
 }
-PrepareData();
+// PrepareData();
 // User.create({ username: "aaa", password: encodeWithoutDate("aaa") });
 // User.create({ username: "bbb", password: encodeWithoutDate("bbb") });
