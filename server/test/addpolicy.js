@@ -66,5 +66,5 @@ async function testPolicy() {
 	console.log(await e1.enforce("aaa", "/", "GET"));
 }
 
-// addPolicy();
+addPolicy();
 testPolicy();
