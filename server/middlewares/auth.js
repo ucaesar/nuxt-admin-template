@@ -19,7 +19,7 @@ module.exports = authenticator => {
 		const adpt = await SequelizeAdapter.newAdapter({
 			host: "localhost",
 			dialect: "sqlite",
-			storage: path.join(__dirname, "../test/database/policy.sqlite")
+			storage: path.join(__dirname, "../test/database/nuxtauth.sqlite")
 		});
 
 		// const enforcer = await casbin.newEnforcer(

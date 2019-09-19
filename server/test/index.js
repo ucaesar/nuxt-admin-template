@@ -14,18 +14,13 @@ const auth = require("../middlewares/auth");
 
 const SessionAuthenticator = require("../SessionAuthenticator");
 
-const { encode, decode } = require("../lib/encryption");
+// const { encode, decode } = require("../lib/encryption");
 
 const { sequelize } = require("../db");
 
+const apiRouter = require("../controller/api/api");
+
 const app = new Koa();
-
-const str = "2e592d50-d535-11e9-881c-31c34ad71a1b";
-
-const encryptedStr = encode(str);
-
-console.log(encryptedStr);
-console.log(decode(encryptedStr));
 
 app.keys = ["qwert12345"];
 
@@ -84,10 +79,16 @@ router.get("/logout", async (ctx, next) => {
 app.use(async (ctx, next) => {
 	await next();
 	const { username } = ctx.state.currentUser;
+	if (ctx.originalUrl.startsWith("/api")) {
+		return;
+	}
 	ctx.response.type = "text/html";
 	ctx.response.body = "<h1>hello " + username + " auth</h1>";
 });
 
 app.use(router.routes());
+app.use(apiRouter.routes());
 
-app.listen(56556);
+// app.listen(56556);
+
+module.exports = app;

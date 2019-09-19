@@ -10,61 +10,80 @@ const policyArr = [
 	["p", "anonymous", "/", "GET"],
 	["p", "anonymous", "/", "POST"],
 	["p", "anonymous", "/login", "GET"],
+	["p", "anonymous", "/policy", "GET"],
 	["g", "cathy", "dataset1_admin"],
 	["g", "aaa", "dataset1_admin"],
 	["g", "anonymous", "anonymous"]
 ];
 
-async function addPolicy() {
+async function getEnforer() {
 	const a = await SequelizeAdapter.newAdapter({
 		host: "localhost",
 		dialect: "sqlite",
-		storage: path.join(__dirname, "./database/policy.sqlite")
+		storage: path.join(__dirname, "./database/nuxtauth.sqlite")
 	});
 	const e = await casbin.newEnforcer(
 		path.join(__dirname, "../middlewares/casbin/model.conf"),
 		// path.join(__dirname, "../middlewares/casbin/policy.csv")
 		a
 	);
-
-	for (let index in policyArr) {
-		const tp = policyArr[index].slice(0, 1)[0];
-		const params = policyArr[index].slice(1);
-		if (tp === "p") {
-			await e.addPolicy(...params);
-		}
-		if (tp === "g") {
-			await e.addGroupingPolicy(...params);
-		}
-	}
+	return e;
 }
 
-async function testPolicy() {
-	const a = await SequelizeAdapter.newAdapter({
-		host: "localhost",
-		dialect: "sqlite",
-		storage: path.join(__dirname, "./database/policy.sqlite")
+// async function testPolicy() {
+// 	const a = await SequelizeAdapter.newAdapter({
+// 		host: "localhost",
+// 		dialect: "sqlite",
+// 		storage: path.join(__dirname, "./database/policy.sqlite")
+// 	});
+// 	const e1 = await casbin.newEnforcer(
+// 		path.join(__dirname, "../middlewares/casbin/model.conf"),
+// 		path.join(__dirname, "../middlewares/casbin/policy.csv")
+// 		// a
+// 	);
+// 	const e2 = await casbin.newEnforcer(
+// 		path.join(__dirname, "../middlewares/casbin/model.conf"),
+// 		// path.join(__dirname, "../middlewares/casbin/policy.csv")
+// 		a
+// 	);
+// 	console.log(e1.getPolicy());
+// 	console.log(e1.getAllRoles());
+// 	console.log("------------------------------");
+// 	console.log(e2.getPolicy());
+// 	console.log(e2.getAllRoles());
+// 	const roles = await e2.getRolesForUser("aaa");
+// 	console.log(roles);
+// 	console.log(e2.getPermissionsForUser(roles[0]));
+// 	console.log(await e1.enforce("aaa", "/", "GET"));
+// }
+
+// addPolicy();
+// testPolicy();
+
+const assert = require("chai").assert;
+
+describe("PolicyTest", () => {
+	it("add policy", async () => {
+		const e = await getEnforer();
+		for (let index in policyArr) {
+			const tp = policyArr[index].slice(0, 1)[0];
+			const params = policyArr[index].slice(1);
+			if (tp === "p") {
+				await e.addPolicy(...params);
+			}
+			if (tp === "g") {
+				await e.addGroupingPolicy(...params);
+			}
+		}
+		for (let index in policyArr) {
+			const tp = policyArr[index].slice(0, 1)[0];
+			const params = policyArr[index].slice(1);
+			if (tp === "p") {
+				assert.strictEqual(e.hasPolicy(...params), true);
+			}
+			if (tp === "g") {
+				assert.strictEqual(e.hasGroupingPolicy(...params), true);
+			}
+		}
 	});
-	const e1 = await casbin.newEnforcer(
-		path.join(__dirname, "../middlewares/casbin/model.conf"),
-		path.join(__dirname, "../middlewares/casbin/policy.csv")
-		// a
-	);
-	const e2 = await casbin.newEnforcer(
-		path.join(__dirname, "../middlewares/casbin/model.conf"),
-		// path.join(__dirname, "../middlewares/casbin/policy.csv")
-		a
-	);
-	console.log(e1.getPolicy());
-	console.log(e1.getAllRoles());
-	console.log("------------------------------");
-	console.log(e2.getPolicy());
-	console.log(e2.getAllRoles());
-	const roles = await e2.getRolesForUser("aaa");
-	console.log(roles);
-	console.log(e2.getPermissionsForUser(roles[0]));
-	console.log(await e1.enforce("aaa", "/", "GET"));
-}
-
-addPolicy();
-testPolicy();
+});

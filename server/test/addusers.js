@@ -1,4 +1,5 @@
 const User = require("../model/user");
+const SuperAdmin = require("../model/SuperAdmin");
 
 const { sequelize } = require("../db");
 
@@ -50,7 +51,18 @@ async function PrepareData() {
 			});
 		}
 	}
+	const superAdmin = await SuperAdmin.findOne({
+		where: {
+			username: "superadmin"
+		}
+	});
+	if (!superAdmin) {
+		SuperAdmin.create({
+			username: "superadmin",
+			password: "superadmin"
+		});
+	}
 }
-// PrepareData();
+PrepareData();
 // User.create({ username: "aaa", password: encodeWithoutDate("aaa") });
 // User.create({ username: "bbb", password: encodeWithoutDate("bbb") });
