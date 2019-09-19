@@ -10,7 +10,7 @@ describe("User API test", () => {
 
 	it("get all users", async () => {
 		const req = chai.request.agent(server);
-		let res = await req.get('/adminlogin');
+		let res = await req.get("/adminlogin");
 		// // expect(res).to.be.text;
 		expect(res).to.have.cookie("koa:sess");
 		res = await req.get("/api/user/");
