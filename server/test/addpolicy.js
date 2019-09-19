@@ -10,10 +10,14 @@ const policyArr = [
 	["p", "anonymous", "/", "GET"],
 	["p", "anonymous", "/", "POST"],
 	["p", "anonymous", "/login", "GET"],
-	["p", "anonymous", "/policy", "GET"],
+	["p", "anonymous", "/adminlogin", "GET"],
+	["p", "superadmin", "/login", "*"],
+	["p", "superadmin", "/logout", "*"],
+	["p", "superadmin", "/api/*", "GET"],
 	["g", "cathy", "dataset1_admin"],
 	["g", "aaa", "dataset1_admin"],
-	["g", "anonymous", "anonymous"]
+	["g", "anonymous", "anonymous"],
+	["g", "superadmin", "superadmin"]
 ];
 
 async function getEnforer() {

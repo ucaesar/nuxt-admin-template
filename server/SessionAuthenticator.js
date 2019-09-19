@@ -1,6 +1,7 @@
 const BaseAuthenticator = require("./middlewares/BaseAuthenticator");
 const { encode, decode, encodeWithoutDate } = require("./lib/encryption");
 const User = require("./model/user");
+const SuperAdmin = require("./model/SuperAdmin");
 
 class SessionAthenticator extends BaseAuthenticator {
 	// constructor() {
@@ -17,11 +18,18 @@ class SessionAthenticator extends BaseAuthenticator {
 				context.state.currentUser = { id: "-1", username: "anonymous" };
 				return;
 			}
-			const u = await User.findOne({
+			let u = await User.findOne({
 				where: {
 					id: uid
 				}
 			});
+			if (!u) {
+				u = await SuperAdmin.findOne({
+					where: {
+						id: uid
+					}
+				});
+			}
 			if (!u) {
 				context.state.currentUser = { id: "-1", username: "anonymous" };
 				return;
@@ -35,9 +43,12 @@ class SessionAthenticator extends BaseAuthenticator {
 		context.state.currentUser = { id: "-1", username: "anonymous" };
 		// const username = context.getUsername;
 		// const password = context.getPassword;
-		const username = "aaa";
-		const password = "aaa";
-		const u = await User.findOne({
+		const isSuper = context.originalUrl === "/adminlogin";
+		const username = isSuper ? "superadmin" : "aaa";
+		const password = isSuper ? "superadmin" : "aaa";
+		const a = isSuper ? SuperAdmin : User;
+		const u = await a.findOne({
+			atrributes: ["id", "username"],
 			where: {
 				username,
 				password: encodeWithoutDate(password)

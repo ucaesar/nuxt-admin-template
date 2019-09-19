@@ -71,6 +71,14 @@ router.get("/login", async (ctx, next) => {
 	await next();
 });
 
+router.get("/adminlogin", async (ctx, next) => {
+	// ctx.session.x_session = encode('2e592d50-d535-11e9-881c-31c34ad71a1b');
+	// ctx.session.username = "aaa";
+	// ctx.state.currentUser = { username: "aaa" };
+	await authenticator.login(ctx);
+	await next();
+});
+
 router.get("/logout", async (ctx, next) => {
 	authenticator.logout(ctx);
 	await next();
@@ -89,6 +97,6 @@ app.use(async (ctx, next) => {
 app.use(router.routes());
 app.use(apiRouter.routes());
 
-// app.listen(56556);
+app.listen(56556);
 
 module.exports = app;

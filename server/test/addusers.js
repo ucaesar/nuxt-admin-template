@@ -59,7 +59,7 @@ async function PrepareData() {
 	if (!superAdmin) {
 		SuperAdmin.create({
 			username: "superadmin",
-			password: "superadmin"
+			password: encodeWithoutDate("superadmin")
 		});
 	}
 }
