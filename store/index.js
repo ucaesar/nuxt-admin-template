@@ -4,6 +4,7 @@ export const state = () => ({
 
 export const mutations = {
     SET_LOCALE(state, locale) {
+        console.log(locale)
         state.locale = locale
     }
 }
