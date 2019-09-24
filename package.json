@@ -27,7 +27,8 @@
 		"mysql2": "^1.7.0",
 		"nuxt": "^2.0.0",
 		"sequelize": "^5.18.4",
-		"sqlite3": "^4.1.0"
+		"sqlite3": "^4.1.0",
+		"vue-i18n": "^8.14.1"
 	},
 	"devDependencies": {
 		"nodemon": "^1.18.9",
