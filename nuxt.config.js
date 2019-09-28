@@ -44,13 +44,26 @@ module.exports = {
     */
     modules: [
         // Doc: https://axios.nuxtjs.org/usage
-        '@nuxtjs/axios'
+        '@nuxtjs/axios',
+        'nuxt-i18n'
     ],
     /*
     ** Axios module configuration
     ** See https://axios.nuxtjs.org/options
     */
     axios: {
+    },
+    /*
+    ** i18n module configuration
+    */
+    i18n: {
+        locales: [{ code: 'en', file: 'en.js' }, { code: 'cn', file: 'cn.js' }],
+        defaultLocale: 'cn',
+        lazy: true,
+        langDir: 'lang/',
+        vueI18n: {
+            fallbackLocale: 'cn'
+        }
     },
     /*
     ** vuetify module configuration
