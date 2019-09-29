@@ -4,7 +4,7 @@
             <v-col cols="12">
                 <v-card class="elevation-12">
                     <v-toolbar color="primary" dark flat>
-                        <v-toolbar-title>{{ locale }}</v-toolbar-title>
+                        <v-toolbar-title>{{ $t("testString") }}</v-toolbar-title>
                     </v-toolbar>
                 </v-card>
             </v-col>
@@ -13,15 +13,15 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations } from "vuex";
 export default {
     computed: {
-        ...mapState(['locale'])
+        ...mapState(["locale"])
     },
     methods: {
-        ...mapMutations(['SET_LOCALE']),
+        ...mapMutations(["SET_LOCALE"]),
         onClick() {
-            this.SET_LOCALE('en')
+            this.SET_LOCALE("en");
         }
     }
 };
