@@ -10,30 +10,24 @@ describe("User API test", () => {
 
 	it("get all users", async () => {
 		const req = chai.request.agent(server);
-		let res = await req.get("/adminlogin");
-		// // expect(res).to.be.text;
+		let res = await req
+			.post("/adminlogin")
+			.type("form")
+			.send({
+				username: "superadmin",
+				password: "superadmin"
+			});
+		// let res = await req.get("/adminlogin");
 		expect(res).to.have.cookie("koa:sess");
 		res = await req.get("/api/user/");
-		// expect(res).to.be.json;
-		// res = await req.get('/logout');
-		// expect(res).to.be.text;
-		// const res = await req.get("/adminlogin");
 		expect(res).to.have.status(200);
 		expect(res).to.be.json;
-		// let agent = chai.request.agent(server);
-		// agent
-		// 	.get("/adminlogin")
-		// 	.then(function(res) {
-		// 		expect(res).to.have.cookie("koa:sess");
-		// 		// The `agent` now has the sessionid cookie saved, and will send it
-		// 		// back to the server in the next request:
-		// 		return agent.get("/api/user/").then(function(res) {
-		// 			expect(res).to.have.status(200);
-		// 		});
-		// 	});
+		req.close();
 	});
 	it("test anonymous access right", async () => {
-		const res = await chai.request(server).get("/dataset1/aaa");
+		const req = chai.request.agent(server);
+		const res = await req.get("/api/policy/");
 		expect(res).to.have.status(403);
+		req.close();
 	});
 });

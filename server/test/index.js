@@ -6,6 +6,8 @@ const Koa = require("koa");
 
 const serve = require("koa-static");
 
+const bodyParser = require("koa-bodyparser");
+
 const session = require("koa-session");
 
 const router = require("koa-router")();
@@ -58,12 +60,14 @@ sequelize
 
 app.use(serve("."));
 
+app.use(bodyParser());
+
 app.use(session(CONFIG, app));
 
 const authenticator = new SessionAuthenticator();
 app.use(auth(authenticator));
 
-router.get("/login", async (ctx, next) => {
+router.post("/login", async (ctx, next) => {
 	// ctx.session.x_session = encode('2e592d50-d535-11e9-881c-31c34ad71a1b');
 	// ctx.session.username = "aaa";
 	// ctx.state.currentUser = { username: "aaa" };
@@ -71,7 +75,12 @@ router.get("/login", async (ctx, next) => {
 	await next();
 });
 
-router.get("/adminlogin", async (ctx, next) => {
+router.post("/testpost", async (ctx, next) => {
+	console.log("test post");
+	await next();
+});
+
+router.post("/adminlogin", async (ctx, next) => {
 	// ctx.session.x_session = encode('2e592d50-d535-11e9-881c-31c34ad71a1b');
 	// ctx.session.username = "aaa";
 	// ctx.state.currentUser = { username: "aaa" };
@@ -92,6 +101,7 @@ app.use(async (ctx, next) => {
 	}
 	ctx.response.type = "text/html";
 	ctx.response.body = "<h1>hello " + username + " auth</h1>";
+	// ctx.response.body = "<h1>hello " + " auth</h1>";
 });
 
 app.use(router.routes());

@@ -45,8 +45,10 @@ class SessionAthenticator extends BaseAuthenticator {
 		// const username = context.getUsername;
 		// const password = context.getPassword;
 		const isSuper = context.originalUrl === "/adminlogin";
-		const username = isSuper ? "superadmin" : "aaa";
-		const password = isSuper ? "superadmin" : "aaa";
+		// const username = isSuper ? "superadmin" : "aaa";
+		// const password = isSuper ? "superadmin" : "aaa";
+		const username = context.request.body.username || '';
+		const password = context.request.body.password || '';
 		const a = isSuper ? SuperAdmin : User;
 		const u = await a.findOne({
 			atrributes: ["id", "username"],
