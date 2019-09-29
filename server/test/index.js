@@ -12,6 +12,8 @@ const session = require("koa-session");
 
 const router = require("koa-router")();
 
+const { Nuxt, Builder } = require("nuxt");
+
 const auth = require("../middlewares/auth");
 
 const SessionAuthenticator = require("../SessionAuthenticator");
@@ -93,20 +95,49 @@ router.get("/logout", async (ctx, next) => {
 	await next();
 });
 
-app.use(async (ctx, next) => {
-	await next();
-	const { username } = ctx.state.currentUser;
-	if (ctx.originalUrl.startsWith("/api")) {
-		return;
-	}
-	ctx.response.type = "text/html";
-	ctx.response.body = "<h1>hello " + username + " auth</h1>";
-	// ctx.response.body = "<h1>hello " + " auth</h1>";
-});
+// app.use(async (ctx, next) => {
+// 	await next();
+// 	const { username } = ctx.state.currentUser;
+// 	if (ctx.originalUrl.startsWith("/api")) {
+// 		return;
+// 	}
+// 	ctx.response.type = "text/html";
+// 	ctx.response.body = "<h1>hello " + username + " auth</h1>";
+// 	// ctx.response.body = "<h1>hello " + " auth</h1>";
+// });
 
 app.use(router.routes());
 app.use(apiRouter.routes());
 
+const config = require("../../nuxt.config");
+config.dev = app.env !== "production";
+
+const nuxt = new Nuxt(config);
+
+async function initNuxt(nuxt) {
+	// Instantiate nuxt.js
+
+	// Build in development
+	if (config.dev) {
+		const builder = new Builder(nuxt);
+		await builder.build();
+	} else {
+		await nuxt.ready();
+	}
+}
+
+initNuxt(nuxt);
+
+app.use(async (ctx, next) => {
+	await next();
+	if (ctx.originalUrl.startsWith("/api")) {
+		return;
+	}
+	ctx.status = 200;
+	ctx.respond = false; // Bypass Koa's built-in response handling
+	ctx.req.ctx = ctx; // This might be useful later on, e.g. in nuxtServerInit or with nuxt-stash
+	nuxt.render(ctx.req, ctx.res);
+});
 // app.listen(56556);
 
 module.exports = app;
