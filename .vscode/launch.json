@@ -7,6 +7,12 @@
 		{
 			"type": "node",
 			"request": "launch",
+			"name": "Launch Addrouter",
+			"program": "${workspaceFolder}\\server\\test\\controller.js"
+		},
+		{
+			"type": "node",
+			"request": "launch",
 			"name": "Mocha Tests",
 			"program": "${workspaceFolder}/node_modules/mocha/bin/mocha",
 			"args": ["-u", "bdd", "--timeout", "999999", "--colors"],
