@@ -1,0 +1,36 @@
+<template>
+    <v-app>
+        <v-navigation-drawer v-model="drawer" fixed app>
+            <navigator :config="navigation" />
+        </v-navigation-drawer>
+         <v-app-bar fixed app>
+            <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+        </v-app-bar>
+        <v-content>
+            <v-container>
+                <nuxt />
+            </v-container>
+        </v-content>
+    </v-app>
+</template>
+
+<script>
+import { mapState } from "vuex"
+import Navigator from "@/components/admin/Navigator";
+
+export default {
+    components: {
+        Navigator
+    },
+    data: () => ({
+        drawer: true
+    }),
+    computed: {
+        ...mapState("admin", ["navigation"])
+    }
+}
+</script>
+
+<style>
+
+</style>
