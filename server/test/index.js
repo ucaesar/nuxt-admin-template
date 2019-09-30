@@ -1,7 +1,5 @@
 "use strict";
 
-console.log("hello auth");
-
 const Koa = require("koa");
 
 const serve = require("koa-static");
@@ -87,12 +85,22 @@ router.post("/adminlogin", async (ctx, next) => {
 	// ctx.session.username = "aaa";
 	// ctx.state.currentUser = { username: "aaa" };
 	await authenticator.login(ctx);
-	await next();
+	// 登陆后跳转
+	ctx.redirect("/testusermain");
+	// await next();
 });
 
 router.get("/logout", async (ctx, next) => {
 	authenticator.logout(ctx);
 	await next();
+});
+
+// 测试login成功后的跳转
+router.get("/testusermain", (ctx, next) => {
+	const { username } = ctx.state.currentUser;
+	ctx.response.type = "text/html";
+	ctx.response.body = "<h1>hello " + username + " auth</h1>";
+	// ctx.response.body = "<h1>hello " + " auth</h1>";
 });
 
 // app.use(async (ctx, next) => {
@@ -112,8 +120,6 @@ app.use(apiRouter.routes());
 const config = require("../../nuxt.config");
 config.dev = app.env !== "production";
 
-const nuxt = new Nuxt(config);
-
 async function initNuxt(nuxt) {
 	// Instantiate nuxt.js
 
@@ -126,18 +132,19 @@ async function initNuxt(nuxt) {
 	}
 }
 
-initNuxt(nuxt);
+// const nuxt = new Nuxt(config);
+// initNuxt(nuxt);
 
-app.use(async (ctx, next) => {
-	await next();
-	if (ctx.originalUrl.startsWith("/api")) {
-		return;
-	}
-	ctx.status = 200;
-	ctx.respond = false; // Bypass Koa's built-in response handling
-	ctx.req.ctx = ctx; // This might be useful later on, e.g. in nuxtServerInit or with nuxt-stash
-	nuxt.render(ctx.req, ctx.res);
-});
+// app.use(async (ctx, next) => {
+// 	await next();
+// 	if (ctx.originalUrl.startsWith("/api")) {
+// 		return;
+// 	}
+// 	ctx.status = 200;
+// 	ctx.respond = false; // Bypass Koa's built-in response handling
+// 	ctx.req.ctx = ctx; // This might be useful later on, e.g. in nuxtServerInit or with nuxt-stash
+// 	nuxt.render(ctx.req, ctx.res);
+// });
 // app.listen(56556);
 
 module.exports = app;
