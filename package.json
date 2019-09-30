@@ -11,7 +11,8 @@
 		"generate": "nuxt generate",
 		"lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
 		"test": "mocha",
-		"test-server": "node server/test/start.js"
+		"test-server": "node server/test/start.js",
+		"server": "node server/start.js"
 	},
 	"dependencies": {
 		"@nuxtjs/axios": "^5.3.6",
