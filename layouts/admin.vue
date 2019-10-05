@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-navigation-drawer v-model="drawer" fixed app>
+        <v-navigation-drawer v-model="drawer" fixed app class="nav">
             <navigator :config="navigation" />
         </v-navigation-drawer>
          <v-app-bar fixed app>
@@ -32,5 +32,7 @@ export default {
 </script>
 
 <style>
-
+.nav {
+    padding-top: 64px
+}
 </style>
