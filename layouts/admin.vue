@@ -19,6 +19,7 @@ import { mapState } from "vuex"
 import Navigator from "@/components/admin/Navigator";
 
 export default {
+    middleware: 'admin/navigation',
     components: {
         Navigator
     },
