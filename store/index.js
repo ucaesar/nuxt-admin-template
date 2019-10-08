@@ -1,16 +1,7 @@
-export const state = () => ({
-    locale: 'cn'
-})
-
-export const mutations = {
-    SET_LOCALE(state, locale) {
-        console.log(locale)
-        state.locale = locale
-    }
-}
+const consola = require('consola')
 
 export const actions = {
     nuxtServerInit() {
-        console.log("This is the entry!")
+        consola.success("This is the entry!")
     }
 }

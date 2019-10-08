@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-navigation-drawer v-model="drawer" fixed app class="nav">
-            <navigator :config="navigation" />
+            <navigator :config="navigations" />
         </v-navigation-drawer>
          <v-app-bar fixed app>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
@@ -27,7 +27,7 @@ export default {
         drawer: true
     }),
     computed: {
-        ...mapState("admin", ["navigation"])
+        ...mapState("admin", ["navigations"])
     }
 }
 </script>
