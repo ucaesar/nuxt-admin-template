@@ -9,7 +9,8 @@ const Sequelize = require("sequelize");
 const sequelize = new Sequelize(undefined, undefined, undefined, {
 	host: "localhost",
 	dialect: "sqlite",
-	storage: path.join(__dirname, "./test/database/nuxtauth.sqlite")
+	storage: path.join(__dirname, "./test/database/nuxtauth.sqlite"),
+	logging: false
 });
 
 module.exports = {
