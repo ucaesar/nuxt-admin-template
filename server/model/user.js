@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const { sequelize } = require("../db");
+const getEnforcer = require("../lib/enforcer");
 
 const User = sequelize.define("userabc", {
 	id: {
@@ -20,5 +21,12 @@ const User = sequelize.define("userabc", {
 		allowNull: false
 	}
 });
+
+User.prototype.getRoles = async function() {
+	const e = await getEnforcer();
+	console.log("get user roles by id: " + this.id);
+	const result = await e.getRolesForUser(this.username);
+	return result;
+};
 
 module.exports = User;

@@ -14,7 +14,7 @@ module.exports = {
 	timeout: 5000,
 	ui: "bdd",
 	spec: [
-        "server/test/**/!(index|addusers|start|user|controller).js",
+        "server/test/**/!(index|addusers|start|controller).js",
         "clienttest/**/*.js"
 	]
 };

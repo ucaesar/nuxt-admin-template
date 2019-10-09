@@ -21,4 +21,8 @@ const SuperAdmin = sequelize.define("superadmin", {
 	}
 });
 
+SuperAdmin.getRoles = () => {
+	console.log("get superadmin roles by id: " + this.id);
+};
+
 module.exports = SuperAdmin;
