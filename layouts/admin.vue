@@ -1,7 +1,7 @@
 <template>
     <v-app>
-        <v-navigation-drawer v-model="drawer" fixed app>
-            <navigator :config="navigation" />
+        <v-navigation-drawer v-model="drawer" fixed app class="nav">
+            <navigator :config="navigations" />
         </v-navigation-drawer>
          <v-app-bar fixed app>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
@@ -19,6 +19,7 @@ import { mapState } from "vuex"
 import Navigator from "@/components/admin/Navigator";
 
 export default {
+    middleware: 'admin/navigation',
     components: {
         Navigator
     },
@@ -26,11 +27,13 @@ export default {
         drawer: true
     }),
     computed: {
-        ...mapState("admin", ["navigation"])
+        ...mapState("admin", ["navigations"])
     }
 }
 </script>
 
 <style>
-
+.nav {
+    padding-top: 64px
+}
 </style>

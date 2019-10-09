@@ -12,7 +12,8 @@
 		"lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
 		"test": "mocha",
 		"test-server": "node server/test/start.js",
-		"server": "node server/start.js"
+		"server": "node server/start.js",
+		"mock": "cross-env NODE_ENV=development nodemon server/mock.js --watch server"
 	},
 	"dependencies": {
 		"@nuxtjs/axios": "^5.3.6",
