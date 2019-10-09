@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const { sequelize } = require("../db");
+const getEnforcer = require("../lib/enforcer");
 
 const SuperAdmin = sequelize.define("superadmin", {
 	id: {
@@ -21,8 +22,11 @@ const SuperAdmin = sequelize.define("superadmin", {
 	}
 });
 
-SuperAdmin.getRoles = () => {
+SuperAdmin.prototype.getRoles = async function() {
+	const e = await getEnforcer();
 	console.log("get superadmin roles by id: " + this.id);
+	const result = await e.getRolesForUser(this.username);
+	return result;
 };
 
 module.exports = SuperAdmin;

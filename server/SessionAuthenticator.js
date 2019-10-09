@@ -35,7 +35,12 @@ class SessionAthenticator extends BaseAuthenticator {
 				context.state.currentUser = { id: "-1", username: "anonymous" };
 				return;
 			}
-			context.state.currentUser = { id: u.id, username: u.username };
+			const rs = await u.getRoles();
+			context.state.currentUser = {
+				id: u.id,
+				username: u.username,
+				roles: rs
+			};
 		}
 	}
 
@@ -47,8 +52,8 @@ class SessionAthenticator extends BaseAuthenticator {
 		const isSuper = context.originalUrl === "/adminlogin";
 		// const username = isSuper ? "superadmin" : "aaa";
 		// const password = isSuper ? "superadmin" : "aaa";
-		const username = context.request.body.username || '';
-		const password = context.request.body.password || '';
+		const username = context.request.body.username || "";
+		const password = context.request.body.password || "";
 		const a = isSuper ? SuperAdmin : User;
 		const u = await a.findOne({
 			atrributes: ["id", "username"],
@@ -59,7 +64,12 @@ class SessionAthenticator extends BaseAuthenticator {
 		});
 		if (u) {
 			context.session.x_session = encode(u.id);
-			context.state.currentUser = { id: u.id, username: u.username };
+			const rs = await u.getRoles();
+			context.state.currentUser = {
+				id: u.id,
+				username: u.username,
+				roles: rs
+			};
 		}
 	}
 
