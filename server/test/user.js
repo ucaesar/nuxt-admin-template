@@ -9,7 +9,6 @@ chai.use(chaiHttp);
 describe("User API test", async () => {
 	// const server = app.listen(56556);
 	it("test getUser roles:", async () => {
-		expect(true).to.be.true;
 		const u = await User.findOne({
 			where: {
 				username: "aaa"
@@ -18,6 +17,16 @@ describe("User API test", async () => {
 		expect(u).not.to.be.null;
 		const roles = await u.getRoles();
 		expect(roles).not.to.be.empty;
+	});
+	it("test getUser paths:", async () => {
+		const u = await User.findOne({
+			where: {
+				username: "aaa"
+			}
+		});
+		expect(u).not.to.be.null;
+		const paths = await u.getPagePaths();
+		expect(paths).not.to.be.empty;
 	});
 	// it("get all users", async () => {
 	// 	const req = chai.request.agent(server);

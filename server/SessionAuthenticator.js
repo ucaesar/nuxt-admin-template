@@ -36,10 +36,12 @@ class SessionAthenticator extends BaseAuthenticator {
 				return;
 			}
 			const rs = await u.getRoles();
+			const navs = await u.getPagePaths();
 			context.state.currentUser = {
 				id: u.id,
 				username: u.username,
-				roles: rs
+				roles: rs,
+				authNavs: navs
 			};
 		}
 	}
@@ -49,7 +51,9 @@ class SessionAthenticator extends BaseAuthenticator {
 		context.state.currentUser = { id: "-1", username: "anonymous" };
 		// const username = context.getUsername;
 		// const password = context.getPassword;
-		const isSuper = context.originalUrl === "/adminlogin";
+		// 暂时把login和adminlogin来的全部统一到isSuper去
+		// const isSuper = context.originalUrl === "/adminlogin";
+		const isSuper = true;
 		// const username = isSuper ? "superadmin" : "aaa";
 		// const password = isSuper ? "superadmin" : "aaa";
 		const username = context.request.body.username || "";
@@ -65,10 +69,12 @@ class SessionAthenticator extends BaseAuthenticator {
 		if (u) {
 			context.session.x_session = encode(u.id);
 			const rs = await u.getRoles();
+			const navs = await u.getPagePaths();
 			context.state.currentUser = {
 				id: u.id,
 				username: u.username,
-				roles: rs
+				roles: rs,
+				authNavs: navs
 			};
 		}
 	}
