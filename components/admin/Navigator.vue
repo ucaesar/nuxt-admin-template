@@ -18,7 +18,9 @@
                 <v-list-group :key="i" :prepend-icon="item.icon" no-action>
                     <template v-slot:activator>
                         <v-list-item-content>
-                            <v-list-item-title>{{ item.title }}</v-list-item-title>
+                            <v-list-item-title>{{
+                                item.title
+                            }}</v-list-item-title>
                         </v-list-item-content>
                     </template>
 
@@ -30,7 +32,9 @@
                         link
                     >
                         <v-list-item-content>
-                            <v-list-item-title>{{ subItem.title }}</v-list-item-title>
+                            <v-list-item-title>{{
+                                subItem.title
+                            }}</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </v-list-group>
@@ -45,13 +49,12 @@ export default {
         config: {
             type: Array,
             default() {
-                return [];
+                return []
             },
             required: true
         }
     }
-};
+}
 </script>
 
-<style>
-</style>
+<style></style>

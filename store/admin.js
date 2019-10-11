@@ -6,9 +6,8 @@ export const state = () => ({
 
 export const mutations = {
     SET_NAVIGATIONS(state, navigations) {
-        state.navigations = navigations;
+        state.navigations = navigations
     }
 }
 
-export const actions = {
-}
+export const actions = {}

@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import Navigator from '@/components/admin/Navigator';
+import { mapState } from 'vuex'
+import Navigator from '@/components/admin/Navigator'
 
 export default {
     middleware: 'admin/navigation',
@@ -29,7 +29,7 @@ export default {
     computed: {
         ...mapState('admin', ['navigations'])
     }
-};
+}
 </script>
 
 <style>

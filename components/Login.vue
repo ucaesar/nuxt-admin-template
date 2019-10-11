@@ -8,8 +8,14 @@
                     </v-toolbar>
                     <v-card-text>
                         <v-form ref="form">
-                            <v-text-field label="Username" prepend-icon="mdi-account"></v-text-field>
-                            <v-text-field label="Password" prepend-icon="mdi-lock"></v-text-field>
+                            <v-text-field
+                                label="Username"
+                                prepend-icon="mdi-account"
+                            ></v-text-field>
+                            <v-text-field
+                                label="Password"
+                                prepend-icon="mdi-lock"
+                            ></v-text-field>
                         </v-form>
                     </v-card-text>
                     <v-card-actions>
@@ -23,8 +29,7 @@
 </template>
 
 <script>
-export default {};
+export default {}
 </script>
 
-<style>
-</style>
+<style></style>

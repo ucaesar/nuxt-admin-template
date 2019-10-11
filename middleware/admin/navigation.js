@@ -1,6 +1,6 @@
 const consola = require('consola')
 
-export default function ({ store }) {
+export default function({ store }) {
     consola.info('middleware: navigation.js')
 
     const navigations = [
