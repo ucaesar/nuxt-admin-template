@@ -1,3 +1,3 @@
 export default {
-    testString: "欢迎"
+    testString: '欢迎'
 }

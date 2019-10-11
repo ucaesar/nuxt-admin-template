@@ -3,7 +3,7 @@
         <v-navigation-drawer v-model="drawer" fixed app class="nav">
             <navigator :config="navigations" />
         </v-navigation-drawer>
-         <v-app-bar fixed app>
+        <v-app-bar fixed app>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
         </v-app-bar>
         <v-content>
@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import { mapState } from "vuex"
-import Navigator from "@/components/admin/Navigator";
+import { mapState } from 'vuex';
+import Navigator from '@/components/admin/Navigator';
 
 export default {
     middleware: 'admin/navigation',
@@ -27,13 +27,13 @@ export default {
         drawer: true
     }),
     computed: {
-        ...mapState("admin", ["navigations"])
+        ...mapState('admin', ['navigations'])
     }
-}
+};
 </script>
 
 <style>
 .nav {
-    padding-top: 64px
+    padding-top: 64px;
 }
 </style>

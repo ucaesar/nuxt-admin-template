@@ -22,7 +22,10 @@ module.exports = {
         'vue/html-self-closing': 'off',
         'vue/singleline-html-element-content-newline': 'off',
 
-        'quotes': 'off',
+        'quotes': [2, 'single', {
+            'avoidEscape': true, // 允许包含单引号的字符串使用双引号
+            'allowTemplateLiterals': true, // 允许使用模板字符串
+        }],
         'semi': 'off',
         'indent': 'off',
         'space-before-function-paren': 'off',

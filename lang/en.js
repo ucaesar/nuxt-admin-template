@@ -1,3 +1,3 @@
 export default {
-    "testString": "Welcome"
+    'testString': 'Welcome'
 }
