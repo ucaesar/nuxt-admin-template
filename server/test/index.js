@@ -1,33 +1,33 @@
-"use strict";
+'use strict';
 
-const Koa = require("koa");
+const Koa = require('koa');
 
-const serve = require("koa-static");
+const serve = require('koa-static');
 
-const bodyParser = require("koa-bodyparser");
+const bodyParser = require('koa-bodyparser');
 
-const session = require("koa-session");
+const session = require('koa-session');
 
-const router = require("koa-router")();
+const router = require('koa-router')();
 
-const { Nuxt, Builder } = require("nuxt");
+const { Nuxt, Builder } = require('nuxt');
 
-const auth = require("../middlewares/auth");
+const auth = require('../middlewares/auth');
 
-const SessionAuthenticator = require("../SessionAuthenticator");
+const SessionAuthenticator = require('../SessionAuthenticator');
 
 // const { encode, decode } = require("../lib/encryption");
 
-const { sequelize } = require("../db");
+const { sequelize } = require('../db');
 
-const apiRouter = require("../controller/api/api");
+const apiRouter = require('../controller/api/api');
 
 const app = new Koa();
 
-app.keys = ["qwert12345"];
+app.keys = ['qwert12345'];
 
 const CONFIG = {
-	key: "koa:sess" /** (string) cookie key (default is koa:sess) */,
+	key: 'koa:sess' /** (string) cookie key (default is koa:sess) */,
 	/** (number || 'session') maxAge in ms (default is 1 days) */
 	/** 'session' will result in a cookie that expires when session/browser is closed */
 	/** Warning: If a session cookie is stolen, this cookie will never expire */
@@ -43,22 +43,22 @@ const CONFIG = {
 sequelize
 	.authenticate()
 	.then(() => {
-		console.log("database connected");
+		console.log('database connected');
 	})
 	.catch(err => {
-		console.error("database connect failed" + err);
+		console.error('database connect failed' + err);
 	});
 
 sequelize
 	.sync()
 	.then(() => {
-		console.log("init db ok");
+		console.log('init db ok');
 	})
 	.catch(err => {
-		console.log("init db error", err);
+		console.log('init db error', err);
 	});
 
-app.use(serve("."));
+app.use(serve('.'));
 
 app.use(bodyParser());
 
@@ -67,7 +67,7 @@ app.use(session(CONFIG, app));
 const authenticator = new SessionAuthenticator();
 app.use(auth(authenticator));
 
-router.post("/login", async (ctx, next) => {
+router.post('/login', async (ctx, next) => {
 	// ctx.session.x_session = encode('2e592d50-d535-11e9-881c-31c34ad71a1b');
 	// ctx.session.username = "aaa";
 	// ctx.state.currentUser = { username: "aaa" };
@@ -75,31 +75,31 @@ router.post("/login", async (ctx, next) => {
 	await next();
 });
 
-router.post("/testpost", async (ctx, next) => {
-	console.log("test post");
+router.post('/testpost', async (ctx, next) => {
+	console.log('test post');
 	await next();
 });
 
-router.post("/adminlogin", async (ctx, next) => {
+router.post('/adminlogin', async (ctx, next) => {
 	// ctx.session.x_session = encode('2e592d50-d535-11e9-881c-31c34ad71a1b');
 	// ctx.session.username = "aaa";
 	// ctx.state.currentUser = { username: "aaa" };
 	await authenticator.login(ctx);
 	// 登陆后跳转
-	ctx.redirect("/testusermain");
+	ctx.redirect('/testusermain');
 	// await next();
 });
 
-router.get("/logout", async (ctx, next) => {
+router.get('/logout', async (ctx, next) => {
 	authenticator.logout(ctx);
 	await next();
 });
 
 // 测试login成功后的跳转
-router.get("/testusermain", (ctx, next) => {
+router.get('/testusermain', (ctx, next) => {
 	const { username } = ctx.state.currentUser;
-	ctx.response.type = "text/html";
-	ctx.response.body = "<h1>hello " + username + " auth</h1>";
+	ctx.response.type = 'text/html';
+	ctx.response.body = '<h1>hello ' + username + ' auth</h1>';
 	// ctx.response.body = "<h1>hello " + " auth</h1>";
 });
 
@@ -117,8 +117,8 @@ router.get("/testusermain", (ctx, next) => {
 app.use(router.routes());
 app.use(apiRouter.routes());
 
-const config = require("../../nuxt.config");
-config.dev = app.env !== "production";
+const config = require('../../nuxt.config');
+config.dev = app.env !== 'production';
 
 async function initNuxt(nuxt) {
 	// Instantiate nuxt.js

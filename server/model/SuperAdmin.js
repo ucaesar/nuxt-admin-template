@@ -1,8 +1,8 @@
-const Sequelize = require("sequelize");
-const { sequelize } = require("../db");
-const getEnforcer = require("../lib/enforcer");
+const Sequelize = require('sequelize');
+const { sequelize } = require('../db');
+const getEnforcer = require('../lib/enforcer');
 
-const SuperAdmin = sequelize.define("superadmin", {
+const SuperAdmin = sequelize.define('superadmin', {
 	id: {
 		type: Sequelize.UUID,
 		unique: true,
@@ -25,7 +25,7 @@ const SuperAdmin = sequelize.define("superadmin", {
 // 下面两个方法与User相同代码重复，后期重构
 SuperAdmin.prototype.getRoles = async function() {
 	const e = await getEnforcer();
-	console.log("get superadmin roles by id: " + this.id);
+	console.log('get superadmin roles by id: ' + this.id);
 	const result = await e.getRolesForUser(this.username);
 	return result;
 };
@@ -40,7 +40,7 @@ SuperAdmin.prototype.getPagePaths = async function() {
 	const result = [];
 	for (const perm of perms) {
 		// 动作为*和动作为GET的授权，才是页面访问的路径，其余可能是api路径
-		if (perm[2] === "GET" || perm[2] === "*") {
+		if (perm[2] === 'GET' || perm[2] === '*') {
 			result.push(perm[1]);
 		}
 	}

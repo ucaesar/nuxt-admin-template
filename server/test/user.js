@@ -1,27 +1,27 @@
-const chai = require("chai");
-const expect = require("chai").expect;
-const chaiHttp = require("chai-http");
-const User = require("../model/user");
-const app = require("./index");
+const chai = require('chai');
+const expect = require('chai').expect;
+const chaiHttp = require('chai-http');
+const User = require('../model/user');
+const app = require('./index');
 
 chai.use(chaiHttp);
 
-describe("User API test", async () => {
+describe('User API test', async () => {
 	// const server = app.listen(56556);
-	it("test getUser roles:", async () => {
+	it('test getUser roles:', async () => {
 		const u = await User.findOne({
 			where: {
-				username: "aaa"
+				username: 'aaa'
 			}
 		});
 		expect(u).not.to.be.null;
 		const roles = await u.getRoles();
 		expect(roles).not.to.be.empty;
 	});
-	it("test getUser paths:", async () => {
+	it('test getUser paths:', async () => {
 		const u = await User.findOne({
 			where: {
-				username: "aaa"
+				username: 'aaa'
 			}
 		});
 		expect(u).not.to.be.null;
