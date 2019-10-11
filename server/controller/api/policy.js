@@ -1,9 +1,9 @@
-const policyRouter = require("koa-router")();
-const getEnforcer = require("../../lib/enforcer");
+const policyRouter = require('koa-router')();
+const getEnforcer = require('../../lib/enforcer');
 
-policyRouter.get("/", async (ctx, next) => {
+policyRouter.get('/', async (ctx, next) => {
     const e = await getEnforcer();
-    ctx.response.type = "text/json";
+    ctx.response.type = 'text/json';
 	ctx.response.body = e.getPolicy();
 	// await next();
 });

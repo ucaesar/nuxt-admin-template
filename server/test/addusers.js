@@ -1,40 +1,40 @@
-const User = require("../model/user");
-const SuperAdmin = require("../model/SuperAdmin");
+const User = require('../model/user');
+const SuperAdmin = require('../model/SuperAdmin');
 
-const { sequelize } = require("../db");
+const { sequelize } = require('../db');
 
-const { encodeWithoutDate } = require("../lib/encryption");
+const { encodeWithoutDate } = require('../lib/encryption');
 
 sequelize
 	.authenticate()
 	.then(() => {
-		console.log("database connected");
+		console.log('database connected');
 	})
 	.catch(err => {
-		console.error("database connect failed" + err);
+		console.error('database connect failed' + err);
 	});
 
 sequelize
 	.sync()
 	.then(() => {
-		console.log("init db ok");
+		console.log('init db ok');
 	})
 	.catch(err => {
-		console.log("init db error", err);
+		console.log('init db error', err);
 	});
 
 const arr = [
-	"aaa",
-	"bbb",
-	"ccc",
-	"ddd",
-	"eee",
-	"fff",
-	"ggg",
-	"hhh",
-	"iii",
-	"jjj",
-	"kkk"
+	'aaa',
+	'bbb',
+	'ccc',
+	'ddd',
+	'eee',
+	'fff',
+	'ggg',
+	'hhh',
+	'iii',
+	'jjj',
+	'kkk'
 ];
 
 async function PrepareData() {
@@ -53,13 +53,13 @@ async function PrepareData() {
 	}
 	const superAdmin = await SuperAdmin.findOne({
 		where: {
-			username: "superadmin"
+			username: 'superadmin'
 		}
 	});
 	if (!superAdmin) {
 		SuperAdmin.create({
-			username: "superadmin",
-			password: encodeWithoutDate("superadmin")
+			username: 'superadmin',
+			password: encodeWithoutDate('superadmin')
 		});
 	}
 }

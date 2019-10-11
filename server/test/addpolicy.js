@@ -1,42 +1,42 @@
-const path = require("path");
-const casbin = require("casbin");
-const { SequelizeAdapter } = require("casbin-sequelize-adapter");
+const path = require('path');
+const casbin = require('casbin');
+const { SequelizeAdapter } = require('casbin-sequelize-adapter');
 const policyArr = [
-	["p", "dataset1_admin", "/dataset1/*", "*"],
-	["p", "dataset1_admin", "/dataset2/*", "*"],
-	["p", "dataset1_admin", "/", "*"],
-	["p", "dataset1_admin", "/login", "*"],
-	["p", "dataset1_admin", "/logout", "*"],
-	["p", "anonymous", "/", "GET"],
-	["p", "anonymous", "/", "POST"],
-	["p", "anonymous", "/login", "GET"],
-	["p", "anonymous", "/adminlogin", "GET"],
-	["p", "anonymous", "/adminlogin", "POST"],
-	["p", "anonymous", "/superadmin", "*"],
-	["p", "anonymous", "/superadmin/*", "*"],
-	["p", "anonymous", "/_nuxt", "*"],
-	["p", "anonymous", "/_nuxt/*", "*"],
-	["p", "anonymous", "/__webpack_hmr", "*"],
-	["p", "anonymous", "/__webpack_hmr/*", "*"],
-	["p", "superadmin", "/login", "*"],
-	["p", "superadmin", "/logout", "*"],
-	["p", "superadmin", "/api/*", "GET"],
-	["p", "superadmin", "/testusermain", "*"],
-	["g", "cathy", "dataset1_admin"],
-	["g", "aaa", "dataset1_admin"],
-	["g", "anonymous", "anonymous"],
-	["g", "superadmin", "superadmin"]
+	['p', 'dataset1_admin', '/dataset1/*', '*'],
+	['p', 'dataset1_admin', '/dataset2/*', '*'],
+	['p', 'dataset1_admin', '/', '*'],
+	['p', 'dataset1_admin', '/login', '*'],
+	['p', 'dataset1_admin', '/logout', '*'],
+	['p', 'anonymous', '/', 'GET'],
+	['p', 'anonymous', '/', 'POST'],
+	['p', 'anonymous', '/login', 'GET'],
+	['p', 'anonymous', '/adminlogin', 'GET'],
+	['p', 'anonymous', '/adminlogin', 'POST'],
+	['p', 'anonymous', '/superadmin', '*'],
+	['p', 'anonymous', '/superadmin/*', '*'],
+	['p', 'anonymous', '/_nuxt', '*'],
+	['p', 'anonymous', '/_nuxt/*', '*'],
+	['p', 'anonymous', '/__webpack_hmr', '*'],
+	['p', 'anonymous', '/__webpack_hmr/*', '*'],
+	['p', 'superadmin', '/login', '*'],
+	['p', 'superadmin', '/logout', '*'],
+	['p', 'superadmin', '/api/*', 'GET'],
+	['p', 'superadmin', '/testusermain', '*'],
+	['g', 'cathy', 'dataset1_admin'],
+	['g', 'aaa', 'dataset1_admin'],
+	['g', 'anonymous', 'anonymous'],
+	['g', 'superadmin', 'superadmin']
 ];
 
 async function getEnforer() {
 	const a = await SequelizeAdapter.newAdapter({
-		host: "localhost",
-		dialect: "sqlite",
-		storage: path.join(__dirname, "./database/nuxtauth.sqlite"),
+		host: 'localhost',
+		dialect: 'sqlite',
+		storage: path.join(__dirname, './database/nuxtauth.sqlite'),
 		logging: false
 	});
 	const e = await casbin.newEnforcer(
-		path.join(__dirname, "../middlewares/casbin/model.conf"),
+		path.join(__dirname, '../middlewares/casbin/model.conf'),
 		// path.join(__dirname, "../middlewares/casbin/policy.csv")
 		a
 	);
@@ -73,28 +73,28 @@ async function getEnforer() {
 // addPolicy();
 // testPolicy();
 
-const assert = require("chai").assert;
+const assert = require('chai').assert;
 
-describe("PolicyTest", () => {
-	it("add policy", async () => {
+describe('PolicyTest', () => {
+	it('add policy', async () => {
 		const e = await getEnforer();
 		for (let index in policyArr) {
 			const tp = policyArr[index].slice(0, 1)[0];
 			const params = policyArr[index].slice(1);
-			if (tp === "p") {
+			if (tp === 'p') {
 				await e.addPolicy(...params);
 			}
-			if (tp === "g") {
+			if (tp === 'g') {
 				await e.addGroupingPolicy(...params);
 			}
 		}
 		for (let index in policyArr) {
 			const tp = policyArr[index].slice(0, 1)[0];
 			const params = policyArr[index].slice(1);
-			if (tp === "p") {
+			if (tp === 'p') {
 				assert.strictEqual(e.hasPolicy(...params), true);
 			}
-			if (tp === "g") {
+			if (tp === 'g') {
 				assert.strictEqual(e.hasGroupingPolicy(...params), true);
 			}
 		}
