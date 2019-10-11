@@ -8,7 +8,7 @@ module.exports = {
     parser: 'babel-eslint'
   },
   extends: ['@nuxtjs', 'plugin:nuxt/recommended', 'plugin:prettier/recommended'],
-  plugins: ['html', 'prettier'],
+  plugins: ['html'],
   // add your custom rules here
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
@@ -33,11 +33,12 @@ module.exports = {
       }
     ],
     indent: 'off',
-    'space-before-function-paren': 'off',
     'no-tabs': 'off',
     'no-unneeded-ternary': 'off',
     'arrow-parens': 'off',
+    'space-before-function-paren': ['error', 'always'],
 
-    'unicorn/throw-new-error': 'off'
+    'unicorn/throw-new-error': 'off',
+    'prettier/prettier': 'off'
   }
 }

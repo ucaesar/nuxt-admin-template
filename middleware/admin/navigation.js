@@ -1,27 +1,12 @@
 const consola = require('consola')
 
-export default function({ store }) {
+export default function ({ req, store }) {
     consola.info('middleware: navigation.js')
 
-    const navigations = [
-        { title: 'Test', path: '/', icon: 'mdi-home' },
-        {
-            title: 'Test1',
-            icon: 'mdi-home',
-            sub: [
-                { title: 'Home', path: '/' },
-                { title: 'Inspire', path: '/inspire' }
-            ]
-        },
-        {
-            title: 'Test1',
-            icon: 'mdi-home',
-            sub: [
-                { title: 'Home', path: '/' },
-                { title: 'Inspire', path: '/inspire' }
-            ]
-        }
-    ]
+    const authNavs = req.ctx.state.currentUser.authNavs
+    consola.info(authNavs)
+
+    const navigations = []
 
     store.commit('admin/SET_NAVIGATIONS', navigations)
 }
