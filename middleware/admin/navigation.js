@@ -3,10 +3,11 @@ const consola = require('consola')
 export default function({ req, store }) {
     consola.info('middleware: navigation.js')
 
-    const authNavs = req.ctx.state.currentUser.authNavs
-    consola.info(authNavs)
+    if (process.server) {
+        consola.info('server!')
 
-    const navigations = []
+        const navigations = []
 
-    store.commit('admin/SET_NAVIGATIONS', navigations)
+        store.commit('admin/SET_NAVIGATIONS', navigations)
+    }
 }
