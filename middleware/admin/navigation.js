@@ -1,6 +1,6 @@
 const consola = require('consola')
 
-export default function ({ req, store }) {
+export default function({ req, store }) {
     consola.info('middleware: navigation.js')
 
     const authNavs = req.ctx.state.currentUser.authNavs
