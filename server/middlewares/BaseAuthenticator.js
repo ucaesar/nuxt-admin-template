@@ -1,9 +1,9 @@
 class BaseAuthenticator {
-	getUser(context) {}
+    getUser(context) {}
 
-	login() {}
+    login() {}
 
-	logout() {}
+    logout() {}
 }
 
-module.exports = BaseAuthenticator;
+module.exports = BaseAuthenticator

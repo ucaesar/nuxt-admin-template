@@ -1,5 +1,5 @@
-const path = require('path');
-const Sequelize = require('sequelize');
+const path = require('path')
+const Sequelize = require('sequelize')
 
 // const sequelize = new Sequelize("koaauthtest", "root", "qwert12345", {
 // 	host: "localhost",
@@ -7,12 +7,12 @@ const Sequelize = require('sequelize');
 // });
 
 const sequelize = new Sequelize(undefined, undefined, undefined, {
-	host: 'localhost',
-	dialect: 'sqlite',
-	storage: path.join(__dirname, './test/database/nuxtauth.sqlite'),
-	logging: false
-});
+    host: 'localhost',
+    dialect: 'sqlite',
+    storage: path.join(__dirname, './test/database/nuxtauth.sqlite'),
+    logging: false
+})
 
 module.exports = {
-	sequelize
-};
+    sequelize
+}

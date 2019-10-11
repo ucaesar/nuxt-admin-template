@@ -1,107 +1,107 @@
-'use strict';
+'use strict'
 
-const Koa = require('koa');
+const Koa = require('koa')
 
-const serve = require('koa-static');
+const serve = require('koa-static')
 
-const bodyParser = require('koa-bodyparser');
+const bodyParser = require('koa-bodyparser')
 
-const session = require('koa-session');
+const session = require('koa-session')
 
-const router = require('koa-router')();
+const router = require('koa-router')()
 
-const { Nuxt, Builder } = require('nuxt');
+const { Nuxt, Builder } = require('nuxt')
 
-const auth = require('../middlewares/auth');
+const auth = require('../middlewares/auth')
 
-const SessionAuthenticator = require('../SessionAuthenticator');
+const SessionAuthenticator = require('../SessionAuthenticator')
 
 // const { encode, decode } = require("../lib/encryption");
 
-const { sequelize } = require('../db');
+const { sequelize } = require('../db')
 
-const apiRouter = require('../controller/api/api');
+const apiRouter = require('../controller/api/api')
 
-const app = new Koa();
+const app = new Koa()
 
-app.keys = ['qwert12345'];
+app.keys = ['qwert12345']
 
 const CONFIG = {
-	key: 'koa:sess' /** (string) cookie key (default is koa:sess) */,
-	/** (number || 'session') maxAge in ms (default is 1 days) */
-	/** 'session' will result in a cookie that expires when session/browser is closed */
-	/** Warning: If a session cookie is stolen, this cookie will never expire */
-	maxAge: 60000,
-	autoCommit: true /** (boolean) automatically commit headers (default true) */,
-	overwrite: true /** (boolean) can overwrite or not (default true) */,
-	httpOnly: true /** (boolean) httpOnly or not (default true) */,
-	signed: false /** (boolean) signed or not (default true) */,
-	rolling: false /** (boolean) Force a session identifier cookie to be set on every response. The expiration is reset to the original maxAge, resetting the expiration countdown. (default is false) */,
-	renew: false /** (boolean) renew session when session is nearly expired, so we can always keep user logged in. (default is false) */
-};
+    key: 'koa:sess' /** (string) cookie key (default is koa:sess) */,
+    /** (number || 'session') maxAge in ms (default is 1 days) */
+    /** 'session' will result in a cookie that expires when session/browser is closed */
+    /** Warning: If a session cookie is stolen, this cookie will never expire */
+    maxAge: 60000,
+    autoCommit: true /** (boolean) automatically commit headers (default true) */,
+    overwrite: true /** (boolean) can overwrite or not (default true) */,
+    httpOnly: true /** (boolean) httpOnly or not (default true) */,
+    signed: false /** (boolean) signed or not (default true) */,
+    rolling: false /** (boolean) Force a session identifier cookie to be set on every response. The expiration is reset to the original maxAge, resetting the expiration countdown. (default is false) */,
+    renew: false /** (boolean) renew session when session is nearly expired, so we can always keep user logged in. (default is false) */
+}
 
 sequelize
-	.authenticate()
-	.then(() => {
-		console.log('database connected');
-	})
-	.catch(err => {
-		console.error('database connect failed' + err);
-	});
+    .authenticate()
+    .then(() => {
+        console.log('database connected')
+    })
+    .catch(err => {
+        console.error('database connect failed' + err)
+    })
 
 sequelize
-	.sync()
-	.then(() => {
-		console.log('init db ok');
-	})
-	.catch(err => {
-		console.log('init db error', err);
-	});
+    .sync()
+    .then(() => {
+        console.log('init db ok')
+    })
+    .catch(err => {
+        console.log('init db error', err)
+    })
 
-app.use(serve('.'));
+app.use(serve('.'))
 
-app.use(bodyParser());
+app.use(bodyParser())
 
-app.use(session(CONFIG, app));
+app.use(session(CONFIG, app))
 
-const authenticator = new SessionAuthenticator();
-app.use(auth(authenticator));
+const authenticator = new SessionAuthenticator()
+app.use(auth(authenticator))
 
 router.post('/login', async (ctx, next) => {
-	// ctx.session.x_session = encode('2e592d50-d535-11e9-881c-31c34ad71a1b');
-	// ctx.session.username = "aaa";
-	// ctx.state.currentUser = { username: "aaa" };
-	await authenticator.login(ctx);
-	await next();
-});
+    // ctx.session.x_session = encode('2e592d50-d535-11e9-881c-31c34ad71a1b');
+    // ctx.session.username = "aaa";
+    // ctx.state.currentUser = { username: "aaa" };
+    await authenticator.login(ctx)
+    await next()
+})
 
 router.post('/testpost', async (ctx, next) => {
-	console.log('test post');
-	await next();
-});
+    console.log('test post')
+    await next()
+})
 
 router.post('/adminlogin', async (ctx, next) => {
-	// ctx.session.x_session = encode('2e592d50-d535-11e9-881c-31c34ad71a1b');
-	// ctx.session.username = "aaa";
-	// ctx.state.currentUser = { username: "aaa" };
-	await authenticator.login(ctx);
-	// 登陆后跳转
-	ctx.redirect('/testusermain');
-	// await next();
-});
+    // ctx.session.x_session = encode('2e592d50-d535-11e9-881c-31c34ad71a1b');
+    // ctx.session.username = "aaa";
+    // ctx.state.currentUser = { username: "aaa" };
+    await authenticator.login(ctx)
+    // 登陆后跳转
+    ctx.redirect('/testusermain')
+    // await next();
+})
 
 router.get('/logout', async (ctx, next) => {
-	authenticator.logout(ctx);
-	await next();
-});
+    authenticator.logout(ctx)
+    await next()
+})
 
 // 测试login成功后的跳转
 router.get('/testusermain', (ctx, next) => {
-	const { username } = ctx.state.currentUser;
-	ctx.response.type = 'text/html';
-	ctx.response.body = '<h1>hello ' + username + ' auth</h1>';
-	// ctx.response.body = "<h1>hello " + " auth</h1>";
-});
+    const { username } = ctx.state.currentUser
+    ctx.response.type = 'text/html'
+    ctx.response.body = '<h1>hello ' + username + ' auth</h1>'
+    // ctx.response.body = "<h1>hello " + " auth</h1>";
+})
 
 // app.use(async (ctx, next) => {
 // 	await next();
@@ -114,22 +114,22 @@ router.get('/testusermain', (ctx, next) => {
 // 	// ctx.response.body = "<h1>hello " + " auth</h1>";
 // });
 
-app.use(router.routes());
-app.use(apiRouter.routes());
+app.use(router.routes())
+app.use(apiRouter.routes())
 
-const config = require('../../nuxt.config');
-config.dev = app.env !== 'production';
+const config = require('../../nuxt.config')
+config.dev = app.env !== 'production'
 
 async function initNuxt(nuxt) {
-	// Instantiate nuxt.js
+    // Instantiate nuxt.js
 
-	// Build in development
-	if (config.dev) {
-		const builder = new Builder(nuxt);
-		await builder.build();
-	} else {
-		await nuxt.ready();
-	}
+    // Build in development
+    if (config.dev) {
+        const builder = new Builder(nuxt)
+        await builder.build()
+    } else {
+        await nuxt.ready()
+    }
 }
 
 // const nuxt = new Nuxt(config);
@@ -147,4 +147,4 @@ async function initNuxt(nuxt) {
 // });
 // app.listen(56556);
 
-module.exports = app;
+module.exports = app
