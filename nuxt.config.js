@@ -95,7 +95,6 @@ module.exports = {
         /*
          ** You can extend webpack config here
          */
-        // eslint-disable-next-line prettier/prettier
         extend(config, ctx) {}
     }
 }
