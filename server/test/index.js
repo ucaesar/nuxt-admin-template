@@ -67,6 +67,23 @@ app.use(session(CONFIG, app))
 const authenticator = new SessionAuthenticator()
 app.use(auth(authenticator))
 
+router.post('/api/login', async (ctx, next) => {
+    // ctx.session.x_session = encode('2e592d50-d535-11e9-881c-31c34ad71a1b');
+    // ctx.session.username = "aaa";
+    // ctx.state.currentUser = { username: "aaa" };
+    await authenticator.login(ctx)
+    // 根据currentUser的内容返回登陆是否成功的结果
+    ctx.response.type = 'text/json'
+    const loginResult =
+        ctx.state.currentUser && ctx.state.currentUser.username !== 'anonymous'
+    const url = loginResult ? '/superadmin' : '/'
+    ctx.response.body = {
+        result: loginResult,
+        redirect: url
+    }
+    // await next()
+})
+
 router.post('/login', async (ctx, next) => {
     // ctx.session.x_session = encode('2e592d50-d535-11e9-881c-31c34ad71a1b');
     // ctx.session.username = "aaa";
