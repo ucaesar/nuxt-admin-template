@@ -12,7 +12,7 @@ describe('Role API test', () => {
         const req = chai.request.agent(server)
         let res = null
         res = await req
-            .post('/api/login')
+            .post('/en/api/login')
             .type('form')
             .send({
                 username: 'superadmin',

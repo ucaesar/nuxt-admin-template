@@ -16,6 +16,8 @@ const config = require('../nuxt.config')
 
 const auth = require('./middlewares/auth')
 
+const urlWithoutLocale = require('./lib/utils').urlWithoutLocale
+
 const SessionAuthenticator = require('./SessionAuthenticator')
 
 // const { encode, decode } = require("../lib/encryption");
@@ -65,6 +67,12 @@ app.use(serve('.'))
 app.use(bodyParser())
 
 app.use(session(CONFIG, app))
+
+// 在进入权限检验之前，要去掉url里的locale前缀
+app.use(async (ctx, next) => {
+    ctx.request.url = urlWithoutLocale(ctx.originalUrl)
+    await next()
+})
 
 const authenticator = new SessionAuthenticator()
 app.use(auth(authenticator))
@@ -117,6 +125,12 @@ router.get('/testusermain', (ctx, next) => {
 
 app.use(router.routes())
 app.use(apiRouter.routes())
+
+// 往url里添加回之前去掉的locale部分后，再进入到nuxt
+app.use(async (ctx, next) => {
+    ctx.request.url = ctx.originalUrl
+    await next()
+})
 
 config.dev = app.env !== 'production'
 

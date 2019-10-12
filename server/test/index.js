@@ -14,6 +14,8 @@ const { Nuxt, Builder } = require('nuxt')
 
 const auth = require('../middlewares/auth')
 
+const urlWithoutLocale = require('../lib/utils').urlWithoutLocale
+
 const SessionAuthenticator = require('../SessionAuthenticator')
 
 // const { encode, decode } = require("../lib/encryption");
@@ -63,6 +65,11 @@ app.use(serve('.'))
 app.use(bodyParser())
 
 app.use(session(CONFIG, app))
+
+app.use(async (ctx, next) => {
+    ctx.request.url = urlWithoutLocale(ctx.request.url)
+    await next()
+})
 
 const authenticator = new SessionAuthenticator()
 app.use(auth(authenticator))
@@ -133,6 +140,11 @@ router.get('/testusermain', (ctx, next) => {
 
 app.use(router.routes())
 app.use(apiRouter.routes())
+
+app.use(async (ctx, next) => {
+    ctx.request.url = ctx.originalUrl
+    await next()
+})
 
 const config = require('../../nuxt.config')
 config.dev = app.env !== 'production'
