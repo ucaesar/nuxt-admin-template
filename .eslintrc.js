@@ -36,7 +36,7 @@ module.exports = {
     'no-tabs': 'off',
     'no-unneeded-ternary': 'off',
     'arrow-parens': 'off',
-    'space-before-function-paren': ['error', 'always'],
+    'space-before-function-paren': 'off',
 
     'unicorn/throw-new-error': 'off',
     'prettier/prettier': 'off'
