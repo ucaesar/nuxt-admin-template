@@ -1,3 +1,5 @@
+import $t from '@/utils/t'
+
 export default function({ $axios, store }) {
     $axios.interceptors.request.use(
         config => {
@@ -33,7 +35,7 @@ export default function({ $axios, store }) {
             ) {
                 window.console.log('timeout!')
                 store.dispatch('message/showMessage', {
-                    text: 'Timeout!',
+                    text: $t('axios.error.timeout'),
                     color: 'error'
                 })
             }
@@ -42,19 +44,19 @@ export default function({ $axios, store }) {
             switch (code) {
                 case 403: // access denied
                     store.dispatch('message/showMessage', {
-                        text: 'Error 403!',
+                        text: $t('axios.error["403"]'),
                         color: 'error'
                     })
                     break
                 case 404: // not found
                     store.dispatch('message/showMessage', {
-                        text: 'Error 404!',
+                        text: $t('axios.error["404"]'),
                         color: 'error'
                     })
                     break
                 case 500: // inner server error
                     store.dispatch('message/showMessage', {
-                        text: 'Error 500!',
+                        text: $t('axios.error["500"]'),
                         color: 'error'
                     })
                     break

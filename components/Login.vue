@@ -69,7 +69,7 @@ export default {
             if (this.$refs.loginForm.validate()) {
                 this.loading = true
                 try {
-                    const data = await this.$axios.post(
+                    const data = await this.$axios.$post(
                         this.url,
                         this.loginForm
                     )

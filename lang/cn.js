@@ -1,4 +1,13 @@
 export default {
+    axios: {
+        error: {
+            '403': '错误 403 - 拒绝访问',
+            '404': '错误 404 - 无效地址',
+            '500': '错误 500 - 内部服务器错误',
+            timeout: '请求超时，请重试。'
+        }
+    },
+
     login: {
         toolbarText: '登录',
         usernameLabel: '用户名',
