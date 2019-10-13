@@ -3,6 +3,15 @@ export default {
         toolbarText: 'Login',
         usernameLabel: 'Username',
         passwordLabel: 'Password',
-        submitButtonText: 'Login'
+        submitButtonText: 'Login',
+        error: {
+            invalidAccount: 'Invalid username or password'
+        }
+    },
+
+    formValidating: {
+        error: {
+            fieldRequired: 'Required *'
+        }
     }
 }
