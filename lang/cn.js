@@ -9,6 +9,12 @@ export default {
         }
     },
 
+    admin: {
+        toolbar: {
+            logoutButtonText: '退出登录'
+        }
+    },
+
     login: {
         toolbarText: '登录',
         usernameLabel: '用户名',

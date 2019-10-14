@@ -8,6 +8,13 @@ export default {
             unknownError: 'Unknown Error Occured'
         }
     },
+
+    admin: {
+        toolbar: {
+            logoutButtonText: 'Logout'
+        }
+    },
+
     login: {
         toolbarText: 'Login',
         usernameLabel: 'Username',
