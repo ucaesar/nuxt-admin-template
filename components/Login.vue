@@ -72,12 +72,10 @@ export default {
                 this.clearErrorMessages()
                 this.loading = true
                 try {
-                    const data = await this.$axios.$post(
+                    window.location.href = (await this.$axios.$post(
                         this.url,
                         this.loginForm
-                    )
-                    console.log(data)
-                    window.location.href = data.redirect
+                    )).redirect
                 } catch (error) {
                     const code = parseInt(
                         error.response && error.response.status
