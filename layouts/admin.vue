@@ -1,11 +1,7 @@
 <template>
     <v-app>
-        <v-navigation-drawer v-model="drawer" fixed app class="nav">
-            <navigator :config="navigations" />
-        </v-navigation-drawer>
-        <v-app-bar fixed app>
-            <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-        </v-app-bar>
+        <admin-navigator />
+        <admin-toolbar />
         <v-content>
             <v-container>
                 <nuxt />
@@ -15,19 +11,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import Navigator from '@/components/admin/Navigator'
+import AdminNavigator from '@/components/admin/Navigator'
+import AdminToolbar from '@/components/admin/Toolbar'
 
 export default {
     middleware: 'admin/navigation',
     components: {
-        Navigator
-    },
-    data: () => ({
-        drawer: true
-    }),
-    computed: {
-        ...mapState('admin', ['navigations'])
+        AdminNavigator,
+        AdminToolbar
     }
 }
 </script>
