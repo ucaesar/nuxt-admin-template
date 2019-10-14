@@ -114,9 +114,14 @@ router.post('/adminlogin', async (ctx, next) => {
     // await next();
 })
 
-router.get('/logout', async (ctx, next) => {
+router.post('/api/logout', async (ctx, next) => {
     authenticator.logout(ctx)
-    await next()
+    ctx.status = 200
+    ctx.response.type = 'text/json'
+    ctx.response.body = {
+        result: true
+    }
+    // await next()
 })
 
 // 测试login成功后的跳转
