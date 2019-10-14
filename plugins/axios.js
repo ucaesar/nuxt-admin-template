@@ -63,10 +63,6 @@ export default function({ $axios, store }) {
                     break
                 default:
                     // 状态码辣么多，按需配置...
-                    store.dispatch('message/showMessage', {
-                        text: $t('axios.error.unknownError'),
-                        color: 'error'
-                    })
                     break
             }
 

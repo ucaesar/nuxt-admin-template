@@ -17,6 +17,7 @@
                                 :label="$t('login.usernameLabel')"
                                 :error-messages="errorMessages"
                                 prepend-icon="mdi-account"
+                                @input="clearErrorMessages"
                             ></v-text-field>
                             <v-text-field
                                 v-model="loginForm.password"
@@ -24,6 +25,7 @@
                                 :label="$t('login.passwordLabel')"
                                 :error-messages="errorMessages"
                                 prepend-icon="mdi-lock"
+                                @input="clearErrorMessages"
                             ></v-text-field>
                         </v-form>
                     </v-card-text>
@@ -67,17 +69,30 @@ export default {
     methods: {
         async onSubmit() {
             if (this.$refs.loginForm.validate()) {
+                this.clearErrorMessages()
                 this.loading = true
                 try {
                     const data = await this.$axios.$post(
                         this.url,
                         this.loginForm
                     )
-                    console.log(data)
-                } catch (e) {
-                    console.log(e)
+                    this.$router.push(data.redirect)
+                } catch (error) {
+                    const code = parseInt(
+                        error.response && error.response.status
+                    )
+                    if (code === 401) {
+                        this.unAuthError()
+                    }
                 }
+                this.loading = false
             }
+        },
+        unAuthError() {
+            this.errorMessages = this.$t('login.error.invalidAccount')
+        },
+        clearErrorMessages() {
+            this.errorMessages = ''
         }
     }
 }
