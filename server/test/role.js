@@ -59,6 +59,14 @@ describe('Role API test', () => {
         res = await req.get('/api/user/authnavs')
         expect(res).to.have.status(200)
         expect(res).to.be.json
+        res = await req
+            .post('/api/logout')
+            .type('form')
+            .send()
+        expect(res).to.have.status(200)
+        expect(res).to.be.json
+        res = await req.get('/api/user/authnavs')
+        expect(res).to.have.status(403)
         req.close()
     })
 
