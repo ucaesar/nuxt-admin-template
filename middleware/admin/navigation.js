@@ -7,7 +7,6 @@ export default async function({ $axios, redirect }) {
         try {
             const data = await $axios.$get('/api/user/authnavs')
             consola.info(data)
-        } catch (error) {      
-        }
+        } catch (error) {}
     }
 }

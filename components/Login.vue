@@ -76,6 +76,7 @@ export default {
                         this.url,
                         this.loginForm
                     )
+                    console.log(data)
                     window.location.href = data.redirect
                 } catch (error) {
                     const code = parseInt(

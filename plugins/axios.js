@@ -11,7 +11,7 @@ export default function({ $axios, store }) {
         }
     )
 
-    $axios.interceptors.response.use(
+    $axios.onError(
         error => {
             // 此处报错可能因素比较多
             // 1.需要授权处用户还未登录，因为路由段有验证是否登陆，此处理论上不会出现
