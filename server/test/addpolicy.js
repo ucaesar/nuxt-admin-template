@@ -22,6 +22,7 @@ const policyArr = [
     ['p', 'superadmin', '/login', '*'],
     ['p', 'superadmin', '/logout', '*'],
     ['p', 'superadmin', '/api/*', 'GET'],
+    ['p', 'superadmin', '/superadmin/*', 'GET'],
     ['p', 'superadmin', '/testusermain', '*'],
     ['g', 'cathy', 'dataset1_admin'],
     ['g', 'aaa', 'dataset1_admin'],

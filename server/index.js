@@ -95,11 +95,6 @@ router.post('/api/login', async (ctx, next) => {
     // await next()
 })
 
-router.post('/testpost', async (ctx, next) => {
-    console.log('test post')
-    await next()
-})
-
 // 暂时统一到api/login接口去
 router.post('/adminlogin', async (ctx, next) => {
     // ctx.session.x_session = encode('2e592d50-d535-11e9-881c-31c34ad71a1b');
