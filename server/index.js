@@ -106,7 +106,7 @@ router.post('/adminlogin', async (ctx, next) => {
     // await next();
 })
 
-router.get('/api/logout', async (ctx, next) => {
+router.post('/api/logout', async (ctx, next) => {
     authenticator.logout(ctx)
     ctx.status = 200
     ctx.response.type = 'text/json'

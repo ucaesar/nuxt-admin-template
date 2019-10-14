@@ -13,6 +13,7 @@ const policyArr = [
     ['p', 'anonymous', '/api/login', 'POST'],
     ['p', 'anonymous', '/adminlogin', 'GET'],
     ['p', 'anonymous', '/adminlogin', 'POST'],
+    ['p', 'anonymous', '/superadmin', 'GET'],
     ['p', 'superadmin', '/api/*', 'GET'],
     ['p', 'superadmin', '/superadmin/*', 'GET'],
     ['p', 'superadmin', '/superadmin', 'GET'],
