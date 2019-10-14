@@ -11,4 +11,12 @@ userRouter.get('/', async (ctx, next) => {
     // await next();
 })
 
+// 返回当前用户能够访问的路径
+userRouter.get('/authnavs', ctx => {
+    const u = ctx.state.currentUser
+    ctx.state = 200
+    ctx.response.type = 'text/json'
+    ctx.response.body = u.authNavs
+})
+
 module.exports = userRouter
