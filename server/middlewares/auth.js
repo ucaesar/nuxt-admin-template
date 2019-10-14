@@ -14,6 +14,15 @@ module.exports = authenticator => {
     }
 
     return async function(context, next) {
+        const url = context.request.url
+        if (
+            url.startsWith('/_nuxt') ||
+            url.startsWith('/__webpack_hmr') ||
+            url.startsWith('/vuetify.css.map')
+        ) {
+            await next()
+            return
+        }
         await authentic(context, authen)
 
         const adpt = await SequelizeAdapter.newAdapter({
@@ -34,6 +43,13 @@ module.exports = authenticator => {
         )
 
         const allowed = await authorize(context, enforcer)
+        console.log(
+            context.state.currentUser.username +
+                ' request url is: ' +
+                context.request.url +
+                ', permission is ' +
+                allowed
+        )
         if (!allowed) {
             context.throw(403)
         }

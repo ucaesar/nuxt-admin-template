@@ -25,7 +25,7 @@ const SuperAdmin = sequelize.define('superadmin', {
 // 下面两个方法与User相同代码重复，后期重构
 SuperAdmin.prototype.getRoles = async function() {
     const e = await getEnforcer()
-    console.log('get superadmin roles by id: ' + this.id)
+    // console.log('get superadmin roles by id: ' + this.id)
     const result = await e.getRolesForUser(this.username)
     return result
 }

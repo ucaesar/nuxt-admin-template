@@ -25,7 +25,7 @@ const User = sequelize.define('userabc', {
 // 返回当前用户的所有角色
 User.prototype.getRoles = async function() {
     const e = await getEnforcer()
-    console.log('get user roles by id: ' + this.id)
+    // console.log('get user roles by id: ' + this.id)
     const result = await e.getRolesForUser(this.username)
     return result
 }
