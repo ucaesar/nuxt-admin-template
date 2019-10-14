@@ -20,11 +20,12 @@ describe('Role API test', () => {
             })
         expect(res).to.have.status(401)
         expect(res).to.be.json
+        expect(res).to.have.cookie('koa:sess')
         expect(res.body.redirect === '/').to.be.true
         req.close()
     })
 
-    it('test api/login with wrong username/password', async () => {
+    it('test api/login with right username/password', async () => {
         const req = chai.request.agent(server)
         let res = null
         res = await req
@@ -35,16 +36,17 @@ describe('Role API test', () => {
                 password: 'superadmin'
             })
         expect(res).to.have.status(200)
+        expect(res).to.have.cookie('koa:sess')
         expect(res).to.be.json
         expect(res.body.redirect === '/superadmin').to.be.true
         req.close()
     })
-    
+
     it('get all roles', async () => {
         const req = chai.request.agent(server)
         let res = null
         res = await req
-            .post('/adminlogin')
+            .post('/api/login')
             .type('form')
             .send({
                 username: 'superadmin',
