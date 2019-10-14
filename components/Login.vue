@@ -76,7 +76,7 @@ export default {
                         this.url,
                         this.loginForm
                     )
-                    this.$router.push(data.redirect)
+                    window.location.href = data.redirect
                 } catch (error) {
                     const code = parseInt(
                         error.response && error.response.status
