@@ -111,7 +111,7 @@ router.post('/api/logout', async (ctx, next) => {
     ctx.status = 200
     ctx.response.type = 'text/json'
     ctx.response.body = {
-        redirect: '/'
+        redirect: '/login'
     }
     // await next()
 })
