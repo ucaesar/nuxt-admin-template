@@ -55,7 +55,8 @@ module.exports = {
      ** See https://axios.nuxtjs.org/options
      */
     axios: {
-        baseURL: 'http://localhost:56556'
+        baseURL: 'http://localhost:56556',
+        browserBaseURL: '/'
     },
     /*
      ** i18n module configuration

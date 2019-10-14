@@ -12,14 +12,6 @@ export default function({ $axios, store }) {
     )
 
     $axios.interceptors.response.use(
-        response => {
-            // 这段代码很多场景下没用
-            if (response.data && response.data.success === false) {
-                // 根据实际情况的一些处理逻辑...
-                return Promise.reject(response)
-            }
-            return response
-        },
         error => {
             // 此处报错可能因素比较多
             // 1.需要授权处用户还未登录，因为路由段有验证是否登陆，此处理论上不会出现
@@ -27,7 +19,6 @@ export default function({ $axios, store }) {
             // 3.请求错误 4xx
             // 5.服务器错误 5xx
             // 关于鉴权失败，与后端约定状态码为401，由具体业务代码处理
-            window.console.log(error)
 
             if (
                 error.code === 'ECONNABORTED' &&
