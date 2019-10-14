@@ -18,9 +18,8 @@ describe('Role API test', () => {
                 username: 'superadmin',
                 password: 'super'
             })
-        expect(res).to.have.status(200)
+        expect(res).to.have.status(401)
         expect(res).to.be.json
-        expect(res.body.result).to.be.false
         expect(res.body.redirect === '/').to.be.true
         req.close()
     })
@@ -37,7 +36,6 @@ describe('Role API test', () => {
             })
         expect(res).to.have.status(200)
         expect(res).to.be.json
-        expect(res.body.result).to.be.true
         expect(res.body.redirect === '/superadmin').to.be.true
         req.close()
     })

@@ -83,9 +83,9 @@ router.post('/api/login', async (ctx, next) => {
     ctx.response.type = 'text/json'
     const loginResult =
         ctx.state.currentUser && ctx.state.currentUser.username !== 'anonymous'
+    ctx.status = loginResult ? 200 : 401
     const url = loginResult ? '/superadmin' : '/'
     ctx.response.body = {
-        result: loginResult,
         redirect: url
     }
     // await next()

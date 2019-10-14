@@ -86,9 +86,10 @@ router.post('/api/login', async (ctx, next) => {
     ctx.response.type = 'text/json'
     const loginResult =
         ctx.state.currentUser && ctx.state.currentUser.username !== 'anonymous'
+    // 登陆成功，返回200状态，否则返回401
+    ctx.status = loginResult ? 200 : 401
     const url = loginResult ? '/superadmin' : '/'
     ctx.response.body = {
-        result: loginResult,
         redirect: url
     }
     // await next()
