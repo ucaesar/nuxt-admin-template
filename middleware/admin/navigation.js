@@ -1,3 +1,5 @@
+import Permission from '@/utils/permission'
+
 const consola = require('consola')
 
 export default async function({ $axios, redirect }) {
@@ -7,6 +9,13 @@ export default async function({ $axios, redirect }) {
         try {
             const data = await $axios.$get('/api/user/authnavs')
             consola.info(data)
-        } catch (error) {}
+
+            const permission = new Permission(['/', '/superadmin', '/superadmin/*'])
+            console.log(permission.check('/'))
+            console.log(permission.check(['']))
+            console.log(permission.check('/superadmin'))
+            console.log(permission.check(['superadmin', 'rolemanager']))
+        } catch (error) {
+        }
     }
 }
