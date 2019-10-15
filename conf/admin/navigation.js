@@ -1,6 +1,8 @@
-export default {
-    superadmin: {
-        icon: 'mdi-home',
-        sub: ['rolemanager']
+export default [
+    {
+        superadmin: {
+            icon: 'mdi-home',
+            sub: ['rolemanager']
+        }
     }
-}
+]
