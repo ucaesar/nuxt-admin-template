@@ -2,25 +2,25 @@ const path = require('path')
 const casbin = require('casbin')
 const { SequelizeAdapter } = require('casbin-sequelize-adapter')
 const policyArr = [
-    ['p', 'dataset1_admin', '/dataset1/*', '*'],
-    ['p', 'dataset1_admin', '/dataset2/*', '*'],
-    ['p', 'dataset1_admin', '/', '*'],
-    ['p', 'dataset1_admin', '/login', '*'],
-    ['p', 'dataset1_admin', '/logout', '*'],
-    ['p', 'anonymous', '/', 'GET'],
-    ['p', 'anonymous', '/', 'POST'],
-    ['p', 'anonymous', '/login', 'GET'],
-    ['p', 'anonymous', '/api/login', 'POST'],
-    ['p', 'anonymous', '/adminlogin', 'GET'],
-    ['p', 'anonymous', '/adminlogin', 'POST'],
-    ['p', 'superadmin', '/api/*', 'GET'],
-    ['p', 'superadmin', '/superadmin/*', 'GET'],
-    ['p', 'superadmin', '/superadmin', 'GET'],
-    ['p', 'superadmin', '/api/logout', 'POST'],
-    ['g', 'cathy', 'dataset1_admin'],
-    ['g', 'aaa', 'dataset1_admin'],
-    ['g', 'anonymous', 'anonymous'],
-    ['g', 'superadmin', 'superadmin']
+    ['p', 'dataset1_adminR', '/dataset1/*', '*'],
+    ['p', 'dataset1_adminR', '/dataset2/*', '*'],
+    ['p', 'dataset1_adminR', '/', '*'],
+    ['p', 'dataset1_adminR', '/login', '*'],
+    ['p', 'dataset1_adminR', '/logout', '*'],
+    ['p', 'anonymousR', '/', 'GET'],
+    ['p', 'anonymousR', '/', 'POST'],
+    ['p', 'anonymousR', '/login', 'GET'],
+    ['p', 'anonymousR', '/api/login', 'POST'],
+    ['p', 'anonymousR', '/adminlogin', 'GET'],
+    ['p', 'anonymousR', '/adminlogin', 'POST'],
+    ['p', 'superadminR', '/api/*', 'GET'],
+    ['p', 'superadminR', '/superadmin/*', 'GET'],
+    ['p', 'superadminR', '/superadmin', 'GET'],
+    ['p', 'superadminR', '/api/logout', 'POST'],
+    ['g', 'cathy', 'dataset1_adminR'],
+    ['g', 'aaa', 'dataset1_adminR'],
+    ['g', 'anonymous', 'anonymousR'],
+    ['g', 'superadmin', 'superadminR']
 ]
 
 async function getEnforer() {
