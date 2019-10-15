@@ -26,13 +26,13 @@ class Permission {
 
         const wildcards = _(pathArray)
             .take(pathArray.length - 1)
-            // .unshift('')
+            .unshift('')
             .concat('*')
             .join('/')
         console.log('wildcards: ', wildcards)
 
         const exact = _(pathArray)
-            // .unshift('')
+            .unshift('')
             .join('/')
         console.log('exact: ', exact)
 
