@@ -36,7 +36,7 @@ SuperAdmin.prototype.getPagePaths = async function() {
     // const roles = await e.getRolesForUser(this.username);
     // const result = await e.getPermissionsForUser(roles[0]);
     // 获取当前用户的授权数组
-    const perms = await e.getPermissionsForUser(this.username)
+    const perms = await e.getImplicitPermissionsForUser(this.username)
     const result = []
     for (const perm of perms) {
         // 动作为*和动作为GET的授权，才是页面访问的路径，其余可能是api路径

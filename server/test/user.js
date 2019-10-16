@@ -2,6 +2,7 @@ const chai = require('chai')
 const expect = require('chai').expect
 const chaiHttp = require('chai-http')
 const User = require('../model/user')
+const SuperAdmin = require('../model/SuperAdmin')
 const app = require('./index')
 
 chai.use(chaiHttp)
@@ -25,7 +26,15 @@ describe('User API test', async () => {
             }
         })
         expect(u).not.to.be.null
-        const paths = await u.getPagePaths()
+        let paths = await u.getPagePaths()
+        expect(paths).not.to.be.empty
+        const s = await SuperAdmin.findOne({
+            where: {
+                username: 'superadmin'
+            }
+        })
+        expect(s).not.to.be.null
+        paths = await s.getPagePaths()
         expect(paths).not.to.be.empty
     })
     // it("get all users", async () => {
