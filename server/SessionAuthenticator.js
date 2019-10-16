@@ -14,7 +14,7 @@ class SessionAthenticator extends BaseAuthenticator {
             context.state.currentUser = { id: '-1', username: 'anonymous' }
         } else {
             const { id: uid, timespan } = decode(sessionKey)
-            if (Date.now() - timespan > 1000 * 60 * 5) {
+            if (Date.now() - timespan > 1000 * 60 * 60) {
                 context.session.x_session = null
                 context.state.currentUser = { id: '-1', username: 'anonymous' }
                 return
