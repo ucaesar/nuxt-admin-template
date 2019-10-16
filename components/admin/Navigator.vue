@@ -10,7 +10,7 @@
                         </v-list-item-action>
                         <v-list-item-content>
                             <v-list-item-title>{{
-                                item.title
+                                $t('admin.navigator["' + item.path + '"]')
                             }}</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
@@ -22,21 +22,21 @@
                         <template v-slot:activator>
                             <v-list-item-content>
                                 <v-list-item-title>{{
-                                    item.title
+                                    $t('admin.navigator["' + item.path + '"]')
                                 }}</v-list-item-title>
                             </v-list-item-content>
                         </template>
 
                         <v-list-item
                             v-for="subItem in item.sub"
-                            :key="subItem.path"
-                            :to="subItem.path"
+                            :key="subItem"
+                            :to="subItem"
                             router
                             link
                         >
                             <v-list-item-content>
                                 <v-list-item-title>{{
-                                    subItem.title
+                                    $t('admin.navigator["' + subItem + '"]')
                                 }}</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>

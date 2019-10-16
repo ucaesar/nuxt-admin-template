@@ -12,6 +12,10 @@ export default {
     admin: {
         toolbar: {
             logoutButtonText: '退出登录'
+        },
+        navigator: {
+            '/superadmin': '超级管理员',
+            '/superadmin/rolemanager': '角色管理'
         }
     },
 

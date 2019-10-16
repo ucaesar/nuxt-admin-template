@@ -46,7 +46,7 @@ class NavigationFilter {
     }
 
     getURL(pathArray) {
-        return _(pathArray)
+        return _(pathArray.slice())
             .unshift('')
             .join('/')
     }
@@ -59,12 +59,11 @@ class NavigationFilter {
                 .keys()
                 .head()
             const pathArray = [root]
-            const nav = { icon: conf[root].icon }
+            const nav = { icon: conf[root].icon, path: this.getURL(pathArray) }
 
             if (!conf[root].sub) {
                 // root
                 if (!this.check(pathArray)) continue
-                _.assign(nav, { path: this.getURL(pathArray) })
                 navigations.push(nav)
             } else {
                 _.assign(nav, { sub: [] })
@@ -72,30 +71,27 @@ class NavigationFilter {
                     pathArray.push(sub)
 
                     const subPath = this.getURL(pathArray)
-                    if (this.check(subPath))
-                        nav.sub.push(this.getURL(pathArray))
-                        
+                    if (this.check(subPath)) nav.sub.push(subPath)
+
                     pathArray.pop(sub)
                 }
                 navigations.push(nav)
             }
         }
 
-        console.log('navigations: ', navigations)
         return navigations
     }
 }
 
-export default async function({ $axios, redirect }) {
+export default async function({ $axios, store }) {
     consola.info('middleware: navigation.js')
 
     if (process.server) {
         try {
-            const filter = new NavigationFilter(
+            const navs = new NavigationFilter(
                 await $axios.$get('/api/user/authnavs')
-            )
-
-            filter.filter()
+            ).filter()
+            store.commit('admin/SET_NAVIGATIONS', navs)
         } catch (error) {
             consola.error(error)
         }

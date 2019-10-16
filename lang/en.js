@@ -12,6 +12,10 @@ export default {
     admin: {
         toolbar: {
             logoutButtonText: 'Logout'
+        },
+        navigator: {
+            '/superadmin': 'Super Admin',
+            '/superadmin/rolemanager': 'Role Manager'
         }
     },
 
