@@ -11,8 +11,6 @@ const policyArr = [
     ['p', 'anonymousR', '/', 'POST'],
     ['p', 'anonymousR', '/login', 'GET'],
     ['p', 'anonymousR', '/api/login', 'POST'],
-    ['p', 'anonymousR', '/adminlogin', 'GET'],
-    ['p', 'anonymousR', '/adminlogin', 'POST'],
     ['p', 'superadminR', '/api/*', 'GET'],
     ['p', 'superadminR', '/superadmin/*', 'GET'],
     ['p', 'superadminR', '/superadmin', 'GET'],
@@ -20,6 +18,7 @@ const policyArr = [
     ['g', 'cathy', 'dataset1_adminR'],
     ['g', 'aaa', 'dataset1_adminR'],
     ['g', 'anonymous', 'anonymousR'],
+    ['g', 'superadminR', 'anonymousR'],
     ['g', 'superadmin', 'superadminR']
 ]
 
