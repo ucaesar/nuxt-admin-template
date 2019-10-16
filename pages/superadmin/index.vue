@@ -1,5 +1,5 @@
 <template>
-    <div></div>
+    <div>This is Superadmin index Page.</div>
 </template>
 
 <script>
