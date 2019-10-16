@@ -17,7 +17,7 @@ class Permission {
 
         let pathArray = []
         if (_.isString(path)) {
-            pathArray = path.split('/')
+            pathArray = _.compact(path.split('/'))
         } else {
             pathArray = _.slice(path)
         }
