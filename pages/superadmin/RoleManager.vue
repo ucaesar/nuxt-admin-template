@@ -1,5 +1,14 @@
 <template>
-    <div>This is Role Manager Page. {{ roles }}</div>
+    <div>
+        <v-btn class="mb-4" color="primary"
+            ><v-icon>mdi-plus</v-icon>New Role</v-btn
+        >
+        <v-expansion-panels>
+            <v-expansion-panel v-for="(role, i) in roles" :key="i">
+                <v-expansion-panel-header>{{ role }}</v-expansion-panel-header>
+            </v-expansion-panel>
+        </v-expansion-panels>
+    </div>
 </template>
 
 <script>
