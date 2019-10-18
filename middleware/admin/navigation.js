@@ -4,11 +4,11 @@ const consola = require('consola')
 const _ = require('lodash')
 
 // path: ['superadmin', 'rolemanager'] || '/superadmin/rolemanager'
-// authNavs: ['/superadmin', '/superadmin/*']
+// permissions: ['/superadmin', '/superadmin/*']
 
 class NavigationFilter {
-    constructor(authNavs) {
-        this.authNavs = authNavs
+    constructor(permissions) {
+        this.permissions = permissions
     }
 
     check(path) {
@@ -37,8 +37,8 @@ class NavigationFilter {
         const exact = this.getURL(pathArray)
 
         if (
-            _.includes(this.authNavs, wildcards) ||
-            _.includes(this.authNavs, exact)
+            _.includes(this.permissions, wildcards) ||
+            _.includes(this.permissions, exact)
         ) {
             return true
         }
@@ -89,7 +89,7 @@ export default async function({ $axios, store }) {
     if (process.server) {
         try {
             const navs = new NavigationFilter(
-                await $axios.$get('/api/user/authnavs')
+                await $axios.$get('/api/user/permissions')
             ).filter()
             store.commit('admin/SET_NAVIGATIONS', navs)
         } catch (error) {
