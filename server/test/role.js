@@ -42,7 +42,7 @@ describe('Role API test', () => {
         req.close()
     })
 
-    it('test /api/user/authnavs with right superadmin/superadmin', async () => {
+    it('test /api/user/permissions with right superadmin/superadmin', async () => {
         const req = chai.request.agent(server)
         let res = null
         res = await req
@@ -56,7 +56,7 @@ describe('Role API test', () => {
         expect(res).to.have.cookie('koa:sess')
         expect(res).to.be.json
         expect(res.body.redirect === '/superadmin').to.be.true
-        res = await req.get('/api/user/authnavs')
+        res = await req.get('/api/user/permissions')
         expect(res).to.have.status(200)
         expect(res).to.be.json
         res = await req
@@ -65,7 +65,7 @@ describe('Role API test', () => {
             .send()
         expect(res).to.have.status(200)
         expect(res).to.be.json
-        res = await req.get('/api/user/authnavs')
+        res = await req.get('/api/user/permissions')
         expect(res).to.have.status(403)
         req.close()
     })
