@@ -47,7 +47,9 @@ module.exports = authenticator => {
             context.state.currentUser.username +
                 ' request url is: ' +
                 context.request.url +
-                ', permission is ' +
+                ', request action is: ' +
+                context.method +
+                ', permission is: ' +
                 allowed
         )
         if (!allowed) {
