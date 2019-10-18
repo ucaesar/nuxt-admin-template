@@ -4,10 +4,19 @@
 
 <script>
 export default {
-    layout: 'admin'
+    layout: 'admin',
+    asyncData({ $axios }) {
+        const url = '/api/roles'
+        let roles = []
+        try {
+            roles = $axios.$get(url)
+        } catch (error) {
+            console.log(`error from get(${url})`, error)
+        }
+        return roles
+    }
 }
 </script>
 
 <style>
-
 </style>
