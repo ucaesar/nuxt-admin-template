@@ -50,7 +50,9 @@ module.exports = authenticator => {
                 ', request action is: ' +
                 context.method +
                 ', permission is: ' +
-                allowed
+                allowed +
+                ', at ' +
+                Date()
         )
         if (!allowed) {
             context.throw(403)

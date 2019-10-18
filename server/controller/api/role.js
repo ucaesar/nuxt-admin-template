@@ -7,7 +7,7 @@ const getEnforcer = require('../../lib/enforcer')
 roleRouter.get('/', async ctx => {
     const start = ctx.request.query.start
     const num = ctx.request.query.num
-    consola.info(start + ' ' + num)
+    // consola.info(start + ' ' + num)
     const e = await getEnforcer()
     let result = e.getAllRoles().sort()
     const total = result.length
