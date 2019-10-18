@@ -7,6 +7,7 @@ const policyArr = [
     ['p', 'dataset1_adminR', '/', '*'],
     ['p', 'dataset1_adminR', '/login', '*'],
     ['p', 'dataset1_adminR', '/logout', '*'],
+    // ['p', 'anonymousR', '*', '*'],
     ['p', 'anonymousR', '/', 'GET'],
     ['p', 'anonymousR', '/', 'POST'],
     ['p', 'anonymousR', '/login', 'GET'],
