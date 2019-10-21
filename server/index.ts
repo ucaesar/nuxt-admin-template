@@ -12,7 +12,7 @@ const router = require('koa-router')()
 
 const { Nuxt, Builder } = require('nuxt')
 
-const config = require('../nuxt.config.js')
+const config = require('../nuxt.config.ts')
 
 const auth = require('./middlewares/auth')
 
