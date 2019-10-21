@@ -1,3 +1,3 @@
-const app = require('./index')
+const app = require('./index.ts')
 
 app.listen(56556)
