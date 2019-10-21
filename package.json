@@ -12,7 +12,7 @@
 		"lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore .",
 		"test": "mocha",
 		"test-server": "node server/test/start.js",
-		"server": "nuxt-ts server/start.js",
+		"server": "nuxt-ts",
 		"mock": "cross-env NODE_ENV=development nodemon server/mock.js --watch server"
 	},
 	"dependencies": {
