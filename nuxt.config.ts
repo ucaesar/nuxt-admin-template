@@ -1,6 +1,6 @@
 const colors = require('vuetify/es5/util/colors').default
 
-export default {
+const config = {
     mode: 'universal',
     /*
      ** Headers of the page
@@ -101,3 +101,5 @@ export default {
         extend(config, ctx) {}
     }
 }
+
+export default config
