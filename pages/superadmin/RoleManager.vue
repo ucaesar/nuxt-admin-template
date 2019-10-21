@@ -1,14 +1,14 @@
 <template>
-    <div>
+    <v-container>
         <v-btn class="mb-4" color="primary"
             ><v-icon>mdi-plus</v-icon>New Role</v-btn
         >
         <v-expansion-panels>
             <v-expansion-panel v-for="(role, i) in roles" :key="i">
-                <v-expansion-panel-header>{{ role }}</v-expansion-panel-header>
+                <v-expansion-panel-header>{{ role }} </v-expansion-panel-header>
             </v-expansion-panel>
         </v-expansion-panels>
-    </div>
+    </v-container>
 </template>
 
 <script>
@@ -23,6 +23,11 @@ export default {
             console.log(`error from get(${url})`, error)
         }
         return { roles }
+    },
+    methods: {
+        onClick() {
+            console.log('wow')
+        }
     }
 }
 </script>

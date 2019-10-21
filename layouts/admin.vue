@@ -3,7 +3,7 @@
         <admin-navigator />
         <admin-toolbar />
         <v-content>
-            <v-container class="pa-8">
+            <v-container>
                 <nuxt />
             </v-container>
         </v-content>
