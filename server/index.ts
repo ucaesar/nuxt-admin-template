@@ -161,4 +161,6 @@ app.use(async (ctx, next) => {
     nuxt.render(ctx.req, ctx.res)
 })
 
+app.listen(56556)
+
 module.exports = app
