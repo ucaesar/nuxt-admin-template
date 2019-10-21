@@ -12,10 +12,12 @@
 		"lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore .",
 		"test": "mocha",
 		"test-server": "node server/test/start.js",
-		"server": "node server/start.js",
+		"server": "nuxt-ts server/start.js",
 		"mock": "cross-env NODE_ENV=development nodemon server/mock.js --watch server"
 	},
 	"dependencies": {
+		"@nuxt/types": "^0.3.2",
+		"@nuxt/typescript-runtime": "^0.2.2",
 		"@nuxtjs/axios": "^5.3.6",
 		"casbin": "^3.0.4",
 		"casbin-sequelize-adapter": "^2.0.0",
@@ -36,7 +38,7 @@
 		"vue-i18n": "^8.14.1"
 	},
 	"devDependencies": {
-		"@nuxt/typescript": "^2.8.1",
+		"@nuxt/typescript-build": "^0.3.2",
 		"@nuxtjs/eslint-config": "^1.0.1",
 		"@nuxtjs/eslint-module": "^1.0.0",
 		"@nuxtjs/vuetify": "^1.0.0",
