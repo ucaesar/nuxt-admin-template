@@ -10,7 +10,7 @@ const session = require('koa-session')
 
 const router = require('koa-router')()
 
-const { Nuxt, Builder } = require('nuxt')
+// const { Nuxt, Builder } = require('nuxt')
 
 const auth = require('../middlewares/auth')
 
