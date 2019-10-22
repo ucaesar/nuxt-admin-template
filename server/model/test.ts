@@ -1,2 +1,2 @@
-const arr:number[] = [1,2,3]
-module.exports = arr
+const arr: number[] = [1, 3, 5]
+export {arr}
