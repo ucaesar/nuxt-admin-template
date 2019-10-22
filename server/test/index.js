@@ -151,20 +151,20 @@ app.use(async (ctx, next) => {
     await next()
 })
 
-const config = require('../../nuxt.config')
-config.dev = app.env !== 'production'
+// const config = require('../../nuxt.config.ts')
+// config.dev = app.env !== 'production'
 
-async function initNuxt(nuxt) {
-    // Instantiate nuxt.js
+// async function initNuxt(nuxt) {
+//     // Instantiate nuxt.js
 
-    // Build in development
-    if (config.dev) {
-        const builder = new Builder(nuxt)
-        await builder.build()
-    } else {
-        await nuxt.ready()
-    }
-}
+//     // Build in development
+//     if (config.dev) {
+//         const builder = new Builder(nuxt)
+//         await builder.build()
+//     } else {
+//         await nuxt.ready()
+//     }
+// }
 
 // const nuxt = new Nuxt(config);
 // initNuxt(nuxt);
