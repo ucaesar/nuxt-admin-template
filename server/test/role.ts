@@ -12,8 +12,7 @@ describe('Role API test', () => {
     it('test api/login with wrong username/password', async () => {
         console.log(arr[0])
         const req = chai.request.agent(server)
-        let res = null
-        res = await req
+        let res = await req
             .post('/en/api/login')
             .type('form')
             .send({
@@ -29,8 +28,7 @@ describe('Role API test', () => {
 
     it('test api/login with right username/password', async () => {
         const req = chai.request.agent(server)
-        let res = null
-        res = await req
+        let res = await req
             .post('/api/login')
             .type('form')
             .send({
@@ -46,8 +44,7 @@ describe('Role API test', () => {
 
     it('test /api/user/permissions with right superadmin/superadmin', async () => {
         const req = chai.request.agent(server)
-        let res = null
-        res = await req
+        let res = await req
             .post('/api/login')
             .type('form')
             .send({
@@ -74,8 +71,7 @@ describe('Role API test', () => {
 
     it('get all roles', async () => {
         const req = chai.request.agent(server)
-        let res = null
-        res = await req
+        let res = await req
             .post('/api/login')
             .type('form')
             .send({
@@ -91,8 +87,7 @@ describe('Role API test', () => {
 
     it('delete a role', async () => {
         const req = chai.request.agent(server)
-        let res = null
-        res = await req
+        let res = await req
             .post('/api/login')
             .type('form')
             .send({
@@ -108,8 +103,7 @@ describe('Role API test', () => {
 
     it('add a role', async () => {
         const req = chai.request.agent(server)
-        let res = null
-        res = await req
+        let res = await req
             .post('/api/login')
             .type('form')
             .send({
@@ -124,3 +118,5 @@ describe('Role API test', () => {
         req.close()
     })
 })
+
+export {}

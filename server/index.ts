@@ -26,8 +26,6 @@ const { sequelize } = require('./db')
 
 const apiRouter = require('./controller/api/api')
 
-const arr1 = require('./model/test.ts')
-
 const app = new Koa()
 
 app.keys = ['qwert12345']
@@ -49,7 +47,6 @@ const CONFIG = {
 sequelize
     .authenticate()
     .then(() => {
-        console.log('read from a ts array:' + arr1[0])
         console.log('database connected')
     })
     .catch(err => {
@@ -167,3 +164,4 @@ app.use(async (ctx, next) => {
 // app.listen(56556)
 
 module.exports = app
+
