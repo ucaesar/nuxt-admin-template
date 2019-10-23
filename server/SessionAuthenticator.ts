@@ -1,5 +1,5 @@
 const BaseAuthenticator = require('./middlewares/BaseAuthenticator')
-const { encode, decode, encodeWithoutDate } = require('./lib/encryption')
+import { encode, decode, encodeWithoutDate }  from './lib/encryption'
 const User = require('./model/user')
 const SuperAdmin = require('./model/SuperAdmin')
 

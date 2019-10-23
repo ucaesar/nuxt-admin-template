@@ -3,7 +3,7 @@ const casbin = require('casbin')
 const { SequelizeAdapter } = require('casbin-sequelize-adapter')
 const BaseAuthenticator = require('./BaseAuthenticator')
 const BasicAuthenticator = require('./BasicAuthenticator')
-const authorize = require('./authorization')
+import authorize from './authorization'
 const authentic = require('./authentication')
 
 module.exports = authenticator => {

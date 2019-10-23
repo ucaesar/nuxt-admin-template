@@ -2,9 +2,9 @@ const crypto = require('crypto')
 const secretKey = Buffer.from('qwert12345qwert1', 'utf8')
 const iv = Buffer.from('qwert12345qwert1', 'utf8')
 // const iv2 = Buffer.from("abcdeabcdeabcdea", "utf8");
-const algorithm = 'aes-128-cbc'
+const algorithm: string = 'aes-128-cbc'
 
-function encode(id) {
+function encode(id: string): string {
     const encoder = crypto.createCipheriv(algorithm, secretKey, iv)
     const str = [id, Date.now(), 'qwert'].join('|')
     let encryptedStr = encoder.update(str, 'utf8', 'hex')
@@ -12,21 +12,21 @@ function encode(id) {
     return encryptedStr
 }
 
-function encodeWithoutDate(str) {
+function encodeWithoutDate(str: string): string {
     const encoder = crypto.createCipheriv(algorithm, secretKey, iv)
     let encryptedStr = encoder.update(str, 'utf8', 'hex')
     encryptedStr = encryptedStr + encoder.final('hex')
     return encryptedStr
 }
 
-function decodeWithoutDate(encryptedStr) {
+function decodeWithoutDate(encryptedStr: string): string {
     const decoder = crypto.createDecipheriv(algorithm, secretKey, iv)
     let decodedStr = decoder.update(encryptedStr, 'hex', 'utf8')
     decodedStr = decodedStr + decoder.final('utf8')
     return decodedStr
 }
 
-function decode(encryptedStr) {
+function decode(encryptedStr: string): any {
     const decoder = crypto.createDecipheriv(algorithm, secretKey, iv)
     let decodedStr = decoder.update(encryptedStr, 'hex', 'utf8')
     decodedStr = decodedStr + decoder.final('utf8')
@@ -37,7 +37,7 @@ function decode(encryptedStr) {
     }
 }
 
-module.exports = {
+export {
     encode,
     encodeWithoutDate,
     decode,
