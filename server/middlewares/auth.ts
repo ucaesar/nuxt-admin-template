@@ -6,14 +6,14 @@ const BasicAuthenticator = require('./BasicAuthenticator')
 import authorize from './authorization'
 const authentic = require('./authentication')
 
-module.exports = authenticator => {
+const auth = authenticator => {
     const authen = authenticator ? authenticator : new BasicAuthenticator()
 
     if (!(authen instanceof BaseAuthenticator)) {
         throw Error('authenticator must be extends from BaseAuthenticator')
     }
 
-    return async function(context, next) {
+    return async function(context, next):Promise<void> {
         const url = context.request.url
         if (
             url.startsWith('/_nuxt') ||
@@ -60,3 +60,5 @@ module.exports = authenticator => {
         await next()
     }
 }
+
+export default auth

@@ -14,7 +14,7 @@ const { Nuxt, Builder } = require('nuxt')
 
 const config = require('../nuxt.config.ts')
 
-const auth = require('./middlewares/auth')
+import auth from './middlewares/auth'
 
 import urlWithoutLocale from './lib/utils'
 
