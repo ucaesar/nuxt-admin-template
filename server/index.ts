@@ -16,7 +16,7 @@ const config = require('../nuxt.config.ts')
 
 const auth = require('./middlewares/auth')
 
-const urlWithoutLocale = require('./lib/utils').urlWithoutLocale
+import urlWithoutLocale from './lib/utils'
 
 const SessionAuthenticator = require('./SessionAuthenticator')
 
