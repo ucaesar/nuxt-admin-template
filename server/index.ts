@@ -1,14 +1,14 @@
 'use strict'
 
-import Koa = require('koa')
+import Koa from 'koa'
 
-import serve = require('koa-static')
+import serve from 'koa-static'
 
-import bodyParser = require('koa-bodyparser')
+import bodyParser from 'koa-bodyparser'
 
-import session = require('koa-session')
+import session from 'koa-session'
 
-import Router = require('koa-router')
+import Router from 'koa-router'
 
 const { Nuxt, Builder } = require('nuxt')
 
