@@ -10,17 +10,27 @@
     </v-app>
 </template>
 
-<script>
-import AdminNavigator from '@/components/admin/Navigator'
-import AdminToolbar from '@/components/admin/Toolbar'
+<script lang="ts">
+// import AdminNavigator from '@/components/admin/Navigator'
+// import AdminToolbar from '@/components/admin/Toolbar'
+import { Component, Vue } from 'vue-property-decorator'
 
-export default {
+/* export default {
     middleware: 'admin/navigation',
     components: {
         AdminNavigator,
         AdminToolbar
     }
-}
+} */
+
+@Component({
+    components: {
+        AdminNavigator: () => import('@/components/admin/Navigator'),
+        AdminToolbar: () => import('@/components/admin/Toolbar')
+    },
+    middleware: 'admin/navigation'
+})
+
 </script>
 
 <style>
