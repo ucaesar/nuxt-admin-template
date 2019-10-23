@@ -1,22 +1,22 @@
 'use strict'
 
-const Koa = require('koa')
+import Koa from 'koa'
 
-const serve = require('koa-static')
+import serve from 'koa-static'
 
-const bodyParser = require('koa-bodyparser')
+import bodyParser from 'koa-bodyparser'
 
-const session = require('koa-session')
+import session from 'koa-session'
 
-const router = require('koa-router')()
+import Router from 'koa-router'
 
 const { Nuxt, Builder } = require('nuxt')
 
 const config = require('../nuxt.config.ts')
 
-const auth = require('./middlewares/auth')
+import auth from './middlewares/auth'
 
-const urlWithoutLocale = require('./lib/utils').urlWithoutLocale
+import urlWithoutLocale from './lib/utils'
 
 const SessionAuthenticator = require('./SessionAuthenticator')
 
@@ -28,15 +28,17 @@ const apiRouter = require('./controller/api/api')
 
 const app = new Koa()
 
+const router = new Router()
+
 app.keys = ['qwert12345']
 
-const CONFIG = {
+const CONFIG: Partial<session.opts> = {
     key: 'koa:sess' /** (string) cookie key (default is koa:sess) */,
     /** (number || 'session') maxAge in ms (default is 1 days) */
     /** 'session' will result in a cookie that expires when session/browser is closed */
     /** Warning: If a session cookie is stolen, this cookie will never expire */
     maxAge: 'session',
-    autoCommit: true /** (boolean) automatically commit headers (default true) */,
+    // autoCommit: true /** (boolean) automatically commit headers (default true) */,
     overwrite: true /** (boolean) can overwrite or not (default true) */,
     httpOnly: true /** (boolean) httpOnly or not (default true) */,
     signed: false /** (boolean) signed or not (default true) */,
@@ -150,7 +152,7 @@ async function initNuxt(nuxt) {
 const nuxt = new Nuxt(config)
 initNuxt(nuxt)
 
-app.use(async (ctx, next) => {
+app.use(async (ctx: any, next) => {
     await next()
     if (ctx.originalUrl.startsWith('/api')) {
         return
@@ -164,4 +166,3 @@ app.use(async (ctx, next) => {
 // app.listen(56556)
 
 module.exports = app
-

@@ -1,5 +1,5 @@
-const urlWithoutLocale = require('../lib/utils').urlWithoutLocale
-module.exports = async function(context, enforcer) {
+import urlWithoutLocale from '../lib/utils'
+export default async function(context, enforcer): Promise<boolean> {
     const { username: sub } = context.state.currentUser
     // const { originalUrl: obj, method: act } = context
     const obj = urlWithoutLocale(context.originalUrl)
