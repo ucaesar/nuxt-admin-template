@@ -20,7 +20,8 @@
             "@types/node",
             "@nuxt/types",
             "@nuxtjs/axios",
-            "mocha"
+            "mocha",
+            "@types/lodash"
         ]
     },
     "exclude": ["node_modules"]
