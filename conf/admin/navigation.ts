@@ -1,4 +1,11 @@
-export default [
+interface Navigation {
+    [rootName: string]: {
+        icon: string
+        sub?: string[]
+    }
+}
+
+const navConf: Navigation[] = [
     {
         superadmin: {
             icon: 'mdi-home',
@@ -11,3 +18,5 @@ export default [
         }
     }
 ]
+
+export { Navigation, navConf }
