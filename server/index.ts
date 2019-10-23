@@ -18,9 +18,7 @@ import auth from './middlewares/auth'
 
 import urlWithoutLocale from './lib/utils'
 
-const SessionAuthenticator = require('./SessionAuthenticator')
-
-// const { encode, decode } = require("../lib/encryption");
+import SessionAuthenticator from './SessionAuthenticator'
 
 const { sequelize } = require('./db')
 

@@ -1,9 +1,9 @@
 const BaseAuthenticator = require('./middlewares/BaseAuthenticator')
-import { encode, decode, encodeWithoutDate }  from './lib/encryption'
+import { encode, decode, encodeWithoutDate } from './lib/encryption'
 const User = require('./model/user')
 const SuperAdmin = require('./model/SuperAdmin')
 
-class SessionAthenticator extends BaseAuthenticator {
+export default class SessionAthenticator extends BaseAuthenticator {
     // constructor() {
     // 	super();
     // }
@@ -84,5 +84,3 @@ class SessionAthenticator extends BaseAuthenticator {
         context.state.currentUser = { id: '-1', username: 'anonymous' }
     }
 }
-
-module.exports = SessionAthenticator
