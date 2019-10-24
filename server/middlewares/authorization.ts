@@ -1,5 +1,6 @@
+import casbin from 'casbin'
 import urlWithoutLocale from '../lib/utils'
-export default async function(context, enforcer): Promise<boolean> {
+export default async function(context, enforcer:casbin.Enforcer): Promise<boolean> {
     const { username: sub } = context.state.currentUser
     // const { originalUrl: obj, method: act } = context
     const obj = urlWithoutLocale(context.originalUrl)

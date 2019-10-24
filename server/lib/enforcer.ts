@@ -1,6 +1,6 @@
-const path = require('path')
-const casbin = require('casbin')
-const { SequelizeAdapter } = require('casbin-sequelize-adapter')
+import path from 'path'
+import casbin from 'casbin'
+import {SequelizeAdapter} from 'casbin-sequelize-adapter'
 
 async function getEnforer() {
     const a = await SequelizeAdapter.newAdapter({
@@ -17,4 +17,4 @@ async function getEnforer() {
     return e
 }
 
-module.exports = getEnforer
+export default getEnforer
