@@ -16,10 +16,8 @@
 		"mock": "cross-env NODE_ENV=development nodemon server/mock.js --watch server"
 	},
 	"dependencies": {
-		"@nuxt/types": "^0.3.2",
 		"@nuxt/typescript-runtime": "^0.2.2",
 		"@nuxtjs/axios": "^5.3.6",
-		"@types/lodash": "^4.14.144",
 		"casbin": "^3.0.4",
 		"casbin-sequelize-adapter": "^2.0.0",
 		"cross-env": "^5.2.0",
@@ -37,11 +35,13 @@
 		"sequelizejs-decorators": "^5.0.0",
 		"sqlite3": "^4.1.0",
 		"ts-node": "^8.4.1",
-		"vue-class-component": "^7.1.0",
-		"vue-i18n": "^8.14.1",
-		"vue-property-decorator": "^8.3.0"
+		"vue-i18n": "^8.14.1"
 	},
 	"devDependencies": {
+		"vue-class-component": "^7.1.0",
+        "vue-property-decorator": "^8.3.0",
+        "@nuxt/types": "^0.3.2",
+        "@types/lodash": "^4.14.144",
 		"@nuxt/typescript-build": "^0.3.2",
 		"@nuxtjs/eslint-config": "^1.0.1",
 		"@nuxtjs/eslint-module": "^1.0.0",
