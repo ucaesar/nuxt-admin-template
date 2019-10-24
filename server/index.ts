@@ -20,7 +20,7 @@ import urlWithoutLocale from './lib/utils'
 
 import SessionAuthenticator from './SessionAuthenticator'
 
-const { sequelize } = require('./db')
+import sequelize from './db'
 
 const apiRouter = require('./controller/api/api')
 
