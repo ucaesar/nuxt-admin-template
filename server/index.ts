@@ -163,4 +163,4 @@ app.use(async (ctx: any, next) => {
 
 // app.listen(56556)
 
-module.exports = app
+export default app

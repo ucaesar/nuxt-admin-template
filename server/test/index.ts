@@ -12,15 +12,18 @@ const router = require('koa-router')()
 
 // const { Nuxt, Builder } = require('nuxt')
 
-const auth = require('../middlewares/auth')
+// const auth = require('../middlewares/auth')
+import auth from '../middlewares/auth'
 
-const urlWithoutLocale = require('../lib/utils').urlWithoutLocale
-
-const SessionAuthenticator = require('../SessionAuthenticator')
+// const urlWithoutLocale = require('../lib/utils').urlWithoutLocale
+import urlWithoutLocale from '../lib/utils'
+// const SessionAuthenticator = require('../SessionAuthenticator')
+import SessionAuthenticator from '../SessionAuthenticator'
 
 // const { encode, decode } = require("../lib/encryption");
 
-const { sequelize } = require('../db')
+// const { sequelize } = require('../db')
+import sequelize from '../db'
 
 const apiRouter = require('../controller/api/api')
 
@@ -181,4 +184,4 @@ app.use(async (ctx, next) => {
 // });
 // app.listen(56556);
 
-module.exports = app
+export default app

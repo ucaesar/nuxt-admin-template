@@ -2,7 +2,7 @@ const chai = require('chai')
 const expect = require('chai').expect
 const chaiHttp = require('chai-http')
 const arr = require('../model/test')
-const app = require('./index')
+import app from './index'
 
 chai.use(chaiHttp)
 
@@ -118,5 +118,3 @@ describe('Role API test', () => {
         req.close()
     })
 })
-
-export {}

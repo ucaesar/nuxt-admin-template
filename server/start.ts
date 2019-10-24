@@ -1,3 +1,3 @@
-const app1 = require('./index.ts')
+import app from './index'
 
-app1.listen(56556)
+app.listen(56556)
