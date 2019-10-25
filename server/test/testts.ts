@@ -1,3 +1,3 @@
-import arr = require('../model/test')
+import arr from '../model/test'
 
-console.log('this is a ts test:' + arr.arr[1])
+console.log('this is a ts test:' + arr[1])

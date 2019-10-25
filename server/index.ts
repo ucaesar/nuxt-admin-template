@@ -139,27 +139,27 @@ async function initNuxt(nuxt) {
     // Instantiate nuxt.js
 
     // Build in development
-    if (config.dev) {
-        const builder = new Builder(nuxt)
-        await builder.build()
-    } else {
-        await nuxt.ready()
-    }
+    // if (config.dev) {
+    //     const builder = new Builder(nuxt)
+    //     await builder.build()
+    // } else {
+    //     await nuxt.ready()
+    // }
 }
 
-const nuxt = new Nuxt(config)
-initNuxt(nuxt)
+// const nuxt = new Nuxt(config)
+// initNuxt(nuxt)
 
-app.use(async (ctx: any, next) => {
-    await next()
-    if (ctx.originalUrl.startsWith('/api')) {
-        return
-    }
-    ctx.status = 200
-    ctx.respond = false // Bypass Koa's built-in response handling
-    ctx.req.ctx = ctx // This might be useful later on, e.g. in nuxtServerInit or with nuxt-stash
-    nuxt.render(ctx.req, ctx.res)
-})
+// app.use(async (ctx: any, next) => {
+//     await next()
+//     if (ctx.originalUrl.startsWith('/api')) {
+//         return
+//     }
+//     ctx.status = 200
+//     ctx.respond = false // Bypass Koa's built-in response handling
+//     ctx.req.ctx = ctx // This might be useful later on, e.g. in nuxtServerInit or with nuxt-stash
+//     nuxt.render(ctx.req, ctx.res)
+// })
 
 // app.listen(56556)
 

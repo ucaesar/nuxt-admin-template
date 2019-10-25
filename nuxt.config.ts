@@ -41,8 +41,8 @@ const config: Configuration = {
      */
     buildModules: [
         // Doc: https://github.com/nuxt-community/eslint-module
-        '@nuxtjs/eslint-module',
-        '@nuxtjs/vuetify',
+        // '@nuxtjs/eslint-module',
+        // '@nuxtjs/vuetify',
         '@nuxt/typescript-build'
     ],
     /*
@@ -51,7 +51,9 @@ const config: Configuration = {
     modules: [
         // Doc: https://axios.nuxtjs.org/usage
         '@nuxtjs/axios',
-        'nuxt-i18n'
+        // 'nuxt-i18n',
+        '@nuxtjs/pwa',
+        '@nuxtjs/eslint-module'
     ],
     /*
      ** Axios module configuration
@@ -106,7 +108,8 @@ const config: Configuration = {
     typescript: {
         typeCheck: true,
         ignoreNotFoundWarnings: true
-    }
+    },
+    serverMiddleware: [{ path: '/', handler: '~/server/index.ts' }]
 }
 
 module.exports = config

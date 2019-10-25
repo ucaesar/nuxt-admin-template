@@ -6,6 +6,7 @@ module.exports = {
     },
     // parser: '@typescript-eslint/parser',
     parserOptions: {
+        parser: 'babel-eslint'
         // parser: '@typescript-eslint/parser'
         // ecmaVersion: 6,
         // sourceType: 'module',
