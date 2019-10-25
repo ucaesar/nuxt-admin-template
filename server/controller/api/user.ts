@@ -1,6 +1,7 @@
-const userRouter = require('koa-router')()
+import Router from 'koa-router'
+const userRouter = new Router()
 // const getEnforcer = require("../../lib/enforcer");
-const User = require('../../model/user')
+import User from '../../model/user'
 
 userRouter.get('/', async (ctx, next) => {
     // const e = await getEnforcer();
@@ -19,4 +20,4 @@ userRouter.get('/permissions', ctx => {
     ctx.response.body = u.authNavs
 })
 
-module.exports = userRouter
+export default userRouter

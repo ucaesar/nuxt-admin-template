@@ -1,6 +1,7 @@
 import path from 'path'
-import casbin from 'casbin'
+import * as casbin from 'casbin'
 import {SequelizeAdapter} from 'casbin-sequelize-adapter'
+import { Enforcer } from 'casbin'
 
 async function getEnforer() {
     const a = await SequelizeAdapter.newAdapter({

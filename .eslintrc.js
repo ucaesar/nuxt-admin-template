@@ -4,8 +4,14 @@ module.exports = {
         browser: true,
         node: true
     },
+    // parser: '@typescript-eslint/parser',
     parserOptions: {
-        parser: '@typescript-eslint/parser'
+        // parser: '@typescript-eslint/parser'
+        // ecmaVersion: 6,
+        // sourceType: 'module',
+        // ecmaFeatures: {
+        //     jsx: true
+        // }
     },
     extends: [
         '@nuxtjs',

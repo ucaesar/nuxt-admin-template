@@ -106,4 +106,4 @@ User.init(
 //     return result
 // }
 
-module.exports = User
+export default User

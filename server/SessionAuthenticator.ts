@@ -1,7 +1,7 @@
 const BaseAuthenticator = require('./middlewares/BaseAuthenticator')
 import { encode, decode, encodeWithoutDate } from './lib/encryption'
-const User = require('./model/user')
-const SuperAdmin = require('./model/SuperAdmin')
+import User from './model/user'
+import SuperAdmin from './model/SuperAdmin'
 
 export default class SessionAthenticator extends BaseAuthenticator {
     // constructor() {
@@ -56,11 +56,11 @@ export default class SessionAthenticator extends BaseAuthenticator {
         const isSuper = true
         // const username = isSuper ? "superadmin" : "aaa";
         // const password = isSuper ? "superadmin" : "aaa";
-        const username = context.request.body.username || ''
+        const username:string = context.request.body.username || ''
         const password = context.request.body.password || ''
         const a = isSuper ? SuperAdmin : User
         const u = await a.findOne({
-            atrributes: ['id', 'username'],
+            // atrributes: ['id', 'username'],
             where: {
                 username,
                 password: encodeWithoutDate(password)

@@ -1,5 +1,6 @@
-const policyRouter = require('koa-router')()
-const getEnforcer = require('../../lib/enforcer')
+import Router from 'koa-router'
+const policyRouter = new Router()
+import getEnforcer from '../../lib/enforcer'
 
 policyRouter.get('/', async (ctx, next) => {
     const e = await getEnforcer()
@@ -8,4 +9,4 @@ policyRouter.get('/', async (ctx, next) => {
     // await next();
 })
 
-module.exports = policyRouter
+export default policyRouter

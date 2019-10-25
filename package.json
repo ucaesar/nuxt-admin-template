@@ -34,14 +34,13 @@
 		"sequelize": "^5.19.6",
 		"sequelizejs-decorators": "^5.0.0",
 		"sqlite3": "^4.1.0",
+		"ts-babel": "^6.1.7",
 		"ts-node": "^8.4.1",
 		"vue-i18n": "^8.14.1"
 	},
 	"devDependencies": {
-		"vue-class-component": "^7.1.0",
-        "vue-property-decorator": "^8.3.0",
-        "@nuxt/types": "^0.3.2",
-        "@types/lodash": "^4.14.144",
+		"@babel/register": "^7.6.2",
+		"@nuxt/types": "^0.3.2",
 		"@nuxt/typescript-build": "^0.3.2",
 		"@nuxtjs/eslint-config": "^1.0.1",
 		"@nuxtjs/eslint-module": "^1.0.0",
@@ -53,6 +52,7 @@
 		"@types/koa-router": "^7.0.42",
 		"@types/koa-session": "^5.10.1",
 		"@types/koa-static": "^4.0.1",
+		"@types/lodash": "^4.14.144",
 		"@types/mocha": "^5.2.7",
 		"@types/node": "^12.11.5",
 		"@types/validator": "^10.11.3",
@@ -66,9 +66,12 @@
 		"eslint-plugin-html": "^6.0.0",
 		"eslint-plugin-nuxt": ">=0.4.2",
 		"eslint-plugin-prettier": "^3.1.1",
+		"eslint-plugin-vue": "^5.2.3",
 		"mocha": "^6.2.1",
 		"nodemon": "^1.18.9",
 		"prettier": "^1.18.2",
-		"prettier-eslint": "^9.0.0"
+		"prettier-eslint": "^9.0.0",
+		"vue-class-component": "^7.1.0",
+		"vue-property-decorator": "^8.3.0"
 	}
 }

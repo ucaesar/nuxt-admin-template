@@ -1,7 +1,8 @@
-const roleRouter = require('koa-router')()
-const consola = require('consola')
-const _ = require('lodash')
-const getEnforcer = require('../../lib/enforcer')
+import Router from 'koa-router'
+const roleRouter = new Router()
+// const consola = require('consola')
+import _ from 'lodash'
+import getEnforcer from '../../lib/enforcer'
 
 // 获取所有role
 roleRouter.get('/', async ctx => {
@@ -51,4 +52,4 @@ roleRouter.put('/:name', async ctx => {
         name
     }
 })
-module.exports = roleRouter
+export default roleRouter

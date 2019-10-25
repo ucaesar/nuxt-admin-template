@@ -22,7 +22,7 @@ import SessionAuthenticator from './SessionAuthenticator'
 
 import sequelize from './db'
 
-const apiRouter = require('./controller/api/api')
+import apiRouter from './controller/api/api'
 
 const app = new Koa()
 

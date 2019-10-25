@@ -104,4 +104,4 @@ SuperAdmin.init(
 //     return result
 // }
 
-module.exports = SuperAdmin
+export default SuperAdmin
