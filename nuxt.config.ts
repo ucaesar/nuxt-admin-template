@@ -60,7 +60,7 @@ const config: Configuration = {
      ** See https://axios.nuxtjs.org/options
      */
     axios: {
-        baseURL: 'http://localhost:56556',
+        baseURL: 'http://localhost:3000',
         browserBaseURL: '/'
     },
     /*
@@ -109,7 +109,7 @@ const config: Configuration = {
         typeCheck: true,
         ignoreNotFoundWarnings: true
     },
-    serverMiddleware: [{ path: '/', handler: '~/server/index.ts' }]
+    serverMiddleware: ['~/server/index']
 }
 
 module.exports = config

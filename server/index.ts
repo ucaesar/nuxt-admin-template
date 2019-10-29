@@ -1,5 +1,3 @@
-'use strict'
-
 import Koa from 'koa'
 
 import serve from 'koa-static'
@@ -10,9 +8,9 @@ import session from 'koa-session'
 
 import Router from 'koa-router'
 
-const { Nuxt, Builder } = require('nuxt')
+// const { Nuxt, Builder } = require('nuxt')
 
-const config = require('../nuxt.config.ts')
+// const config = require('../nuxt.config.ts')
 
 import auth from './middlewares/auth'
 
@@ -133,11 +131,10 @@ app.use(async (ctx, next) => {
     await next()
 })
 
-config.dev = app.env !== 'production'
+// config.dev = app.env !== 'production'
 
 async function initNuxt(nuxt) {
     // Instantiate nuxt.js
-
     // Build in development
     // if (config.dev) {
     //     const builder = new Builder(nuxt)
@@ -163,4 +160,16 @@ async function initNuxt(nuxt) {
 
 // app.listen(56556)
 
-export default app
+// export default {
+//     path: '/',
+//     handler: app.callback()
+// }
+
+export default function(req: any, res: any, next: any) {
+	// req is the Node.js http request object
+	// res is the Node.js http response object
+	// next is a function to call to invoke the next middleware
+    // Don't forget to call next at the end if your middleware is not an endpoint!
+    app.callback()
+	next()
+}
