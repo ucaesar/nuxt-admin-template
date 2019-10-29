@@ -109,7 +109,7 @@ const config: Configuration = {
         typeCheck: true,
         ignoreNotFoundWarnings: true
     },
-    serverMiddleware: ['~/server/index']
+    serverMiddleware: [{ path: '/', handler: '~/server/index.ts' }]
 }
 
 module.exports = config
