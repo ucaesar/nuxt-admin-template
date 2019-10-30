@@ -1,3 +1,5 @@
+import * as http from 'http'
+
 import Koa from 'koa'
 
 import serve from 'koa-static'
@@ -60,6 +62,11 @@ sequelize
         console.log('init db error', err)
     })
 
+app.use(async (ctx, next)=>{
+    ctx.respond = false
+    await next()
+})
+
 app.use(serve('.'))
 
 app.use(bodyParser())
@@ -82,39 +89,67 @@ app.use(async (ctx, next) => {
     await next()
 })
 
-config.dev = app.env !== 'production'
+// config.dev = app.env !== 'production'
 
-async function initNuxt(nuxt) {
-    // Instantiate nuxt.js
-    // Build in development
-    if (config.dev) {
-        const builder = new Builder(nuxt)
-        await builder.build()
-    } else {
-        await nuxt.ready()
-    }
-}
+// async function initNuxt(nuxt) {
+//     // Instantiate nuxt.js
+//     // Build in development
+//     if (config.dev) {
+//         const builder = new Builder(nuxt)
+//         await builder.build()
+//     } else {
+//         await nuxt.ready()
+//     }
+// }
 
-const nuxt = new Nuxt(config)
-initNuxt(nuxt)
+// const nuxt = new Nuxt(config)
+// initNuxt(nuxt)
 
-app.use(async (ctx: any, next) => {
-    await next()
-    if (ctx.originalUrl.startsWith('/api')) {
-        return
-    }
-    ctx.status = 200
-    ctx.respond = false // Bypass Koa's built-in response handling
-    ctx.req.ctx = ctx // This might be useful later on, e.g. in nuxtServerInit or with nuxt-stash
-    try{
-        nuxt.render(ctx.req, ctx.res)
-    }catch(error) {
-        console.log('nuxt throw error:!!!!!!!!!!!!!!')
-        console.log(error)
-    }
-})
+// app.use(async (ctx: any, next) => {
+//     await next()
+//     if (ctx.originalUrl.startsWith('/api')) {
+//         return
+//     }
+//     ctx.status = 200
+//     ctx.respond = false // Bypass Koa's built-in response handling
+//     ctx.req.ctx = ctx // This might be useful later on, e.g. in nuxtServerInit or with nuxt-stash
+//     try{
+//         nuxt.render(ctx.req, ctx.res)
+//     }catch(error) {
+//         console.log('nuxt throw error:!!!!!!!!!!!!!!')
+//         console.log(error)
+//     }
+// })
 
 // app.listen(56556)
 
-export default app
+// export default app
 
+export default function(
+    req: http.IncomingMessage,
+    res: http.ServerResponse,
+    next: Function
+) {
+    // req is the Node.js http request object
+    // res is the Node.js http response object
+    // next is a function to call to invoke the next middleware
+    // Don't forget to call next at the end if your middleware is not an endpoint!
+    // console.log("koa logger: " + req.url)
+    const urlstr: string = req.url ? req.url : ''
+    if (
+        !(
+            urlstr.startsWith('/vuetify.css.map') ||
+            urlstr.startsWith('/_loading') ||
+            urlstr.startsWith('/sw.js') ||
+            urlstr.startsWith('/__webpack_hmr') ||
+            urlstr.startsWith('/_nuxt')
+        )
+    ) {
+        let route_fn = app.callback()
+        console.log('pass url request: ' + urlstr + ' to koa')
+        route_fn(req, res)
+    }
+    if (!res.hasHeader('Content-Type')) {
+        next()
+    }
+}
