@@ -13,7 +13,7 @@ describe('Role API test', () => {
         console.log(arr[0])
         const req = chai.request.agent(server)
         let res = await req
-            .post('/en/api/login')
+            .post('/en/api/user/login')
             .type('form')
             .send({
                 username: 'superadmin',
@@ -29,7 +29,7 @@ describe('Role API test', () => {
     it('test api/login with right username/password', async () => {
         const req = chai.request.agent(server)
         let res = await req
-            .post('/api/login')
+            .post('/api/user/login')
             .type('form')
             .send({
                 username: 'superadmin',
@@ -45,7 +45,7 @@ describe('Role API test', () => {
     it('test /api/user/permissions with right superadmin/superadmin', async () => {
         const req = chai.request.agent(server)
         let res = await req
-            .post('/api/login')
+            .post('/api/user/login')
             .type('form')
             .send({
                 username: 'superadmin',
@@ -59,7 +59,7 @@ describe('Role API test', () => {
         expect(res).to.have.status(200)
         expect(res).to.be.json
         res = await req
-            .post('/api/logout')
+            .post('/api/user/logout')
             .type('form')
             .send()
         expect(res).to.have.status(200)
@@ -72,7 +72,7 @@ describe('Role API test', () => {
     it('get all roles', async () => {
         const req = chai.request.agent(server)
         let res = await req
-            .post('/api/login')
+            .post('/api/user/login')
             .type('form')
             .send({
                 username: 'superadmin',
@@ -88,7 +88,7 @@ describe('Role API test', () => {
     it('delete a role', async () => {
         const req = chai.request.agent(server)
         let res = await req
-            .post('/api/login')
+            .post('/api/user/login')
             .type('form')
             .send({
                 username: 'superadmin',
@@ -104,7 +104,7 @@ describe('Role API test', () => {
     it('add a role', async () => {
         const req = chai.request.agent(server)
         let res = await req
-            .post('/api/login')
+            .post('/api/user/login')
             .type('form')
             .send({
                 username: 'superadmin',
