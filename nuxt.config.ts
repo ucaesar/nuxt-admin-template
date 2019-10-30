@@ -52,7 +52,7 @@ const config: Configuration = {
         // Doc: https://axios.nuxtjs.org/usage
         '@nuxtjs/axios',
         'nuxt-i18n',
-        '@nuxtjs/pwa',
+        // '@nuxtjs/pwa',
         '@nuxtjs/eslint-module'
     ],
     /*
@@ -108,8 +108,9 @@ const config: Configuration = {
     typescript: {
         typeCheck: true,
         ignoreNotFoundWarnings: true
-    },
-    serverMiddleware: [{ path: '/', handler: '~/server/index.ts' }]
+    }
+    // serverMiddleware: [{ path: '/', handler: '~/server/index.ts' }]
 }
 
-module.exports = config
+// module.exports = config
+export default config
