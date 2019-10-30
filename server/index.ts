@@ -74,47 +74,6 @@ app.use(async (ctx, next) => {
 
 const authenticator = new SessionAuthenticator()
 app.use(auth(authenticator))
-
-router.post('/api/login', async (ctx, next) => {
-    // ctx.session.x_session = encode('2e592d50-d535-11e9-881c-31c34ad71a1b');
-    // ctx.session.username = "aaa";
-    // ctx.state.currentUser = { username: "aaa" };
-    await authenticator.login(ctx)
-    // 根据currentUser的内容返回登陆是否成功的结果
-    ctx.response.type = 'text/json'
-    const loginResult =
-        ctx.state.currentUser && ctx.state.currentUser.username !== 'anonymous'
-    // 登陆成功，返回200状态，否则返回401
-    ctx.status = loginResult ? 200 : 401
-    const url = loginResult ? '/superadmin' : '/'
-    ctx.response.body = {
-        redirect: url
-    }
-    // await next()
-})
-
-// 暂时统一到api/login接口去
-router.post('/adminlogin', async (ctx, next) => {
-    // ctx.session.x_session = encode('2e592d50-d535-11e9-881c-31c34ad71a1b');
-    // ctx.session.username = "aaa";
-    // ctx.state.currentUser = { username: "aaa" };
-    await authenticator.login(ctx)
-    // 登陆后跳转
-    ctx.redirect('/testusermain')
-    // await next();
-})
-
-router.post('/api/logout', ctx => {
-    authenticator.logout(ctx)
-    ctx.status = 200
-    ctx.response.type = 'text/json'
-    ctx.response.body = {
-        redirect: '/login'
-    }
-    // await next()
-})
-
-app.use(router.routes())
 app.use(apiRouter.routes())
 
 // 往url里添加回之前去掉的locale部分后，再进入到nuxt
