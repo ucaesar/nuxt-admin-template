@@ -114,13 +114,6 @@ router.post('/api/logout', ctx => {
     // await next()
 })
 
-// 测试login成功后的跳转
-router.get('/testusermain', (ctx, next) => {
-    const username = 'tiger'
-    ctx.response.type = 'text/html'
-    ctx.response.body = '<h1>hello ' + username + ' auth</h1>'
-})
-
 app.use(router.routes())
 app.use(apiRouter.routes())
 
