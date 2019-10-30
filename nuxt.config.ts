@@ -51,14 +51,15 @@ const config: Configuration = {
     modules: [
         // Doc: https://axios.nuxtjs.org/usage
         '@nuxtjs/axios',
-        'nuxt-i18n'
+        'nuxt-i18n',
+        '@nuxtjs/eslint-module'
     ],
     /*
      ** Axios module configuration
      ** See https://axios.nuxtjs.org/options
      */
     axios: {
-        baseURL: 'http://localhost:56556',
+        baseURL: 'http://localhost:3000',
         browserBaseURL: '/'
     },
     /*
@@ -109,4 +110,5 @@ const config: Configuration = {
     }
 }
 
-module.exports = config
+// module.exports = config
+export default config

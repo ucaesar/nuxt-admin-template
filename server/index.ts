@@ -1,5 +1,3 @@
-'use strict'
-
 import Koa from 'koa'
 
 import serve from 'koa-static'
@@ -10,9 +8,9 @@ import session from 'koa-session'
 
 import Router from 'koa-router'
 
-const { Nuxt, Builder } = require('nuxt')
+import { Nuxt, Builder } from 'nuxt'
 
-const config = require('../nuxt.config.ts')
+import config from '../nuxt.config'
 
 import auth from './middlewares/auth'
 
@@ -118,10 +116,9 @@ router.post('/api/logout', ctx => {
 
 // 测试login成功后的跳转
 router.get('/testusermain', (ctx, next) => {
-    const { username } = ctx.state.currentUser
+    const username = 'tiger'
     ctx.response.type = 'text/html'
     ctx.response.body = '<h1>hello ' + username + ' auth</h1>'
-    // ctx.response.body = "<h1>hello " + " auth</h1>";
 })
 
 app.use(router.routes())
@@ -137,7 +134,6 @@ config.dev = app.env !== 'production'
 
 async function initNuxt(nuxt) {
     // Instantiate nuxt.js
-
     // Build in development
     if (config.dev) {
         const builder = new Builder(nuxt)
@@ -164,3 +160,4 @@ app.use(async (ctx: any, next) => {
 // app.listen(56556)
 
 export default app
+

@@ -61,6 +61,22 @@
             "protocol": "inspector",
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"
-        }
+        },
+        {
+			"name": "Lauch nuxt-ts server",
+			"type": "node",
+			"request": "launch",
+			"env": {"TS_NODE_COMPILER_OPTIONS":"{\"module\":\"commonjs\"}"},
+			"args": [
+				// "${workspaceRoot}\\node_modules\\@nuxt\\typescript-runtime\\bin\\nuxt-ts.js" // 入口文件,
+				"${workspaceRoot}\\node_modules\\nuxt\\bin\\nuxt.js" // 入口文件
+			],
+			"runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+			"sourceMaps": true,
+			"cwd": "${workspaceRoot}",
+			"protocol": "inspector",
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "neverOpen"
+		}
     ]
 }
