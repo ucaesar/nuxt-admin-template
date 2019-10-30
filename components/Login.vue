@@ -54,7 +54,7 @@ export default {
         Message
     },
     data: () => ({
-        url: 'api/login',
+        url: 'api/user/login',
         loginForm: {
             username: '',
             password: ''
