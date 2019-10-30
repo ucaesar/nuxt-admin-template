@@ -13,7 +13,7 @@ import { mapState, mapMutations } from 'vuex'
 
 const LogoutButton = {
     data: () => ({
-        url: '/api/logout',
+        url: '/api/user/logout',
         loading: false
     }),
     methods: {
