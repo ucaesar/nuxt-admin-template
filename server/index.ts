@@ -1,5 +1,3 @@
-import * as http from 'http'
-
 import Koa from 'koa'
 
 import serve from 'koa-static'
@@ -10,10 +8,8 @@ import session from 'koa-session'
 
 import Router from 'koa-router'
 
-// const { Nuxt, Builder } = require('nuxt')
 import { Nuxt, Builder } from 'nuxt'
 
-// const config = require('../nuxt.config.ts')
 import config from '../nuxt.config'
 
 import auth from './middlewares/auth'
@@ -72,7 +68,6 @@ app.use(session(CONFIG, app))
 
 // 在进入权限检验之前，要去掉url里的locale前缀
 app.use(async (ctx, next) => {
-    // console.log('get rid of locale for: ' + ctx.originalUrl)
     ctx.request.url = urlWithoutLocale(ctx.originalUrl)
     await next()
 })
@@ -124,8 +119,6 @@ router.get('/testusermain', (ctx, next) => {
     const username = 'tiger'
     ctx.response.type = 'text/html'
     ctx.response.body = '<h1>hello ' + username + ' auth</h1>'
-    // ctx.respond = true
-    // ctx.response.body = "<h1>hello " + " auth</h1>";
 })
 
 app.use(router.routes())
@@ -168,37 +161,3 @@ app.use(async (ctx: any, next) => {
 
 export default app
 
-// export default {
-//     path: '/',
-//     handler: app.callback()
-// }
-
-// export default function(
-//     req: http.IncomingMessage,
-//     res: http.ServerResponse,
-//     next: Function
-// ) {
-//     // req is the Node.js http request object
-//     // res is the Node.js http response object
-//     // next is a function to call to invoke the next middleware
-//     // Don't forget to call next at the end if your middleware is not an endpoint!
-//     // console.log("koa logger: " + req.url)
-//     const urlstr: string = req.url ? req.url : ''
-//     if (
-//         !(
-//             urlstr.startsWith('/vuetify.css.map') ||
-//             urlstr.startsWith('/_loading') ||
-//             urlstr.startsWith('/sw.js') ||
-//             urlstr.startsWith('/__webpack_hmr') ||
-//             urlstr.startsWith('/_nuxt')
-//         )
-//     ) {
-//         let route_fn = app.callback()
-//         console.log('pass url request: ' + urlstr + ' to koa')
-//         route_fn(req, res)
-//     }
-//     app.callback()
-//     if (!res.hasHeader('Content-Type')) {
-//         next()
-//     }
-// }
