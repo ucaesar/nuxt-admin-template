@@ -114,13 +114,6 @@ router.post('/api/logout', ctx => {
     // await next()
 })
 
-// 测试login成功后的跳转
-router.get('/testusermain', (ctx, next) => {
-    const username = 'tiger'
-    ctx.response.type = 'text/html'
-    ctx.response.body = '<h1>hello ' + username + ' auth</h1>'
-})
-
 app.use(router.routes())
 app.use(apiRouter.routes())
 
@@ -154,7 +147,12 @@ app.use(async (ctx: any, next) => {
     ctx.status = 200
     ctx.respond = false // Bypass Koa's built-in response handling
     ctx.req.ctx = ctx // This might be useful later on, e.g. in nuxtServerInit or with nuxt-stash
-    nuxt.render(ctx.req, ctx.res)
+    try{
+        nuxt.render(ctx.req, ctx.res)
+    }catch(error) {
+        console.log('nuxt throw error:!!!!!!!!!!!!!!')
+        console.log(error)
+    }
 })
 
 // app.listen(56556)
