@@ -23,7 +23,7 @@ import SessionAuthenticator from '../SessionAuthenticator'
 // const { encode, decode } = require("../lib/encryption");
 
 // const { sequelize } = require('../db')
-import sequelize from '../db'
+import { sequelize } from '../db'
 
 import apiRouter from '../controller/api/api'
 

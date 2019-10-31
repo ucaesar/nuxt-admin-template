@@ -1,12 +1,13 @@
 // const Sequelize = require('sequelize')
 import { Model, DataTypes } from 'sequelize'
-import sequelize from '../db'
+import { sequelize } from '../db'
 import getEnforcer from '../lib/enforcer'
 
 class SuperAdmin extends Model {
     public id!: string
     public username!: string
     public password!: string
+    // public email!: string
 
     public readonly createdAt!: Date
     public readonly updatedAt!: Date
@@ -56,6 +57,11 @@ SuperAdmin.init(
             unique: false,
             allowNull: false
         }
+        // email: {
+        //     type: DataTypes.STRING,
+        //     unique: true,
+        //     allowNull: true
+        // }
     },
     { tableName: 'superadmins', sequelize: sequelize }
 )
