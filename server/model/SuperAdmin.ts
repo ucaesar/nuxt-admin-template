@@ -7,6 +7,7 @@ class SuperAdmin extends Model {
     public id!: string
     public username!: string
     public password!: string
+    // public email!: string
 
     public readonly createdAt!: Date
     public readonly updatedAt!: Date
@@ -56,6 +57,11 @@ SuperAdmin.init(
             unique: false,
             allowNull: false
         }
+        // email: {
+        //     type: DataTypes.STRING,
+        //     unique: true,
+        //     allowNull: true
+        // }
     },
     { tableName: 'superadmins', sequelize: sequelize }
 )
