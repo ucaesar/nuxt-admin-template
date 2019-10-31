@@ -56,8 +56,8 @@ export default class SessionAthenticator extends BaseAuthenticator {
         const isSuper = true
         // const username = isSuper ? "superadmin" : "aaa";
         // const password = isSuper ? "superadmin" : "aaa";
-        const username:string = context.request.body.username || ''
-        const password = context.request.body.password || ''
+        const username:string = context.req.body.username || ''
+        const password = context.req.body.password || ''
         const a = isSuper ? SuperAdmin : User
         const u = await a.findOne({
             // atrributes: ['id', 'username'],

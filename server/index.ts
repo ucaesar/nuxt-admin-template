@@ -69,9 +69,14 @@ app.use(async (ctx, next)=>{
 
 app.use(serve('.'))
 
-app.use(bodyParser())
+// app.use(bodyParser())
 
 app.use(session(CONFIG, app))
+
+// app.use(async (ctx,next)=>{
+//     ctx.session = (<any>(ctx.req)).session
+//     await next()
+// })
 
 // 在进入权限检验之前，要去掉url里的locale前缀
 app.use(async (ctx, next) => {
@@ -149,7 +154,7 @@ export default function(
         console.log('pass url request: ' + urlstr + ' to koa')
         route_fn(req, res)
     }
-    if (!res.hasHeader('Content-Type')) {
+    if (!urlstr.startsWith('/api/')) {
         next()
     }
 }
