@@ -2,7 +2,7 @@
 // import {Sequelize, UUID, UUIDV1, STRING} from 'sequelize'
 import { Model, DataTypes } from 'sequelize'
 // import {Entity} from 'sequelizejs-decorators'
-import sequelize from '../db'
+import { sequelize } from '../db'
 import getEnforcer from '../lib/enforcer'
 
 class User extends Model {

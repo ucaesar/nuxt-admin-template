@@ -1,6 +1,6 @@
 // const Sequelize = require('sequelize')
 import { Model, DataTypes } from 'sequelize'
-import sequelize from '../db'
+import { sequelize } from '../db'
 import getEnforcer from '../lib/enforcer'
 
 class SuperAdmin extends Model {
