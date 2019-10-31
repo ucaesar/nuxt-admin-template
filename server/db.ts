@@ -23,7 +23,7 @@ async function connectdb(sq: Sequelize) {
     //     .catch(err => {
     //         console.log('init db error', err)
     //     })
-    await sq.sync({force:true})
+    await sq.sync()
 }
 
 const sequelize = new Sequelize({
