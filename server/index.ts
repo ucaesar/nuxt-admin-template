@@ -151,7 +151,6 @@ export default function(
         )
     ) {
         let route_fn = app.callback()
-        console.log('pass url request: ' + urlstr + ' to koa')
         route_fn(req, res)
     }
     if (!urlstr.startsWith('/api/')) {
