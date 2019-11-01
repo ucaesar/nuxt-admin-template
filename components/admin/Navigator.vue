@@ -1,5 +1,5 @@
 <template>
-    <v-navigation-drawer v-model="drawerState" fixed app class="nav">
+    <v-navigation-drawer :value="drawer" fixed app class="nav">
         <v-list dense nav>
             <template v-for="(item, i) in navigations">
                 <!-- 单层菜单 -->
@@ -47,24 +47,18 @@
     </v-navigation-drawer>
 </template>
 
-<script>
-import { mapState, mapMutations } from 'vuex'
-export default {
-    computed: {
-        ...mapState('admin', ['drawer', 'navigations']),
-        drawerState: {
-            get() {
-                return this.drawer
-            },
-            set(val) {
-                this.SET_DRAWER(val)
-            }
-        }
-    },
-    methods: {
-        ...mapMutations('admin', ['SET_DRAWER'])
-    }
+<script lang="ts">
+import { Component, Vue, namespace } from 'nuxt-property-decorator'
+
+const adminStore = namespace('admin')
+
+@Component
+class Navigator extends Vue {
+    @adminStore.State('drawer') drawer
+    @adminStore.State('navigations') navigations
 }
+
+export default Navigator
 </script>
 
 <style></style>

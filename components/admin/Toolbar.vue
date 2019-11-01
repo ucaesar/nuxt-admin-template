@@ -7,7 +7,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Action } from 'nuxt-property-decorator'
+import { Component, Vue, namespace } from 'nuxt-property-decorator'
+
+const adminStore = namespace('admin')
 
 @Component({
     components: {
@@ -15,7 +17,7 @@ import { Component, Vue, Action } from 'nuxt-property-decorator'
     }
 })
 class Toolbar extends Vue {
-    @Action('admin/toogleDrawer') toogleDrawer
+    @adminStore.Action('toogleDrawer') toogleDrawer
 }
 
 export default Toolbar
