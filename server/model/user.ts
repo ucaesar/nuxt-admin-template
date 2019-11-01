@@ -1,18 +1,45 @@
-// const Sequelize = require('sequelize')
-// import {Sequelize, UUID, UUIDV1, STRING} from 'sequelize'
-import { Model, DataTypes } from 'sequelize'
-// import {Entity} from 'sequelizejs-decorators'
-import { sequelize } from '../db'
+import {
+    Model,
+    Column,
+    Table,
+    BelongsToMany,
+    Scopes,
+    CreatedAt,
+    UpdatedAt
+} from 'sequelize-typescript'
+import { DataTypes } from 'sequelize'
 import getEnforcer from '../lib/enforcer'
 
-class User extends Model {
-    public id!: string
-    public username!: string
-    public password!: string
+@Table({ tableName: 'userabcs' })
+class User extends Model<User> {
+    @Column({
+        type: DataTypes.UUID,
+        unique: true,
+        primaryKey: true,
+        allowNull: false,
+        defaultValue: DataTypes.UUIDV1
+    })
+    id!: string
+    @Column({
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false
+    })
+    username!: string
+    @Column({
+        type: DataTypes.STRING,
+        unique: false,
+        allowNull: false
+    })
+    password!: string
     // public email!: string
 
-    public readonly createdAt!: Date
-    public readonly updatedAt!: Date
+    @CreatedAt
+    @Column
+    createdAt!: Date
+    @UpdatedAt
+    @Column
+    updatedAt!: Date
 
     // 返回当前用户的所有角色
     public async getRoles() {
@@ -40,32 +67,32 @@ class User extends Model {
     }
 }
 
-User.init(
-    {
-        id: {
-            type: DataTypes.UUID,
-            unique: true,
-            primaryKey: true,
-            allowNull: false,
-            defaultValue: DataTypes.UUIDV1
-        },
-        username: {
-            type: DataTypes.STRING,
-            unique: true,
-            allowNull: false
-        },
-        password: {
-            type: DataTypes.STRING,
-            unique: false,
-            allowNull: false
-        }
-        // email: {
-        //     type: DataTypes.STRING,
-        //     unique: true,
-        //     allowNull: true
-        // }
-    },
-    { tableName: 'userabcs', sequelize: sequelize }
-)
+// User.init(
+//     {
+//         id: {
+//             type: DataTypes.UUID,
+//             unique: true,
+//             primaryKey: true,
+//             allowNull: false,
+//             defaultValue: DataTypes.UUIDV1
+//         },
+//         username: {
+//             type: DataTypes.STRING,
+//             unique: true,
+//             allowNull: false
+//         },
+//         password: {
+//             type: DataTypes.STRING,
+//             unique: false,
+//             allowNull: false
+//         }
+//         // email: {
+//         //     type: DataTypes.STRING,
+//         //     unique: true,
+//         //     allowNull: true
+//         // }
+//     },
+//     { tableName: 'userabcs', sequelize: sequelize }
+// )
 
 export default User

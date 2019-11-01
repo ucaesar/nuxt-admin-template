@@ -1,15 +1,45 @@
 // const Sequelize = require('sequelize')
-import { Model, DataTypes } from 'sequelize'
-import { sequelize } from '../db'
+import {
+    Model,
+    Column,
+    Table,
+    BelongsToMany,
+    Scopes,
+    CreatedAt,
+    UpdatedAt
+} from 'sequelize-typescript'
+import { DataTypes } from 'sequelize'
 import getEnforcer from '../lib/enforcer'
 
-class SuperAdmin extends Model {
+@Table({ tableName: 'superadmins' })
+class SuperAdmin extends Model<SuperAdmin> {
+    @Column({
+        type: DataTypes.UUID,
+        unique: true,
+        primaryKey: true,
+        allowNull: false,
+        defaultValue: DataTypes.UUIDV1
+    })
     public id!: string
+    @Column({
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false
+    })
     public username!: string
+    @Column({
+        type: DataTypes.STRING,
+        unique: false,
+        allowNull: false
+    })
     public password!: string
     // public email!: string
 
+    @CreatedAt
+    @Column
     public readonly createdAt!: Date
+    @CreatedAt
+    @Column
     public readonly updatedAt!: Date
 
     // 返回当前用户的所有角色
@@ -38,33 +68,33 @@ class SuperAdmin extends Model {
     }
 }
 
-SuperAdmin.init(
-    {
-        id: {
-            type: DataTypes.UUID,
-            unique: true,
-            primaryKey: true,
-            allowNull: false,
-            defaultValue: DataTypes.UUIDV1
-        },
-        username: {
-            type: DataTypes.STRING,
-            unique: true,
-            allowNull: false
-        },
-        password: {
-            type: DataTypes.STRING,
-            unique: false,
-            allowNull: false
-        }
-        // email: {
-        //     type: DataTypes.STRING,
-        //     unique: true,
-        //     allowNull: true
-        // }
-    },
-    { tableName: 'superadmins', sequelize: sequelize }
-)
+// SuperAdmin.init(
+//     {
+//         id: {
+//             type: DataTypes.UUID,
+//             unique: true,
+//             primaryKey: true,
+//             allowNull: false,
+//             defaultValue: DataTypes.UUIDV1
+//         },
+//         username: {
+//             type: DataTypes.STRING,
+//             unique: true,
+//             allowNull: false
+//         },
+//         password: {
+//             type: DataTypes.STRING,
+//             unique: false,
+//             allowNull: false
+//         }
+//         // email: {
+//         //     type: DataTypes.STRING,
+//         //     unique: true,
+//         //     allowNull: true
+//         // }
+//     },
+//     { tableName: 'superadmins', sequelize: sequelize }
+// )
 // const SuperAdmin = sequelize.define('superadmin', {
 //     id: {
 //         type: Sequelize.UUID,
