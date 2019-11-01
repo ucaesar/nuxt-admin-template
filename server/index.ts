@@ -68,7 +68,7 @@ initServer()
 
 // export default app
 
-export default function(
+export default async function(
     req: http.IncomingMessage,
     res: http.ServerResponse,
     next: Function
@@ -86,7 +86,7 @@ export default function(
         let route_fn = app.callback()
         route_fn(req, res)
     }
-    if (!urlstr.startsWith('/api/')&&req.statusCode!==403) {
+    if (!urlstr.startsWith('/api/')&&res.statusCode!==403) {
         next()
     }
 }

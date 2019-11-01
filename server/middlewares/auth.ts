@@ -13,7 +13,7 @@ const auth = authenticator => {
         throw Error('authenticator must be extends from BaseAuthenticator')
     }
 
-    return async function(context, next):Promise<void> {
+    return async function(context, next): Promise<void> {
         const url = context.request.url
         if (
             url.startsWith('/_nuxt') ||
@@ -56,9 +56,12 @@ const auth = authenticator => {
         )
         if (!allowed) {
             context.respond = true
-            context.throw(403)
+            context.response.status = 403
+            context.response.body = 'forbidden, bye'
+            // context.throw(403)
+        } else {
+            await next()
         }
-        await next()
     }
 }
 
