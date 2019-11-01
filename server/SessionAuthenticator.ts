@@ -1,8 +1,8 @@
 const BaseAuthenticator = require('./middlewares/BaseAuthenticator')
 import { encode, decode, encodeWithoutDate } from './lib/encryption'
-// import User from './model/user'
-// import SuperAdmin from './model/SuperAdmin'
-import {User, SuperAdmin} from './model'
+import User from './model/user'
+import SuperAdmin from './model/SuperAdmin'
+// import {User, SuperAdmin} from './model'
 
 export default class SessionAthenticator extends BaseAuthenticator {
     // constructor() {

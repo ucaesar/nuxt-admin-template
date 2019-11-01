@@ -1,15 +1,12 @@
 import path from 'path'
-import { Sequelize } from 'sequelize'
-import User from './model/user'
-import SuperAdmin from './model/SuperAdmin'
-import Role from './model/Role' 
+import { Sequelize } from 'sequelize-typescript'
 
 // const sequelize = new Sequelize("koaauthtest", "root", "qwert12345", {
 // 	host: "localhost",
 // 	dialect: "mysql"
 // });
 
-async function connectdb(sq: Sequelize) {
+async function connectdb(sq: Sequelize): Promise<void> {
     // sq.authenticate()
     //     .then(() => {
     //         console.log('database connected')
@@ -17,7 +14,7 @@ async function connectdb(sq: Sequelize) {
     //     .catch(err => {
     //         console.error('database connect failed' + err)
     //     })
-    await sq.authenticate()
+    // await sq.authenticate()
 
     // sq.sync()
     //     .then(() => {
@@ -26,13 +23,14 @@ async function connectdb(sq: Sequelize) {
     //     .catch(err => {
     //         console.log('init db error', err)
     //     })
-    await sq.sync({alter:true})
+    await sq.sync({ alter: true })
 }
 
 const sequelize = new Sequelize({
     host: 'localhost',
     dialect: 'sqlite',
     storage: path.join(__dirname, './test/database/nuxtauth.sqlite'),
-    logging: true
+    logging: true,
+    models: [path.join(__dirname, './model')]
 })
 export { sequelize, connectdb }

@@ -1,28 +1,54 @@
-import { Model, DataTypes } from 'sequelize'
-import { sequelize } from '../db'
+import {
+    Model,
+    Column,
+    Table,
+    BelongsToMany,
+    Scopes,
+    CreatedAt,
+    UpdatedAt
+} from 'sequelize-typescript'
+import { DataTypes } from 'sequelize'
+// import { sequelize } from '../db'
 
-class Role extends Model {
-    public id!: string
-    public rolename!: string
+@Table({tableName:'role'})
+class Role extends Model<Role> {
+    @Column({
+        type: DataTypes.INTEGER.UNSIGNED,
+        primaryKey: true,
+        autoIncrement: true
+    })
+    id!: string
 
-    public readonly createdAt!: Date
-    public readonly updatedAt!: Date
+    @Column({
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false
+    })
+    rolename!: string
+
+    @CreatedAt
+    @Column
+    createdAt!: Date
+
+    @UpdatedAt
+    @Column
+    updatedAt!: Date
 }
 
-Role.init(
-    {
-        id: {
-            type: DataTypes.INTEGER.UNSIGNED,
-            primaryKey: true,
-            autoIncrement: true
-        },
-        username: {
-            type: DataTypes.STRING,
-            unique: true,
-            allowNull: false
-        }
-    },
-    { tableName: 'role', sequelize: sequelize }
-)
+// Role.init(
+//     {
+//         id: {
+//             type: DataTypes.INTEGER.UNSIGNED,
+//             primaryKey: true,
+//             autoIncrement: true
+//         },
+//         username: {
+//             type: DataTypes.STRING,
+//             unique: true,
+//             allowNull: false
+//         }
+//     },
+//     { tableName: 'role', sequelize: sequelize }
+// )
 
 export default Role
