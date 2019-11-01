@@ -1,24 +1,15 @@
-import { Module, VuexModule, Mutation, getModule } from 'vuex-module-decorators'
 import { Navigation } from '@/conf/admin/navigation'
+import { MutationTree } from 'vuex/types/index'
 
-@Module({
-    name: 'admin',
-    stateFactory: true,
-    namespaced: true
+export const state = () => ({
+    drawer: true,
+    navigations: [] as Navigation[]
 })
-class AdminModule extends VuexModule {
-    drawer = true
-    navigations: Navigation[] = []
 
-    @Mutation
-    setDrawer(drawer: boolean) {
-        this.drawer = drawer
-    }
+export type AdminState = ReturnType<typeof state>
 
-    @Mutation
-    setNavigations(navigations: Navigation[]) {
-        this.navigations = navigations
-    }
+export const mutations: MutationTree<AdminState> = {
+    SET_DRAWER: (state: AdminState, drawer: boolean) => (state.drawer = drawer),
+    SET_NAVIGATIONS: (state: AdminState, navigations: Navigation[]) =>
+        (state.navigations = navigations)
 }
-
-export default getModule(AdminModule)
