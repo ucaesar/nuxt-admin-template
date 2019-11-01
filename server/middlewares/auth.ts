@@ -55,6 +55,7 @@ const auth = authenticator => {
                 Date()
         )
         if (!allowed) {
+            context.respond = true
             context.throw(403)
         }
         await next()
