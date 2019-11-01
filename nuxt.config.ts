@@ -1,8 +1,5 @@
 import { Configuration } from '@nuxt/types'
-
 import bodyParser from 'body-parser'
-
-import session from 'express-session'
 
 const colors = require('vuetify/es5/util/colors').default
 
@@ -114,12 +111,6 @@ const config: Configuration = {
     },
     serverMiddleware: [
         bodyParser.json(),
-        // session({
-        //     secret: 'qwert12345',
-        //     resave: false,
-        //     saveUninitialized: false,
-        //     cookie: { maxAge: 60000 }
-        // }),
         { path: '/', handler: '~/server/index.ts' }
     ]
 }
