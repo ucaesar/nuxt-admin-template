@@ -39,6 +39,7 @@
                                 :to="composeUrl([name, subItem])"
                                 router
                                 link
+                                exact
                             >
                                 <v-list-item-content>
                                     <v-list-item-title>{{
