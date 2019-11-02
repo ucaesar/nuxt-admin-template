@@ -1,4 +1,4 @@
-const BaseAuthenticator = require('./BaseAuthenticator')
+const BaseAuthenticator = require('./BaseAuthenticator');
 
 class BasicAuthenticator extends BaseAuthenticator {
     // constructor() {
@@ -6,15 +6,15 @@ class BasicAuthenticator extends BaseAuthenticator {
     // }
 
     getUser(context) {
-        const sessionKey = context.get('x-session')
+        const sessionKey = context.get('x-session');
 
-        const sessionName = context.session.username
+        const sessionName = context.session.username;
 
         if (!sessionKey && !sessionName) {
             // context.throw(401, "x-session missed");
-            context.state.currentUser = { username: 'anonymous' }
+            context.state.currentUser = { username: 'anonymous' };
         } else {
-            context.state.currentUser = { username: 'aaa' }
+            context.state.currentUser = { username: 'aaa' };
         }
     }
 
@@ -23,4 +23,4 @@ class BasicAuthenticator extends BaseAuthenticator {
     logout() {}
 }
 
-module.exports = BasicAuthenticator
+module.exports = BasicAuthenticator;

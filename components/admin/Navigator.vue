@@ -56,30 +56,29 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, namespace } from 'nuxt-property-decorator'
-import _ from 'lodash'
-import { $t } from '@/utils/t'
+import { Component, Vue, namespace } from 'nuxt-property-decorator';
+import _ from 'lodash';
 
-const adminStore = namespace('admin')
+const adminStore = namespace('admin');
 
 @Component
 class Navigator extends Vue {
-    @adminStore.State('drawer') drawer
-    @adminStore.State('navigations') navigations
+    @adminStore.State('drawer') drawer;
+    @adminStore.State('navigations') navigations;
 
     composeUrl(pathArray: string[]): string {
         return _(pathArray.slice())
             .unshift('')
-            .join('/')
+            .join('/');
     }
 
     getNavigationTitle(pathArray: string[]): string {
-        const path = this.composeUrl(pathArray)
-        return $t('admin.navigator["' + path + '"]')
+        const path = this.composeUrl(pathArray);
+        return this.$t('admin.navigator["' + path + '"]').toString();
     }
 }
 
-export default Navigator
+export default Navigator;
 </script>
 
 <style></style>

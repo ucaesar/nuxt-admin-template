@@ -54,4 +54,4 @@ module.exports = {
         'unicorn/throw-new-error': 'off',
         'prettier/prettier': 'off'
     }
-}
+};

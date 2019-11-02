@@ -1,6 +1,6 @@
-const path = require('path')
-const casbin = require('casbin')
-const { SequelizeAdapter } = require('casbin-sequelize-adapter')
+const path = require('path');
+const casbin = require('casbin');
+const { SequelizeAdapter } = require('casbin-sequelize-adapter');
 const policyArr = [
     ['p', 'dataset1_adminR', '/dataset1/*', '*'],
     ['p', 'dataset1_adminR', '/dataset2/*', '*'],
@@ -27,7 +27,7 @@ const policyArr = [
     ['g', 'anonymous', 'anonymousR'],
     ['g', 'superadminR', 'anonymousR'],
     ['g', 'superadmin', 'superadminR']
-]
+];
 
 async function getEnforer() {
     const a = await SequelizeAdapter.newAdapter({
@@ -35,13 +35,13 @@ async function getEnforer() {
         dialect: 'sqlite',
         storage: path.join(__dirname, './database/nuxtauth.sqlite'),
         logging: false
-    })
+    });
     const e = await casbin.newEnforcer(
         path.join(__dirname, '../middlewares/casbin/model.conf'),
         // path.join(__dirname, "../middlewares/casbin/policy.csv")
         a
-    )
-    return e
+    );
+    return e;
 }
 
 // async function testPolicy() {
@@ -74,30 +74,30 @@ async function getEnforer() {
 // addPolicy();
 // testPolicy();
 
-const assert = require('chai').assert
+const assert = require('chai').assert;
 
 describe('PolicyTest', () => {
     it('add policy', async () => {
-        const e = await getEnforer()
+        const e = await getEnforer();
         for (let index in policyArr) {
-            const tp = policyArr[index].slice(0, 1)[0]
-            const params = policyArr[index].slice(1)
+            const tp = policyArr[index].slice(0, 1)[0];
+            const params = policyArr[index].slice(1);
             if (tp === 'p') {
-                await e.addPolicy(...params)
+                await e.addPolicy(...params);
             }
             if (tp === 'g') {
-                await e.addGroupingPolicy(...params)
+                await e.addGroupingPolicy(...params);
             }
         }
         for (let index in policyArr) {
-            const tp = policyArr[index].slice(0, 1)[0]
-            const params = policyArr[index].slice(1)
+            const tp = policyArr[index].slice(0, 1)[0];
+            const params = policyArr[index].slice(1);
             if (tp === 'p') {
-                assert.strictEqual(e.hasPolicy(...params), true)
+                assert.strictEqual(e.hasPolicy(...params), true);
             }
             if (tp === 'g') {
-                assert.strictEqual(e.hasGroupingPolicy(...params), true)
+                assert.strictEqual(e.hasGroupingPolicy(...params), true);
             }
         }
-    })
-})
+    });
+});

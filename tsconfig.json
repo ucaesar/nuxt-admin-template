@@ -22,7 +22,7 @@
             "@nuxt/types",
             "@nuxtjs/axios",
             "mocha",
-            "@types/lodash"
+            "vue-i18n/types"
         ]
     },
     "exclude": ["node_modules"]

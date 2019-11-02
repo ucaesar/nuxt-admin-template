@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import AdminNavigator from '@/components/admin/Navigator'
-import AdminToolbar from '@/components/admin/Toolbar'
+import AdminNavigator from '@/components/admin/Navigator';
+import AdminToolbar from '@/components/admin/Toolbar';
 
 export default {
     middleware: 'admin/navigation',
@@ -20,7 +20,7 @@ export default {
         AdminNavigator,
         AdminToolbar
     }
-}
+};
 </script>
 
 <style>

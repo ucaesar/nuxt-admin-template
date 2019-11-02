@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations } from 'vuex';
 export default {
     data: () => ({
         timeout: 3000
@@ -19,18 +19,17 @@ export default {
         ...mapState('message', ['text', 'color']),
         visible: {
             get() {
-                return this.$store.state.message.visible
+                return this.$store.state.message.visible;
             },
             set(val) {
-                this.SET_VISIBLE(val)
+                this.SET_VISIBLE(val);
             }
         }
     },
     methods: {
         ...mapMutations('message', ['SET_VISIBLE'])
     }
-}
+};
 </script>
 
-<style>
-</style>
+<style></style>

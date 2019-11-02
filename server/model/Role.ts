@@ -6,33 +6,33 @@ import {
     Scopes,
     CreatedAt,
     UpdatedAt
-} from 'sequelize-typescript'
-import { DataTypes } from 'sequelize'
+} from 'sequelize-typescript';
+import { DataTypes } from 'sequelize';
 // import { sequelize } from '../db'
 
-@Table({tableName:'role'})
+@Table({ tableName: 'role' })
 class Role extends Model<Role> {
     @Column({
         type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
         autoIncrement: true
     })
-    id!: string
+    id!: string;
 
     @Column({
         type: DataTypes.STRING,
         unique: true,
         allowNull: false
     })
-    rolename!: string
+    rolename!: string;
 
     @CreatedAt
     @Column
-    createdAt!: Date
+    createdAt!: Date;
 
     @UpdatedAt
     @Column
-    updatedAt!: Date
+    updatedAt!: Date;
 }
 
 // Role.init(
@@ -51,4 +51,4 @@ class Role extends Model<Role> {
 //     { tableName: 'role', sequelize: sequelize }
 // )
 
-export default Role
+export default Role;

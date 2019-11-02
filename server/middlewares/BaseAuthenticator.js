@@ -6,4 +6,4 @@ class BaseAuthenticator {
     logout() {}
 }
 
-module.exports = BaseAuthenticator
+module.exports = BaseAuthenticator;

@@ -1,5 +1,5 @@
-import path from 'path'
-import { Sequelize } from 'sequelize-typescript'
+import path from 'path';
+import { Sequelize } from 'sequelize-typescript';
 
 // const sequelize = new Sequelize("koaauthtest", "root", "qwert12345", {
 // 	host: "localhost",
@@ -23,14 +23,14 @@ async function connectdb(sq: Sequelize): Promise<void> {
     //     .catch(err => {
     //         console.log('init db error', err)
     //     })
-    await sq.sync()
+    await sq.sync();
 }
 
 const sequelize = new Sequelize({
     host: 'localhost',
     dialect: 'sqlite',
     storage: path.join(__dirname, './test/database/nuxtauth.sqlite'),
-    logging: (sql:string)=>void{},
+    logging: (sql: string) => void {},
     models: [path.join(__dirname, './model')]
-})
-export { sequelize, connectdb }
+});
+export { sequelize, connectdb };

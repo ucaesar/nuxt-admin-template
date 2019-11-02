@@ -34,4 +34,4 @@ export default {
             fieldRequired: 'Required *'
         }
     }
-}
+};

@@ -15,22 +15,21 @@
 export default {
     layout: 'admin',
     async asyncData({ $axios }) {
-        const url = '/api/roles'
-        let roles = []
+        const url = '/api/roles';
+        let roles = [];
         try {
-            roles = (await $axios.$get(url)).result
+            roles = (await $axios.$get(url)).result;
         } catch (error) {
-            console.log(`error from get(${url})`, error)
+            console.log(`error from get(${url})`, error);
         }
-        return { roles }
+        return { roles };
     },
     methods: {
         onClick() {
-            console.log('wow')
+            console.log('wow');
         }
     }
-}
+};
 </script>
 
-<style>
-</style>
+<style></style>

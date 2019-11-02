@@ -5,25 +5,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator';
 
 @Component
 class LogoutButton extends Vue {
-    url = 'api/user/logout'
-    loading = false
+    url = 'api/user/logout';
+    loading = false;
 
     async onLogout() {
-        this.loading = true
+        this.loading = true;
         try {
-            const data = (await this.$axios.$post(this.url)).redirect
-            window.location.href = data
+            const data = (await this.$axios.$post(this.url)).redirect;
+            window.location.href = data;
         } catch (error) {}
-        this.loading = false
+        this.loading = false;
     }
 }
 
-export default LogoutButton
+export default LogoutButton;
 </script>
 
-<style>
-</style>
+<style></style>
