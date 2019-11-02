@@ -5,7 +5,7 @@
                 <template v-for="(value, name) in navigation">
                     <!-- 单层菜单 -->
                     <template v-if="!value.sub">
-                        <v-list-item :key="name" :to="name" router exact link>
+                        <v-list-item :key="name" :to="composeUrl([name])" router exact link>
                             <v-list-item-action>
                                 <v-icon>{{ value.icon }}</v-icon>
                             </v-list-item-action>
