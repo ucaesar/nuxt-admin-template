@@ -45,8 +45,8 @@
     </v-container>
 </template>
 
-<script lang="ts">
-/* import { fieldRequired } from '~/utils/form'
+<script>
+import { fieldRequired } from '~/utils/form'
 import Message from '~/components/Message.vue'
 
 export default {
@@ -95,17 +95,7 @@ export default {
             this.errorMessages = ''
         }
     }
-} */
-import { Component, Vue } from 'nuxt-property-decorator';
-
-@Component({
-    components: {
-        Message: () => import('@/components/Message.vue')
-    }
-})
-class Login extends Vue {}
-
-export default Login;
+}
 </script>
 
 <style></style>
