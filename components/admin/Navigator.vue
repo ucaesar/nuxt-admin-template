@@ -81,4 +81,8 @@ class Navigator extends Vue {
 export default Navigator;
 </script>
 
-<style></style>
+<style>
+.nav {
+    padding-top: 64px;
+}
+</style>

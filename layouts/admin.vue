@@ -24,7 +24,4 @@ export default {
 </script>
 
 <style>
-.nav {
-    padding-top: 64px;
-}
 </style>
