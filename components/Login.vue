@@ -46,56 +46,6 @@
 </template>
 
 <script lang="ts">
-/* import { fieldRequired } from '~/utils/form';
-import Message from '~/components/Message.vue';
-
-export default {
-    components: {
-        Message
-    },
-    data: () => ({
-        url: 'api/user/login',
-        loginForm: {
-            username: '',
-            password: ''
-        },
-        valid: true,
-        loading: false,
-        errorMessages: '',
-        rules: {
-            fieldRequired
-        }
-    }),
-    methods: {
-        async onSubmit() {
-            if (this.$refs.loginForm.validate()) {
-                this.clearErrorMessages();
-                this.loading = true;
-                try {
-                    const data = (await this.$axios.$post(
-                        this.url,
-                        this.loginForm
-                    )).redirect;
-                    window.location.href = data;
-                } catch (error) {
-                    const code = parseInt(
-                        error.response && error.response.status
-                    );
-                    if (code === 401) {
-                        this.unAuthError();
-                    }
-                }
-                this.loading = false;
-            }
-        },
-        unAuthError() {
-            this.errorMessages = this.$t('login.error.invalidAccount');
-        },
-        clearErrorMessages() {
-            this.errorMessages = '';
-        }
-    }
-}; */
 
 import { Component, Vue, Ref } from 'nuxt-property-decorator';
 import { VForm, fieldRequired } from '../utils/form';
