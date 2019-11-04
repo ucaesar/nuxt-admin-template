@@ -10,17 +10,17 @@
     </v-app>
 </template>
 
-<script>
-import AdminNavigator from '@/components/admin/Navigator';
-import AdminToolbar from '@/components/admin/Toolbar';
-
-export default {
-    middleware: 'admin/navigation',
+<script lang="ts">
+import { Component, Vue } from 'nuxt-property-decorator';
+@Component({
     components: {
-        AdminNavigator,
-        AdminToolbar
-    }
-};
+        AdminNavigator: () => import('@/components/admin/Navigator.vue'),
+        AdminToolbar: () => import('@/components/admin/Toolbar.vue')
+    },
+    middleware: ['admin/navigation']
+})
+class Admin extends Vue {}
+export default Admin;
 </script>
 
 <style>
