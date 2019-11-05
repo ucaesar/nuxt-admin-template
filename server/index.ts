@@ -80,13 +80,8 @@ export default async function(
             urlstr.startsWith('/_nuxt')
         )
     ) {
-<<<<<<< HEAD
         let route_fn = app.callback()
         await route_fn(req, res)
-=======
-        let route_fn = app.callback();
-        route_fn(req, res);
->>>>>>> 62a4b6f2c1749f0fac72341c816a13abfd857ec4
     }
     if (!urlstr.startsWith('/api/') && res.statusCode !== 403) {
         next();
