@@ -1,15 +1,15 @@
 interface Navigation {
     [rootName: string]: {
-        icon: string
-        sub?: string[]
-    }
+        icon: string;
+        sub?: string[];
+    };
 }
 
 const navConf: Navigation[] = [
     {
         superadmin: {
             icon: 'mdi-home',
-            sub: ['rolemanager', 'testString']
+            sub: ['rolemanager']
         }
     },
     {
@@ -17,6 +17,6 @@ const navConf: Navigation[] = [
             icon: 'mdi-lock'
         }
     }
-]
+];
 
-export { Navigation, navConf }
+export { Navigation, navConf };

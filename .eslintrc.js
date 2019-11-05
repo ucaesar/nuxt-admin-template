@@ -6,8 +6,8 @@ module.exports = {
     },
     // parser: '@typescript-eslint/parser',
     parserOptions: {
-        parser: 'babel-eslint'
-        // parser: '@typescript-eslint/parser'
+        // parser: 'babel-eslint'
+        parser: '@typescript-eslint/parser'
         // ecmaVersion: 6,
         // sourceType: 'module',
         // ecmaFeatures: {
@@ -22,6 +22,7 @@ module.exports = {
     plugins: ['html', '@typescript-eslint'],
     // add your custom rules here
     rules: {
+        'no-unused-vars': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
 
         'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
@@ -54,4 +55,4 @@ module.exports = {
         'unicorn/throw-new-error': 'off',
         'prettier/prettier': 'off'
     }
-}
+};

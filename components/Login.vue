@@ -45,57 +45,60 @@
     </v-container>
 </template>
 
-<script>
-import { fieldRequired } from '~/utils/form'
-import Message from '~/components/Message'
+<script lang="ts">
 
-export default {
+import { Component, Vue, Ref } from 'nuxt-property-decorator';
+import { VForm, fieldRequired } from '../utils/form';
+
+interface LoginForm {
+    username: '';
+    password: '';
+}
+
+@Component({
     components: {
-        Message
-    },
-    data: () => ({
-        url: 'api/user/login',
-        loginForm: {
-            username: '',
-            password: ''
-        },
-        valid: true,
-        loading: false,
-        errorMessages: '',
-        rules: {
-            fieldRequired
-        }
-    }),
-    methods: {
-        async onSubmit() {
-            if (this.$refs.loginForm.validate()) {
-                this.clearErrorMessages()
-                this.loading = true
-                try {
-                    const data = (await this.$axios.$post(
-                        this.url,
-                        this.loginForm
-                    )).redirect
-                    window.location.href = data
-                } catch (error) {
-                    const code = parseInt(
-                        error.response && error.response.status
-                    )
-                    if (code === 401) {
-                        this.unAuthError()
-                    }
+        Message: () => import('@/components/Message.vue')
+    }
+})
+class Login extends Vue {
+    loginForm: LoginForm = {
+        username: '',
+        password: ''
+    };
+
+    url = 'api/user/login';
+    valid = true;
+    loading = false;
+    errorMessages = '';
+    rules = { fieldRequired };
+
+    @Ref('loginForm') readonly form!: VForm;
+
+    async onSubmit() {
+        if ((this.form as VForm).validate()) {
+            this.clearErrorMessages();
+            this.loading = true;
+            try {
+                const data = (await this.$axios.$post(this.url, this.loginForm))
+                    .redirect;
+                window.location.href = data;
+            } catch (error) {
+                const code = parseInt(error.response && error.response.status);
+                if (code === 401) {
+                    this.unAuthError();
                 }
-                this.loading = false
             }
-        },
-        unAuthError() {
-            this.errorMessages = this.$t('login.error.invalidAccount')
-        },
-        clearErrorMessages() {
-            this.errorMessages = ''
+            this.loading = false;
         }
     }
+    unAuthError() {
+        this.errorMessages = this.$t('login.error.invalidAccount').toString();
+    }
+    clearErrorMessages() {
+        this.errorMessages = '';
+    }
 }
+export default Login;
 </script>
 
 <style></style>

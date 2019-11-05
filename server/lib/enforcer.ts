@@ -1,7 +1,7 @@
-import path from 'path'
-import * as casbin from 'casbin'
-import {SequelizeAdapter} from 'casbin-sequelize-adapter'
-import { Enforcer } from 'casbin'
+import path from 'path';
+import * as casbin from 'casbin';
+import { SequelizeAdapter } from 'casbin-sequelize-adapter';
+import { Enforcer } from 'casbin';
 
 async function getEnforer() {
     const a = await SequelizeAdapter.newAdapter({
@@ -9,13 +9,13 @@ async function getEnforer() {
         dialect: 'sqlite',
         storage: path.join(__dirname, '../test/database/nuxtauth.sqlite'),
         logging: false
-    })
+    });
     const e = await casbin.newEnforcer(
         path.join(__dirname, '../middlewares/casbin/model.conf'),
         // path.join(__dirname, "../middlewares/casbin/policy.csv")
         a
-    )
-    return e
+    );
+    return e;
 }
 
-export default getEnforer
+export default getEnforer;

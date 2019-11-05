@@ -1,7 +1,7 @@
-import { Configuration } from '@nuxt/types'
-import bodyParser from 'body-parser'
+import { Configuration } from '@nuxt/types';
+import bodyParser from 'body-parser';
 
-const colors = require('vuetify/es5/util/colors').default
+const colors = require('vuetify/es5/util/colors').default;
 
 const config: Configuration = {
     mode: 'universal',
@@ -119,7 +119,7 @@ const config: Configuration = {
         bodyParser.json(),
         { path: '/', handler: '~/server/index.ts' }
     ]
-}
+};
 
 // module.exports = config
-export default config
+export default config;
