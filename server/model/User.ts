@@ -9,6 +9,8 @@ import {
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 import getEnforcer from '../lib/enforcer';
+import RoleUser from './RoleUser';
+import Role from './Role';
 
 @Table({ tableName: 'userabcs' })
 class User extends Model<User> {
@@ -34,9 +36,13 @@ class User extends Model<User> {
     password!: string;
     // public email!: string
 
+    @BelongsToMany(() => Role, () => RoleUser)
+    roles?: Role[];
+    
     @CreatedAt
     @Column
     createdAt!: Date;
+
     @UpdatedAt
     @Column
     updatedAt!: Date;
