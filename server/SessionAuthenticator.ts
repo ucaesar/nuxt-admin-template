@@ -1,6 +1,6 @@
 const BaseAuthenticator = require('./middlewares/BaseAuthenticator');
 import { encode, decode, encodeWithoutDate } from './lib/encryption';
-import User from './model/user';
+import User from './model/User';
 import SuperAdmin from './model/SuperAdmin';
 // import {User, SuperAdmin} from './model'
 

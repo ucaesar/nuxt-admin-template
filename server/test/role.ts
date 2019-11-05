@@ -1,7 +1,7 @@
 const chai = require('chai');
 const expect = require('chai').expect;
 const chaiHttp = require('chai-http');
-const arr = require('../model/test');
+// const arr = require('../model/test');
 import app from './index';
 
 chai.use(chaiHttp);
@@ -10,7 +10,6 @@ describe('Role API test', () => {
     const server = app.listen(56556);
 
     it('test api/login with wrong username/password', async () => {
-        console.log(arr[0]);
         const req = chai.request.agent(server);
         let res = await req
             .post('/en/api/user/login')
