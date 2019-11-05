@@ -1,18 +1,20 @@
 <template>
     <v-container>
         <v-btn class="mb-4" color="primary"
-            ><v-icon>mdi-plus</v-icon>New Role</v-btn
+            ><v-icon>mdi-plus</v-icon
+            >{{ $t('rolemanager.newRoleButtonText') }}</v-btn
         >
-        <v-expansion-panels>
-            <v-expansion-panel v-for="(role, i) in roles" :key="i">
-                <v-expansion-panel-header>{{ role }} </v-expansion-panel-header>
-            </v-expansion-panel>
-        </v-expansion-panels>
+        <v-data-table
+            :headers="headers"
+            :items="roles"
+            :items-per-page="5"
+            class="elevation-1"
+        ></v-data-table>
     </v-container>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+/* export default {
     layout: 'admin',
     async asyncData({ $axios }) {
         const url = '/api/roles';
@@ -29,7 +31,36 @@ export default {
             console.log('wow');
         }
     }
-};
+}; */
+import { Component, Vue } from 'nuxt-property-decorator';
+import consola from 'consola';
+import { $t } from '@/utils/t';
+
+@Component({
+    layout: 'admin'
+})
+class RoleManager extends Vue {
+    headers = [
+        {
+            text: $t('rolemanager.roleNameHeaderText'),
+            value: 'name',
+            sortable: false
+        }
+    ];
+
+    async asyncData({ $axios }) {
+        const url = '/api/roles';
+        let roles = [];
+        try {
+            roles = (await $axios.$get(url)).result;
+        } catch (error) {
+            consola.error(`error from get(${url})`, error);
+        }
+        return { roles };
+    }
+}
+
+export default RoleManager;
 </script>
 
 <style></style>

@@ -33,5 +33,10 @@ export default {
         error: {
             fieldRequired: 'Required *'
         }
+    },
+
+    rolemanager: {
+        newRoleButtonText: 'New Role',
+        roleNameHeaderText: 'Role Name'
     }
 };

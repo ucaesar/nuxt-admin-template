@@ -33,5 +33,10 @@ export default {
         error: {
             fieldRequired: '必填 *'
         }
+    },
+    
+    rolemanager: {
+        newRoleButtonText: '新建角色',
+        roleNameHeaderText: '角色名'
     }
 };
