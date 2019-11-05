@@ -84,7 +84,7 @@ export default async function(
         )
     ) {
         let route_fn = app.callback()
-        route_fn(req, res)
+        await route_fn(req, res)
     }
     if (!urlstr.startsWith('/api/')&&res.statusCode!==403) {
         next()
