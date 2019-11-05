@@ -10,7 +10,10 @@ roleRouter.get('/', async ctx => {
     const num = ctx.request.query.num;
     // consola.info(start + ' ' + num)
     const e = await getEnforcer();
-    let result = e.getAllRoles().sort();
+    // let result = e.getAllRoles().sort();
+    let result = _.map(e.getAllRoles().sort(), function(str: string) {
+        return { name: str };
+    });
     const total = result.length;
     if (start && start >= 0 && start < total && num && num > 0) {
         result = _.slice(result, start, start + num);
