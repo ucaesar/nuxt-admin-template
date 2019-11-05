@@ -9,7 +9,15 @@
             :items="roles"
             :items-per-page="5"
             class="elevation-1"
-        ></v-data-table>
+            ><template v-slot:item.action="{ item }">
+                <v-icon small class="mr-2" @click="onEdit">
+                    mdi-pencil
+                </v-icon>
+                <v-icon small @click="onDelete">
+                    mdi-delete
+                </v-icon>
+            </template></v-data-table
+        >
     </v-container>
 </template>
 
@@ -45,6 +53,16 @@ class RoleManager extends Vue {
             text: $t('rolemanager.roleNameHeaderText'),
             value: 'name',
             sortable: false
+        },
+        {
+            text: 'Description',
+            value: 'description',
+            sortable: false
+        },
+        {
+            text: 'Actions',
+            value: 'action',
+            sortable: false
         }
     ];
 
@@ -58,6 +76,10 @@ class RoleManager extends Vue {
         }
         return { roles };
     }
+
+    onEdit(val) {}
+
+    onDelete() {}
 }
 
 export default RoleManager;
