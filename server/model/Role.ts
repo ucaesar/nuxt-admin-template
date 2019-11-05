@@ -8,6 +8,8 @@ import {
     UpdatedAt
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
+import User from './User';
+import RoleUser from './RoleUser';
 // import { sequelize } from '../db'
 
 @Table({ tableName: 'role' })
@@ -26,6 +28,9 @@ class Role extends Model<Role> {
     })
     rolename!: string;
 
+    @BelongsToMany(() => User, () => RoleUser)
+    users?: User[];
+
     @CreatedAt
     @Column
     createdAt!: Date;
@@ -34,21 +39,5 @@ class Role extends Model<Role> {
     @Column
     updatedAt!: Date;
 }
-
-// Role.init(
-//     {
-//         id: {
-//             type: DataTypes.INTEGER.UNSIGNED,
-//             primaryKey: true,
-//             autoIncrement: true
-//         },
-//         username: {
-//             type: DataTypes.STRING,
-//             unique: true,
-//             allowNull: false
-//         }
-//     },
-//     { tableName: 'role', sequelize: sequelize }
-// )
 
 export default Role;

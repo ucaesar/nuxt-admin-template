@@ -9,6 +9,8 @@ import {
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 import getEnforcer from '../lib/enforcer';
+import RoleUser from './RoleUser';
+import Role from './Role';
 
 @Table({ tableName: 'userabcs' })
 class User extends Model<User> {
@@ -34,9 +36,13 @@ class User extends Model<User> {
     password!: string;
     // public email!: string
 
+    @BelongsToMany(() => Role, () => RoleUser)
+    roles?: Role[];
+
     @CreatedAt
     @Column
     createdAt!: Date;
+
     @UpdatedAt
     @Column
     updatedAt!: Date;
@@ -66,33 +72,5 @@ class User extends Model<User> {
         return result;
     }
 }
-
-// User.init(
-//     {
-//         id: {
-//             type: DataTypes.UUID,
-//             unique: true,
-//             primaryKey: true,
-//             allowNull: false,
-//             defaultValue: DataTypes.UUIDV1
-//         },
-//         username: {
-//             type: DataTypes.STRING,
-//             unique: true,
-//             allowNull: false
-//         },
-//         password: {
-//             type: DataTypes.STRING,
-//             unique: false,
-//             allowNull: false
-//         }
-//         // email: {
-//         //     type: DataTypes.STRING,
-//         //     unique: true,
-//         //     allowNull: true
-//         // }
-//     },
-//     { tableName: 'userabcs', sequelize: sequelize }
-// )
 
 export default User;
