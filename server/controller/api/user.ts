@@ -2,7 +2,7 @@ import Router from 'koa-router';
 import SessionAuthenticator from '../../SessionAuthenticator';
 const userRouter = new Router();
 // const getEnforcer = require("../../lib/enforcer");
-import User from '../../model/user';
+import User from '../../model/User';
 
 userRouter.get('/', async (ctx, next) => {
     // const e = await getEnforcer();
