@@ -38,9 +38,30 @@ roleRouter.delete('/:name', async ctx => {
     };
 });
 
-roleRouter.put('/:name', async ctx => {
+// 增加一个role
+// roleRouter.put('/:name', async ctx => {
+//     const e = await getEnforcer();
+//     const name = ctx.params.name;
+//     let result = name.substr(name.length - 1, name.length) === 'R';
+//     if (result) {
+//         const roles = e.getAllRoles();
+//         result = !_.includes(roles, name);
+//     }
+//     if (result) {
+//         result = await e.addGroupingPolicy(name, 'anonymousR');
+//     }
+//     ctx.response.type = 'text/json';
+//     ctx.response.body = {
+//         result,
+//         name
+//     };
+// });
+
+// 增加一个role
+roleRouter.post('/:name', async ctx => {
     const e = await getEnforcer();
     const name = ctx.params.name;
+    const request_body = (ctx.req as any).body;
     let result = name.substr(name.length - 1, name.length) === 'R';
     if (result) {
         const roles = e.getAllRoles();
