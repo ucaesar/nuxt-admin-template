@@ -9,7 +9,7 @@ import {
 import Role from './Role';
 import User from './User';
 
-@Table
+@Table({ tableName: 'role_users' })
 export default class RoleUser extends Model<RoleUser> {
     @ForeignKey(() => Role)
     @Column

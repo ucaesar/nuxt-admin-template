@@ -40,20 +40,4 @@ class Role extends Model<Role> {
     updatedAt!: Date;
 }
 
-// Role.init(
-//     {
-//         id: {
-//             type: DataTypes.INTEGER.UNSIGNED,
-//             primaryKey: true,
-//             autoIncrement: true
-//         },
-//         username: {
-//             type: DataTypes.STRING,
-//             unique: true,
-//             allowNull: false
-//         }
-//     },
-//     { tableName: 'role', sequelize: sequelize }
-// )
-
 export default Role;
