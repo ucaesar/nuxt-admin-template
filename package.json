@@ -38,6 +38,7 @@
 		"nuxt-i18n": "^6.3.0",
 		"nuxt-property-decorator": "^2.5.0",
 		"sequelize": "^5.19.6",
+		"sequelize-typescript": "^1.0.0",
 		"sequelizejs-decorators": "^5.0.0",
 		"sqlite3": "^4.1.0",
 		"ts-babel": "^6.1.7",
