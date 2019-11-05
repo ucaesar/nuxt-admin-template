@@ -28,6 +28,12 @@ class Role extends Model<Role> {
     })
     rolename!: string;
 
+    @Column({
+        type: DataTypes.STRING,
+        allowNull: true
+    })
+    description!: string;
+
     @BelongsToMany(() => User, () => RoleUser)
     users?: User[];
 
