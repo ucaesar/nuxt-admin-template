@@ -5,7 +5,7 @@
                 <template v-for="(value, name) in navigation">
                     <!-- 单层菜单 -->
                     <template v-if="!value.sub">
-                        <v-list-item :key="name" :to="composeUrl([name])" router exact link>
+                        <v-list-item :key="name" :to="composeUrl([name])" nuxt exact link>
                             <v-list-item-action>
                                 <v-icon>{{ value.icon }}</v-icon>
                             </v-list-item-action>
@@ -24,6 +24,7 @@
                             :key="name"
                             :prepend-icon="value.icon"
                             no-action
+                            :group="name"
                         >
                             <template v-slot:activator>
                                 <v-list-item-content>
@@ -37,7 +38,7 @@
                                 v-for="subItem in value.sub"
                                 :key="subItem"
                                 :to="composeUrl([name, subItem])"
-                                router
+                                nuxt
                                 link
                                 exact
                             >
