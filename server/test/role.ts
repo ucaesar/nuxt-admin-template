@@ -1,7 +1,7 @@
 import chai from 'chai';
 const expect = require('chai').expect;
 import chaiHttp from 'chai-http';
-import { initConnect } from './index1';
+import { initConnect } from './index';
 import connect from 'connect';
 import * as http from 'http';
 
