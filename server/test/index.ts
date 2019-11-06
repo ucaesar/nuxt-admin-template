@@ -32,7 +32,7 @@ const CONFIG: Partial<session.opts> = {
 } as Partial<session.opts>;
 
 async function initServer() {
-    const r = await connectdb(sequelize);
+    await connectdb(sequelize);
 
     // 默认koa不处理所有的respnose,在apiRouter里，才把respond设为真让koa处理response
     koa_app.use(async (ctx, next) => {
