@@ -15,6 +15,7 @@ export default {
         },
         navigator: {
             '/superadmin': 'Super Admin',
+            '/superadmin/resourcemanager': 'Resource Manager',
             '/superadmin/rolemanager': 'Role Manager'
         }
     },
@@ -35,8 +36,10 @@ export default {
         }
     },
 
-    rolemanager: {
-        newRoleButtonText: 'New Role',
-        roleNameHeaderText: 'Role Name'
+    superadmin: {
+        rolemanager: {
+            newRoleButtonText: 'New Role',
+            roleNameHeaderText: 'Role Name'
+        }
     }
 };

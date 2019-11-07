@@ -2,7 +2,7 @@
     <v-container>
         <v-btn class="mb-4" color="primary"
             ><v-icon>mdi-plus</v-icon
-            >{{ $t('rolemanager.newRoleButtonText') }}</v-btn
+            >{{ $t('superadmin.rolemanager.newRoleButtonText') }}</v-btn
         >
         <v-data-table
             :headers="headers"
@@ -22,24 +22,6 @@
 </template>
 
 <script lang="ts">
-/* export default {
-    layout: 'admin',
-    async asyncData({ $axios }) {
-        const url = '/api/roles';
-        let roles = [];
-        try {
-            roles = (await $axios.$get(url)).result;
-        } catch (error) {
-            console.log(`error from get(${url})`, error);
-        }
-        return { roles };
-    },
-    methods: {
-        onClick() {
-            console.log('wow');
-        }
-    }
-}; */
 import { Component, Vue } from 'nuxt-property-decorator';
 import consola from 'consola';
 import { $t } from '@/utils/t';
@@ -50,7 +32,7 @@ import { $t } from '@/utils/t';
 class RoleManager extends Vue {
     headers = [
         {
-            text: $t('rolemanager.roleNameHeaderText'),
+            text: $t('superadmin.rolemanager.roleNameHeaderText'),
             value: 'name',
             sortable: false
         },

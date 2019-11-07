@@ -15,6 +15,7 @@ export default {
         },
         navigator: {
             '/superadmin': '超级管理员',
+            '/superadmin/resourcemanager': '资源管理',
             '/superadmin/rolemanager': '角色管理'
         }
     },
@@ -34,9 +35,11 @@ export default {
             fieldRequired: '必填 *'
         }
     },
-    
-    rolemanager: {
-        newRoleButtonText: '新建角色',
-        roleNameHeaderText: '角色名'
+
+    superadmin: {
+        rolemanager: {
+            newRoleButtonText: '新建角色',
+            roleNameHeaderText: '角色名'
+        }
     }
 };
