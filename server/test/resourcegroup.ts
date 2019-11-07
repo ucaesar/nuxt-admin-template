@@ -13,28 +13,28 @@ import RoleUser from '../model/RoleUser';
 chai.use(chaiHttp);
 
 describe('ResourceGroup API test', () => {
-    // let app;
-    // let server: http.Server;
-    // let req: ChaiHttp.Agent;
+    let app;
+    let server: http.Server;
+    let req: ChaiHttp.Agent;
 
     before(async function() {
-        // app = connect();
-        // await initConnect(app);
-        // server = app.listen(56556);
-        await connectdb(sequelize);
+        app = connect();
+        await initConnect(app);
+        server = app.listen(56556);
+        // await connectdb(sequelize);
     });
 
     after(async function() {
-        // server.close();
+        server.close();
     });
 
-    // beforeEach(function() {
-    //     req = chai.request.agent(server);
-    // });
+    beforeEach(function() {
+        req = chai.request.agent(server);
+    });
 
-    // afterEach(function() {
-    //     req.close();
-    // });
+    afterEach(function() {
+        req.close();
+    });
 
     it('test get root group', async () => {
         let groot = await ResourceGroup.findOne({
@@ -78,20 +78,50 @@ describe('ResourceGroup API test', () => {
         }
     });
 
-    it('test add top1-3 group to root group', async () => {
-        let gtop11 = await ResourceGroup.findOne({
-            where: {
-                id: 2
-            }
-        });
-        expect(gtop11).not.to.be.null;
-        if (gtop11 !== null) {
-            let parentg = await gtop11.$get('parent');
-            expect(!parentg).to.be.false;
-            if (parentg) {
-                expect((parentg as ResourceGroup).id).to.equals(1);
-            }
+    it('test add sub1-1 group to top1-1 group', async () => {
+        if (
+            !(await ResourceGroup.findOne({
+                where: { groupname: 'sub1-1' }
+            }))
+        ) {
+            let groot = await ResourceGroup.findOne({
+                where: {
+                    id: 2
+                }
+            });
+            let sub11 = await ResourceGroup.create({
+                groupname: 'sub1-1',
+                description: 'sub1 1'
+            });
+            await (groot as ResourceGroup).$add('children', sub11);
         }
+    });
+
+    it('test add top1-4 group to root group', async () => {
+        let res = await req
+            .post('/api/user/login')
+            .type('json')
+            .send({
+                username: 'superadmin',
+                password: 'superadmin'
+            });
+        // expect(res).to.have.cookie("koa:sess");
+        res = await req
+            .post('/api/resource-group/1/children')
+            .type('json')
+            .send({
+                groupname: 'top1-4',
+                description: 'top1 4'
+            });
+    });
+
+    it('test delete a group', async () => {
+        let delgroup = (await ResourceGroup.findOne({
+            where: {
+                groupname: 'sub1-1'
+            }
+        })) as ResourceGroup;
+        await delgroup.destroy()
     });
 
     // it('test get users of role1', async () => {
