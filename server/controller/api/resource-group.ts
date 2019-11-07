@@ -2,8 +2,7 @@ import Router from 'koa-router';
 const resourceGroupRouter = new Router();
 import getEnforcer from '../../lib/enforcer';
 import ResourceGroup from '../../model/ResouceGroup';
-import { isArray } from 'util';
-import { Sequelize } from 'sequelize-typescript';
+import { Op } from 'sequelize';
 
 // 获取指定id的ResourceGroup的所有子group
 resourceGroupRouter.get('/:id/children', async (ctx, next) => {
@@ -14,9 +13,10 @@ resourceGroupRouter.get('/:id/children', async (ctx, next) => {
         }
     });
     if (parentGroup) {
-        let children = await parentGroup.$get('children',{
-            where:{
-                id:{}
+        let children = await parentGroup.$get('children', {
+            attributes: ['id', 'groupname', 'description'],
+            where: {
+                id: { [Op.ne]: parentId }
             }
         });
         children = Array.isArray(children) ? children : [children];
