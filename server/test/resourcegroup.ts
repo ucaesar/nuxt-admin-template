@@ -78,6 +78,22 @@ describe('ResourceGroup API test', () => {
         }
     });
 
+    it('test add top1-3 group to root group', async () => {
+        let gtop11 = await ResourceGroup.findOne({
+            where: {
+                id: 2
+            }
+        });
+        expect(gtop11).not.to.be.null;
+        if (gtop11 !== null) {
+            let parentg = await gtop11.$get('parent');
+            expect(!parentg).to.be.false;
+            if (parentg) {
+                expect((parentg as ResourceGroup).id).to.equals(1);
+            }
+        }
+    });
+
     // it('test get users of role1', async () => {
     //     let role1 = await Role.findOne({
     //         where: {
