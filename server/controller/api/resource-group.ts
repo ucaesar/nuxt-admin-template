@@ -64,6 +64,7 @@ resourceGroupRouter.post('/:id/children', async ctx => {
         });
         // 往父group里添加新建立的group
         await parentGroup.$add('children', newgroup);
+        ctx.response.type = 'text/json';
         ctx.response.status = 200;
         ctx.response.body = newgroup;
     } else {
@@ -72,5 +73,29 @@ resourceGroupRouter.post('/:id/children', async ctx => {
         ctx.response.body = 'not found';
     }
 });
+
+// 删除指定id的ResourceGroup
+resourceGroupRouter.delete('/:id', async ctx => {
+    const delId = ctx.params.id;
+    // 找到要删除的group
+    const delGroup = await ResourceGroup.findOne({
+        where: {
+            id: delId
+        }
+    });
+    if (delGroup) {
+        // 得到父group下的所有子group
+        await delGroup.destroy();
+        ctx.response.status = 200;
+        ctx.response.body = 'deleted';
+    } else {
+        // 找不到此group
+        ctx.response.status = 404;
+        ctx.response.body = 'not found';
+    }
+});
+
+// 获取指定id的ResourceGroup下的所有resource
+resourceGroupRouter.get('/:id/resource', async ctx => {});
 
 export default resourceGroupRouter;

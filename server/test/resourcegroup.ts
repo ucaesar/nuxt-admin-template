@@ -124,6 +124,33 @@ describe('ResourceGroup API test', () => {
         await delgroup.destroy()
     });
 
+    it('add a group which has children', async () => {
+        let groot = await ResourceGroup.findOne({
+            where: {
+                id: 1
+            }
+        });
+        let top15 = await ResourceGroup.create({
+            groupname: 'top1-5',
+            description: 'top1 5'
+        });
+        await (groot as ResourceGroup).$add('children', top15);
+        let sub51 = await ResourceGroup.create({
+            groupname: 'sub5-1',
+            description: 'sub5 1'
+        });
+        await (top15 as ResourceGroup).$add('children', sub51);
+    });
+
+    it('delete a group which has children',async () => {
+        let delgroup = (await ResourceGroup.findOne({
+            where: {
+                groupname: 'top1-5'
+            }
+        })) as ResourceGroup;
+        await delgroup.destroy();
+    })
+
     // it('test get users of role1', async () => {
     //     let role1 = await Role.findOne({
     //         where: {
