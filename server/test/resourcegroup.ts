@@ -97,7 +97,7 @@ describe('ResourceGroup API test', () => {
         }
     });
 
-    it('test add top1-4 group to root group', async () => {
+    it('test add top1-4 group to root group using restful api', async () => {
         let res = await req
             .post('/api/user/login')
             .type('json')
@@ -121,10 +121,10 @@ describe('ResourceGroup API test', () => {
                 groupname: 'sub1-1'
             }
         })) as ResourceGroup;
-        await delgroup.destroy()
+        await delgroup.destroy();
     });
 
-    it('add a group which has children', async () => {
+    it('test add a group which has children', async () => {
         let groot = await ResourceGroup.findOne({
             where: {
                 id: 1
@@ -142,14 +142,45 @@ describe('ResourceGroup API test', () => {
         await (top15 as ResourceGroup).$add('children', sub51);
     });
 
-    it('delete a group which has children',async () => {
+    it('test delete a group which has children', async () => {
         let delgroup = (await ResourceGroup.findOne({
             where: {
                 groupname: 'top1-5'
             }
         })) as ResourceGroup;
         await delgroup.destroy();
-    })
+    });
+
+    it('test add a group which has children using restful api', async () => {
+        let res;
+        res = await req
+            .post('/api/user/login')
+            .type('json')
+            .send({
+                username: 'superadmin',
+                password: 'superadmin'
+            });
+        res = await req
+            .post('/api/resource-group/1/children')
+            .type('json')
+            .send({
+                groupname: 'top1-6',
+                description: 'top1 6'
+            });
+        const topid = res.body.id;
+        expect(res).to.have.status(200);
+        res = await req
+            .post('/api/resource-group/' + topid + '/children')
+            .type('json')
+            .send({
+                groupname: 'sub6-1',
+                description: 'sub6 1'
+            });
+        const subid = res.body.id;
+        expect(res).to.have.status(200);
+        res = await req.delete('/api/resource-group/' + topid);
+        expect(res).to.have.status(200);
+    });
 
     // it('test get users of role1', async () => {
     //     let role1 = await Role.findOne({
