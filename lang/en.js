@@ -15,8 +15,9 @@ export default {
         },
         navigator: {
             '/superadmin': 'Super Admin',
-            '/superadmin/resourcemanager': 'Resource Manager',
-            '/superadmin/rolemanager': 'Role Manager'
+            '/superadmin/resourcegroup': 'Resource Group Manager',
+            '/superadmin/resource': 'Resource Manager',
+            '/superadmin/role': 'Role Manager'
         }
     },
 
