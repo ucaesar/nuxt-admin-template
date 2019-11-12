@@ -2,6 +2,7 @@ import Router from 'koa-router';
 const resourceGroupRouter = new Router();
 import ResourceGroup from '../../model/ResouceGroup';
 import { Op } from 'sequelize';
+import _ from 'lodash';
 
 // 获取指定id的ResourceGroup的所有子group
 resourceGroupRouter.get('/:id/children', async (ctx, next) => {
@@ -13,6 +14,9 @@ resourceGroupRouter.get('/:id/children', async (ctx, next) => {
         }
     });
     if (parentGroup) {
+        // 获取分页参数
+        const start = ctx.request.query.start;
+        const num = ctx.request.query.count;
         // 得到父group下的所有子group
         let children = await parentGroup.$get('children', {
             attributes: ['id', 'groupname', 'description'],
@@ -22,9 +26,17 @@ resourceGroupRouter.get('/:id/children', async (ctx, next) => {
         });
         // 如果子group为单个,sequelize默认返回的是单个实例,需要包进一个数组后再作为返回结果
         children = Array.isArray(children) ? children : [children];
+        const total = children.length;
+        let result = children;
+        if (start && start >= 0 && start < total && num && num > 0) {
+            result = _.slice(result, start, start + num);
+        }
         ctx.response.type = 'text/json';
         ctx.response.status = 200;
-        ctx.response.body = children;
+        ctx.response.body = {
+            result,
+            total
+        };
     } else {
         // 找不到父group
         ctx.response.status = 404;
