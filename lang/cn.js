@@ -15,8 +15,9 @@ export default {
         },
         navigator: {
             '/superadmin': '超级管理员',
-            '/superadmin/resourcemanager': '资源管理',
-            '/superadmin/rolemanager': '角色管理'
+            '/superadmin/resource': '资源管理',
+            '/superadmin/resourcegroup': '资源组管理',
+            '/superadmin/role': '角色管理'
         }
     },
 
