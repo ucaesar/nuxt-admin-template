@@ -29,27 +29,10 @@ const policyArr = [
     ['g', 'superadmin', 'superadminR']
 ];
 
-async function getEnforer() {
-    const a = await SequelizeAdapter.newAdapter({
-        host: 'localhost',
-        dialect: 'sqlite',
-        storage: path.join(__dirname, './database/nuxtauth.sqlite'),
-        logging: false
-    });
-    const e = await casbin.newEnforcer(
-        path.join(__dirname, '../middlewares/casbin/model.conf'),
-        // path.join(__dirname, "../middlewares/casbin/policy.csv")
-        a
-    );
-    return e;
-}
+import getEnforer from '../lib/enforcer';
 
 // async function testPolicy() {
-// 	const a = await SequelizeAdapter.newAdapter({
-// 		host: "localhost",
-// 		dialect: "sqlite",
-// 		storage: path.join(__dirname, "./database/policy.sqlite")
-// 	});
+
 // 	const e1 = await casbin.newEnforcer(
 // 		path.join(__dirname, "../middlewares/casbin/model.conf"),
 // 		path.join(__dirname, "../middlewares/casbin/policy.csv")
