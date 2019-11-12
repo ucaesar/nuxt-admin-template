@@ -2,6 +2,7 @@ import { SequelizeAdapter } from 'casbin-sequelize-adapter';
 import { Adapter, Helper, Model } from 'casbin';
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 import { CasbinRule } from '../model/CasbinRule';
+import { sequelize } from '../db';
 
 class CasbinSequelizeAdapter implements Adapter {
     private option: SequelizeOptions;
@@ -23,7 +24,8 @@ class CasbinSequelizeAdapter implements Adapter {
     }
 
     private async open() {
-        this.sequelize = new Sequelize(this.option);
+        // this.sequelize = new Sequelize(this.option);
+        this.sequelize = sequelize;
         await this.sequelize.authenticate();
         this.sequelize.addModels([CasbinRule]);
         await this.createTable();
