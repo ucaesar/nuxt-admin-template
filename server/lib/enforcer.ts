@@ -1,10 +1,10 @@
 import path from 'path';
 import * as casbin from 'casbin';
 import { SequelizeAdapter } from 'casbin-sequelize-adapter';
-import { Enforcer } from 'casbin';
+import CasbinSequelizeAdapter from './CasbinSequelizeAdapter';
 
 async function getEnforer() {
-    const a = await SequelizeAdapter.newAdapter({
+    const a = await CasbinSequelizeAdapter.newAdapter({
         host: 'localhost',
         dialect: 'sqlite',
         storage: path.join(__dirname, '../test/database/nuxtauth.sqlite'),

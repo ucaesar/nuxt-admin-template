@@ -5,6 +5,7 @@ const BaseAuthenticator = require('./BaseAuthenticator');
 const BasicAuthenticator = require('./BasicAuthenticator');
 import authorize from './authorization';
 const authentic = require('./authentication');
+import getEnforcer from '../lib/enforcer';
 
 const auth = authenticator => {
     const authen = authenticator ? authenticator : new BasicAuthenticator();
@@ -25,22 +26,19 @@ const auth = authenticator => {
         }
         await authentic(context, authen);
 
-        const adpt = await SequelizeAdapter.newAdapter({
-            host: 'localhost',
-            dialect: 'sqlite',
-            storage: path.join(__dirname, '../test/database/nuxtauth.sqlite'),
-            logging: false
-        });
+        // const adpt = await SequelizeAdapter.newAdapter({
+        //     host: 'localhost',
+        //     dialect: 'sqlite',
+        //     storage: path.join(__dirname, '../test/database/nuxtauth.sqlite'),
+        //     logging: false
+        // });
 
         // const enforcer = await casbin.newEnforcer(
-        // 	path.join(__dirname, 'casbin/model.conf'),
-        // 	path.join(__dirname, 'casbin/policy.csv')
+        //     path.join(__dirname, 'casbin/model.conf'),
+        //     adpt
         // );
 
-        const enforcer = await casbin.newEnforcer(
-            path.join(__dirname, 'casbin/model.conf'),
-            adpt
-        );
+        const enforcer = await getEnforcer();
 
         const allowed = await authorize(context, enforcer);
         console.log(
