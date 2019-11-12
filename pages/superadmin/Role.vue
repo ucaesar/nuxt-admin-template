@@ -32,7 +32,7 @@ import { $t } from '@/utils/t';
 class RoleManager extends Vue {
     headers = [
         {
-            text: $t('superadmin.rolemanager.roleNameHeaderText'),
+            text: $t('superadmin.roleManager.roleNameHeaderText'),
             value: 'name',
             sortable: false
         },

@@ -38,9 +38,13 @@ export default {
     },
 
     superadmin: {
-        rolemanager: {
+        roleManager: {
             newRoleButtonText: '新建角色',
             roleNameHeaderText: '角色名'
+        },
+        resourceGroupManager: {
+            groupNameHeaderText: '资源组名称',
+            groupDescriptionHeaderText: '描述'
         }
     }
 };

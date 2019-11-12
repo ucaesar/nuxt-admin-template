@@ -1,5 +1,7 @@
 <template>
-    <div>This is Resource Group Manager!</div>
+    <v-container>
+        <resource-group-table :resource-groups="resourceGroups" />
+    </v-container>
 </template>
 
 <script lang="ts">
@@ -11,19 +13,14 @@ import consola from 'consola';
 import { Component, Vue } from 'nuxt-property-decorator';
 import { NuxtAxiosInstance } from '@nuxtjs/axios';
 
-interface ResourceGroup {
-    id: number;
-    groupname: string;
-    description: string;
-}
-
-interface ResourceGroupList {
-    result: ResourceGroup[];
-    total: number;
-}
+import { ResourceGroup, ResourceGroupList } from '@/models/superadmin';
 
 @Component({
-    layout: 'admin'
+    layout: 'admin',
+    components: {
+        ResourceGroupTable: () =>
+            import('@/components/superadmin/ResourceGroupTable.vue')
+    }
 })
 class ResourceGroupManager extends Vue {
     async asyncData({ $axios }: { $axios: NuxtAxiosInstance }) {

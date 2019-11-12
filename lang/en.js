@@ -38,9 +38,13 @@ export default {
     },
 
     superadmin: {
-        rolemanager: {
+        roleManager: {
             newRoleButtonText: 'New Role',
             roleNameHeaderText: 'Role Name'
+        },
+        resourceGroupManager: {
+            groupNameHeaderText: 'Group Name',
+            groupDescriptionHeaderText: 'Description'
         }
     }
 };
