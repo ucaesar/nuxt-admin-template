@@ -28,8 +28,8 @@ resourceGroupRouter.get('/:id/children', async (ctx, next) => {
         children = Array.isArray(children) ? children : [children];
         const total = children.length;
         let result = children;
-        if (start && start >= 0 && start < total && num && num > 0) {
-            result = _.slice(result, start, start + num);
+        if (start && Number(start) >= 0 && Number(start) < total && num && Number(num) > 0) {
+            result = _.slice(result, Number(start), Number(start) + Number(num));
         }
         ctx.response.type = 'text/json';
         ctx.response.status = 200;
