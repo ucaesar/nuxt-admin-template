@@ -10,7 +10,6 @@ const policyArr = [
     // ['p', 'anonymousR', '*', '*'],
     ['p', 'anonymousR', '/', 'GET'],
     ['p', 'anonymousR', '/', 'POST'],
-    ['p', 'anonymousR', '/login', 'GET'],
     ['p', 'anonymousR', '/api/login', 'POST'],
     ['p', 'anonymousR', '/api/user/login', 'POST'],
     ['p', 'anonymousR', '/sw.js', 'GET'],
