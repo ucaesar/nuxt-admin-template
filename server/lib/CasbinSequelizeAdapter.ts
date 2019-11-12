@@ -5,7 +5,7 @@ import { CasbinRule } from '../model/CasbinRule';
 
 class CasbinSequelizeAdapter implements Adapter {
     private option: SequelizeOptions;
-    private sequelize!: Sequelize;
+    private sequelize: Sequelize;
 
     constructor(option: SequelizeOptions) {
         this.option = option;
