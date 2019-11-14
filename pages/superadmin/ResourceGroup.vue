@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <resource-group-table :resource-groups="resourceGroups" />
+        <single-select-table :value="resourceGroups" :table-conf="tableConf" />
     </v-container>
 </template>
 
@@ -13,26 +13,45 @@ import consola from 'consola';
 import { Component, Vue } from 'nuxt-property-decorator';
 import { NuxtAxiosInstance } from '@nuxtjs/axios';
 
-import { ResourceGroup, ResourceGroupList } from '@/models/superadmin';
+import { $t } from '@/utils/t';
+import { ResourceGroup } from '@/models/superadmin';
+import { TableDataFromServer } from '@/models/admin';
 
 @Component({
     layout: 'admin',
     components: {
-        ResourceGroupTable: () =>
-            import('@/components/superadmin/ResourceGroupTable.vue')
+        SingleSelectTable: () =>
+            import('@/components/common/SingleSelectTable.vue')
     }
 })
 class ResourceGroupManager extends Vue {
     async asyncData({ $axios }: { $axios: NuxtAxiosInstance }) {
         const url = 'api/resource-group/1/children';
-        let resourceGroups: ResourceGroupList = { result: [], total: 0 };
+        let resourceGroups: TableDataFromServer = { result: [], total: 0 };
         try {
-            resourceGroups = (await $axios.$get(url)) as ResourceGroupList;
+            resourceGroups = (await $axios.$get(url)) as TableDataFromServer;
         } catch (error) {
             consola.error(`error from get(${url})`, error);
         }
         return { resourceGroups };
     }
+
+    tableConf = {
+        headers: [
+            {
+                text: $t('superadmin.resourceGroupManager.groupNameHeaderText'),
+                value: 'groupname',
+                sortable: false
+            },
+            {
+                text: $t(
+                    'superadmin.resourceGroupManager.groupDescriptionHeaderText'
+                ),
+                value: 'description',
+                sortable: false
+            }
+        ]
+    };
 }
 export default ResourceGroupManager;
 </script>
