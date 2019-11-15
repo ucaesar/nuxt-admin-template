@@ -1,6 +1,10 @@
 <template>
     <v-container>
-        <single-select-table :value="resourceGroups" :table-conf="tableConf" />
+        <single-select-table
+            :value="resourceGroups"
+            :table-conf="tableConf"
+            :loading="loading"
+        />
     </v-container>
 </template>
 
@@ -16,6 +20,7 @@ import { NuxtAxiosInstance } from '@nuxtjs/axios';
 import { $t } from '@/utils/t';
 import { ResourceGroup } from '@/models/superadmin';
 import { TableDataFromServer } from '@/models/admin';
+import { DEFAULT_ITEMS_PER_PAGE } from '@/conf/admin/table';
 
 @Component({
     layout: 'admin',
@@ -36,7 +41,11 @@ class ResourceGroupManager extends Vue {
         return { resourceGroups };
     }
 
+    loading = false;
     tableConf = {
+        footerProps: {
+            itemsPerPageOptions: [1, DEFAULT_ITEMS_PER_PAGE, 20, 50]
+        },
         headers: [
             {
                 text: $t('superadmin.resourceGroupManager.groupNameHeaderText'),

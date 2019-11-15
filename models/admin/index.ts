@@ -5,4 +5,5 @@ export interface TableDataFromServer {
 
 export interface TableConf {
     headers: any[];
+    footerPorps?: any
 }
