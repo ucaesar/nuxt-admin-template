@@ -85,7 +85,7 @@ class NavigationFilter {
     }
 }
 
-export default async function({ $axios, store }) {
+export default async function ({ $axios, store }) {
     consola.info('middelware: navigation.ts');
 
     if (process.server) {

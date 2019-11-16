@@ -1,10 +1,6 @@
 <template>
     <v-container>
-        <single-select-table
-            :value="resourceGroups"
-            :table-conf="tableConf"
-            :loading="loading"
-        />
+        <single-select-table :value="resourceGroups" :table-conf="tableConf" />
     </v-container>
 </template>
 
@@ -18,8 +14,11 @@ import { Component, Vue } from 'nuxt-property-decorator';
 import { NuxtAxiosInstance } from '@nuxtjs/axios';
 
 import { $t } from '@/utils/t';
-import { ResourceGroup } from '@/models/superadmin';
-import { TableDataFromServer } from '@/models/admin';
+import {
+    ResourceGroup,
+    readResourceGroups
+} from '@/api/superadmin/ResourceGroup';
+import { TableDataFromServer } from '@/api/admin';
 import { DEFAULT_ITEMS_PER_PAGE } from '@/conf/admin/table';
 
 @Component({
@@ -30,19 +29,21 @@ import { DEFAULT_ITEMS_PER_PAGE } from '@/conf/admin/table';
     }
 })
 class ResourceGroupManager extends Vue {
-    async asyncData({ $axios }: { $axios: NuxtAxiosInstance }) {
-        const url = 'api/resource-group/1/children';
+    async asyncData({ $axios }) {
         let resourceGroups: TableDataFromServer = { result: [], total: 0 };
         try {
-            resourceGroups = (await $axios.$get(url)) as TableDataFromServer;
+            resourceGroups = await readResourceGroups({
+                page: 1,
+                itemsPerPage: DEFAULT_ITEMS_PER_PAGE
+            });
         } catch (error) {
-            consola.error(`error from get(${url})`, error);
+            consola.error(error);
         }
         return { resourceGroups };
     }
 
-    loading = false;
     tableConf = {
+        loading: false,
         footerProps: {
             itemsPerPageOptions: [1, DEFAULT_ITEMS_PER_PAGE, 20, 50]
         },
