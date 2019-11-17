@@ -24,7 +24,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
 import consola from 'consola';
-import { $t } from '@/utils/t';
+import { $t } from '@/utils/NuxtOptions';
 
 @Component({
     layout: 'admin'

@@ -1,7 +1,5 @@
-import { NuxtAxiosInstance } from '@nuxtjs/axios';
-import Vue from 'vue';
-
 import { TableDataFromServer } from '@/api/admin';
+import { getNuxtAxiosInstance } from '@/utils/NuxtOptions';
 
 export interface ResourceGroup {
     id: number;
@@ -17,13 +15,18 @@ export async function readResourceGroups({
     itemsPerPage: number;
 }): Promise<TableDataFromServer> {
     const url = 'api/resource-group/1/children';
-    const $axios: NuxtAxiosInstance = Vue.prototype.$nuxt.$options.$axios;
-    let resourceGroups: TableDataFromServer = { result: [], total: 0 };
+    const $axios = getNuxtAxiosInstance();
+    let resourceGroups = new TableDataFromServer();
 
     try {
-        resourceGroups = (await $axios.$get(url, {
-            params: { start: (page - 1) * itemsPerPage, count: itemsPerPage }
-        })) as TableDataFromServer;
+        resourceGroups.setData(
+            await $axios.$get(url, {
+                params: {
+                    start: (page - 1) * itemsPerPage,
+                    count: itemsPerPage
+                }
+            })
+        );
     } catch (error) {
         throw error;
     }

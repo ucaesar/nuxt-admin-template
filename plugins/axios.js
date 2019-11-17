@@ -1,4 +1,4 @@
-import $t from '@/utils/t';
+import { $t } from '@/utils/NuxtOptions';
 
 export default function({ $axios, store }) {
     $axios.interceptors.request.use(

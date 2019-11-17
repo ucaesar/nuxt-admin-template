@@ -1,4 +1,4 @@
-import { $t } from '@/utils/t';
+import { $t } from '@/utils/NuxtOptions';
 import { Vue } from 'nuxt-property-decorator';
 
 type fieldValidator = (value: any) => boolean | string;

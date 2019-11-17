@@ -13,7 +13,7 @@ import consola from 'consola';
 import { Component, Vue } from 'nuxt-property-decorator';
 import { NuxtAxiosInstance } from '@nuxtjs/axios';
 
-import { $t } from '@/utils/t';
+import { $t } from '@/utils/NuxtOptions';
 import {
     ResourceGroup,
     readResourceGroups
@@ -30,12 +30,14 @@ import { DEFAULT_ITEMS_PER_PAGE } from '@/conf/admin/table';
 })
 class ResourceGroupManager extends Vue {
     async asyncData({ $axios }) {
-        let resourceGroups: TableDataFromServer = { result: [], total: 0 };
+        const resourceGroups = new TableDataFromServer();
         try {
-            resourceGroups = await readResourceGroups({
-                page: 1,
-                itemsPerPage: DEFAULT_ITEMS_PER_PAGE
-            });
+            resourceGroups.setData(
+                await readResourceGroups({
+                    page: 1,
+                    itemsPerPage: DEFAULT_ITEMS_PER_PAGE
+                })
+            );
         } catch (error) {
             consola.error(error);
         }
