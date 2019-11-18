@@ -1,30 +1,26 @@
 <template>
-    <div>
-        <v-data-table
-            :items="value.result"
-            :server-items-length="value.total"
-            :headers="tableConf.headers"
-            :loading="tableConf.loading"
-            :footer-props="tableConf.footerProps"
-            :items-per-page="defaultItemsPerPage"
-            single-select
-            show-select
-            :options.sync="options"
-            class="elevation-1"
-        ></v-data-table>
-    </div>
+    <v-data-table
+        :items="tableState.serverData.result"
+        :server-items-length="tableState.serverData.total"
+        :headers="tableState.uiConf.headers"
+        :loading="tableState.uiConf.loading"
+        :footer-props="tableState.uiConf.footerProps"
+        :items-per-page="tableState.uiConf.defaultItemsPerPage"
+        single-select
+        show-select
+        :options.sync="options"
+        class="elevation-1"
+    ></v-data-table>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator';
 
-import { TableDataFromServer } from '@/api/admin';
-import { DEFAULT_ITEMS_PER_PAGE, TableConf } from '@/conf/admin/table';
+import { TableState } from '@/api/admin/TableState';
 
 @Component
 class SingleSelectTable extends Vue {
-    @Prop({ type: Object, required: true }) readonly value: TableDataFromServer;
-    @Prop({ type: Object, required: true }) readonly tableConf: TableConf;
+    @Prop({ type: Object, required: true }) readonly tableState: TableState;
 
     @Watch('options', { deep: true })
     onUpdateOptions(val) {
@@ -32,7 +28,6 @@ class SingleSelectTable extends Vue {
     }
 
     options = {};
-    defaultItemsPerPage = DEFAULT_ITEMS_PER_PAGE;
 }
 
 export default SingleSelectTable;

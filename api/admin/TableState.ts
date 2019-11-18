@@ -10,9 +10,10 @@ export interface ITableUIConf {
     loading: boolean;
     headers: any[];
     footerProps: any;
+    defaultItemsPerPage: number;
 }
 
-export const DEFAULT_ITEMS_PER_PAGE = 10;
+export const DEFAULT_ITEMS_PER_PAGE = 1;
 
 export class TableUIConf implements ITableUIConf {
     loading = false;
@@ -20,6 +21,7 @@ export class TableUIConf implements ITableUIConf {
     footerProps = {
         itemsPerPageOptions: [1, DEFAULT_ITEMS_PER_PAGE, 20, 50]
     };
+    defaultItemsPerPage = DEFAULT_ITEMS_PER_PAGE;
     constructor(headers: any[]) {
         this.headers = headers;
     }
