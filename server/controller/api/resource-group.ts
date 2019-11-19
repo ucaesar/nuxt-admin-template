@@ -34,7 +34,7 @@ resourceGroupRouter.get('/:id/children', async (ctx, next) => {
         ctx.response.type = 'text/json';
         ctx.response.status = 200;
         ctx.response.body = {
-            result,
+            results:result,
             total
         };
     } else {
