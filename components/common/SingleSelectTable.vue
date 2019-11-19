@@ -1,7 +1,7 @@
 <template>
     <v-data-table
-        :items="tableState.serverData.result"
-        :server-items-length="tableState.serverData.total"
+        :items="serverData.results"
+        :server-items-length="serverData.total"
         :headers="tableState.uiConf.headers"
         :loading="tableState.uiConf.loading"
         :footer-props="tableState.uiConf.footerProps"
@@ -16,11 +16,11 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator';
 
-import { TableState } from '@/api/admin/TableState';
+import { ITableDataFromServer } from '@/api/admin/table';
 
 @Component
 class SingleSelectTable extends Vue {
-    @Prop({ type: Object, required: true }) readonly tableState: TableState;
+    @Prop({ type: Object, required: true }) readonly serverData: ITableDataFromServer;
 
     @Watch('options', { deep: true })
     onUpdateOptions(val) {
