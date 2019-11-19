@@ -2,10 +2,10 @@
     <v-data-table
         :items="serverData.results"
         :server-items-length="serverData.total"
-        :headers="tableState.uiConf.headers"
-        :loading="tableState.uiConf.loading"
-        :footer-props="tableState.uiConf.footerProps"
-        :items-per-page="tableState.uiConf.defaultItemsPerPage"
+        :headers="headers"
+        :loading="loading"
+        :footer-props="footerProps"
+        :items-per-page="defaultItemsPerPage"
         single-select
         show-select
         :options.sync="options"
@@ -16,17 +16,29 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator';
 
-import { ITableDataFromServer } from '@/api/admin/table';
+import {
+    ITableDataFromServer,
+    DEFAULT_ITEMS_PER_PAGE
+} from '@/api/admin/table';
 
 @Component
 class SingleSelectTable extends Vue {
-    @Prop({ type: Object, required: true }) readonly serverData: ITableDataFromServer;
+    @Prop({ type: Object, required: true })
+    readonly serverData!: ITableDataFromServer;
+
+    @Prop({ type: Boolean })
+    readonly loading!: boolean;
 
     @Watch('options', { deep: true })
     onUpdateOptions(val) {
         this.$emit('load-page', val);
     }
 
+    footerProps = {
+        itemsPerPageOptions: [1, DEFAULT_ITEMS_PER_PAGE, 20, 50]
+    };
+    defaultItemsPerPage = DEFAULT_ITEMS_PER_PAGE;
+    headers: any[] = [];
     options = {};
 }
 

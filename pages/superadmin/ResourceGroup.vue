@@ -1,6 +1,9 @@
 <template>
     <v-container>
-        <single-select-table :table-state="tableState" />
+        <resource-group-table
+            :server-data="resourceGroups"
+            :loading="loading"
+        />
     </v-container>
 </template>
 
@@ -12,40 +15,30 @@
 import { Component, Vue } from 'nuxt-property-decorator';
 
 import { $t } from '@/utils/NuxtOptions';
-import { TableUIConf, TableState } from '@/api/admin/TableState';
+import { TableDataFromServer, DEFAULT_ITEMS_PER_PAGE } from '@/api/admin/table';
+import ResourceGroupTable from '@/components/superadmin/ResourceGroupTable.vue';
 
 @Component({
     layout: 'admin',
     components: {
-        SingleSelectTable: () =>
-            import('@/components/common/SingleSelectTable.vue')
+        ResourceGroupTable
     }
 })
 class ResourceGroupManager extends Vue {
     async asyncData() {
         const readResourceGroupUrl = '/api/resource-group/1/children';
-        const headers = [
-            {
-                text: $t('superadmin.resourceGroupManager.groupNameHeaderText'),
-                value: 'groupname',
-                sortable: false
-            },
-            {
-                text: $t(
-                    'superadmin.resourceGroupManager.groupDescriptionHeaderText'
-                ),
-                value: 'description',
-                sortable: false
-            }
-        ];
-        const uiConf = new TableUIConf(headers);
-        const tableState = new TableState(uiConf, readResourceGroupUrl);
-        await tableState.loadPage({
-            page: 1,
-            itemsPerPage: uiConf.defaultItemsPerPage
-        });
-        return { tableState };
+        const resourceGroups = new TableDataFromServer();
+        try {
+            await resourceGroups.read(readResourceGroupUrl, {
+                page: 1,
+                itemsPerPage: DEFAULT_ITEMS_PER_PAGE
+            });
+        } catch (e) {}
+
+        return { resourceGroups };
     }
+
+    loading = false;
 }
 export default ResourceGroupManager;
 </script>
