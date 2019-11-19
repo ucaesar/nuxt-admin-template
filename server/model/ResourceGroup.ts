@@ -46,13 +46,13 @@ class ResourceGroup extends Model<ResourceGroup> {
     @Column
     parentid!: string;
 
-    @HasMany(() => ResourceGroup)
+    @HasMany(() => ResourceGroup, { onDelete: 'CASCADE' })
     children!: ResourceGroup[];
 
     @BelongsTo(() => ResourceGroup)
     parent!: ResourceGroup;
 
-    @BelongsToMany(()=>Resource, ()=>ResourceResourceGroup)
+    @BelongsToMany(() => Resource, () => ResourceResourceGroup)
     resources?: Resource[];
 
     @CreatedAt
