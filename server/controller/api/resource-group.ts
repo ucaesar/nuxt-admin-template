@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 const resourceGroupRouter = new Router();
-import ResourceGroup from '../../model/ResouceGroup';
+import ResourceGroup from '../../model/ResourceGroup';
 import { Op } from 'sequelize';
 import _ from 'lodash';
 

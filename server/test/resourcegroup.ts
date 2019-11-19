@@ -5,7 +5,7 @@ import { initConnect } from './index';
 import connect from 'connect';
 import * as http from 'http';
 import { sequelize, connectdb } from '../db';
-import ResourceGroup from '../model/ResouceGroup';
+import ResourceGroup from '../model/ResourceGroup';
 import Role from '../model/Role';
 import User from '../model/User';
 import RoleUser from '../model/RoleUser';
