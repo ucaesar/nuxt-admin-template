@@ -11,6 +11,8 @@ import {
     ForeignKey
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
+import Resource from './Resource';
+import ResourceResourceGroup from './ResourceResourceGroup';
 
 @Table({ tableName: 'resource_group' })
 class ResourceGroup extends Model<ResourceGroup> {
@@ -49,6 +51,9 @@ class ResourceGroup extends Model<ResourceGroup> {
 
     @BelongsTo(() => ResourceGroup)
     parent!: ResourceGroup;
+
+    @BelongsToMany(()=>Resource, ()=>ResourceResourceGroup)
+    resources?: Resource[];
 
     @CreatedAt
     @Column

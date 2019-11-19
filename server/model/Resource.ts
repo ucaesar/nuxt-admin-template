@@ -11,6 +11,8 @@ import {
     ForeignKey
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
+import ResourceGroup from './ResourceGroup'
+import ResourceResourceGroup from './ResourceResourceGroup'
 
 @Table({ tableName: 'resource' })
 class Resource extends Model<Resource> {
@@ -46,6 +48,8 @@ class Resource extends Model<Resource> {
     })
     action!: string;
 
+    @BelongsToMany(()=>ResourceGroup, ()=>ResourceResourceGroup)
+    groups?: ResourceGroup[];
     // @Column({
     //     type: DataTypes.INTEGER.UNSIGNED,
     //     allowNull: true
