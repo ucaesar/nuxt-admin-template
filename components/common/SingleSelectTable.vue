@@ -30,8 +30,8 @@ class SingleSelectTable extends Vue {
     readonly loading!: boolean;
 
     @Watch('options', { deep: true })
-    onUpdateOptions(val) {
-        this.$emit('load-page', val);
+    onUpdateOptions(newOptions) {
+        this.$emit('load-page', newOptions);
     }
 
     footerProps = {

@@ -7,12 +7,12 @@ export interface ITableDataFromServer {
     total: number;
 }
 
-interface IPageOptions {
+export interface IPageOptions {
     page: number;
     itemsPerPage: number;
 }
 export class TableDataFromServer implements ITableDataFromServer {
-    results = [];
+    results: any[] = [];
     total = 0;
     $axios = getNuxtAxiosInstance();
 
