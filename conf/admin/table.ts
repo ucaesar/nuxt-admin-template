@@ -1,7 +1,10 @@
+import { getNuxtAxiosInstance } from '@/utils/NuxtOptions';
+import { TableDataFromServer } from '~/api/admin/table';
+
 export interface TableConf {
     headers: any[];
     loading?: boolean;
-    footerPorps?: any
+    footerPorps?: any;
 }
 
-export const DEFAULT_ITEMS_PER_PAGE = 10
+

@@ -1,6 +1,36 @@
 <template>
     <v-container>
-        <single-select-table :table-state="tableState" />
+        <div class="mb-4">
+            <v-btn color="primary" 
+                ><v-icon>mdi-plus</v-icon
+                >{{
+                    $t(
+                        'superadmin.resourceGroupManager.newResourceGroupButtonText'
+                    )
+                }}</v-btn
+            >
+            <v-btn color="primary" class="ml-2"
+                ><v-icon>mdi-pencil</v-icon
+                >{{
+                    $t(
+                        'superadmin.resourceGroupManager.editResourceGroupButtonText'
+                    )
+                }}</v-btn
+            >
+            <v-btn color="primary" class="ml-2"
+                ><v-icon>mdi-delete</v-icon
+                >{{
+                    $t(
+                        'superadmin.resourceGroupManager.removeResourceGroupButtonText'
+                    )
+                }}</v-btn
+            >
+        </div>
+        <resource-group-table
+            :server-data="resourceGroups"
+            :loading="loading"
+            @load-page="loadPage"
+        />
     </v-container>
 </template>
 
@@ -12,39 +42,37 @@
 import { Component, Vue } from 'nuxt-property-decorator';
 
 import { $t } from '@/utils/NuxtOptions';
-import { TableUIConf, TableState } from '@/api/admin/TableState';
+import {
+    TableDataFromServer,
+    DEFAULT_ITEMS_PER_PAGE,
+    IPageOptions
+} from '@/api/admin/table';
+import ResourceGroupTable from '@/components/superadmin/ResourceGroupTable.vue';
 
 @Component({
     layout: 'admin',
     components: {
-        SingleSelectTable: () =>
-            import('@/components/common/SingleSelectTable.vue')
+        ResourceGroupTable
     }
 })
 class ResourceGroupManager extends Vue {
-    async asyncData() {
-        const readResourceGroupUrl = '/api/resource-group/1/children';
-        const headers = [
-            {
-                text: $t('superadmin.resourceGroupManager.groupNameHeaderText'),
-                value: 'groupname',
-                sortable: false
-            },
-            {
-                text: $t(
-                    'superadmin.resourceGroupManager.groupDescriptionHeaderText'
-                ),
-                value: 'description',
-                sortable: false
-            }
-        ];
-        const uiConf = new TableUIConf(headers);
-        const tableState = new TableState(uiConf, readResourceGroupUrl);
-        await tableState.loadPage({
-            page: 1,
-            itemsPerPage: uiConf.defaultItemsPerPage
-        });
-        return { tableState };
+    loading = false;
+    resourceGroups = new TableDataFromServer();
+    pageOptions: IPageOptions = {
+        page: 1,
+        itemsPerPage: DEFAULT_ITEMS_PER_PAGE
+    };
+
+    async loadPage(pageOptions: IPageOptions) {
+        this.pageOptions = pageOptions;
+        this.loading = true;
+        try {
+            await this.resourceGroups.read(
+                '/api/resource-group/1/children',
+                pageOptions
+            );
+        } catch (e) {}
+        this.loading = false;
     }
 }
 export default ResourceGroupManager;
