@@ -181,24 +181,4 @@ describe('ResourceGroup API test', () => {
         res = await req.delete('/api/resource-group/' + topid);
         expect(res).to.have.status(200);
     });
-
-    // it('test get users of role1', async () => {
-    //     let role1 = await Role.findOne({
-    //         where: {
-    //             id: 1
-    //         }
-    //     });
-    //     expect(role1).not.to.be.null;
-    //     let user1 = await User.findOne({
-    //         where: {
-    //             id: '52567820-d8f0-11e9-9b42-17e9ff6339c6'
-    //         }
-    //     });
-    //     expect(user1).not.to.be.null;
-    //     if (role1) {
-    //         expect((role1 as Role).id).to.equals(1);
-    //         let users = await role1.$get('users');
-    //         expect(!users).to.be.false;
-    //     }
-    // });
 });
