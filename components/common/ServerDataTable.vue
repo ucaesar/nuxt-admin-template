@@ -6,7 +6,6 @@
         :loading="loading"
         :footer-props="footerProps"
         :items-per-page="defaultItemsPerPage"
-        single-select
         show-select
         :options.sync="options"
         class="elevation-1"
@@ -14,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator';
+import { Component, Vue, Prop, Watch, Emit } from 'nuxt-property-decorator';
 
 import {
     ITableDataFromServer,
@@ -22,7 +21,7 @@ import {
 } from '@/api/admin/table';
 
 @Component
-class SingleSelectTable extends Vue {
+class ServerDataTable extends Vue {
     @Prop({ type: Object, required: true })
     readonly serverData!: ITableDataFromServer;
 
@@ -34,6 +33,10 @@ class SingleSelectTable extends Vue {
         this.$emit('load-page', newOptions);
     }
 
+    onItemSelected(value) {
+        this.$emit('item-selected', value);
+    }
+
     footerProps = {
         itemsPerPageOptions: [1, DEFAULT_ITEMS_PER_PAGE, 20, 50]
     };
@@ -42,7 +45,7 @@ class SingleSelectTable extends Vue {
     options = {};
 }
 
-export default SingleSelectTable;
+export default ServerDataTable;
 </script>
 
 <style>
