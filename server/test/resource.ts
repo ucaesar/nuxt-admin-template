@@ -32,24 +32,24 @@ describe('Resource API test', () => {
         req.close();
     });
 
-    it('test add a resource using restful api', async () => {
-        let res = await req
-            .post('/api/user/login')
-            .type('json')
-            .send({
-                username: 'superadmin',
-                password: 'superadmin'
-            });
-        // expect(res).to.have.cookie("koa:sess");
-        res = await req
-            .post('/api/resource/')
-            .type('json')
-            .send({
-                name: 'r2',
-                description: 'test resource 1',
-                url: '/api/resource-group/',
-                action: 'GET'
-            });
-        expect(res).to.have.status(200);
-    });
+    // it('test add a resource using restful api', async () => {
+    //     let res = await req
+    //         .post('/api/user/login')
+    //         .type('json')
+    //         .send({
+    //             username: 'superadmin',
+    //             password: 'superadmin'
+    //         });
+    //     // expect(res).to.have.cookie("koa:sess");
+    //     res = await req
+    //         .post('/api/resource/')
+    //         .type('json')
+    //         .send({
+    //             name: 'r2',
+    //             description: 'test resource 1',
+    //             url: '/api/resource-group/',
+    //             action: 'GET'
+    //         });
+    //     expect(res).to.have.status(200);
+    // });
 });

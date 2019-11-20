@@ -3,6 +3,7 @@ const resourceGroupRouter = new Router();
 import ResourceGroup from '../../model/ResourceGroup';
 import { Op } from 'sequelize';
 import _ from 'lodash';
+import Resource from '../../model/Resource';
 
 // 获取指定id的ResourceGroup的所有子group
 resourceGroupRouter.get('/:id/children', async (ctx, next) => {
@@ -28,13 +29,23 @@ resourceGroupRouter.get('/:id/children', async (ctx, next) => {
         children = Array.isArray(children) ? children : [children];
         const total = children.length;
         let result = children;
-        if (start && Number(start) >= 0 && Number(start) < total && num && Number(num) > 0) {
-            result = _.slice(result, Number(start), Number(start) + Number(num));
+        if (
+            start &&
+            Number(start) >= 0 &&
+            Number(start) < total &&
+            num &&
+            Number(num) > 0
+        ) {
+            result = _.slice(
+                result,
+                Number(start),
+                Number(start) + Number(num)
+            );
         }
         ctx.response.type = 'text/json';
         ctx.response.status = 200;
         ctx.response.body = {
-            results:result,
+            results: result,
             total
         };
     } else {
@@ -110,4 +121,64 @@ resourceGroupRouter.delete('/:id', async ctx => {
 // 获取指定id的ResourceGroup下的所有resource
 resourceGroupRouter.get('/:id/resource', async ctx => {});
 
+// 获取指定id的ResourceGroup
+resourceGroupRouter.get('/:id/', async ctx => {
+    const id = ctx.params.id;
+    // 找到此group
+    const group = await ResourceGroup.findOne({
+        attributes: ['id', 'groupname', 'description'],
+        where: {
+            id
+        }
+    });
+
+    if (group) {
+        let rs = await group.$get('resources', {
+            attributes: ['id', 'name', 'description', 'url', 'action']
+        });
+        ctx.response.type = 'text/json';
+        ctx.response.status = 200;
+        ctx.response.body = {
+            id: group.id,
+            groupname: group.groupname,
+            description: group.description,
+            resources: rs
+        };
+    } else {
+        // 找不到此group
+        ctx.response.status = 404;
+        ctx.response.body = 'not found';
+    }
+});
+
+// 给指定id的group添加一个resource  POST请求，body参数为id,此id为resource的id
+resourceGroupRouter.post('/:id/resource', async ctx => {
+    const gid = ctx.params.id;
+    const rid = (ctx.req as any).body.id;
+    const group = await ResourceGroup.findOne({
+        where: {
+            id: gid
+        }
+    });
+    if (group) {
+        const resource = await Resource.findOne({
+            where: {
+                id: rid
+            }
+        });
+        if (resource) {
+            await group.$add('resources', resource);
+            ctx.response.status = 200;
+            ctx.response.body = 'added success';
+        } else {
+            // 找不到指定id的resource
+            ctx.response.status = 404;
+            ctx.response.body = 'not found';
+        }
+    } else {
+        // 找不到指定id的group
+        ctx.response.status = 404;
+        ctx.response.body = 'not found';
+    }
+});
 export default resourceGroupRouter;

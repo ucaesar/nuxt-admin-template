@@ -22,7 +22,11 @@ resourceRouter.get('/', async ctx => {
             limit = total - offset;
         }
     }
-    const results = await Resource.findAll({ offset, limit });
+    const results = await Resource.findAll({
+        offset,
+        limit,
+        attributes: ['id', 'name', 'description', 'url', 'action']
+    });
 
     ctx.response.type = 'text/json';
     ctx.response.status = 200;
@@ -64,6 +68,27 @@ resourceRouter.post('/', async ctx => {
     ctx.response.type = 'text/json';
     ctx.response.status = 200;
     ctx.response.body = newresource;
+});
+
+// 删除指定id的resource
+resourceRouter.delete('/:id', async ctx => {
+    const delId = ctx.params.id;
+    // 找到要删除的resource
+    const delResource = await Resource.findOne({
+        where: {
+            id: delId
+        }
+    });
+    if (delResource) {
+        // 执行删除
+        await delResource.destroy();
+        ctx.response.status = 200;
+        ctx.response.body = 'deleted';
+    } else {
+        // 找不到此resource
+        ctx.response.status = 404;
+        ctx.response.body = 'not found';
+    }
 });
 
 export default resourceRouter;
