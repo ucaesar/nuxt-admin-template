@@ -4,7 +4,7 @@ import Resource from '../../model/Resource';
 import { Op } from 'sequelize';
 import _ from 'lodash';
 
-// 获取Resource列表
+// 获取Resource列表 GET请求，参数可选，为start，num
 resourceRouter.get('/', async ctx => {
     // 获取分页参数
     const start = ctx.request.query.start;
@@ -32,7 +32,7 @@ resourceRouter.get('/', async ctx => {
     };
 });
 
-// 添加一个resource
+// 添加一个resource  POST请求，参数为name, description, url, action
 resourceRouter.post('/', async ctx => {
     const name: string = (ctx.req as any).body.name || '';
     const description: string = (ctx.req as any).body.description || '';
@@ -49,6 +49,7 @@ resourceRouter.post('/', async ctx => {
         ctx.response.body = 'name exists';
         return;
     }
+    //检查url和action的组合是否存在
     if ((await Resource.count({ where: { url, action } })) > 0) {
         ctx.response.status = 401;
         ctx.response.body = 'url action combination exists';
