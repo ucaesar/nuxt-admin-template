@@ -1,11 +1,11 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator';
 
-import SingleSelectTable from '@/components/common/SingleSelectTable.vue';
+import ServerDataTable from '@/components/common/ServerDataTable.vue';
 import { $t } from '@/utils/NuxtOptions';
 
 @Component
-class ResourceGroupTable extends SingleSelectTable {
+class ResourceGroupTable extends ServerDataTable {
     headers: any[] = [
         {
             text: $t('superadmin.resourceGroupManager.groupNameHeaderText'),

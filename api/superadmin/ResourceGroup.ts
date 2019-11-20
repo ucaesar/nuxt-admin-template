@@ -1,35 +1,57 @@
-import { TableDataFromServer } from '@/api/admin';
+import {
+    ITableDataFromServer,
+    computePaginationParams,
+    IPageOptions
+} from '@/api/admin/table';
 import { getNuxtAxiosInstance } from '@/utils/NuxtOptions';
 
-export interface ResourceGroup {
+export interface IResourceGroup {
     id: number;
     groupname: string;
     description: string;
 }
 
-export async function readResourceGroups({
-    page,
-    itemsPerPage
-}: {
-    page: number;
-    itemsPerPage: number;
-}): Promise<TableDataFromServer> {
-    const url = 'api/resource-group/1/children';
+function getBaseUrl() {
+    return '/api/resource-group';
+}
+
+export async function $list(
+    pageOptions?: IPageOptions
+): Promise<ITableDataFromServer> {
+    const url = getBaseUrl() + '/1/children';
     const $axios = getNuxtAxiosInstance();
-    let resourceGroups = new TableDataFromServer();
+    let serverData: ITableDataFromServer;
 
     try {
-        resourceGroups.setData(
-            await $axios.$get(url, {
-                params: {
-                    start: (page - 1) * itemsPerPage,
-                    count: itemsPerPage
-                }
-            })
-        );
-    } catch (error) {
-        throw error;
+        let config = pageOptions
+            ? { params: computePaginationParams(pageOptions) }
+            : {};
+        serverData = await $axios.$get(url, config);
+    } catch (e) {
+        throw e;
     }
 
-    return resourceGroups;
+    return serverData;
+}
+
+export async function $delete(resourceGroup: IResourceGroup) {
+    const url = getBaseUrl() + `/${resourceGroup.id}`;
+    const $axios = getNuxtAxiosInstance();
+
+    try {
+        $axios.$delete(url);
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function $add(resourceGroup: IResourceGroup) {
+    const url = getBaseUrl() + '/1/children';
+    const $axios = getNuxtAxiosInstance();
+
+    try {
+        $axios.$post(url, resourceGroup);
+    } catch (e) {
+        throw e;
+    }
 }

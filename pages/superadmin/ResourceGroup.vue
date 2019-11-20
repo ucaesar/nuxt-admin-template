@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <div class="mb-4">
-            <v-btn color="primary" 
+            <v-btn color="primary"
                 ><v-icon>mdi-plus</v-icon
                 >{{
                     $t(
@@ -9,7 +9,7 @@
                     )
                 }}</v-btn
             >
-            <v-btn color="primary" class="ml-2"
+            <v-btn color="primary" class="ml-2" :disabled="!selectedState"
                 ><v-icon>mdi-pencil</v-icon
                 >{{
                     $t(
@@ -17,7 +17,11 @@
                     )
                 }}</v-btn
             >
-            <v-btn color="primary" class="ml-2"
+            <v-btn
+                color="primary"
+                class="ml-2"
+                :disabled="!selectedState"
+                @click="onDelete"
                 ><v-icon>mdi-delete</v-icon
                 >{{
                     $t(
@@ -47,6 +51,7 @@ import {
     DEFAULT_ITEMS_PER_PAGE,
     IPageOptions
 } from '@/api/admin/table';
+import * as ResourceGroupApi from '@/api/superadmin/ResourceGroup';
 import ResourceGroupTable from '@/components/superadmin/ResourceGroupTable.vue';
 
 @Component({
@@ -62,17 +67,23 @@ class ResourceGroupManager extends Vue {
         page: 1,
         itemsPerPage: DEFAULT_ITEMS_PER_PAGE
     };
+    selected: ResourceGroupApi.IResourceGroup[] = [];
+
+    get selectedState() {
+        return this.selected.length === 0 ? false : true;
+    }
 
     async loadPage(pageOptions: IPageOptions) {
         this.pageOptions = pageOptions;
         this.loading = true;
         try {
-            await this.resourceGroups.read(
-                '/api/resource-group/1/children',
-                pageOptions
-            );
+            this.resourceGroups = await ResourceGroupApi.$list(pageOptions);
         } catch (e) {}
         this.loading = false;
+    }
+
+    async onDelete() {
+        await ResourceGroupApi.$delete(this.selected[0]);
     }
 }
 export default ResourceGroupManager;

@@ -11,26 +11,22 @@ export interface IPageOptions {
     page: number;
     itemsPerPage: number;
 }
+
+interface IPaginationParams {
+    start: number;
+    count: number;
+}
+export function computePaginationParams(
+    pageOptions: IPageOptions
+): IPaginationParams {
+    let { page, itemsPerPage } = pageOptions;
+    return {
+        start: (page - 1) * itemsPerPage,
+        count: itemsPerPage
+    };
+}
+
 export class TableDataFromServer implements ITableDataFromServer {
     results: any[] = [];
     total = 0;
-    $axios = getNuxtAxiosInstance();
-
-    async read(url: string, pageOptions: IPageOptions) {
-        let { page, itemsPerPage } = pageOptions;
-
-        try {
-            Object.assign(
-                this,
-                await this.$axios.$get(url, {
-                    params: {
-                        start: (page - 1) * itemsPerPage,
-                        count: itemsPerPage
-                    }
-                })
-            );
-        } catch (e) {
-            throw e;
-        }
-    }
 }
