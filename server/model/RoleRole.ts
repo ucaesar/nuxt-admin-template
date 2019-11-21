@@ -12,11 +12,11 @@ import Role from './Role';
 class RoleRole extends Model<RoleRole> {
     @ForeignKey(() => Role)
     @Column
-    roleId!: number;
+    roleId!: string;
 
     @ForeignKey(() => Role)
     @Column
-    parentId!: number;
+    parentId!: string;
 
     @CreatedAt
     @Column
