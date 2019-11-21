@@ -3,6 +3,7 @@ const roleRouter = new Router();
 // const consola = require('consola')
 import _ from 'lodash';
 import getEnforcer from '../../lib/enforcer';
+import Role from '../../model/Role';
 
 // 获取所有role
 roleRouter.get('/', async ctx => {
@@ -58,14 +59,22 @@ roleRouter.delete('/:name', async ctx => {
 // });
 
 // 增加一个role
-roleRouter.post('/:name', async ctx => {
+roleRouter.post('/', async ctx => {
     const e = await getEnforcer();
-    const name = ctx.params.name;
-    const request_body = (ctx.req as any).body;
+    const name: string = (ctx.req as any).body.rolename || '';
+    const description: string = (ctx.req as any).body.description || '';
     let result = name.substr(name.length - 1, name.length) === 'R';
     if (result) {
         const roles = e.getAllRoles();
         result = !_.includes(roles, name);
+    }
+    if (result) {
+        let r = await Role.findOne({
+            where: { rolename: name }
+        });
+        if(r) {
+            result = false;
+        }
     }
     if (result) {
         result = await e.addGroupingPolicy(name, 'anonymousR');
