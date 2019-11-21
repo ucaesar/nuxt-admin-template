@@ -12,6 +12,7 @@ import User from './User';
 import RoleUser from './RoleUser';
 import ResourceGroup from './ResourceGroup';
 import RoleResourceGroup from './RoleResourceGroup';
+import RoleRole from './RoleRole';
 // import { sequelize } from '../db'
 
 @Table({ tableName: 'role' })
@@ -41,6 +42,9 @@ class Role extends Model<Role> {
 
     @BelongsToMany(() => ResourceGroup, () => RoleResourceGroup)
     resourceGroups?: ResourceGroup[];
+
+    @BelongsToMany(() => Role, () => RoleRole, 'roleId', 'parentId')
+    parents?: Role[];
 
     @CreatedAt
     @Column
