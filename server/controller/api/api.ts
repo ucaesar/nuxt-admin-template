@@ -12,7 +12,7 @@ apiRouter.use('/', async (ctx, next) => {
     await next();
 });
 apiRouter.use('/api/policy', policyRouter.routes());
-apiRouter.use('/api/roles', roleRouter.routes());
+apiRouter.use('/api/role', roleRouter.routes());
 apiRouter.use('/api/user', userRouter.routes());
 apiRouter.use('/api/resource-group', resourceGroupRouter.routes());
 apiRouter.use('/api/resource', resourceRouter.routes());

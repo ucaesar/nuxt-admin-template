@@ -12,7 +12,9 @@ import {
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 import Resource from './Resource';
+import Role from './Role';
 import ResourceResourceGroup from './ResourceResourceGroup';
+import RoleResourceGroup from './RoleResourceGroup';
 
 @Table({ tableName: 'resource_group' })
 class ResourceGroup extends Model<ResourceGroup> {
@@ -54,6 +56,9 @@ class ResourceGroup extends Model<ResourceGroup> {
 
     @BelongsToMany(() => Resource, () => ResourceResourceGroup)
     resources?: Resource[];
+
+    @BelongsToMany(() => Role, () => RoleResourceGroup)
+    roles?: Role[];
 
     @CreatedAt
     @Column

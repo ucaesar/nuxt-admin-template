@@ -151,30 +151,101 @@ resourceGroupRouter.get('/:id/', async ctx => {
     }
 });
 
-// 给指定id的group添加一个resource  POST请求，body参数为id,此id为resource的id
+// 给指定id的group添加一个或者多个resource  POST请求，body参数名为resouces,为要添加resource的数组
+/*
+    url: /api/resource-group/:id/resource/ id为group的id
+    method: POST
+    params: resources [{ id: 1 }, { id: 2 }]
+*/
 resourceGroupRouter.post('/:id/resource', async ctx => {
     const gid = ctx.params.id;
-    const rid = (ctx.req as any).body.id;
+    const resoures = (ctx.req as any).body.resources;
     const group = await ResourceGroup.findOne({
         where: {
             id: gid
         }
     });
     if (group) {
-        const resource = await Resource.findOne({
-            where: {
-                id: rid
-            }
-        });
-        if (resource) {
-            await group.$add('resources', resource);
-            ctx.response.status = 200;
-            ctx.response.body = 'added success';
-        } else {
-            // 找不到指定id的resource
-            ctx.response.status = 404;
-            ctx.response.body = 'not found';
+        if (!Array.isArray(resoures)) {
+            ctx.response.status = 401;
+            return;
         }
+        let i;
+        for (i = 0; i < resoures.length; i++) {
+            if (
+                !(await Resource.findOne({
+                    where: {
+                        id: resoures[i].id
+                    }
+                }))
+            ) {
+                ctx.response.status = 401;
+                return;
+            }
+        }
+        for (i = 0; i < resoures.length; i++) {
+            const r = await Resource.findOne({
+                where: {
+                    id: resoures[i].id
+                }
+            });
+            if (r) {
+                await group.$add('resources', r);
+            }
+        }
+        ctx.response.status = 200;
+        ctx.response.body = 'added success';
+    } else {
+        // 找不到指定id的group
+        ctx.response.status = 404;
+        ctx.response.body = 'not found';
+    }
+});
+
+// 指定id的group删除一个或者多个resource  POST请求，body参数名为resouces,为要删除resource的数组
+/*
+    url: /api/resource-group/:id/resource/ id为group的id
+    method: DELETE
+    params: resources [{ id: 1 }, { id: 2 }]
+*/
+resourceGroupRouter.delete('/:id/resource', async ctx => {
+    const gid = ctx.params.id;
+    const resoures = (ctx.req as any).body.resources;
+    if (!Array.isArray(resoures)) {
+        ctx.response.status = 401;
+        return;
+    }
+    const group = await ResourceGroup.findOne({
+        where: {
+            id: gid
+        }
+    });
+    if (group) {
+        let i;
+        for (i = 0; i < resoures.length; i++) {
+            if (
+                !(await Resource.findOne({
+                    where: {
+                        id: resoures[i].id
+                    }
+                }))
+            ) {
+                ctx.response.status = 401;
+                return;
+            }
+        }
+        for (i = 0; i < resoures.length; i++) {
+            const r = await Resource.findOne({
+                where: {
+                    id: resoures[i].id
+                }
+            });
+            if (r) {
+                await group.$remove('resources', r);
+            }
+        }
+        ctx.response.status = 200;
+        ctx.response.body = 'deleted success';
     } else {
         // 找不到指定id的group
         ctx.response.status = 404;
