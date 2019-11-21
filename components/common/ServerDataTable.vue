@@ -1,48 +1,36 @@
 <template>
     <v-data-table
+        v-model="selected"
         :items="serverData.results"
         :server-items-length="serverData.total"
         :headers="headers"
         :loading="loading"
         :footer-props="footerProps"
         :items-per-page="defaultItemsPerPage"
-        show-select
-        :options.sync="options"
+        :options.sync="pageOptions"
         class="elevation-1"
     ></v-data-table>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch, Emit } from 'nuxt-property-decorator';
+import { Component, Vue, Watch } from 'nuxt-property-decorator';
 
-import {
-    ITableDataFromServer,
-    DEFAULT_ITEMS_PER_PAGE
-} from '@/api/admin/table';
+import { TableDataFromServer, DEFAULT_ITEMS_PER_PAGE } from '@/api/admin/table';
 
 @Component
 class ServerDataTable extends Vue {
-    @Prop({ type: Object, required: true })
-    readonly serverData!: ITableDataFromServer;
-
-    @Prop({ type: Boolean })
-    readonly loading!: boolean;
-
-    @Watch('options', { deep: true })
-    onUpdateOptions(newOptions) {
-        this.$emit('load-page', newOptions);
-    }
-
-    onItemSelected(value) {
-        this.$emit('item-selected', value);
-    }
+    @Watch('pageOptions', { deep: true })
+    loadPage() {}
 
     footerProps = {
         itemsPerPageOptions: [1, DEFAULT_ITEMS_PER_PAGE, 20, 50]
     };
     defaultItemsPerPage = DEFAULT_ITEMS_PER_PAGE;
     headers: any[] = [];
-    options = {};
+    pageOptions = {};
+    serverData = new TableDataFromServer();
+    loading = false;
+    selected: any[] = [];
 }
 
 export default ServerDataTable;

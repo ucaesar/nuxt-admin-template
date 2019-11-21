@@ -9,6 +9,17 @@ export default {
         }
     },
 
+    components: {
+        table: {
+            actionsHeaderText: 'Actions'
+        },
+        dialog: {
+            okButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+            makeSureToDeleteTitle: 'Make sure to DELETE this?'
+        }
+    },
+
     admin: {
         toolbar: {
             logoutButtonText: 'Logout'

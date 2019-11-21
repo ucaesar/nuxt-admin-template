@@ -1,40 +1,6 @@
 <template>
     <v-container>
-        <div class="mb-4">
-            <v-btn color="primary"
-                ><v-icon>mdi-plus</v-icon
-                >{{
-                    $t(
-                        'superadmin.resourceGroupManager.newResourceGroupButtonText'
-                    )
-                }}</v-btn
-            >
-            <v-btn color="primary" class="ml-2" :disabled="!selectedState"
-                ><v-icon>mdi-pencil</v-icon
-                >{{
-                    $t(
-                        'superadmin.resourceGroupManager.editResourceGroupButtonText'
-                    )
-                }}</v-btn
-            >
-            <v-btn
-                color="primary"
-                class="ml-2"
-                :disabled="!selectedState"
-                @click="onDelete"
-                ><v-icon>mdi-delete</v-icon
-                >{{
-                    $t(
-                        'superadmin.resourceGroupManager.removeResourceGroupButtonText'
-                    )
-                }}</v-btn
-            >
-        </div>
-        <resource-group-table
-            :server-data="resourceGroups"
-            :loading="loading"
-            @load-page="loadPage"
-        />
+        <resource-group-table />
     </v-container>
 </template>
 
@@ -46,13 +12,8 @@
 import { Component, Vue } from 'nuxt-property-decorator';
 
 import { $t } from '@/utils/NuxtOptions';
-import {
-    TableDataFromServer,
-    DEFAULT_ITEMS_PER_PAGE,
-    IPageOptions
-} from '@/api/admin/table';
-import * as ResourceGroupApi from '@/api/superadmin/ResourceGroup';
-import ResourceGroupTable from '@/components/superadmin/ResourceGroupTable.vue';
+
+import ResourceGroupTable from '@/components/superadmin/ResourceGroup/ResourceGroupTable.vue';
 
 @Component({
     layout: 'admin',
@@ -60,32 +21,7 @@ import ResourceGroupTable from '@/components/superadmin/ResourceGroupTable.vue';
         ResourceGroupTable
     }
 })
-class ResourceGroupManager extends Vue {
-    loading = false;
-    resourceGroups = new TableDataFromServer();
-    pageOptions: IPageOptions = {
-        page: 1,
-        itemsPerPage: DEFAULT_ITEMS_PER_PAGE
-    };
-    selected: ResourceGroupApi.IResourceGroup[] = [];
-
-    get selectedState() {
-        return this.selected.length === 0 ? false : true;
-    }
-
-    async loadPage(pageOptions: IPageOptions) {
-        this.pageOptions = pageOptions;
-        this.loading = true;
-        try {
-            this.resourceGroups = await ResourceGroupApi.$list(pageOptions);
-        } catch (e) {}
-        this.loading = false;
-    }
-
-    async onDelete() {
-        await ResourceGroupApi.$delete(this.selected[0]);
-    }
-}
+class ResourceGroupManager extends Vue {}
 export default ResourceGroupManager;
 </script>
 
