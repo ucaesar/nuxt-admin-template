@@ -5,6 +5,7 @@ import { initConnect } from './index';
 import connect from 'connect';
 import * as http from 'http';
 import Role from '../model/Role';
+import getEnforcer from '../lib/enforcer';
 
 chai.use(chaiHttp);
 
@@ -157,6 +158,17 @@ describe('Role API test', () => {
             if (rs) {
                 // console.log(rs);
             }
+        }
+    });
+
+    it('get implicit role for a role r7', async () => {
+        let r7 = await Role.findOne({
+            where: { rolename: 'r7_R' }
+        });
+        if (r7) {
+            const e = await getEnforcer();
+            let result = await e.getImplicitRolesForUser(r7.rolename);
+            console.log(result);
         }
     });
 });
