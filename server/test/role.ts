@@ -125,8 +125,8 @@ describe('Role API test', () => {
             .post('/api/role/')
             .type('json')
             .send({
-                rolename: 'r5_R',
-                description: 'role 5'
+                rolename: 'r6_R',
+                description: 'role 6'
             });
         expect(res).to.have.status(200);
         expect(res).to.be.json;
