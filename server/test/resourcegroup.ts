@@ -195,7 +195,25 @@ describe('ResourceGroup API test', () => {
             .post('/api/resource-group/8/resource')
             .type('json')
             .send({
-                id: '2'
+                resources: [{ id: '3' }, { id: '5' }]
+            });
+        expect(res).to.have.status(200);
+    });
+
+    it('test add a resource to a group using restful api', async () => {
+        let res;
+        res = await req
+            .post('/api/user/login')
+            .type('json')
+            .send({
+                username: 'superadmin',
+                password: 'superadmin'
+            });
+        res = await req
+            .delete('/api/resource-group/8/resource')
+            .type('json')
+            .send({
+                resources: [{ id: '3' }, { id: '5' }]
             });
         expect(res).to.have.status(200);
     });
