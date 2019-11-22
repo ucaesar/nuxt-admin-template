@@ -1,0 +1,55 @@
+<template>
+    <v-data-table
+        v-model="selected"
+        :items="serverData.results"
+        :server-items-length="serverData.total"
+        :headers="headers"
+        :loading="loading"
+        :footer-props="footerProps"
+        :items-per-page="defaultItemsPerPage"
+        :options.sync="pageOptions"
+        single-select
+        show-select
+        class="elevation-1"
+    >
+        <template v-slot:top>
+            <v-toolbar flat color="white">
+                <delete-button :selected="selected" />
+            </v-toolbar>
+        </template>
+    </v-data-table>
+</template>
+
+<script lang="ts">
+import { Component, Vue, Watch } from 'nuxt-property-decorator';
+
+import DeleteButton from './DeleteButton.vue';
+
+import { IPageOptions } from '@/api/admin/table';
+import ServerDataTable from '@/components/common/ServerDataTable.vue';
+import * as ResourceGroupApi from '@/api/superadmin/ResourceGroup';
+import { RESOURCEGROUP_TABLE_HEADER_TEXT } from '@/conf/superadmin/ResourceGroup';
+
+@Component({
+    components: {
+        DeleteButton
+    }
+})
+class ResourceGroupTable extends ServerDataTable {
+    async loadPage() {
+        this.loading = true;
+        try {
+            this.serverData = await ResourceGroupApi.$list(this
+                .pageOptions as IPageOptions);
+        } catch (e) {}
+        this.loading = false;
+    }
+
+    headers = [
+        RESOURCEGROUP_TABLE_HEADER_TEXT.groupname,
+        RESOURCEGROUP_TABLE_HEADER_TEXT.description
+    ];
+}
+
+export default ResourceGroupTable;
+</script>

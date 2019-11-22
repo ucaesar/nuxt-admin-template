@@ -1,10 +1,9 @@
-import { getNuxtAxiosInstance } from '@/utils/NuxtOptions';
-import { TableDataFromServer } from '~/api/admin/table';
+import { $t } from '@/utils/NuxtOptions';
 
-export interface TableConf {
-    headers: any[];
-    loading?: boolean;
-    footerPorps?: any;
-}
+export const RESOURCE_GROUP_DESCRIPTION_HEADER = {
+    text: $t('components.table.actionsHeaderText'),
+    value: 'action',
+    sortable: false
+};
 
 

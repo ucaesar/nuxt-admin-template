@@ -9,6 +9,17 @@ export default {
         }
     },
 
+    components: {
+        table: {
+            actionsHeaderText: '操作'
+        },
+        dialog: {
+            okButtonText: '确定',
+            cancelButtonText: '取消',
+            makeSureToDeleteTitle: '确定要删除这个吗？'
+        }
+    },
+
     admin: {
         toolbar: {
             logoutButtonText: '退出登录'
