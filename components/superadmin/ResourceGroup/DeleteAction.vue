@@ -11,8 +11,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Ref } from 'nuxt-property-decorator';
-import { IResourceGroup, $delete } from '@/api/superadmin/ResourceGroup';
+import { Component, Vue, Prop, Ref, Emit } from 'nuxt-property-decorator';
+import { IResourceGroup } from '@/api/superadmin/ResourceGroup';
 
 import AskYesOrNoDialog from '@/components/common/AskYesOrNoDialog.vue';
 
@@ -25,6 +25,10 @@ class DeleteAction extends Vue {
     @Prop({ type: Object, required: true }) readonly item: IResourceGroup;
     @Ref('askDialog') readonly askDialog!: any;
 
+    onDelete() {
+        this.$emit('delete', this.item);
+    }
+
     get text() {
         return this.item.groupname;
     }
@@ -32,8 +36,6 @@ class DeleteAction extends Vue {
     openAskDialog() {
         this.askDialog!.showDialog();
     }
-
-    onDelete() {}
 }
 export default DeleteAction;
 </script>
