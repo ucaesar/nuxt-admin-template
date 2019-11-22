@@ -104,4 +104,13 @@ roleRouter.post('/', async ctx => {
         name
     };
 });
+
+// 往指定id的role上挂父roles
+/*
+    url: /api/role/
+    method: POST
+    params: POST参数rolename和description
+*/
+roleRouter.post('/:id/parents/', async ctx => {});
+
 export default roleRouter;
