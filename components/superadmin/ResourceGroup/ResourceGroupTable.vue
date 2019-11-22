@@ -8,14 +8,16 @@
         :footer-props="footerProps"
         :items-per-page="defaultItemsPerPage"
         :options.sync="pageOptions"
-        single-select
-        show-select
         class="elevation-1"
     >
         <template v-slot:top>
             <v-toolbar flat color="white">
                 <delete-button :selected="selected" />
             </v-toolbar>
+        </template>
+
+        <template v-slot:item.actions="{ item }">
+            <delete-action :item="item" />
         </template>
     </v-data-table>
 </template>
@@ -24,6 +26,7 @@
 import { Component, Vue, Watch } from 'nuxt-property-decorator';
 
 import DeleteButton from './DeleteButton.vue';
+import DeleteAction from './DeleteAction.vue';
 
 import { IPageOptions } from '@/api/admin/table';
 import ServerDataTable from '@/components/common/ServerDataTable.vue';
@@ -32,7 +35,8 @@ import { RESOURCEGROUP_TABLE_HEADER_TEXT } from '@/conf/superadmin/ResourceGroup
 
 @Component({
     components: {
-        DeleteButton
+        DeleteButton,
+        DeleteAction
     }
 })
 class ResourceGroupTable extends ServerDataTable {
@@ -47,7 +51,8 @@ class ResourceGroupTable extends ServerDataTable {
 
     headers = [
         RESOURCEGROUP_TABLE_HEADER_TEXT.groupname,
-        RESOURCEGROUP_TABLE_HEADER_TEXT.description
+        RESOURCEGROUP_TABLE_HEADER_TEXT.description,
+        RESOURCEGROUP_TABLE_HEADER_TEXT.actions
     ];
 }
 
