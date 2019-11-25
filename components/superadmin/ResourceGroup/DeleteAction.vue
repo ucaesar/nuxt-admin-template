@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Ref, Emit } from 'nuxt-property-decorator';
+import { Component, Vue, Prop, Ref } from 'nuxt-property-decorator';
 import { IResourceGroup } from '@/api/superadmin/ResourceGroup';
 
 import AskYesOrNoDialog from '@/components/common/AskYesOrNoDialog.vue';

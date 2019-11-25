@@ -53,10 +53,8 @@ export default {
             newRoleButtonText: '新建角色',
             roleNameHeaderText: '角色名'
         },
-        resourceGroupManager: {
-            newResourceGroupButtonText: '新建资源组',
-            removeResourceGroupButtonText: '删除资源组',
-            editResourceGroupButtonText: '编辑资源组',
+        resourceGroupTable: {
+            newButtonText: '新建资源组',
             groupNameHeaderText: '资源组名称',
             groupDescriptionHeaderText: '描述'
         }

@@ -53,11 +53,9 @@ export default {
             newRoleButtonText: 'New Role',
             roleNameHeaderText: 'Role Name'
         },
-        resourceGroupManager: {
-            newResourceGroupButtonText: 'New Resource Group',
-            removeResourceGroupButtonText: 'Delete Resource Group',
-            editResourceGroupButtonText: 'Edit Resource Group',
-            groupNameHeaderText: 'Group Name',
+        resourceGroupTable: {
+            newButtonText: 'New Resource Group',
+            groupNameHeaderText: 'Name',
             groupDescriptionHeaderText: 'Description'
         }
     }

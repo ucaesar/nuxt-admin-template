@@ -22,11 +22,14 @@ class ServerDataTable extends Vue {
     @Watch('pageOptions', { deep: true })
     loadPage() {}
 
+    get headers():any[] {
+        return [];
+    }
+
     footerProps = {
         itemsPerPageOptions: [1, DEFAULT_ITEMS_PER_PAGE, 20, 50]
     };
     defaultItemsPerPage = DEFAULT_ITEMS_PER_PAGE;
-    headers: any[] = [];
     pageOptions = {};
     serverData = new TableDataFromServer();
     loading = false;
