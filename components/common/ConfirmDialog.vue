@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="visible" max-width="300" persistent>
+    <v-dialog :value="visible" max-width="300" persistent>
         <v-card>
             <v-card-title class="headline">{{ title }}</v-card-title>
             <v-card-text>{{ text }}</v-card-text>
@@ -20,27 +20,21 @@
 import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator';
 
 @Component
-class AskYesOrNoDialog extends Vue {
+class ConfirmDialog extends Vue {
     @Prop({ type: String, required: true }) readonly title: string;
     @Prop({ type: String }) readonly text: string;
+    @Prop({ type: Boolean, required: true }) readonly visible: boolean;
 
-    @Emit('ok')
     onOK() {
-        this.visible = false;
+        this.$emit('close', true);
     }
 
-    @Emit('cancel')
     onCancel() {
-        this.visible = false;
-    }
-
-    visible = false;
-    showDialog() {
-        this.visible = true;
+        this.$emit('close', false);
     }
 }
 
-export default AskYesOrNoDialog;
+export default ConfirmDialog;
 </script>
 
 <style>

@@ -1,14 +1,21 @@
 <template>
     <span>
-        <v-icon small>mdi-pencil</v-icon>
+        <v-icon small @click.stop="onEdit">mdi-pencil</v-icon>
     </span>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { IResourceGroup } from '@/api/superadmin/ResourceGroup';
 
 @Component
-class EditAction extends Vue {}
+class EditAction extends Vue {
+    @Prop({ type: Object, required: true }) readonly item!: IResourceGroup;
+
+    onEdit() {
+        this.$emit('edit', this.item);
+    }
+}
 export default EditAction;
 </script>
 

@@ -1,12 +1,6 @@
 <template>
     <span>
-        <v-icon small @click="openAskDialog">mdi-delete</v-icon>
-        <ask-yes-or-no-dialog
-            ref="askDialog"
-            :title="$t('components.dialog.makeSureToDeleteTitle')"
-            :text="text"
-            @ok="onDelete"
-        />
+        <v-icon small @click="onDelete">mdi-delete</v-icon>
     </span>
 </template>
 
@@ -14,27 +8,12 @@
 import { Component, Vue, Prop, Ref } from 'nuxt-property-decorator';
 import { IResourceGroup } from '@/api/superadmin/ResourceGroup';
 
-import AskYesOrNoDialog from '@/components/common/AskYesOrNoDialog.vue';
-
-@Component({
-    components: {
-        AskYesOrNoDialog
-    }
-})
+@Component
 class DeleteAction extends Vue {
-    @Prop({ type: Object, required: true }) readonly item: IResourceGroup;
-    @Ref('askDialog') readonly askDialog!: any;
+    @Prop({ type: Object, required: true }) readonly item!: IResourceGroup;
 
     onDelete() {
         this.$emit('delete', this.item);
-    }
-
-    get text() {
-        return this.item.groupname;
-    }
-
-    openAskDialog() {
-        this.askDialog!.showDialog();
     }
 }
 export default DeleteAction;

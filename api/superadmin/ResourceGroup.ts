@@ -10,6 +10,11 @@ export interface IResourceGroup {
     groupname: string;
     description: string;
 }
+export class ResourceGroup implements IResourceGroup {
+    id = -1;
+    groupname = '';
+    description = '';
+}
 
 function getBaseUrl() {
     return '/api/resource-group';
