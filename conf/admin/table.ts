@@ -1,9 +1,13 @@
 import { $t } from '@/utils/NuxtOptions';
 
-export const RESOURCE_GROUP_DESCRIPTION_HEADER = {
-    text: $t('components.table.actionsHeaderText'),
-    value: 'action',
-    sortable: false
+export const COMMON_TABLE_HEADER_TEXT = {
+    get actions() {
+        return {
+            text: '',
+            value: 'actions',
+            sortable: false,
+            align: 'center',
+            width: '150px'
+        };
+    }
 };
-
-

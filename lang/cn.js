@@ -16,6 +16,7 @@ export default {
         dialog: {
             okButtonText: '确定',
             cancelButtonText: '取消',
+            submitButtonText: '提交',
             makeSureToDeleteTitle: '确定要删除这个吗？'
         }
     },
@@ -56,7 +57,16 @@ export default {
         resourceGroupTable: {
             newButtonText: '新建资源组',
             groupNameHeaderText: '资源组名称',
-            groupDescriptionHeaderText: '描述'
+            descriptionHeaderText: '描述',
+            editorTitle: '编辑资源组'
+        },
+        resourceTable: {
+            newButtonText: '新建资源',
+            nameHeaderText: '名称',
+            actionHeaderText: '动作',
+            urlHeaderText: '地址',
+            descriptionHeaderText: '描述',
+            editorTitle: '编辑资源'
         }
     }
 };

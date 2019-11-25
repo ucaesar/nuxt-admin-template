@@ -46,11 +46,10 @@
 </template>
 
 <script lang="ts">
-
 import { Component, Vue, Ref } from 'nuxt-property-decorator';
 import { VForm, fieldRequired } from '../utils/form';
 
-interface LoginForm {
+interface ILoginForm {
     username: '';
     password: '';
 }
@@ -61,7 +60,7 @@ interface LoginForm {
     }
 })
 class Login extends Vue {
-    loginForm: LoginForm = {
+    loginForm: ILoginForm = {
         username: '',
         password: ''
     };

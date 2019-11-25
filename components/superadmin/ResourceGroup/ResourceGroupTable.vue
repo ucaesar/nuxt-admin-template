@@ -55,6 +55,7 @@ import { IPageOptions } from '@/api/admin/table';
 import ServerDataTable from '@/components/common/ServerDataTable.vue';
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue';
 import * as ResourceGroupApi from '@/api/superadmin/ResourceGroup';
+import { COMMON_TABLE_HEADER_TEXT } from '@/conf/admin/table';
 import { RESOURCEGROUP_TABLE_HEADER_TEXT } from '@/conf/superadmin/ResourceGroup';
 
 @Component({
@@ -112,7 +113,7 @@ class ResourceGroupTable extends ServerDataTable {
         ];
 
         if (this.actionColumnState) {
-            headers.push(RESOURCEGROUP_TABLE_HEADER_TEXT.actions);
+            headers.push(COMMON_TABLE_HEADER_TEXT.actions);
         }
 
         return headers;

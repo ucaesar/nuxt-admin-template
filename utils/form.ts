@@ -7,4 +7,7 @@ export const fieldRequired: fieldValidator = value => {
     return !!value || $t('formValidating.error.fieldRequired');
 };
 
-export type VForm = Vue & { validate: () => boolean };
+export type VForm = Vue & {
+    validate: () => boolean;
+    resetValidation: () => void;
+};

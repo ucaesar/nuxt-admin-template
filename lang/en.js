@@ -16,6 +16,7 @@ export default {
         dialog: {
             okButtonText: 'OK',
             cancelButtonText: 'Cancel',
+            submitButtonText: 'Submit',
             makeSureToDeleteTitle: 'Make sure to DELETE this?'
         }
     },
@@ -56,7 +57,16 @@ export default {
         resourceGroupTable: {
             newButtonText: 'New Resource Group',
             groupNameHeaderText: 'Name',
-            groupDescriptionHeaderText: 'Description'
+            descriptionHeaderText: 'Description',
+            editorTitle: 'Edit Resource Group'
+        },
+        resourceTable: {
+            newButtonText: 'New Resource',
+            nameHeaderText: 'Name',
+            actionHeaderText: 'Action',
+            urlHeaderText: 'Url',
+            descriptionHeaderText: 'Description',
+            editorTitle: 'Edit Resource'
         }
     }
 };
