@@ -5,7 +5,11 @@ import { Op } from 'sequelize';
 import _ from 'lodash';
 import Resource from '../../model/Resource';
 
-// 获取指定id的ResourceGroup的所有子group
+/**
+ * 获取指定id的ResourceGroup的所有子group
+ * url: /api/resource-group/:id/children/ id为group的id, id为1时表示获取所有顶层group
+ * method: GET
+ */
 resourceGroupRouter.get('/:id/children', async (ctx, next) => {
     const parentId = ctx.params.id;
     // 获取父group
@@ -55,7 +59,13 @@ resourceGroupRouter.get('/:id/children', async (ctx, next) => {
     }
 });
 
-// 往指定id的ResourceGroup添加一个子group
+/**
+ * 往指定id的ResourceGroup添加一个子group
+ * url: /api/resource-group/:id/children/ id为group的id, id为1时表示添加顶层group
+ * method: POST
+ * params: {groupname, description}
+ * return: {id, groupname, description} 外加http code
+ */
 resourceGroupRouter.post('/:id/children', async ctx => {
     const parentId = ctx.params.id;
     const groupname: string = (ctx.req as any).body.groupname || '';
@@ -97,7 +107,11 @@ resourceGroupRouter.post('/:id/children', async ctx => {
     }
 });
 
-// 删除指定id的ResourceGroup
+/**
+ * 删除指定id的ResourceGroup
+ * url: /api/resource-group/:id id为要删除的group的id
+ * method: DELETE
+ */
 resourceGroupRouter.delete('/:id', async ctx => {
     const delId = ctx.params.id;
     // 找到要删除的group
@@ -119,9 +133,14 @@ resourceGroupRouter.delete('/:id', async ctx => {
 });
 
 // 获取指定id的ResourceGroup下的所有resource
-resourceGroupRouter.get('/:id/resource', async ctx => {});
+// resourceGroupRouter.get('/:id/resource', async ctx => {});
 
-// 获取指定id的ResourceGroup
+/**
+ * 获取指定id的ResourceGroup
+ * url: /api/resource-group/:id/ id为group的id
+ * method: GET
+ * return: { id, groupname, description, resources: [ {id, name, description, url, acition }, {id, name, description, url, acition }, ... ] }
+ */
 resourceGroupRouter.get('/:id/', async ctx => {
     const id = ctx.params.id;
     // 找到此group
@@ -136,6 +155,7 @@ resourceGroupRouter.get('/:id/', async ctx => {
         let rs = await group.$get('resources', {
             attributes: ['id', 'name', 'description', 'url', 'action']
         });
+        rs = Array.isArray(rs) ? rs : [rs];
         ctx.response.type = 'text/json';
         ctx.response.status = 200;
         ctx.response.body = {
