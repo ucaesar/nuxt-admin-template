@@ -63,13 +63,14 @@ resourceGroupRouter.get('/:id/children', async (ctx, next) => {
  * 往指定id的ResourceGroup添加一个子group
  * url: /api/resource-group/:id/children/ id为group的id, id为1时表示添加顶层group
  * method: POST
- * params: {groupname, description}
- * return: {id, groupname, description} 外加http code
+ * params: { groupname, description, resources: [ { id: 1 }, { id: 2 }, ... ] }
+ * return: { id, groupname, description } 外加http code
  */
 resourceGroupRouter.post('/:id/children', async ctx => {
     const parentId = ctx.params.id;
     const groupname: string = (ctx.req as any).body.groupname || '';
     const description: string = (ctx.req as any).body.description || '';
+    const resoures = (ctx.req as any).body.resources;
 
     if (
         await ResourceGroup.findOne({
@@ -83,7 +84,19 @@ resourceGroupRouter.post('/:id/children', async ctx => {
         ctx.response.body = 'this groupname exists';
         return;
     }
-
+    let i;
+    for (i = 0; i < resoures.length; i++) {
+        if (
+            !(await Resource.findOne({
+                where: {
+                    id: resoures[i].id
+                }
+            }))
+        ) {
+            ctx.response.status = 401;
+            return;
+        }
+    }
     // 获取父group
     const parentGroup = await ResourceGroup.findOne({
         where: {
@@ -95,6 +108,16 @@ resourceGroupRouter.post('/:id/children', async ctx => {
             groupname,
             description
         });
+        for (i = 0; i < resoures.length; i++) {
+            const r = await Resource.findOne({
+                where: {
+                    id: resoures[i].id
+                }
+            });
+            if (r) {
+                await newgroup.$add('resources', r);
+            }
+        }
         // 往父group里添加新建立的group
         await parentGroup.$add('children', newgroup);
         ctx.response.type = 'text/json';
