@@ -26,7 +26,7 @@ export const RESOURCE_TABLE_HEADER_TEXT = {
     },
     get descripton() {
         return {
-            text: $t('superadmin.resourceTable.descriptonHeaderText'),
+            text: $t('superadmin.resourceTable.descriptionHeaderText'),
             value: 'descripton',
             sortable: false
         };

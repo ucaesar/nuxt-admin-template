@@ -46,14 +46,16 @@
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'nuxt-property-decorator';
 
-import DeleteAction from './DeleteAction.vue';
 import NewAction from './NewAction.vue';
-import EditAction from './EditAction.vue';
 import ResourceGroupEditor from './ResourceGroupEditor.vue';
 
-import { IPageOptions } from '@/api/admin/table';
-import ServerDataTable from '@/components/common/ServerDataTable.vue';
+import EditAction from '@/components/common/table/EditAction.vue';
+import DeleteAction from '@/components/common/table/DeleteAction.vue';
+import ServerDataTable from '@/components/common/Table/ServerDataTable.vue';
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue';
+
+import { IPageOptions } from '@/api/admin/table';
+
 import * as ResourceGroupApi from '@/api/superadmin/ResourceGroup';
 import { COMMON_TABLE_HEADER_TEXT } from '@/conf/admin/table';
 import { RESOURCEGROUP_TABLE_HEADER_TEXT } from '@/conf/superadmin/ResourceGroup';

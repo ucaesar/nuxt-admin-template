@@ -6,11 +6,10 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Ref } from 'nuxt-property-decorator';
-import { IResourceGroup } from '@/api/superadmin/ResourceGroup';
 
 @Component
 class DeleteAction extends Vue {
-    @Prop({ type: Object, required: true }) readonly item!: IResourceGroup;
+    @Prop({ type: Object, required: true }) readonly item!: any;
 
     onDelete() {
         this.$emit('delete', this.item);
