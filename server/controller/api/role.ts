@@ -106,11 +106,11 @@ roleRouter.post('/', async ctx => {
 });
 
 // 往指定id的role上挂父roles
-/*
-    url: /api/role/:id/parents/
-    method: POST
-    params: parents [{ id: 1 }, { id: 2 }]
-*/
+/**
+ *   url: /api/role/:id/parents/
+ *   method: POST
+ *   params: parents [{ id: 1 }, { id: 2 }]
+ */
 roleRouter.post('/:id/parents/', async ctx => {
     const rid = ctx.params.id;
     const parents = (ctx.req as any).body.parents;
@@ -160,4 +160,10 @@ roleRouter.post('/:id/parents/', async ctx => {
     }
 });
 
+// 
+/**
+ * 往指定id的role上挂ResourceGroup
+ * 
+ */
+roleRouter.post('/:id/resource_groups/', async ctx => {});
 export default roleRouter;
