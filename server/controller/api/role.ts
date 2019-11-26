@@ -163,7 +163,6 @@ roleRouter.post('/:id/parents/', async ctx => {
     }
 });
 
-//
 /**
  * 往指定id的role上挂ResourceGroup
  * url: /api/role/:id/resource_groups/

@@ -151,12 +151,12 @@ resourceGroupRouter.get('/:id/', async ctx => {
     }
 });
 
-// 给指定id的group添加一个或者多个resource  POST请求，body参数名为resouces,为要添加resource的数组
-/*
-    url: /api/resource-group/:id/resource/ id为group的id
-    method: POST
-    params: resources [{ id: 1 }, { id: 2 }]
-*/
+/**
+ * 给指定id的group添加一个或者多个resource  POST请求，body参数名为resouces,为要添加resource的数组
+ * url: /api/resource-group/:id/resource/ id为group的id
+ * method: POST
+ * params: resources [{ id: 1 }, { id: 2 }]
+ */
 resourceGroupRouter.post('/:id/resource', async ctx => {
     const gid = ctx.params.id;
     const resoures = (ctx.req as any).body.resources;
@@ -202,12 +202,12 @@ resourceGroupRouter.post('/:id/resource', async ctx => {
     }
 });
 
-// 指定id的group删除一个或者多个resource  POST请求，body参数名为resouces,为要删除resource的数组
-/*
-    url: /api/resource-group/:id/resource/ id为group的id
-    method: DELETE
-    params: resources [{ id: 1 }, { id: 2 }]
-*/
+/**
+ * 指定id的group删除一个或者多个resource  POST请求，body参数名为resouces,为要删除resource的数组
+ * url: /api/resource-group/:id/resource/ id为group的id
+ * method: DELETE
+ * params: resources [{ id: 1 }, { id: 2 }]
+ */
 resourceGroupRouter.delete('/:id/resource', async ctx => {
     const gid = ctx.params.id;
     const resoures = (ctx.req as any).body.resources;
