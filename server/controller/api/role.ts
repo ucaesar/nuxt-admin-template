@@ -107,10 +107,57 @@ roleRouter.post('/', async ctx => {
 
 // 往指定id的role上挂父roles
 /*
-    url: /api/role/
+    url: /api/role/:id/parents/
     method: POST
-    params: POST参数rolename和description
+    params: parents [{ id: 1 }, { id: 2 }]
 */
-roleRouter.post('/:id/parents/', async ctx => {});
+roleRouter.post('/:id/parents/', async ctx => {
+    const rid = ctx.params.id;
+    const parents = (ctx.req as any).body.parents;
+    let r = await Role.findOne({
+        where: { id: rid }
+    });
+    if (r) {
+        const e = await getEnforcer();
+        const ps = await e.getImplicitRolesForUser(r.rolename);
+        if (!Array.isArray(parents)) {
+            ctx.response.status = 401;
+            return;
+        }
+        let i;
+        for (i = 0; i < parents.length; i++) {
+            if (
+                !(await Role.findOne({
+                    where: {
+                        id: parents[i].id
+                    }
+                }))
+            ) {
+                ctx.response.status = 401;
+                return;
+            }
+        }
+        for (i = 0; i < parents.length; i++) {
+            const pr = await Role.findOne({
+                where: {
+                    id: parents[i].id
+                }
+            });
+            if (pr) {
+                if (_.findIndex(ps, pr.rolename) < 0) {
+                    // await group.$add('resources', r);
+                    await e.addGroupingPolicy(r.rolename, pr.rolename);
+                    await r.$add('parents', pr);
+                }
+            }
+        }
+        ctx.response.status = 200;
+        ctx.response.body = 'not found';
+    } else {
+        // 找不到指定id的role
+        ctx.response.status = 404;
+        ctx.response.body = 'not found';
+    }
+});
 
 export default roleRouter;
