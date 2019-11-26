@@ -13,7 +13,13 @@
         >
             <template v-slot:top>
                 <v-toolbar flat color="white">
-                    <new-action v-if="newAction" @edit="beforeEdit" />
+                    <new-action
+                        v-if="newAction"
+                        :text="
+                            $t('superadmin.resourceGroupTable.newButtonText')
+                        "
+                        @new="beforeNew"
+                    />
                 </v-toolbar>
             </template>
 
@@ -46,9 +52,9 @@
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'nuxt-property-decorator';
 
-import NewAction from './NewAction.vue';
 import ResourceGroupEditor from './ResourceGroupEditor.vue';
 
+import NewAction from '@/components/common/table/NewAction.vue';
 import EditAction from '@/components/common/table/EditAction.vue';
 import DeleteAction from '@/components/common/table/DeleteAction.vue';
 import ServerDataTable from '@/components/common/Table/ServerDataTable.vue';
@@ -86,6 +92,11 @@ class ResourceGroupTable extends ServerDataTable {
                 .pageOptions as IPageOptions);
         } catch (e) {}
         this.loading = false;
+    }
+
+    beforeNew() {
+        this.itemTodo = new ResourceGroupApi.ResourceGroup();
+        this.editorDialogVisible = true;
     }
 
     beforeDelete(item) {

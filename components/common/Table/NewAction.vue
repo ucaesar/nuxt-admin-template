@@ -2,19 +2,19 @@
     <span>
         <v-btn color="primary" @click.stop="onNew">
             <v-icon>mdi-plus</v-icon>
-            {{ $t('superadmin.resourceGroupTable.newButtonText') }}
+            {{ text }}
         </v-btn>
     </span>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'nuxt-property-decorator';
-import { ResourceGroup } from '@/api/superadmin/ResourceGroup';
 
 @Component
 class NewAction extends Vue {
+    @Prop({ type: String, required: true }) readonly text!: String;
     onNew() {
-        this.$emit('edit', new ResourceGroup());
+        this.$emit('new');
     }
 }
 
