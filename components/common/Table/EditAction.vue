@@ -6,11 +6,10 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator';
-import { IResourceGroup } from '@/api/superadmin/ResourceGroup';
 
 @Component
 class EditAction extends Vue {
-    @Prop({ type: Object, required: true }) readonly item!: IResourceGroup;
+    @Prop({ type: Object, required: true }) readonly item!: any;
 
     onEdit() {
         this.$emit('edit', this.item);
