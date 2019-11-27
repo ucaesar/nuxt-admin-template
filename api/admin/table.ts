@@ -12,9 +12,10 @@ export interface IPageOptions {
     itemsPerPage: number;
 }
 
-interface IPaginationParams {
+export interface IPaginationParams {
     start: number;
     count: number;
+    filter?: string;
 }
 export function computePaginationParams(
     pageOptions: IPageOptions

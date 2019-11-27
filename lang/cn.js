@@ -11,6 +11,7 @@ export default {
 
     components: {
         table: {
+            newButtonText: '新增',
             actionsHeaderText: '操作'
         },
         dialog: {
