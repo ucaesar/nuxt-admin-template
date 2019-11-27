@@ -4,6 +4,8 @@ import ResourceGroup from '../../model/ResourceGroup';
 import { Op } from 'sequelize';
 import _ from 'lodash';
 import Resource from '../../model/Resource';
+import getEnforer from '../../lib/enforcer';
+import Role from '../../model/Role';
 
 /**
  * 获取指定id的ResourceGroup的所有子group
@@ -29,7 +31,7 @@ resourceGroupRouter.get('/:id/children', async (ctx, next) => {
             attributes: ['id', 'groupname', 'description'],
             where: {
                 id: { [Op.ne]: parentId },
-                groupname: {[Op.like]:'%'+filter+'%'}
+                groupname: { [Op.like]: '%' + filter + '%' }
             }
         });
         // 如果子group为单个,sequelize默认返回的是单个实例,需要包进一个数组后再作为返回结果
@@ -236,6 +238,7 @@ resourceGroupRouter.put('/:id/', async ctx => {
         currentResources = Array.isArray(currentResources)
             ? currentResources
             : [currentResources];
+        const e = await getEnforer();
         // 删除不存在参数resources里的rseource
         let i, j;
         for (i = 0; i < currentResources.length; i++) {
@@ -247,8 +250,22 @@ resourceGroupRouter.put('/:id/', async ctx => {
                     break;
                 }
             }
+            // exist为false, 则当前的Resource为要从Group里解除关系的Resource
             if (!exist) {
+                // 移除Resource和Group的关系
                 await group.$remove('resources', currentResources[i]);
+                // 要把该group相关的所有role，做一个从casbin表里移除(role resource)的操作
+                let roles = await group.$get('roles');
+                roles = Array.isArray(roles) ? roles : [roles];
+                let k;
+                for (k = 0; k < roles.length; k++) {
+                    let currentRole = roles[k] as Role;
+                    let currentResource = currentResources[i] as Resource;
+                    await e.deletePermissionForUser(
+                        currentRole.rolename,
+                        ...[currentResource.url, currentResource.action]
+                    );
+                }
             }
         }
         // 添加参数resources里的所有resource到group里
@@ -264,9 +281,20 @@ resourceGroupRouter.put('/:id/', async ctx => {
                 }
             });
             t = Array.isArray(t) ? t : [t];
-            // 该resource存在在数据库里, 而且不在group的resources里, 就执行关系的添加操作
+            // 该resource存在在数据库里, 而且不在group的resources里, 就执行(resource group)关系的添加操作
+            // 同时还要将该group下所有role的(role resource)关系添加到casbin表里
             if (r && t.length <= 0) {
                 await group.$add('resources', r);
+                let roles = await group.$get('roles');
+                roles = Array.isArray(roles) ? roles : [roles];
+                let k;
+                for (k = 0; k < roles.length; k++) {
+                    let currentRole = roles[k] as Role;
+                    await e.addPermissionForUser(
+                        currentRole.rolename,
+                        ...[r.url, r.action]
+                    );
+                }
             }
         }
         ctx.response.status = 200;

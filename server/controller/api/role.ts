@@ -11,7 +11,7 @@ import { RSA_NO_PADDING } from 'constants';
 // 获取所有role
 roleRouter.get('/', async ctx => {
     const start = ctx.request.query.start;
-    const num = ctx.request.query.num;
+    const num = ctx.request.query.count;
     // consola.info(start + ' ' + num)
     const e = await getEnforcer();
     // let result = e.getAllRoles().sort();
