@@ -266,6 +266,8 @@ resourceGroupRouter.put('/:id/', async ctx => {
                 await group.$add('resources', r);
             }
         }
+        ctx.response.status = 200;
+        ctx.response.body = 'edit success';
     } else {
         // 找不到此group
         ctx.response.status = 404;
