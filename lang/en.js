@@ -11,6 +11,7 @@ export default {
 
     components: {
         table: {
+            newButtonText: 'New',
             actionsHeaderText: 'Actions'
         },
         dialog: {
