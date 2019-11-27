@@ -22,11 +22,13 @@ resourceGroupRouter.get('/:id/children', async (ctx, next) => {
         // 获取分页参数
         const start = ctx.request.query.start;
         const num = ctx.request.query.count;
+        const filter = ctx.request.query.filter ? ctx.request.query.filter : '';
         // 得到父group下的所有子group
         let children = await parentGroup.$get('children', {
             attributes: ['id', 'groupname', 'description'],
             where: {
-                id: { [Op.ne]: parentId }
+                id: { [Op.ne]: parentId },
+                groupname: {[Op.like]:'%'+filter+'%'}
             }
         });
         // 如果子group为单个,sequelize默认返回的是单个实例,需要包进一个数组后再作为返回结果
