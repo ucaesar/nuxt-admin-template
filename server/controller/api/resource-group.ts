@@ -195,6 +195,85 @@ resourceGroupRouter.get('/:id/', async ctx => {
 });
 
 /**
+ * 编辑指定id的ResourceGroup
+ * url: /api/resource-group/:id/ id为group的id
+ * method: PUT
+ * params: { id?(可以不设置, 以url里的id为准), groupname, description, resources: [ { id }, { id }, ... ] }
+ */
+resourceGroupRouter.put('/:id/', async ctx => {
+    const gid = ctx.params.id;
+    const groupname: string = (ctx.req as any).body.groupname || '';
+    const description: string = (ctx.req as any).body.description || '';
+    let resources = (ctx.req as any).body.resources;
+    // 找到此group
+    const group = await ResourceGroup.findOne({
+        attributes: ['id', 'groupname', 'description'],
+        where: {
+            id: gid
+        }
+    });
+    // 存在非此id而groupname为此groupname的group, 报401参数错
+    if (
+        await ResourceGroup.findOne({
+            where: {
+                id: { [Op.ne]: gid },
+                groupname
+            }
+        })
+    ) {
+        // groupname已经存在
+        ctx.response.status = 401;
+        ctx.response.body = 'this groupname exists';
+        return;
+    }
+    if (group) {
+        group.groupname = groupname;
+        group.description = description;
+        let currentResources = await group.$get('resources');
+        currentResources = Array.isArray(currentResources)
+            ? currentResources
+            : [currentResources];
+        // 删除不存在参数resources里的rseource
+        let i, j;
+        for (i = 0; i < currentResources.length; i++) {
+            const cid = currentResources[i].id;
+            let exist = false;
+            for (j = 0; j < resources.length; j++) {
+                if (cid === resources[j].id) {
+                    exist = true;
+                    break;
+                }
+            }
+            if (!exist) {
+                await group.$remove('resources', currentResources[i]);
+            }
+        }
+        // 添加参数resources里的所有resource到group里
+        for (i = 0; i < resources.length; i++) {
+            const r = await Resource.findOne({
+                where: {
+                    id: resources[i].id
+                }
+            });
+            let t = await group.$get('resources', {
+                where: {
+                    id: resources[i].id
+                }
+            });
+            t = Array.isArray(t) ? t : [t];
+            // 该resource存在在数据库里, 而且不在group的resources里, 就执行关系的添加操作
+            if (r && t.length <= 0) {
+                await group.$add('resources', r);
+            }
+        }
+    } else {
+        // 找不到此group
+        ctx.response.status = 404;
+        ctx.response.body = 'not found';
+    }
+});
+
+/**
  * 给指定id的group添加一个或者多个resource  POST请求，body参数名为resouces,为要添加resource的数组
  * url: /api/resource-group/:id/resource/ id为group的id
  * method: POST
@@ -202,23 +281,23 @@ resourceGroupRouter.get('/:id/', async ctx => {
  */
 resourceGroupRouter.post('/:id/resource', async ctx => {
     const gid = ctx.params.id;
-    const resoures = (ctx.req as any).body.resources;
+    const resources = (ctx.req as any).body.resources;
     const group = await ResourceGroup.findOne({
         where: {
             id: gid
         }
     });
     if (group) {
-        if (!Array.isArray(resoures)) {
+        if (!Array.isArray(resources)) {
             ctx.response.status = 401;
             return;
         }
         let i;
-        for (i = 0; i < resoures.length; i++) {
+        for (i = 0; i < resources.length; i++) {
             if (
                 !(await Resource.findOne({
                     where: {
-                        id: resoures[i].id
+                        id: resources[i].id
                     }
                 }))
             ) {
@@ -226,10 +305,10 @@ resourceGroupRouter.post('/:id/resource', async ctx => {
                 return;
             }
         }
-        for (i = 0; i < resoures.length; i++) {
+        for (i = 0; i < resources.length; i++) {
             const r = await Resource.findOne({
                 where: {
-                    id: resoures[i].id
+                    id: resources[i].id
                 }
             });
             if (r) {
