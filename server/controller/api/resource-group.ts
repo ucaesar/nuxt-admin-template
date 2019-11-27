@@ -9,6 +9,7 @@ import Resource from '../../model/Resource';
  * 获取指定id的ResourceGroup的所有子group
  * url: /api/resource-group/:id/children/ id为group的id, id为1时表示获取所有顶层group
  * method: GET
+ * params: GET查询参数, start为分页起始位置, count为一页的数量, filter为对groupname做的匹配关键词
  */
 resourceGroupRouter.get('/:id/children', async (ctx, next) => {
     const parentId = ctx.params.id;
