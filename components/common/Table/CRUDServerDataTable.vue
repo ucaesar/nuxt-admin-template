@@ -14,15 +14,18 @@
             @input="onSelect"
         >
             <template v-slot:top>
-                <v-toolbar flat color="white">
-                    <v-row>
-                        <new-action
-                            v-if="newAction"
-                            :text="$t('components.table.newButtonText')"
-                            @new="onNew"
-                        />
-                        <search-action />
-                    </v-row>
+                <v-toolbar flat color="white" class="d-flex">
+                    <new-action
+                        v-if="newAction"
+                        :text="$t('components.table.newButtonText')"
+                        class="mr-4"
+                        @new="onNew"
+                    />
+                    <search-action
+                        v-model="searchOption"
+                        class="flex-grow-1"
+                        @search="onSearch"
+                    />
                 </v-toolbar>
             </template>
             <template v-if="actionColumnState" v-slot:item.actions="{ item }">
@@ -150,6 +153,12 @@ class CRUDServerDataTable extends Vue {
 
     onSelect(items) {
         this.$emit('input', items);
+    }
+
+    onSearch() {
+        this.pageOptions = Object.assign(_.cloneDeep(this.pageOptions), {
+            page: 1
+        });
     }
 }
 
