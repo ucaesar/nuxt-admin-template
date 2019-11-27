@@ -235,7 +235,7 @@ describe('ResourceGroup API test', () => {
             .send({
                 groupname: 'top1-4newname',
                 description: 'top1 4 new name',
-                resources: [{ id: '1' }, { id: '3' }, { id: '5' }]
+                resources: [{ id: '1' }, { id: '6' }, { id: '5' }]
             });
         expect(res).to.have.status(200);
     });
