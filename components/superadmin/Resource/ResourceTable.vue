@@ -53,9 +53,9 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator';
 
 import ResourceEditor from './ResourceEditor.vue';
 
-import NewAction from '@/components/common/table/NewAction.vue';
-import EditAction from '@/components/common/table/EditAction.vue';
-import DeleteAction from '@/components/common/table/DeleteAction.vue';
+import NewAction from '@/components/common/Table/NewAction.vue';
+import EditAction from '@/components/common/Table/EditAction.vue';
+import DeleteAction from '@/components/common/Table/DeleteAction.vue';
 import ServerDataTable from '@/components/common/Table/ServerDataTable.vue';
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue';
 

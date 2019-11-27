@@ -11,14 +11,18 @@
             :items-per-page="defaultItemsPerPage"
             :options.sync="pageOptions"
             class="elevation-1"
+            @input="onSelect"
         >
             <template v-slot:top>
                 <v-toolbar flat color="white">
-                    <new-action
-                        v-if="newAction"
-                        :text="$t('components.table.newButtonText')"
-                        @new="onNew"
-                    />
+                    <v-row>
+                        <new-action
+                            v-if="newAction"
+                            :text="$t('components.table.newButtonText')"
+                            @new="onNew"
+                        />
+                        <search-action />
+                    </v-row>
                 </v-toolbar>
             </template>
             <template v-if="actionColumnState" v-slot:item.actions="{ item }">
@@ -42,6 +46,7 @@
 import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator';
 import _ from 'lodash';
 
+import SearchAction from './SearchAction.vue';
 import NewAction from './NewAction.vue';
 import EditAction from './EditAction.vue';
 import DeleteAction from './DeleteAction.vue';
@@ -58,6 +63,8 @@ import { COMMON_TABLE_HEADER_TEXT } from '@/conf/admin/table';
 
 @Component({
     components: {
+        SearchAction,
+        NewAction,
         EditAction,
         DeleteAction,
         ConfirmDialog
@@ -73,10 +80,12 @@ class CRUDServerDataTable extends Vue {
     @Prop({ type: Array, required: true }) readonly headersConf!: any[];
     @Prop({ type: Object, required: true })
     readonly serverData!: ITableDataFromServer;
-    @Prop({ type: Object }) readonly value!: any[];
+    @Prop({ type: Array }) readonly value!: any[];
 
     @Watch('pageOptions', { deep: true })
-    onUpdatePageOptions() {}
+    onUpdatePageOptions() {
+        this.onLoadPage();
+    }
 
     get actionColumnState() {
         return this.deleteAction || this.editAction;
@@ -137,6 +146,10 @@ class CRUDServerDataTable extends Vue {
 
     onEdit(item) {
         this.$emit('edit', item);
+    }
+
+    onSelect(items) {
+        this.$emit('input', items);
     }
 }
 
