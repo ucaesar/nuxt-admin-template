@@ -165,7 +165,8 @@ describe('ResourceGroup API test', () => {
             .type('json')
             .send({
                 groupname: 'top1-6',
-                description: 'top1 6'
+                description: 'top1 6',
+                resources: []
             });
         const topid = res.body.id;
         expect(res).to.have.status(200);
@@ -174,7 +175,8 @@ describe('ResourceGroup API test', () => {
             .type('json')
             .send({
                 groupname: 'sub6-1',
-                description: 'sub6 1'
+                description: 'sub6 1',
+                resources: []
             });
         const subid = res.body.id;
         expect(res).to.have.status(200);
@@ -200,7 +202,7 @@ describe('ResourceGroup API test', () => {
         expect(res).to.have.status(200);
     });
 
-    it('test add a resource to a group using restful api', async () => {
+    it('test delete a resource to a group using restful api', async () => {
         let res;
         res = await req
             .post('/api/user/login')
@@ -214,6 +216,26 @@ describe('ResourceGroup API test', () => {
             .type('json')
             .send({
                 resources: [{ id: '3' }, { id: '5' }]
+            });
+        expect(res).to.have.status(200);
+    });
+
+    it('test edit a group using restful api', async () => {
+        let res;
+        res = await req
+            .post('/api/user/login')
+            .type('json')
+            .send({
+                username: 'superadmin',
+                password: 'superadmin'
+            });
+        res = await req
+            .put('/api/resource-group/8')
+            .type('json')
+            .send({
+                groupname: 'top1-4newname',
+                description: 'top1 4 new name',
+                resources: [{ id: '1' }, { id: '3' }, { id: '5' }]
             });
         expect(res).to.have.status(200);
     });
