@@ -50,7 +50,7 @@ resourceRouter.get('/', async ctx => {
  * 添加一个resource
  * url: /api/resource
  * method: POST
- * params: { name, description, url, action, groups: [ { id: 1 }, { id: 2 }, ... ] }
+ * params: { name, description, url, action }
  * return: { id, name, description, url, action } 外加http code
  */
 resourceRouter.post('/', async ctx => {
