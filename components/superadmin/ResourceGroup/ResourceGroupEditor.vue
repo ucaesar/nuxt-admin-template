@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="visible" persistent
+    <v-dialog :value="visible" persistent max-width="1200"
         ><v-card
             ><v-card-title class="headline">{{
                 $t('superadmin.resourceGroupTable.editorTitle')

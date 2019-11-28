@@ -14,13 +14,14 @@
             @input="onSelect"
         >
             <template v-slot:top>
-                <v-toolbar flat color="white" class="d-flex">
+                <v-toolbar flat color="white">
                     <new-action
                         v-if="newAction"
                         :text="$t('components.table.newButtonText')"
                         class="mr-4"
                         @new="onNew"
                     />
+                    <v-spacer></v-spacer>
                     <search-action
                         v-if="searchAction"
                         v-model="searchOption"

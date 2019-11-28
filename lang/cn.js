@@ -12,6 +12,7 @@ export default {
     components: {
         table: {
             newButtonText: '新增',
+            searchText: '搜索',
             actionsHeaderText: '操作'
         },
         dialog: {

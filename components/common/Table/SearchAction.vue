@@ -1,13 +1,13 @@
 <template>
     <v-text-field
         :value="value"
+        :label="$t('components.table.searchText')"
+        append-icon="mdi-magnify"
         hide-details
         @input="onInput"
         @keyup.enter.native="onSearch"
+        @click:append="onSearch"
     >
-        <template v-slot:append>
-            <v-icon color="primary" @click="onSearch">mdi-magnify</v-icon>
-        </template>
     </v-text-field>
 </template>
 

@@ -1,6 +1,11 @@
 <template>
     <v-container>
-        <resource-group-table new-action delete-action edit-action />
+        <resource-group-table
+            new-action
+            delete-action
+            edit-action
+            search-action
+        />
     </v-container>
 </template>
 
