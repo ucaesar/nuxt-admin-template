@@ -220,23 +220,23 @@ describe('ResourceGroup API test', () => {
     //     expect(res).to.have.status(200);
     // });
 
-    it('test edit a group using restful api', async () => {
-        let res;
-        res = await req
-            .post('/api/user/login')
-            .type('json')
-            .send({
-                username: 'superadmin',
-                password: 'superadmin'
-            });
-        res = await req
-            .put('/api/resource-group/8')
-            .type('json')
-            .send({
-                groupname: 'top1-4newname',
-                description: 'top1 4 new name',
-                resources: [{ id: '2' }, { id: '4' }, { id: '5' }]
-            });
-        expect(res).to.have.status(200);
-    });
+    // it('test edit a group using restful api', async () => {
+    //     let res;
+    //     res = await req
+    //         .post('/api/user/login')
+    //         .type('json')
+    //         .send({
+    //             username: 'superadmin',
+    //             password: 'superadmin'
+    //         });
+    //     res = await req
+    //         .put('/api/resource-group/8')
+    //         .type('json')
+    //         .send({
+    //             groupname: 'top1-4newname',
+    //             description: 'top1 4 new name',
+    //             resources: [{ id: '2' }, { id: '4' }, { id: '5' }]
+    //         });
+    //     expect(res).to.have.status(200);
+    // });
 });

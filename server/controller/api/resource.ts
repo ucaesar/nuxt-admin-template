@@ -1,6 +1,7 @@
 import Router from 'koa-router';
 const resourceRouter = new Router();
 import Resource from '../../model/Resource';
+import { CasbinRule } from '../../model/CasbinRule';
 import { Op } from 'sequelize';
 import _ from 'lodash';
 
@@ -91,7 +92,12 @@ resourceRouter.post('/', async ctx => {
     };
 });
 
-// 删除指定id的resource
+/**
+ * 删除指定id的resource
+ * url: /api/resource/:id
+ * method: DELETE
+ * return: HTTP CODE
+ */
 resourceRouter.delete('/:id', async ctx => {
     const delId = ctx.params.id;
     // 找到要删除的resource
@@ -101,6 +107,13 @@ resourceRouter.delete('/:id', async ctx => {
         }
     });
     if (delResource) {
+        // 清理casbin权限表
+        await CasbinRule.destroy({
+            where: {
+                v1: delResource.url,
+                v2: delResource.action
+            }
+        });
         // 执行删除
         await delResource.destroy();
         ctx.response.status = 200;
