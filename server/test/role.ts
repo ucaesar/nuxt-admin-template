@@ -182,7 +182,7 @@ describe('Role API test', () => {
     //             password: 'superadmin'
     //         });
     //     res = await req
-    //         .post('/api/role/1/resource_groups/')
+    //         .post('/api/role/1/resource-groups/')
     //         .type('json')
     //         .send({
     //             groups: [{ id: '8' }]

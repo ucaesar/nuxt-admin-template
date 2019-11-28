@@ -297,6 +297,7 @@ resourceGroupRouter.put('/:id/', async ctx => {
                 }
             }
         }
+        await group.save();
         ctx.response.status = 200;
         ctx.response.body = 'edit success';
     } else {
