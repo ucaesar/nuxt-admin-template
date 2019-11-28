@@ -171,4 +171,22 @@ describe('Role API test', () => {
             console.log(result);
         }
     });
+
+    // it('test add role-group relation using restful api', async () => {
+    //     let res;
+    //     res = await req
+    //         .post('/api/user/login')
+    //         .type('json')
+    //         .send({
+    //             username: 'superadmin',
+    //             password: 'superadmin'
+    //         });
+    //     res = await req
+    //         .post('/api/role/1/resource_groups/')
+    //         .type('json')
+    //         .send({
+    //             groups: [{ id: '8' }]
+    //         });
+    //     expect(res).to.have.status(200);
+    // });
 });
