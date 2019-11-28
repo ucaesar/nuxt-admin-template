@@ -1,47 +1,18 @@
 <template>
     <div>
-        <v-data-table
-            v-model="selected"
-            :items="serverData.results"
-            :server-items-length="serverData.total"
-            :headers="headers"
+        <crud-server-data-table
+            :server-data="serverData"
             :loading="loading"
-            :footer-props="footerProps"
-            :items-per-page="defaultItemsPerPage"
-            :options.sync="pageOptions"
-            :show-select="selectAction"
-            class="elevation-1"
-        >
-            <template v-slot:top>
-                <v-toolbar flat color="white">
-                    <new-action
-                        v-if="newAction"
-                        :text="$t('superadmin.resourceTable.newButtonText')"
-                        @new="beforeNew"
-                    />
-                </v-toolbar>
-            </template>
-
-            <template v-if="actionColumnState" v-slot:item.actions="{ item }">
-                <edit-action
-                    v-if="editAction"
-                    :item="item"
-                    @edit="beforeEdit"
-                />
-                <delete-action
-                    v-if="deleteAction"
-                    :item="item"
-                    @delete="beforeDelete"
-                />
-            </template>
-        </v-data-table>
-        <confirm-dialog
-            :visible="askToDeleteDialogVisible"
-            :title="$t('components.dialog.makeSureToDeleteTitle')"
-            @close="onDelete"
+            :headers-conf="headersConf"
+            v-bind="$attrs"
+            @load-page="loadPage"
+            @new="beforeNew"
+            @delete="onDelete"
+            @edit="beforeEdit"
+            @input="onSelect"
         />
         <resource-editor
-            :visible="editorDialogVisible"
+            :visible="editorVisible"
             :item="itemTodo"
             @close="onEdit"
         />
@@ -53,82 +24,56 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator';
 
 import ResourceEditor from './ResourceEditor.vue';
 
-import NewAction from '@/components/common/Table/NewAction.vue';
-import EditAction from '@/components/common/Table/EditAction.vue';
-import DeleteAction from '@/components/common/Table/DeleteAction.vue';
-import ServerDataTable from '@/components/common/Table/ServerDataTable.vue';
-import ConfirmDialog from '@/components/common/ConfirmDialog.vue';
+import CrudServerDataTable from '@/components/common/Table/CRUDServerDataTable.vue';
 
+import { TableDataFromServer, IPaginationParams } from '@/api/admin/table';
 import * as ResourceApi from '@/api/superadmin/Resource';
-import { IPageOptions } from '@/api/admin/table';
 
-import { COMMON_TABLE_HEADER_TEXT } from '@/conf/admin/table';
 import { RESOURCE_TABLE_HEADER_TEXT } from '@/conf/superadmin/Resource';
 
 @Component({
     components: {
-        NewAction,
-        DeleteAction,
-        EditAction,
-        ConfirmDialog,
+        CrudServerDataTable,
         ResourceEditor
-    }
+    },
+    inheritAttrs: false
 })
-class ResourceTable extends ServerDataTable {
-    @Prop({ type: Boolean, default: false }) readonly newAction!: boolean;
-    @Prop({ type: Boolean, default: false }) readonly deleteAction!: boolean;
-    @Prop({ type: Boolean, default: false }) readonly editAction!: boolean;
-    @Prop({ type: Boolean, default: false }) readonly selectAction!: boolean;
-
-    askToDeleteDialogVisible = false;
-    editorDialogVisible = false;
+class ResourceTable extends Vue {
+    serverData = new TableDataFromServer();
+    loading = false;
+    headersConf = [
+        RESOURCE_TABLE_HEADER_TEXT.name,
+        RESOURCE_TABLE_HEADER_TEXT.action,
+        RESOURCE_TABLE_HEADER_TEXT.url,
+        RESOURCE_TABLE_HEADER_TEXT.descripton
+    ];
+    editorVisible = false;
     itemTodo = new ResourceApi.Resource();
 
-    async loadPage() {
+    async loadPage(params: IPaginationParams) {
         this.loading = true;
         try {
-            this.serverData = await ResourceApi.$list(this
-                .pageOptions as IPageOptions);
+            this.serverData = await ResourceApi.$list(params);
         } catch (e) {}
         this.loading = false;
     }
 
     beforeNew() {
         this.itemTodo = new ResourceApi.Resource();
-        this.editorDialogVisible = true;
+        this.editorVisible = true;
     }
-
-    beforeDelete(item) {
-        this.itemTodo = item;
-        this.askToDeleteDialogVisible = true;
-    }
-    onDelete(val) {
-        this.askToDeleteDialogVisible = false;
-    }
-
     beforeEdit(item) {
         this.itemTodo = item;
-        this.editorDialogVisible = true;
-    }
-    onEdit(val: boolean | ResourceApi.IResource) {
-        this.editorDialogVisible = false;
+        this.editorVisible = true;
     }
 
-    get actionColumnState() {
-        return this.deleteAction || this.editAction;
+    onDelete(item) {}
+    onEdit(val: boolean | ResourceApi.Resource) {
+        this.editorVisible = false;
     }
 
-    get headers() {
-        const headers = [
-            RESOURCE_TABLE_HEADER_TEXT.name,
-            RESOURCE_TABLE_HEADER_TEXT.action,
-            RESOURCE_TABLE_HEADER_TEXT.url,
-            RESOURCE_TABLE_HEADER_TEXT.descripton
-        ];
-        if (this.actionColumnState) {
-            headers.push(COMMON_TABLE_HEADER_TEXT.actions);
-        }
-        return headers;
+    onSelect(items) {
+        this.$emit('input', items);
     }
 }
 

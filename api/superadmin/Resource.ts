@@ -1,6 +1,6 @@
 import {
     ITableDataFromServer,
-    IPageOptions,
+    IPaginationParams,
     computePaginationParams
 } from '@/api/admin/table';
 import { getNuxtAxiosInstance } from '@/utils/NuxtOptions';
@@ -25,16 +25,14 @@ function getBaseUrl() {
 }
 
 export async function $list(
-    pageOptions?: IPageOptions
+    paginationParams?: IPaginationParams
 ): Promise<ITableDataFromServer> {
     const url = getBaseUrl();
     const $axios = getNuxtAxiosInstance();
     let serverData: ITableDataFromServer;
 
     try {
-        let config = pageOptions
-            ? { params: computePaginationParams(pageOptions) }
-            : {};
+        let config = paginationParams ? { params: paginationParams } : {};
         serverData = await $axios.$get(url, config);
     } catch (e) {
         throw e;

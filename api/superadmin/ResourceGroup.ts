@@ -1,6 +1,5 @@
 import {
     ITableDataFromServer,
-    computePaginationParams,
     IPaginationParams
 } from '@/api/admin/table';
 import { getNuxtAxiosInstance } from '@/utils/NuxtOptions';

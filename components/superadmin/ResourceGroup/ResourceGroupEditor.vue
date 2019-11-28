@@ -1,7 +1,9 @@
 <template>
-    <v-dialog :value="visible" persistent max-width="900"
+    <v-dialog :value="visible" persistent
         ><v-card
-            ><v-card-title class="headline">{{ $t('superadmin.resourceGroupTable.editorTitle') }}</v-card-title>
+            ><v-card-title class="headline">{{
+                $t('superadmin.resourceGroupTable.editorTitle')
+            }}</v-card-title>
             <v-divider></v-divider>
             <v-card-text>
                 <v-form ref="resourceGroupForm">
@@ -30,6 +32,7 @@
                         </v-col>
                     </v-row>
                 </v-form>
+                <resource-table select-action search-action />
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
@@ -48,10 +51,16 @@
 import { Component, Vue, Prop, Watch, Ref } from 'nuxt-property-decorator';
 import _ from 'lodash';
 
+import ResourceTable from '@/components/superadmin/Resource/ResourceTable.vue';
+
 import { IResourceGroup, ResourceGroup } from '@/api/superadmin/ResourceGroup';
 import { VForm, fieldRequired } from '@/utils/form';
 
-@Component
+@Component({
+    components: {
+        ResourceTable
+    }
+})
 class ResourceGroupEditor extends Vue {
     @Prop({ type: Boolean, required: true }) readonly visible!: boolean;
     @Prop({ type: Object, required: true }) readonly item!: IResourceGroup;

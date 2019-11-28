@@ -7,7 +7,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
 
-import ResourceTable from '@/components/superadmin/Resource/ResourceTable.vue'
+import ResourceTable from '@/components/superadmin/Resource/ResourceTable.vue';
 
 @Component({
     layout: 'admin',
