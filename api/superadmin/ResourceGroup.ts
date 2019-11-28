@@ -68,7 +68,7 @@ export async function $detail(
     let group: ResourceGroup;
 
     try {
-        group = await $axios.$get(url, resourceGroup);
+        group = await $axios.$get(url);
     } catch (e) {
         throw e;
     }

@@ -72,19 +72,11 @@ class ResourceGroupEditor extends Vue {
     @Ref('resourceGroupForm') readonly form!: VForm;
 
     @Watch('visible')
-    async onOpenDialog(val: boolean, oldVal: boolean) {
+    onOpenDialog(val: boolean, oldVal: boolean) {
         if (!oldVal && val) {
             this.clonedItem = _.cloneDeep(this.item);
             if (this.form) {
                 this.form.resetValidation();
-            }
-
-            if (this.clonedItem.id !== -1) {
-                try {
-                    this.clonedItem = await $detail(this.clonedItem);
-                } catch (e) {
-                    this.onCancel();
-                }
             }
         }
     }
