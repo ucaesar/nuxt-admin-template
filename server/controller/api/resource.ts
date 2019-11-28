@@ -4,12 +4,18 @@ import Resource from '../../model/Resource';
 import { Op } from 'sequelize';
 import _ from 'lodash';
 
-// 获取Resource列表 GET请求，参数可选，为start，num
+/**
+ * 获取Resource列表
+ * url: /api/resource
+ * method: GET
+ * params: GET查询参数, start为分页起始位置, count为一页的数量, filter为对name做的匹配关键词
+ */
 resourceRouter.get('/', async ctx => {
     // 获取分页参数
     const start = ctx.request.query.start;
     const num = ctx.request.query.count;
     const total = await Resource.count();
+    const filter = ctx.request.query.filter ? ctx.request.query.filter : '';
     let offset = 0;
     let limit = total;
     if (start && Number(start) >= 0 && Number(start) < total) {
@@ -25,7 +31,10 @@ resourceRouter.get('/', async ctx => {
     const results = await Resource.findAll({
         offset,
         limit,
-        attributes: ['id', 'name', 'description', 'url', 'action']
+        attributes: ['id', 'name', 'description', 'url', 'action'],
+        where: {
+            name: { [Op.like]: '%' + filter + '%' }
+        }
     });
 
     ctx.response.type = 'text/json';
@@ -36,7 +45,13 @@ resourceRouter.get('/', async ctx => {
     };
 });
 
-// 添加一个resource  POST请求，参数为name, description, url, action
+/**
+ * 添加一个resource
+ * url: /api/resource
+ * method: POST
+ * params: { name, description, url, action, groups: [ { id: 1 }, { id: 2 }, ... ] }
+ * return: { id, name, description, url, action } 外加http code
+ */
 resourceRouter.post('/', async ctx => {
     const name: string = (ctx.req as any).body.name || '';
     const description: string = (ctx.req as any).body.description || '';
@@ -67,7 +82,13 @@ resourceRouter.post('/', async ctx => {
     });
     ctx.response.type = 'text/json';
     ctx.response.status = 200;
-    ctx.response.body = newresource;
+    ctx.response.body = {
+        id: newresource.id,
+        name: newresource.name,
+        description: newresource.description,
+        url: newresource.url,
+        action: newresource.action
+    };
 });
 
 // 删除指定id的resource
