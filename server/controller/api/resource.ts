@@ -125,4 +125,66 @@ resourceRouter.delete('/:id', async ctx => {
     }
 });
 
+/**
+ * 编辑指定id的Resource
+ * url: /api/resource-group/:id/ id为resource的id
+ * method: PUT
+ * params: { id?(可以不设置, 以url里的id为准), name, description, url, action }
+ */
+resourceRouter.put('/:id', async ctx => {
+    const rid = await ctx.params.id;
+    const nname: string = (ctx.req as any).body.name || '';
+    const ndescription: string = (ctx.req as any).body.description || '';
+    const nurl: string = (ctx.req as any).body.url || '';
+    const naction: string = (ctx.req as any).body.action || '';
+    const updateResource = await Resource.findOne({
+        where: {
+            id: rid
+        }
+    });
+    // 存在非此id而name为此name的resource, 报401参数错
+    if (
+        await Resource.findOne({
+            where: {
+                id: { [Op.ne]: rid },
+                name: nname
+            }
+        })
+    ) {
+        // name已经存在
+        ctx.response.status = 401;
+        ctx.response.body = 'this resource name exists';
+        return;
+    }
+    if (updateResource) {
+        const oldurl = updateResource.url;
+        const oldaction = updateResource.action;
+
+        // 更新casbin表
+        const casbinrules = await CasbinRule.findAll({
+            where: {
+                v1: updateResource.url,
+                v2: updateResource.action
+            }
+        });
+        let i;
+        for (i = 0; i < casbinrules.length; i++) {
+            casbinrules[i].v1 = nurl;
+            casbinrules[i].v2 = naction;
+            await casbinrules[i].save();
+        }
+        // 更新resource表
+        updateResource.name = nname;
+        updateResource.description = ndescription;
+        updateResource.url = nurl;
+        updateResource.action = naction;
+        await updateResource.save();
+        ctx.response.status = 200;
+        ctx.response.body = 'edit success';
+    } else {
+        // 找不到此resource
+        ctx.response.status = 404;
+        ctx.response.body = 'not found';
+    }
+});
 export default resourceRouter;

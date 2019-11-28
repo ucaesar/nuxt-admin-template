@@ -165,11 +165,11 @@ roleRouter.post('/:id/parents/', async ctx => {
 
 /**
  * 往指定id的role上挂ResourceGroup
- * url: /api/role/:id/resource_groups/
+ * url: /api/role/:id/resource-groups/
  * method: POST
  * params: groups [{ id: 1 }, { id: 2 }]
  */
-roleRouter.post('/:id/resource_groups/', async ctx => {
+roleRouter.post('/:id/resource-groups/', async ctx => {
     const rid = ctx.params.id;
     const groups = (ctx.req as any).body.groups;
     let r = await Role.findOne({
