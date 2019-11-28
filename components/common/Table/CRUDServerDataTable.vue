@@ -22,6 +22,7 @@
                         @new="onNew"
                     />
                     <search-action
+                        v-if="searchAction"
                         v-model="searchOption"
                         class="flex-grow-1"
                         @search="onSearch"

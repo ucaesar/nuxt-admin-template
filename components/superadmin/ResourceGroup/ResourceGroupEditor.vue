@@ -53,7 +53,11 @@ import _ from 'lodash';
 
 import ResourceTable from '@/components/superadmin/Resource/ResourceTable.vue';
 
-import { IResourceGroup, ResourceGroup } from '@/api/superadmin/ResourceGroup';
+import {
+    IResourceGroup,
+    ResourceGroup,
+    $detail
+} from '@/api/superadmin/ResourceGroup';
 import { VForm, fieldRequired } from '@/utils/form';
 
 @Component({
@@ -63,16 +67,24 @@ import { VForm, fieldRequired } from '@/utils/form';
 })
 class ResourceGroupEditor extends Vue {
     @Prop({ type: Boolean, required: true }) readonly visible!: boolean;
-    @Prop({ type: Object, required: true }) readonly item!: IResourceGroup;
+    @Prop({ type: Object, required: true }) readonly item!: ResourceGroup;
 
     @Ref('resourceGroupForm') readonly form!: VForm;
 
     @Watch('visible')
-    onOpenDialog(val: boolean, oldVal: boolean) {
+    async onOpenDialog(val: boolean, oldVal: boolean) {
         if (!oldVal && val) {
             this.clonedItem = _.cloneDeep(this.item);
             if (this.form) {
                 this.form.resetValidation();
+            }
+
+            if (this.clonedItem.id !== -1) {
+                try {
+                    this.clonedItem = await $detail(this.clonedItem);
+                } catch (e) {
+                    this.onCancel();
+                }
             }
         }
     }
