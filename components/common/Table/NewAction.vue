@@ -1,10 +1,10 @@
 <template>
-    <span>
+    <div>
         <v-btn color="primary" @click.stop="onNew">
             <v-icon>mdi-plus</v-icon>
             {{ text }}
         </v-btn>
-    </span>
+    </div>
 </template>
 
 <script lang="ts">

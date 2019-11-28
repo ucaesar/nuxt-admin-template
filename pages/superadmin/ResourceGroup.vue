@@ -1,6 +1,13 @@
 <template>
     <v-container>
-        <resource-group-table new-action delete-action edit-action />
+        <resource-group-table
+            new-action
+            delete-action
+            edit-action
+            select-action
+            :value="selected"
+            @input="onSelect"
+        />
     </v-container>
 </template>
 
@@ -15,7 +22,12 @@ import ResourceGroupTable from '@/components/superadmin/ResourceGroup/ResourceGr
         ResourceGroupTable
     }
 })
-class ResourceGroupManager extends Vue {}
+class ResourceGroupManager extends Vue {
+    selected = [];
+    onSelect(items) {
+        this.selected = items;
+    }
+}
 export default ResourceGroupManager;
 </script>
 
