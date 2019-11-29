@@ -13,7 +13,9 @@ export default {
         table: {
             newButtonText: '新增',
             searchText: '搜索',
-            actionsHeaderText: '操作'
+            actionsHeaderText: '操作',
+            loadingText: '正在读取...',
+            submittingText: '正在提交...'
         },
         dialog: {
             okButtonText: '确定',
