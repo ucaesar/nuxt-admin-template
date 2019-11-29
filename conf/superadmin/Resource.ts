@@ -6,7 +6,7 @@ export const RESOURCE_TABLE_HEADER_TEXT = {
             text: $t('superadmin.resourceTable.nameHeaderText'),
             value: 'name',
             sortable: false,
-            width: '300px'
+            width: '200px'
         };
     },
     get action() {

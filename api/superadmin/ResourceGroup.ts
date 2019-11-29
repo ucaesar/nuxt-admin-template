@@ -1,18 +1,20 @@
-import {
-    ITableDataFromServer,
-    IPaginationParams
-} from '@/api/admin/table';
-import { getNuxtAxiosInstance } from '@/utils/NuxtOptions';
+import { getNuxtAxiosInstance, getNuxtAppOptions } from '@/utils/NuxtOptions';
+
+import { IResource } from './Resource';
+
+import { ITableDataFromServer, IPaginationParams } from '@/api/admin/table';
 
 export interface IResourceGroup {
     id: number;
     groupname: string;
     description: string;
+    resources?: IResource[];
 }
 export class ResourceGroup implements IResourceGroup {
     id = -1;
     groupname = '';
     description = '';
+    resources = [];
 }
 
 function getBaseUrl() {
@@ -56,4 +58,20 @@ export async function $add(resourceGroup: IResourceGroup) {
     } catch (e) {
         throw e;
     }
+}
+
+export async function $detail(
+    resourceGroup: IResourceGroup
+): Promise<ResourceGroup> {
+    const url = getBaseUrl() + `/${resourceGroup.id}`;
+    const $axios = getNuxtAppOptions();
+    let group: ResourceGroup;
+
+    try {
+        group = await $axios.$get(url);
+    } catch (e) {
+        throw e;
+    }
+
+    return group;
 }
