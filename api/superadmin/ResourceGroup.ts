@@ -1,4 +1,4 @@
-import { getNuxtAxiosInstance, getNuxtAppOptions } from '@/utils/NuxtOptions';
+import { getNuxtAxiosInstance } from '@/utils/NuxtOptions';
 
 import { IResource } from './Resource';
 
@@ -64,7 +64,7 @@ export async function $detail(
     resourceGroup: IResourceGroup
 ): Promise<ResourceGroup> {
     const url = getBaseUrl() + `/${resourceGroup.id}`;
-    const $axios = getNuxtAppOptions();
+    const $axios = getNuxtAxiosInstance();
     let group: ResourceGroup;
 
     try {

@@ -32,7 +32,23 @@
                         </v-col>
                     </v-row>
                 </v-form>
-                <resource-table select-action search-action />
+                <v-card class="mb-2">
+                    <v-card-title>包含资源</v-card-title>
+                    <v-card-text
+                        ><v-chip
+                            v-for="(resource, index) in clonedItem.resources"
+                            :key="index"
+                        >
+                            {{ resource.name }}
+                        </v-chip></v-card-text
+                    >
+                </v-card>
+                <resource-table
+                    :value="clonedItem.resources"
+                    select-action
+                    search-action
+                    @input="onSelectResources"
+                />
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
@@ -90,6 +106,10 @@ class ResourceGroupEditor extends Vue {
 
     onCancel() {
         this.$emit('close', false);
+    }
+
+    onSelectResources(items) {
+        this.clonedItem.resources = items;
     }
 }
 export default ResourceGroupEditor;
