@@ -3,6 +3,7 @@
         <crud-server-data-table
             :server-data="serverData"
             :loading="loading"
+            :loading-text="loadingText"
             :headers-conf="headersConf"
             v-bind="$attrs"
             @load-page="loadPage"
@@ -41,6 +42,7 @@ import { RESOURCEGROUP_TABLE_HEADER_TEXT } from '@/conf/superadmin/ResourceGroup
 class ResourceGroupTable extends Vue {
     serverData = new TableDataFromServer();
     loading = false;
+    loadingText = '';
     headersConf = [
         RESOURCEGROUP_TABLE_HEADER_TEXT.groupname,
         RESOURCEGROUP_TABLE_HEADER_TEXT.description
@@ -49,10 +51,24 @@ class ResourceGroupTable extends Vue {
     itemTodo = new ResourceGroupApi.ResourceGroup();
 
     async loadPage(params: IPaginationParams) {
-        this.loading = true;
+        this.loadingOverlay();
         try {
             this.serverData = await ResourceGroupApi.$list(params);
         } catch (e) {}
+        this.unOverlay();
+    }
+
+    loadingOverlay() {
+        this.loading = true;
+        this.loadingText = this.$t('components.table.loadingText') as string;
+    }
+
+    submittingOverlay() {
+        this.loading = true;
+        this.loadingText = this.$t('components.table.submittingText') as string;
+    }
+
+    unOverlay() {
         this.loading = false;
     }
 
@@ -60,9 +76,16 @@ class ResourceGroupTable extends Vue {
         this.itemTodo = new ResourceGroupApi.ResourceGroup();
         this.editorVisible = true;
     }
-    beforeEdit(item) {
-        this.itemTodo = item;
-        this.editorVisible = true;
+    async beforeEdit(item) {
+        this.loadingOverlay();
+
+        try {
+            this.itemTodo = await ResourceGroupApi.$detail(item);
+            this.editorVisible = true;
+        } catch (e) {
+        } finally {
+            this.unOverlay();
+        }
     }
 
     onDelete(item) {}

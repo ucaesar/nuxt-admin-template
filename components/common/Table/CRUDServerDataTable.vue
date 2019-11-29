@@ -1,11 +1,10 @@
 <template>
-    <div>
+    <v-card>
         <v-data-table
             :value="value"
             :items="serverData.results"
             :server-items-length="serverData.total"
             :headers="headers"
-            :loading="loading"
             :show-select="selectAction"
             :footer-props="footerProps"
             :items-per-page="defaultItemsPerPage"
@@ -44,7 +43,8 @@
             :title="$t('components.dialog.makeSureToDeleteTitle')"
             @close="onDelete"
         />
-    </div>
+        <loading-overlay :loading="loading" :loading-text="loadingText" />
+    </v-card>
 </template>
 
 <script lang="ts">
@@ -55,6 +55,7 @@ import SearchAction from './SearchAction.vue';
 import NewAction from './NewAction.vue';
 import EditAction from './EditAction.vue';
 import DeleteAction from './DeleteAction.vue';
+import LoadingOverlay from './LoadingOverlay.vue';
 
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue';
 
@@ -66,12 +67,15 @@ import {
 
 import { COMMON_TABLE_HEADER_TEXT } from '@/conf/admin/table';
 
+import { $t } from '@/utils/NuxtOptions';
+
 @Component({
     components: {
         SearchAction,
         NewAction,
         EditAction,
         DeleteAction,
+        LoadingOverlay,
         ConfirmDialog
     }
 })
@@ -86,6 +90,7 @@ class CRUDServerDataTable extends Vue {
     @Prop({ type: Object, required: true })
     readonly serverData!: ITableDataFromServer;
     @Prop({ type: Array }) readonly value!: any[];
+    @Prop({ type: String, default: 'Loading...' }) readonly loadingText: string;
 
     @Watch('pageOptions', { deep: true })
     onUpdatePageOptions() {

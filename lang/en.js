@@ -13,7 +13,9 @@ export default {
         table: {
             newButtonText: 'New',
             searchText: 'Search',
-            actionsHeaderText: 'Actions'
+            actionsHeaderText: 'Actions',
+            loadingText: 'Loading...',
+            submittingText: 'Submitting...'
         },
         dialog: {
             okButtonText: 'OK',
