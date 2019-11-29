@@ -75,3 +75,14 @@ export async function $detail(
 
     return group;
 }
+
+export async function $edit(resourceGroup: IResourceGroup) {
+    const url = getBaseUrl() + `/${resourceGroup.id}`
+    const $axios = getNuxtAxiosInstance();
+
+    try {
+        $axios.$put(url, resourceGroup);
+    } catch(e) {
+        throw e;
+    }
+}

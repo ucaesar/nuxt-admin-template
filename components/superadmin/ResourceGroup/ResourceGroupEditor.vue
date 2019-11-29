@@ -30,19 +30,28 @@
                                 "
                             ></v-text-field>
                         </v-col>
+                        <v-col cols="12">
+                            <v-input
+                                label="包含资源"
+                                messages="从列表中勾选资源"
+                            >
+                                <template v-slot:default>
+                                    <v-chip-group column>
+                                        <v-chip
+                                            v-for="(resource,
+                                            index) in clonedItem.resources"
+                                            :key="index"
+                                            close
+                                            @click:close="onCloseChip(resource)"
+                                        >
+                                            {{ resource.name }}
+                                        </v-chip>
+                                    </v-chip-group>
+                                </template>
+                            </v-input>
+                        </v-col>
                     </v-row>
                 </v-form>
-                <v-card class="mb-2">
-                    <v-card-title>包含资源</v-card-title>
-                    <v-card-text
-                        ><v-chip
-                            v-for="(resource, index) in clonedItem.resources"
-                            :key="index"
-                        >
-                            {{ resource.name }}
-                        </v-chip></v-card-text
-                    >
-                </v-card>
                 <resource-table
                     :value="clonedItem.resources"
                     select-action
@@ -75,6 +84,7 @@ import {
     $detail
 } from '@/api/superadmin/ResourceGroup';
 import { VForm, fieldRequired } from '@/utils/form';
+import { IResource } from '@/api/superadmin/Resource';
 
 @Component({
     components: {
@@ -110,6 +120,16 @@ class ResourceGroupEditor extends Vue {
 
     onSelectResources(items) {
         this.clonedItem.resources = items;
+    }
+
+    onCloseChip(resource) {
+        const i = _.findIndex(this.clonedItem.resources, function(
+            x: IResource
+        ) {
+            return x.id === resource.id;
+        });
+
+        this.clonedItem.resources.splice(i, 1);
     }
 }
 export default ResourceGroupEditor;
