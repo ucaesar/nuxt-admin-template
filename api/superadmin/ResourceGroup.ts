@@ -43,7 +43,7 @@ export async function $delete(resourceGroup: IResourceGroup) {
     const $axios = getNuxtAxiosInstance();
 
     try {
-        $axios.$delete(url);
+        await $axios.$delete(url);
     } catch (e) {
         throw e;
     }
@@ -54,7 +54,7 @@ export async function $add(resourceGroup: IResourceGroup) {
     const $axios = getNuxtAxiosInstance();
 
     try {
-        $axios.$post(url, resourceGroup);
+        await $axios.$post(url, resourceGroup);
     } catch (e) {
         throw e;
     }
@@ -77,12 +77,12 @@ export async function $detail(
 }
 
 export async function $edit(resourceGroup: IResourceGroup) {
-    const url = getBaseUrl() + `/${resourceGroup.id}`
+    const url = getBaseUrl() + `/${resourceGroup.id}`;
     const $axios = getNuxtAxiosInstance();
 
     try {
-        $axios.$put(url, resourceGroup);
-    } catch(e) {
+        await $axios.$put(url, resourceGroup);
+    } catch (e) {
         throw e;
     }
 }
