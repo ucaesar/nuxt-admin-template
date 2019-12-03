@@ -1,7 +1,4 @@
-import {
-    ITableDataFromServer,
-    IPaginationParams
-} from '@/api/admin/table';
+import { ITableDataFromServer, IPaginationParams } from '@/api/admin/table';
 import { getNuxtAxiosInstance } from '@/utils/NuxtOptions';
 
 export interface IResource {
@@ -38,4 +35,37 @@ export async function $list(
     }
 
     return serverData;
+}
+
+export async function $add(resource: IResource) {
+    const url = getBaseUrl();
+    const $axios = getNuxtAxiosInstance();
+
+    try {
+        await $axios.$post(url, resource);
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function $delete(resource: IResource) {
+    const url = getBaseUrl() + `${resource.id}`;
+    const $axios = getNuxtAxiosInstance();
+
+    try {
+        await $axios.$delete(url);
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function $edit(resource: IResource) {
+    const url = getBaseUrl() + `/${resource.id}`;
+    const $axios = getNuxtAxiosInstance();
+
+    try {
+        await $axios.$put(url, resource);
+    } catch (e) {
+        throw e;
+    }
 }
