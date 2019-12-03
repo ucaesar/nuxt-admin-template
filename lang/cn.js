@@ -59,12 +59,14 @@ export default {
             roleNameHeaderText: '角色名'
         },
         resourceGroupTable: {
+            tableTitle: '资源组列表',
             newButtonText: '新建资源组',
             groupNameHeaderText: '资源组名称',
             descriptionHeaderText: '描述',
             editorTitle: '编辑资源组'
         },
         resourceTable: {
+            tableTitle: '资源列表',
             newButtonText: '新建资源',
             nameHeaderText: '名称',
             actionHeaderText: '动作',

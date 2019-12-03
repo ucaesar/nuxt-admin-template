@@ -59,12 +59,14 @@ export default {
             roleNameHeaderText: 'Role Name'
         },
         resourceGroupTable: {
+            tableTitle: 'Resource Groups',
             newButtonText: 'New Resource Group',
             groupNameHeaderText: 'Name',
             descriptionHeaderText: 'Description',
             editorTitle: 'Edit Resource Group'
         },
         resourceTable: {
+            tableTitle: 'Resources',
             newButtonText: 'New Resource',
             nameHeaderText: 'Name',
             actionHeaderText: 'Action',

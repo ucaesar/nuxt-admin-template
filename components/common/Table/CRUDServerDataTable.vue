@@ -14,6 +14,8 @@
         >
             <template v-slot:top>
                 <v-toolbar flat color="white">
+                    <v-toolbar-title>{{ tableTitle }}</v-toolbar-title>
+                    <v-divider inset vertical class="mx-4" />
                     <new-action
                         v-if="newAction"
                         :text="$t('components.table.newButtonText')"
@@ -80,6 +82,7 @@ import { $t } from '@/utils/NuxtOptions';
     }
 })
 class CRUDServerDataTable extends Vue {
+    @Prop({ type: String, default: 'CRUDTable' }) readonly tableTitle!: string;
     @Prop({ type: Boolean, default: false }) readonly newAction!: boolean;
     @Prop({ type: Boolean, default: false }) readonly deleteAction!: boolean;
     @Prop({ type: Boolean, default: false }) readonly editAction!: boolean;

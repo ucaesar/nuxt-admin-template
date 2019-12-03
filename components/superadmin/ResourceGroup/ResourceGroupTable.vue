@@ -1,6 +1,7 @@
 <template>
     <div>
         <crud-server-data-table
+            :table-title="$t('superadmin.resourceGroupTable.tableTitle')"
             :server-data="serverData"
             :loading="loading"
             :loading-text="loadingText"
@@ -49,8 +50,10 @@ class ResourceGroupTable extends Vue {
     ];
     editorVisible = false;
     itemTodo = new ResourceGroupApi.ResourceGroup();
+    pageParams: IPaginationParams;
 
     async loadPage(params: IPaginationParams) {
+        this.pageParams = params;
         this.loadingOverlay();
         try {
             this.serverData = await ResourceGroupApi.$list(params);
@@ -88,9 +91,28 @@ class ResourceGroupTable extends Vue {
         }
     }
 
-    onDelete(item) {}
-    onEdit(val: boolean | ResourceGroupApi.IResourceGroup) {
+    async onDelete(item) {
+        this.submittingOverlay();
+        try {
+            await ResourceGroupApi.$delete(item);
+            await this.loadPage(this.pageParams);
+        } catch (e) {}
+        this.unOverlay();
+    }
+    async onEdit(val: boolean | ResourceGroupApi.IResourceGroup) {
         this.editorVisible = false;
+
+        if (typeof val === 'boolean') return;
+
+        this.submittingOverlay();
+        try {
+            if (val.id !== -1) await ResourceGroupApi.$edit(val);
+            else await ResourceGroupApi.$add(val);
+            await this.loadPage(this.pageParams);
+        } catch (e) {
+        } finally {
+            this.unOverlay();
+        }
     }
 
     onSelect(items) {

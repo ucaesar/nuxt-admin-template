@@ -1,6 +1,7 @@
 <template>
     <div>
         <crud-server-data-table
+            :table-title="$t('superadmin.resourceTable.tableTitle')"
             :server-data="serverData"
             :loading="loading"
             :headers-conf="headersConf"
@@ -16,7 +17,6 @@
             :item="itemTodo"
             @close="onEdit"
         />
-        
     </div>
 </template>
 
