@@ -6,40 +6,88 @@ import getEnforcer from '../../lib/enforcer';
 import Role from '../../model/Role';
 import ResourceGroup from '../../model/ResourceGroup';
 import Resource from '../../model/Resource';
-import { RSA_NO_PADDING } from 'constants';
+import { Op } from 'sequelize';
 
-// 获取所有role
+/**
+ * 获取Role列表
+ * url: /api/role
+ * method: GET
+ * params: GET查询参数, start为分页起始位置, count为一页的数量, filter为对name做的匹配关键词
+ */
 roleRouter.get('/', async ctx => {
     const start = ctx.request.query.start;
     const num = ctx.request.query.count;
-    // consola.info(start + ' ' + num)
-    const e = await getEnforcer();
-    // let result = e.getAllRoles().sort();
-    let result = _.map(e.getAllRoles().sort(), function(str: string) {
-        return { name: str };
-    });
-    const total = result.length;
-    if (start && start >= 0 && start < total && num && num > 0) {
-        result = _.slice(result, start, start + num);
+    // // consola.info(start + ' ' + num)
+    // const e = await getEnforcer();
+    // // let result = e.getAllRoles().sort();
+    // let result = _.map(e.getAllRoles().sort(), function(str: string) {
+    //     return { name: str };
+    // });
+    // const total = result.length;
+    // if (start && start >= 0 && start < total && num && num > 0) {
+    //     result = _.slice(result, start, start + num);
+    // }
+    const total = await Role.count();
+    const filter = ctx.request.query.filter ? ctx.request.query.filter : '';
+    let offset = 0;
+    let limit = total;
+    if (start && Number(start) >= 0 && Number(start) < total) {
+        offset = Number(start);
     }
+    if (num && Number(num) > 0) {
+        if (offset + Number(num) <= total) {
+            limit = Number(num);
+        } else {
+            limit = total - offset;
+        }
+    }
+    const results = await Role.findAll({
+        offset,
+        limit,
+        attributes: ['id', 'rolename', 'description'],
+        where: {
+            rolename: { [Op.like]: '%' + filter + '%' }
+        }
+    });
     ctx.response.type = 'text/json';
+    ctx.response.status = 200;
     ctx.response.body = {
-        result,
+        results,
         total
     };
     // await next();
 });
 
-// 删除一个role
-roleRouter.delete('/:name', async ctx => {
-    const e = await getEnforcer();
-    const name = ctx.params.name;
-    const result = await e.deleteRole(name);
-    ctx.response.type = 'text/json';
-    ctx.response.body = {
-        result,
-        name
-    };
+/**
+ *  删除一个role
+ *  url: /api/role/:id/ id为要删除的role的id
+ *  method: DELETE
+ *  return: http code
+ */
+roleRouter.delete('/:id', async ctx => {
+    const delId = ctx.params.id;
+    const delRole = await Role.findOne({
+        where: {
+            id: delId
+        }
+    });
+    if (delRole) {
+        const e = await getEnforcer();
+        const name = delRole.rolename;
+        await e.deleteRole(name);
+        await delRole.destroy();
+        // ctx.response.type = 'text/json';
+        // ctx.response.body = {
+        //     result,
+        //     name
+        // };
+        ctx.response.status = 200;
+        ctx.response.body = 'deleted';
+    } else {
+        // 找不到此role
+        ctx.response.status = 404;
+        ctx.response.body = 'not found';
+    }
 });
 
 // 增加一个role
@@ -61,12 +109,12 @@ roleRouter.delete('/:name', async ctx => {
 //     };
 // });
 
-// 新建一个role
-/*
-    url: /api/role/
-    method: POST
-    params: POST参数rolename和description
-*/
+/**
+ *  新建一个role
+ *  url: /api/role/
+ *  method: POST
+ *  params: POST参数rolename和description
+ */
 roleRouter.post('/', async ctx => {
     const e = await getEnforcer();
     const name: string = (ctx.req as any).body.rolename || '';
