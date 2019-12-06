@@ -59,6 +59,47 @@ roleRouter.get('/', async ctx => {
 });
 
 /**
+ * 获取指定id的Role
+ * url: /api/role/:id/ id为role的id
+ * method: GET
+ * return: { id, rolename, description,
+ *           parents: [ {id, rolename, description },  ... ],
+ *           groups: [{id, groupname, description }, ... ]
+ *         }
+ */
+roleRouter.get('/:id/', async ctx => {
+    const id = ctx.params.id;
+    const role = await Role.findOne({
+        attributes: ['id', 'rolename', 'description'],
+        where: {
+            id
+        }
+    });
+    if (role) {
+        let parents = await role.$get('parents', {
+            attributes: ['id', 'rolename', 'description']
+        });
+        parents = Array.isArray(parents) ? parents : [parents];
+        let groups = await role.$get('resourceGroups', {
+            attributes: ['id', 'groupname', 'description']
+        });
+        groups = Array.isArray(groups) ? groups : [groups];
+        ctx.response.type = 'text/json';
+        ctx.response.status = 200;
+        ctx.response.body = {
+            id: role.id,
+            rolename: role.rolename,
+            description: role.description,
+            parents,
+            groups
+        };
+    } else {
+        ctx.response.status = 404;
+        ctx.response.body = 'not found';
+    }
+});
+
+/**
  *  删除一个role
  *  url: /api/role/:id/ id为要删除的role的id
  *  method: DELETE
@@ -231,6 +272,24 @@ roleRouter.post('/', async ctx => {
         rolename: newrole.rolename,
         description: newrole.description
     };
+});
+
+/**
+ * 编辑指定id的Role
+ * url: /api/role/:id/ id为role的id
+ * method: PUT
+ * params: { id?(可以不设置, 以url里的id为准), rolename, description,
+ *           parents: [ { id: 1 }, { id: 2 }, ... ],
+ *           groups: [ { id: 1 }, { id: 2 }, ... ]
+ *         }
+ */
+roleRouter.put('/:id', async ctx => {
+    const rid = ctx.params.id;
+    const name: string = (ctx.req as any).body.rolename || '';
+    const description: string = (ctx.req as any).body.description || '';
+    const parents = (ctx.req as any).body.parents;
+    const groups = (ctx.req as any).body.groups;
+    const e = await getEnforcer();
 });
 
 // 往指定id的role上挂父roles
