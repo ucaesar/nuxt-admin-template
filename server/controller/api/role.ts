@@ -113,12 +113,23 @@ roleRouter.delete('/:id', async ctx => {
  *  新建一个role
  *  url: /api/role/
  *  method: POST
- *  params: POST参数rolename和description
+ *  params: { rolename, description,
+ *            parents: [ { id: 1 }, { id: 2 }, ... ],
+ *            groups: [ { id: 1 }, { id: 2 }, ... ]
+ *          }
+ *  return: { id, rolename, description } 外加http code
  */
 roleRouter.post('/', async ctx => {
     const e = await getEnforcer();
     const name: string = (ctx.req as any).body.rolename || '';
     const description: string = (ctx.req as any).body.description || '';
+    const parents = (ctx.req as any).body.parents;
+    const groups = (ctx.req as any).body.groups;
+    // 检验parents和groups参数是否为数组
+    if (!Array.isArray(groups) || !Array.isArray(parents)) {
+        ctx.response.status = 401;
+        return;
+    }
     // role的名称必须以大写R结尾
     let result = name.substr(name.length - 1, name.length) === 'R';
     // casbin权限表里不能有此name
@@ -135,8 +146,14 @@ roleRouter.post('/', async ctx => {
             result = false;
         }
     }
-    if (result) {
-        let newrole = await Role.create({ rolename: name, description });
+    if (!result) {
+        ctx.response.status = 401;
+        return;
+    }
+
+    let newrole = await Role.create({ rolename: name, description });
+    // 如果不指定parents, 默认parent就是anonymousR, 否则按parents数组添加父role
+    if (parents.length <= 0) {
         //找到匿名角色，为所有角色的父角色
         let anonymousRole = await Role.findOne({
             where: {
@@ -148,11 +165,71 @@ roleRouter.post('/', async ctx => {
             await newrole.$add('parents', anonymousRole);
             result = await e.addGroupingPolicy(name, 'anonymousR');
         }
+    } else {
+        let i;
+        // 每个parent必须存在
+        for (i = 0; i < parents.length; i++) {
+            if (
+                !(await Role.findOne({
+                    where: {
+                        id: parents[i].id
+                    }
+                }))
+            ) {
+                ctx.response.status = 401;
+                return;
+            }
+        }
+        for (i = 0; i < parents.length; i++) {
+            const pr = await Role.findOne({
+                where: {
+                    id: parents[i].id
+                }
+            });
+            if (pr) {
+                await e.addGroupingPolicy(newrole.rolename, pr.rolename);
+                await newrole.$add('parents', pr);
+            }
+        }
     }
+    // 依次添加groups
+    let i;
+    const permissions = await e.getImplicitPermissionsForUser(newrole.rolename);
+    for (i = 0; i < groups.length; i++) {
+        const group = await ResourceGroup.findOne({
+            where: {
+                id: groups[i].id
+            }
+        });
+        // 添加group的时候, 该group下的所有resource必须在casbin表里和该新role挂钩
+        if (group) {
+            let resources = await group.$get('resources');
+            resources = Array.isArray(resources) ? resources : [resources];
+            let j;
+            for (j = 0; j < resources.length; j++) {
+                const res = resources[j] as Resource;
+                // 当前资源不在casbin表查出的该newrole的隐藏权限里时，
+                // 再往casbin表里添加该role与resource的权限，防止casbin表过度膨胀
+                if (
+                    _.findIndex(permissions, [
+                        newrole.rolename,
+                        res.url,
+                        res.action
+                    ]) < 0
+                ) {
+                    await e.addPolicy(newrole.rolename, res.url, res.action);
+                }
+            }
+            // 建立新role与group的关系
+            await newrole.$add('resourceGroups', group);
+        }
+    }
+    await newrole.save();
     ctx.response.type = 'text/json';
     ctx.response.body = {
-        result,
-        name
+        id: newrole.id,
+        rolename: newrole.rolename,
+        description: newrole.description
     };
 });
 
@@ -262,12 +339,13 @@ roleRouter.post('/:id/resource-groups/', async ctx => {
                             res.action
                         ]) < 0
                     ) {
-                        e.addPolicy(r.rolename, res.url, res.action);
+                        await e.addPolicy(r.rolename, res.url, res.action);
                     }
                 }
                 await r.$add('resourceGroups', group);
             }
         }
+        r.save();
         ctx.response.status = 200;
         ctx.response.body = 'ok';
     } else {
@@ -276,4 +354,5 @@ roleRouter.post('/:id/resource-groups/', async ctx => {
         ctx.response.body = 'not found';
     }
 });
+
 export default roleRouter;
