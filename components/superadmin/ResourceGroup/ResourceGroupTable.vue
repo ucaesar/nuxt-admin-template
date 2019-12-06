@@ -1,10 +1,9 @@
 <template>
     <div>
         <crud-server-data-table
+            ref="resourceGroupTable"
             :table-title="$t('superadmin.resourceGroupTable.tableTitle')"
             :server-data="serverData"
-            :loading="loading"
-            :loading-text="loadingText"
             :headers-conf="headersConf"
             v-bind="$attrs"
             @load-page="loadPage"
@@ -22,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, Prop, Ref } from 'nuxt-property-decorator';
 
 import ResourceGroupEditor from './ResourceGroupEditor.vue';
 
@@ -41,6 +40,8 @@ import { RESOURCEGROUP_TABLE_HEADER_TEXT } from '@/conf/superadmin/ResourceGroup
     inheritAttrs: false
 })
 class ResourceGroupTable extends Vue {
+    @Ref('resourceGroupTable') readonly resourceGroupTable!: any;
+
     serverData = new TableDataFromServer();
     loading = false;
     loadingText = '';
@@ -54,25 +55,11 @@ class ResourceGroupTable extends Vue {
 
     async loadPage(params: IPaginationParams) {
         this.pageParams = params;
-        this.loadingOverlay();
+        this.resourceGroupTable.loadingOverlay();
         try {
             this.serverData = await ResourceGroupApi.$list(params);
         } catch (e) {}
-        this.unOverlay();
-    }
-
-    loadingOverlay() {
-        this.loading = true;
-        this.loadingText = this.$t('components.table.loadingText') as string;
-    }
-
-    submittingOverlay() {
-        this.loading = true;
-        this.loadingText = this.$t('components.table.submittingText') as string;
-    }
-
-    unOverlay() {
-        this.loading = false;
+        this.resourceGroupTable.unOverlay();
     }
 
     beforeNew() {
@@ -80,38 +67,39 @@ class ResourceGroupTable extends Vue {
         this.editorVisible = true;
     }
     async beforeEdit(item) {
-        this.loadingOverlay();
+        this.resourceGroupTable.loadingOverlay();
 
         try {
             this.itemTodo = await ResourceGroupApi.$detail(item);
             this.editorVisible = true;
         } catch (e) {
         } finally {
-            this.unOverlay();
+            this.resourceGroupTable.unOverlay();
         }
     }
 
     async onDelete(item) {
-        this.submittingOverlay();
+        this.resourceGroupTable.submittingOverlay();
         try {
             await ResourceGroupApi.$delete(item);
-            await this.loadPage(this.pageParams);
+            // await this.loadPage(this.pageParams);
+            this.resourceGroupTable.resetPagination();
         } catch (e) {}
-        this.unOverlay();
+        this.resourceGroupTable.unOverlay();
     }
     async onEdit(val: boolean | ResourceGroupApi.IResourceGroup) {
         this.editorVisible = false;
 
         if (typeof val === 'boolean') return;
 
-        this.submittingOverlay();
+        this.resourceGroupTable.submittingOverlay();
         try {
             if (val.id !== -1) await ResourceGroupApi.$edit(val);
             else await ResourceGroupApi.$add(val);
             await this.loadPage(this.pageParams);
         } catch (e) {
         } finally {
-            this.unOverlay();
+            this.resourceGroupTable.unOverlay();
         }
     }
 

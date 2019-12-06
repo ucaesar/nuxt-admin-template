@@ -49,7 +49,7 @@ export async function $add(resource: IResource) {
 }
 
 export async function $delete(resource: IResource) {
-    const url = getBaseUrl() + `${resource.id}`;
+    const url = getBaseUrl() + `/${resource.id}`;
     const $axios = getNuxtAxiosInstance();
 
     try {

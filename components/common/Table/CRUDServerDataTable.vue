@@ -88,12 +88,10 @@ class CRUDServerDataTable extends Vue {
     @Prop({ type: Boolean, default: false }) readonly editAction!: boolean;
     @Prop({ type: Boolean, default: false }) readonly selectAction!: boolean;
     @Prop({ type: Boolean, default: false }) readonly searchAction!: boolean;
-    @Prop({ type: Boolean, default: false }) readonly loading!: boolean;
     @Prop({ type: Array, required: true }) readonly headersConf!: any[];
     @Prop({ type: Object, required: true })
     readonly serverData!: ITableDataFromServer;
     @Prop({ type: Array }) readonly value!: any[];
-    @Prop({ type: String, default: 'Loading...' }) readonly loadingText: string;
 
     @Watch('pageOptions', { deep: true })
     onUpdatePageOptions() {
@@ -122,6 +120,8 @@ class CRUDServerDataTable extends Vue {
     searchOption = '';
     askToDeleteDialogVisible = false;
     itemTodo = {};
+    loading = false;
+    loadingText = '';
 
     computePaginationParams(): IPaginationParams {
         const { page, itemsPerPage } = this.pageOptions as any;
@@ -166,9 +166,27 @@ class CRUDServerDataTable extends Vue {
     }
 
     onSearch() {
+        this.resetPagination();
+    }
+
+    resetPagination() {
         this.pageOptions = Object.assign(_.cloneDeep(this.pageOptions), {
             page: 1
         });
+    }
+
+    loadingOverlay() {
+        this.loading = true;
+        this.loadingText = this.$t('components.table.loadingText') as string;
+    }
+
+    submittingOverlay() {
+        this.loading = true;
+        this.loadingText = this.$t('components.table.submittingText') as string;
+    }
+
+    unOverlay() {
+        this.loading = false;
     }
 }
 

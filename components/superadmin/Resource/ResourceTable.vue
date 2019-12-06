@@ -1,9 +1,9 @@
 <template>
     <div>
         <crud-server-data-table
+            ref="resourceTable"
             :table-title="$t('superadmin.resourceTable.tableTitle')"
             :server-data="serverData"
-            :loading="loading"
             :headers-conf="headersConf"
             v-bind="$attrs"
             @load-page="loadPage"
@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, Prop, Ref } from 'nuxt-property-decorator';
 
 import ResourceEditor from './ResourceEditor.vue';
 
@@ -40,6 +40,8 @@ import { RESOURCE_TABLE_HEADER_TEXT } from '@/conf/superadmin/Resource';
     inheritAttrs: false
 })
 class ResourceTable extends Vue {
+    @Ref('resourceTable') readonly resourceTable!: any;
+
     serverData = new TableDataFromServer();
     loading = false;
     headersConf = [
@@ -50,13 +52,15 @@ class ResourceTable extends Vue {
     ];
     editorVisible = false;
     itemTodo = new ResourceApi.Resource();
+    pageParams: IPaginationParams;
 
     async loadPage(params: IPaginationParams) {
-        this.loading = true;
+        this.pageParams = params;
+        this.resourceTable.loadingOverlay();
         try {
             this.serverData = await ResourceApi.$list(params);
         } catch (e) {}
-        this.loading = false;
+        this.resourceTable.unOverlay();
     }
 
     beforeNew() {
@@ -68,9 +72,29 @@ class ResourceTable extends Vue {
         this.editorVisible = true;
     }
 
-    onDelete(item) {}
-    onEdit(val: boolean | ResourceApi.Resource) {
+    async onDelete(item) {
+        this.resourceTable.submittingOverlay();
+        try {
+            await ResourceApi.$delete(item);
+            this.resourceTable.resetPagination();
+        } catch (e) {}
+        this.resourceTable.unOverlay();
+    }
+
+    async onEdit(val: boolean | ResourceApi.Resource) {
         this.editorVisible = false;
+
+        if (typeof val === 'boolean') return;
+
+        this.resourceTable.submittingOverlay();
+        try {
+            if (val.id !== -1) await ResourceApi.$edit(val);
+            else await ResourceApi.$add(val);
+            await this.loadPage(this.pageParams);
+        } catch (e) {
+        } finally {
+            this.resourceTable.unOverlay();
+        }
     }
 
     onSelect(items) {
