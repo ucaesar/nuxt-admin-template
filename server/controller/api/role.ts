@@ -60,7 +60,7 @@ roleRouter.get('/', async ctx => {
 
 /**
  * 获取指定id的Role
- * url: /api/role/:id/ id为group的id
+ * url: /api/role/:id/ id为role的id
  * method: GET
  * return: { id, rolename, description,
  *           parents: [ {id, rolename, description },  ... ],
