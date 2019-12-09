@@ -54,9 +54,12 @@ export default {
     },
 
     superadmin: {
-        roleManager: {
-            newRoleButtonText: '新建角色',
-            roleNameHeaderText: '角色名'
+        roleTable: {
+            tableTitle: '角色列表',
+            newButtonText: '新建角色',
+            roleNameHeaderText: '角色名',
+            descriptionHeaderText: '描述',
+            editorTitle: '编辑角色'
         },
         resourceGroupTable: {
             tableTitle: '资源组列表',

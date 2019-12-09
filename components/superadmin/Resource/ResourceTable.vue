@@ -48,7 +48,7 @@ class ResourceTable extends Vue {
         RESOURCE_TABLE_HEADER_TEXT.name,
         RESOURCE_TABLE_HEADER_TEXT.action,
         RESOURCE_TABLE_HEADER_TEXT.url,
-        RESOURCE_TABLE_HEADER_TEXT.descripton
+        RESOURCE_TABLE_HEADER_TEXT.description
     ];
     editorVisible = false;
     itemTodo = new ResourceApi.Resource();

@@ -54,9 +54,12 @@ export default {
     },
 
     superadmin: {
-        roleManager: {
-            newRoleButtonText: 'New Role',
-            roleNameHeaderText: 'Role Name'
+        roleTable: {
+            tableTitle: 'Roles',
+            newButtonText: 'New Role',
+            roleNameHeaderText: 'Role Name',
+            descriptionHeaderText: 'Description',
+            editorTitle: 'Edit Role'
         },
         resourceGroupTable: {
             tableTitle: 'Resource Groups',
