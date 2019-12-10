@@ -32,6 +32,8 @@ import * as ResourceGroupApi from '@/api/superadmin/ResourceGroup';
 
 import { RESOURCEGROUP_TABLE_HEADER_TEXT } from '@/conf/superadmin/ResourceGroup';
 
+import { CrudTableComponent } from '@/utils/crudTable';
+
 @Component({
     components: {
         CrudServerDataTable,
@@ -40,21 +42,17 @@ import { RESOURCEGROUP_TABLE_HEADER_TEXT } from '@/conf/superadmin/ResourceGroup
     inheritAttrs: false
 })
 class ResourceGroupTable extends Vue {
-    @Ref('resourceGroupTable') readonly resourceGroupTable!: any;
+    @Ref('resourceGroupTable') readonly resourceGroupTable!: CrudTableComponent;
 
     serverData = new TableDataFromServer();
-    loading = false;
-    loadingText = '';
     headersConf = [
         RESOURCEGROUP_TABLE_HEADER_TEXT.groupname,
         RESOURCEGROUP_TABLE_HEADER_TEXT.description
     ];
     editorVisible = false;
     itemTodo = new ResourceGroupApi.ResourceGroup();
-    pageParams: IPaginationParams;
 
     async loadPage(params: IPaginationParams) {
-        this.pageParams = params;
         this.resourceGroupTable.loadingOverlay();
         try {
             this.serverData = await ResourceGroupApi.$list(params);
@@ -96,7 +94,7 @@ class ResourceGroupTable extends Vue {
         try {
             if (val.id !== -1) await ResourceGroupApi.$edit(val);
             else await ResourceGroupApi.$add(val);
-            await this.loadPage(this.pageParams);
+            await this.resourceGroupTable.loadPage();
         } catch (e) {
         } finally {
             this.resourceGroupTable.unOverlay();

@@ -9,7 +9,7 @@ const navConf: Navigation[] = [
     {
         superadmin: {
             icon: 'mdi-home',
-            sub: ['resourcegroup','resource', 'role']
+            sub: ['resource','resourcegroup', 'role']
         }
     },
     {

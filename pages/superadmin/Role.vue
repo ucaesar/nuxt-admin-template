@@ -1,68 +1,21 @@
 <template>
     <v-container>
-        <v-btn class="mb-4" color="primary"
-            ><v-icon>mdi-plus</v-icon
-            >{{ $t('superadmin.rolemanager.newRoleButtonText') }}</v-btn
-        >
-        <v-data-table
-            :headers="headers"
-            :items="roles"
-            :items-per-page="5"
-            class="elevation-1"
-            ><template v-slot:item.action="{ item }">
-                <v-icon small class="mr-2" @click="onEdit">
-                    mdi-pencil
-                </v-icon>
-                <v-icon small @click="onDelete">
-                    mdi-delete
-                </v-icon>
-            </template></v-data-table
-        >
+        <role-table new-action delete-action edit-action search-action />
     </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
-import consola from 'consola';
-import { $t } from '@/utils/NuxtOptions';
+
+import RoleTable from '@/components/superadmin/Role/RoleTable.vue';
 
 @Component({
-    layout: 'admin'
-})
-class RoleManager extends Vue {
-    headers = [
-        {
-            text: $t('superadmin.roleManager.roleNameHeaderText'),
-            value: 'name',
-            sortable: false
-        },
-        {
-            text: 'Description',
-            value: 'description',
-            sortable: false
-        },
-        {
-            text: 'Actions',
-            value: 'action',
-            sortable: false
-        }
-    ];
-
-    async asyncData({ $axios }) {
-        const url = '/api/roles';
-        let roles = [];
-        try {
-            roles = (await $axios.$get(url)).result;
-        } catch (error) {
-            consola.error(`error from get(${url})`, error);
-        }
-        return { roles };
+    layout: 'admin',
+    components: {
+        RoleTable
     }
-
-    onEdit(val) {}
-
-    onDelete() {}
-}
+})
+class RoleManager extends Vue {}
 
 export default RoleManager;
 </script>

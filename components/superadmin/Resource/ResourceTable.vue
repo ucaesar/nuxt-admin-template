@@ -32,6 +32,8 @@ import * as ResourceApi from '@/api/superadmin/Resource';
 
 import { RESOURCE_TABLE_HEADER_TEXT } from '@/conf/superadmin/Resource';
 
+import { CrudTableComponent } from '@/utils/crudTable';
+
 @Component({
     components: {
         CrudServerDataTable,
@@ -40,7 +42,7 @@ import { RESOURCE_TABLE_HEADER_TEXT } from '@/conf/superadmin/Resource';
     inheritAttrs: false
 })
 class ResourceTable extends Vue {
-    @Ref('resourceTable') readonly resourceTable!: any;
+    @Ref('resourceTable') readonly resourceTable!: CrudTableComponent;
 
     serverData = new TableDataFromServer();
     loading = false;
@@ -52,10 +54,8 @@ class ResourceTable extends Vue {
     ];
     editorVisible = false;
     itemTodo = new ResourceApi.Resource();
-    pageParams: IPaginationParams;
 
     async loadPage(params: IPaginationParams) {
-        this.pageParams = params;
         this.resourceTable.loadingOverlay();
         try {
             this.serverData = await ResourceApi.$list(params);
@@ -90,7 +90,7 @@ class ResourceTable extends Vue {
         try {
             if (val.id !== -1) await ResourceApi.$edit(val);
             else await ResourceApi.$add(val);
-            await this.loadPage(this.pageParams);
+            await this.resourceTable.loadPage();
         } catch (e) {
         } finally {
             this.resourceTable.unOverlay();

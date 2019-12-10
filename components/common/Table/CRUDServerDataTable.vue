@@ -169,6 +169,10 @@ class CRUDServerDataTable extends Vue {
         this.resetPagination();
     }
 
+    loadPage() {
+        this.onLoadPage();
+    }
+
     resetPagination() {
         this.pageOptions = Object.assign(_.cloneDeep(this.pageOptions), {
             page: 1
