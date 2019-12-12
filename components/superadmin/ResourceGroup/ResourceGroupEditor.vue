@@ -31,24 +31,14 @@
                             ></v-text-field>
                         </v-col>
                         <v-col cols="12">
-                            <v-input
+                            <table-select-input
+                                :value="clonedItem.resources"
                                 label="包含资源"
                                 messages="从列表中勾选资源"
-                            >
-                                <template v-slot:default>
-                                    <v-chip-group column>
-                                        <v-chip
-                                            v-for="(resource,
-                                            index) in clonedItem.resources"
-                                            :key="index"
-                                            close
-                                            @click:close="onCloseChip(resource)"
-                                        >
-                                            {{ resource.name }}
-                                        </v-chip>
-                                    </v-chip-group>
-                                </template>
-                            </v-input>
+                                field="name"
+                                item-key="id"
+                                @input="onChangeResources"
+                            />
                         </v-col>
                     </v-row>
                 </v-form>
@@ -56,7 +46,7 @@
                     :value="clonedItem.resources"
                     select-action
                     search-action
-                    @input="onSelectResources"
+                    @input="onChangeResources"
                 />
             </v-card-text>
             <v-card-actions>
@@ -77,6 +67,7 @@ import { Component, Vue, Prop, Watch, Ref } from 'nuxt-property-decorator';
 import _ from 'lodash';
 
 import ResourceTable from '@/components/superadmin/Resource/ResourceTable.vue';
+import TableSelectInput from '@/components/common/Table/TableSelectInput.vue';
 
 import {
     IResourceGroup,
@@ -88,7 +79,8 @@ import { IResource } from '@/api/superadmin/Resource';
 
 @Component({
     components: {
-        ResourceTable
+        ResourceTable,
+        TableSelectInput
     }
 })
 class ResourceGroupEditor extends Vue {
@@ -118,18 +110,8 @@ class ResourceGroupEditor extends Vue {
         this.$emit('close', false);
     }
 
-    onSelectResources(items) {
+    onChangeResources(items) {
         this.clonedItem.resources = items;
-    }
-
-    onCloseChip(resource) {
-        const i = _.findIndex(this.clonedItem.resources, function(
-            x: IResource
-        ) {
-            return x.id === resource.id;
-        });
-
-        this.clonedItem.resources.splice(i, 1);
     }
 }
 export default ResourceGroupEditor;

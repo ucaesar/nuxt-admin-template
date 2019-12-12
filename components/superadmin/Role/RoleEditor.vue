@@ -35,6 +35,26 @@
                 <v-tabs>
                     <v-tab>角色继承</v-tab>
                     <v-tab>包含资源组</v-tab>
+
+                    <v-tab-item>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-input
+                                    label="继承自角色"
+                                    messages="从列表中勾选角色"
+                                ></v-input>
+                            </v-col>
+                            <v-col coles="12">
+                                <role-table
+                                    :value="clonedItem.parents"
+                                    select-action
+                                    search-action
+                                    @input="onSelectParents"
+                                ></role-table>
+                            </v-col>
+                        </v-row>
+                    </v-tab-item>
+                    <v-tab-item>2</v-tab-item>
                 </v-tabs>
             </v-card-text>
             <v-card-actions>
@@ -54,11 +74,20 @@
 import { Vue, Component, Prop, Watch, Ref } from 'nuxt-property-decorator';
 import _ from 'lodash';
 
+import RoleTable from './RoleTable.vue';
+
+import TableSelectInput from '@/components/common/Table/TableSelectInput.vue';
+
 import { VForm, fieldRequired } from '@/utils/form';
 
 import { Role } from '@/api/superadmin/Role';
 
-@Component
+@Component({
+    components: {
+        RoleTable,
+        TableSelectInput
+    }
+})
 class RoleEditor extends Vue {
     @Prop({ type: Boolean, required: true }) readonly visible!: boolean;
     @Prop({ type: Object, required: true }) readonly item!: Role;
@@ -84,6 +113,10 @@ class RoleEditor extends Vue {
 
     onCancel() {
         this.$emit('close', false);
+    }
+
+    onSelectParents(items) {
+        this.clonedItem.parents = items;
     }
 }
 
