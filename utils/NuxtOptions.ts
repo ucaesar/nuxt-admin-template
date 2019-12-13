@@ -12,3 +12,7 @@ export function $t(sign: string): string {
 export function getNuxtAxiosInstance(): NuxtAxiosInstance {
     return getNuxtAppOptions().$axios;
 }
+
+export function getStore() {
+    return Vue.prototype.$store;
+}

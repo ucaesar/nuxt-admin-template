@@ -88,7 +88,9 @@ class ResourecEditor extends Vue {
     }
 
     onOK() {
-        this.$emit('close', this.clonedItem);
+        if (this.form.validate()) {
+            this.$emit('close', this.clonedItem);
+        }
     }
 
     onCancel() {

@@ -1,5 +1,6 @@
 <template>
     <v-app>
+        <Message />
         <admin-navigator />
         <admin-toolbar />
         <v-content>
@@ -12,10 +13,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
+import Message from '@/components/Message.vue';
+
 @Component({
     components: {
         AdminNavigator: () => import('@/components/admin/Navigator.vue'),
-        AdminToolbar: () => import('@/components/admin/Toolbar.vue')
+        AdminToolbar: () => import('@/components/admin/Toolbar.vue'),
+        Message
     },
     middleware: ['admin/navigation']
 })
