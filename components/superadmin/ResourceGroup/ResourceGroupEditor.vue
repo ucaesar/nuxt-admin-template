@@ -31,7 +31,7 @@
                             ></v-text-field>
                         </v-col>
                         <v-col cols="12">
-                            <table-select-input
+                            <chip-input
                                 :value="clonedItem.resources"
                                 label="包含资源"
                                 messages="从列表中勾选资源"
@@ -67,7 +67,7 @@ import { Component, Vue, Prop, Watch, Ref } from 'nuxt-property-decorator';
 import _ from 'lodash';
 
 import ResourceTable from '@/components/superadmin/Resource/ResourceTable.vue';
-import TableSelectInput from '@/components/common/Table/TableSelectInput.vue';
+import ChipInput from '@/components/common/Table/ChipInput.vue';
 
 import {
     IResourceGroup,
@@ -80,7 +80,7 @@ import { IResource } from '@/api/superadmin/Resource';
 @Component({
     components: {
         ResourceTable,
-        TableSelectInput
+        ChipInput
     }
 })
 class ResourceGroupEditor extends Vue {

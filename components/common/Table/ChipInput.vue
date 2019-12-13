@@ -20,7 +20,7 @@ import { Vue, Component, Prop } from 'nuxt-property-decorator';
 import _ from 'lodash';
 
 @Component
-class TableSelectInput extends Vue {
+class ChipInut extends Vue {
     @Prop({ type: String, required: true }) readonly label!: string;
     @Prop({ type: String, required: true }) readonly messages!: string;
     @Prop({ type: String, required: true }) readonly field!: string;
@@ -37,7 +37,7 @@ class TableSelectInput extends Vue {
     }
 }
 
-export default TableSelectInput;
+export default ChipInut;
 </script>
 
 <style>

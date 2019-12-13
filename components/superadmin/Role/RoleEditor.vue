@@ -39,22 +39,48 @@
                     <v-tab-item>
                         <v-row>
                             <v-col cols="12">
-                                <v-input
+                                <chip-input
+                                    :value="clonedItem.parents"
                                     label="继承自角色"
                                     messages="从列表中勾选角色"
-                                ></v-input>
+                                    field="rolename"
+                                    item-key="id"
+                                    @input="onChangeParents"
+                                />
                             </v-col>
                             <v-col coles="12">
                                 <role-table
                                     :value="clonedItem.parents"
                                     select-action
                                     search-action
-                                    @input="onSelectParents"
-                                ></role-table>
+                                    @input="onChangeParents"
+                                />
                             </v-col>
                         </v-row>
                     </v-tab-item>
-                    <v-tab-item>2</v-tab-item>
+
+                    <v-tab-item>
+                        <v-row>
+                            <v-col cols="12">
+                                <chip-input
+                                    :value="clonedItem.groups"
+                                    label="包含资源组"
+                                    messages="从列表中勾选"
+                                    field="groupname"
+                                    item-key="id"
+                                    @input="onChangeGroups"
+                                />
+                            </v-col>
+                            <v-col cols="12">
+                                <resource-group-table
+                                    :value="clonedItem.groups"
+                                    select-action
+                                    search-action
+                                    @input="onChangeGroups"
+                                />
+                            </v-col>
+                        </v-row>
+                    </v-tab-item>
                 </v-tabs>
             </v-card-text>
             <v-card-actions>
@@ -74,9 +100,8 @@
 import { Vue, Component, Prop, Watch, Ref } from 'nuxt-property-decorator';
 import _ from 'lodash';
 
-import RoleTable from './RoleTable.vue';
-
-import TableSelectInput from '@/components/common/Table/TableSelectInput.vue';
+import ChipInput from '@/components/common/Table/ChipInput.vue';
+import ResourceGroupTable from '@/components/superadmin/ResourceGroup/ResourceGroupTable.vue';
 
 import { VForm, fieldRequired } from '@/utils/form';
 
@@ -84,8 +109,9 @@ import { Role } from '@/api/superadmin/Role';
 
 @Component({
     components: {
-        RoleTable,
-        TableSelectInput
+        RoleTable: () => import('./RoleTable.vue'),
+        ResourceGroupTable,
+        ChipInput
     }
 })
 class RoleEditor extends Vue {
@@ -115,8 +141,12 @@ class RoleEditor extends Vue {
         this.$emit('close', false);
     }
 
-    onSelectParents(items) {
+    onChangeParents(items) {
         this.clonedItem.parents = items;
+    }
+
+    onChangeGroups(items) {
+        this.clonedItem.groups = items;
     }
 }
 
