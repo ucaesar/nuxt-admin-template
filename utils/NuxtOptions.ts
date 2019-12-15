@@ -14,5 +14,5 @@ export function getNuxtAxiosInstance(): NuxtAxiosInstance {
 }
 
 export function getStore() {
-    return Vue.prototype.$store;
+    return getNuxtAppOptions().store;
 }

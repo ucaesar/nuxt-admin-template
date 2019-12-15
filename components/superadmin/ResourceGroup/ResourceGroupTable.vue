@@ -33,7 +33,7 @@ import * as ResourceGroupApi from '@/api/superadmin/ResourceGroup';
 import { RESOURCEGROUP_TABLE_HEADER_TEXT } from '@/conf/superadmin/ResourceGroup';
 
 import { CrudTableComponent } from '@/utils/crudTable';
-import * as Message from '@/utils/message'
+import * as Message from '@/utils/message';
 
 @Component({
     components: {
