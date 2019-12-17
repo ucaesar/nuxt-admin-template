@@ -7,6 +7,7 @@ import Role from '../../model/Role';
 import ResourceGroup from '../../model/ResourceGroup';
 import Resource from '../../model/Resource';
 import { Op } from 'sequelize';
+import { sequelize } from '../../db';
 
 /**
  * 获取Role列表
@@ -290,6 +291,14 @@ roleRouter.put('/:id', async ctx => {
     const parents = (ctx.req as any).body.parents;
     const groups = (ctx.req as any).body.groups;
     const e = await getEnforcer();
+    sequelize.transaction(t => {
+        return Role.create(
+            { rolename: name, description },
+            { transaction: t }
+        ).then(role => {
+            
+        });
+    });
 });
 
 // 往指定id的role上挂父roles
