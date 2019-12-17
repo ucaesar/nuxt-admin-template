@@ -33,6 +33,7 @@ import * as ResourceApi from '@/api/superadmin/Resource';
 import { RESOURCE_TABLE_HEADER_TEXT } from '@/conf/superadmin/Resource';
 
 import { CrudTableComponent } from '@/utils/crudTable';
+import * as Message from '@/utils/message';
 
 @Component({
     components: {
@@ -59,7 +60,9 @@ class ResourceTable extends Vue {
         this.resourceTable.loadingOverlay();
         try {
             this.serverData = await ResourceApi.$list(params);
-        } catch (e) {}
+        } catch (e) {
+            Message.axiosError(e);
+        }
         this.resourceTable.unOverlay();
     }
 
@@ -76,9 +79,12 @@ class ResourceTable extends Vue {
         this.resourceTable.submittingOverlay();
         try {
             await ResourceApi.$delete(item);
-            this.resourceTable.resetPagination();
-        } catch (e) {}
+            Message.axiosSuccess();
+        } catch (e) {
+            Message.axiosError(e);
+        }
         this.resourceTable.unOverlay();
+        this.resourceTable.resetPagination();
     }
 
     async onEdit(val: boolean | ResourceApi.Resource) {
@@ -90,11 +96,12 @@ class ResourceTable extends Vue {
         try {
             if (val.id !== -1) await ResourceApi.$edit(val);
             else await ResourceApi.$add(val);
-            await this.resourceTable.loadPage();
+            Message.axiosSuccess();
         } catch (e) {
-        } finally {
-            this.resourceTable.unOverlay();
+            Message.axiosError(e);
         }
+        this.resourceTable.unOverlay();
+        this.resourceTable.loadPage();
     }
 
     onSelect(items) {
