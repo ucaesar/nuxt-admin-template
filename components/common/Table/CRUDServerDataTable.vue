@@ -179,6 +179,10 @@ class CRUDServerDataTable extends Vue {
         });
     }
 
+    reloadPage() {
+        this.onLoadPage();
+    }
+
     loadingOverlay() {
         this.loading = true;
         this.loadingText = this.$t('components.table.loadingText') as string;

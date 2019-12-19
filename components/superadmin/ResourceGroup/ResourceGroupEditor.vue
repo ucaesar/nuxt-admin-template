@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="visible" persistent max-width="1200"
+    <v-dialog :value="visible" persistent max-width="1200" scrollable
         ><v-card
             ><v-card-title class="headline">{{
                 $t('superadmin.resourceGroupTable.editorTitle')
@@ -33,8 +33,16 @@
                         <v-col cols="12">
                             <chip-input
                                 :value="clonedItem.resources"
-                                label="包含资源"
-                                messages="从列表中勾选资源"
+                                :label="
+                                    $t(
+                                        'superadmin.resourceGroupTable.resourceInputLabel'
+                                    )
+                                "
+                                :messages="
+                                    $t(
+                                        'superadmin.resourceGroupTable.resourceInputHint'
+                                    )
+                                "
                                 field="name"
                                 item-key="id"
                                 @input="onChangeResources"

@@ -98,7 +98,7 @@ class RoleTable extends Vue {
             Message.axiosError(e);
         }
         this.roleTable.unOverlay();
-        this.roleTable.loadPage();
+        this.roleTable.reloadPage();
     }
 
     onSelect(items) {
