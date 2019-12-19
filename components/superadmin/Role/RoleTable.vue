@@ -33,6 +33,7 @@ import { TableDataFromServer, IPaginationParams } from '@/api/admin/table';
 import * as RoleApi from '@/api/superadmin/Role';
 
 import { CrudTableComponent } from '@/utils/crudTable';
+import * as Message from '@/utils/message';
 
 @Component({
     components: {
@@ -56,7 +57,9 @@ class RoleTable extends Vue {
         this.roleTable.loadingOverlay();
         try {
             this.serverData = await RoleApi.$list(params);
-        } catch (e) {}
+        } catch (e) {
+            Message.axiosError(e);
+        }
         this.roleTable.unOverlay();
     }
 
@@ -73,9 +76,12 @@ class RoleTable extends Vue {
         this.roleTable.submittingOverlay();
         try {
             await RoleApi.$delete(item);
-            this.roleTable.resetPagination();
-        } catch (e) {}
+            Message.axiosSuccess();
+        } catch (e) {
+            Message.axiosError(e);
+        }
         this.roleTable.unOverlay();
+        this.roleTable.resetPagination();
     }
 
     async onEdit(val: boolean | RoleApi.Role) {
@@ -87,11 +93,12 @@ class RoleTable extends Vue {
         try {
             if (val.id !== -1) await RoleApi.$edit(val);
             else await RoleApi.$add(val);
-            await this.roleTable.loadPage();
+            Message.axiosSuccess();
         } catch (e) {
-        } finally {
-            this.roleTable.unOverlay();
+            Message.axiosError(e);
         }
+        this.roleTable.unOverlay();
+        this.roleTable.loadPage();
     }
 
     onSelect(items) {

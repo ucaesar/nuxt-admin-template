@@ -21,8 +21,12 @@ export function axiosError(e: any) {
     const code = parseInt(e.response && e.response.status);
     const errorKey = `axios.error[${code}]`;
     if (errorKey) {
-        error(errorKey);
+        error($t(errorKey));
     } else {
         error($t('axios.error.unknownError'));
     }
+}
+
+export function axiosSuccess() {
+    success($t('axios.success'));
 }

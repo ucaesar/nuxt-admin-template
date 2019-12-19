@@ -57,7 +57,9 @@ class ResourceGroupTable extends Vue {
         this.resourceGroupTable.loadingOverlay();
         try {
             this.serverData = await ResourceGroupApi.$list(params);
-        } catch (e) {}
+        } catch (e) {
+            Message.axiosError(e);
+        }
         this.resourceGroupTable.unOverlay();
     }
 
@@ -72,19 +74,21 @@ class ResourceGroupTable extends Vue {
             this.itemTodo = await ResourceGroupApi.$detail(item);
             this.editorVisible = true;
         } catch (e) {
-        } finally {
-            this.resourceGroupTable.unOverlay();
+            Message.axiosError(e);
         }
+        this.resourceGroupTable.unOverlay();
     }
 
     async onDelete(item) {
         this.resourceGroupTable.submittingOverlay();
         try {
             await ResourceGroupApi.$delete(item);
-            // await this.loadPage(this.pageParams);
-            this.resourceGroupTable.resetPagination();
-        } catch (e) {}
+            Message.axiosSuccess();
+        } catch (e) {
+            Message.axiosError(e);
+        }
         this.resourceGroupTable.unOverlay();
+        this.resourceGroupTable.resetPagination();
     }
     async onEdit(val: boolean | ResourceGroupApi.IResourceGroup) {
         this.editorVisible = false;
@@ -95,11 +99,12 @@ class ResourceGroupTable extends Vue {
         try {
             if (val.id !== -1) await ResourceGroupApi.$edit(val);
             else await ResourceGroupApi.$add(val);
-            await this.resourceGroupTable.loadPage();
+            Message.axiosSuccess();
         } catch (e) {
-        } finally {
-            this.resourceGroupTable.unOverlay();
+            Message.axiosError(e);
         }
+        this.resourceGroupTable.unOverlay();
+        this.resourceGroupTable.loadPage();
     }
 
     onSelect(items) {
