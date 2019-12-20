@@ -6,7 +6,8 @@ import getEnforcer from '../../lib/enforcer';
 import Role from '../../model/Role';
 import ResourceGroup from '../../model/ResourceGroup';
 import Resource from '../../model/Resource';
-import { Op } from 'sequelize';
+import { CasbinRule } from '../../model/CasbinRule';
+import { Op, where } from 'sequelize';
 import { sequelize } from '../../db';
 
 /**
@@ -291,14 +292,71 @@ roleRouter.put('/:id', async ctx => {
     const parents = (ctx.req as any).body.parents;
     const groups = (ctx.req as any).body.groups;
     const e = await getEnforcer();
-    sequelize.transaction(t => {
-        return Role.create(
-            { rolename: name, description },
-            { transaction: t }
-        ).then(role => {
-            
-        });
+    // role的名称必须以大写R结尾
+    let result = name.substr(name.length - 1, name.length) === 'R';
+    if (result) {
+        result = name.length > 0;
+    }
+    if (!result) {
+        ctx.response.status = 401;
+        ctx.response.body = 'role name must end with R';
+        return;
+    }
+    const role = await Role.findOne({
+        where: { id: rid }
     });
+    if (
+        await Role.findOne({
+            where: {
+                id: { [Op.ne]: rid },
+                rolename: name
+            }
+        })
+    ) {
+        ctx.response.status = 401;
+        ctx.response.body = 'this role name exists';
+        return;
+    }
+    if (role) {
+        const oldname = role.rolename;
+        if (oldname != name) {
+            let i;
+            const casbinrules1 = await CasbinRule.findAll({
+                where: {
+                    v0: oldname
+                }
+            });
+            for (i = 0; i < casbinrules1.length; i++) {
+                casbinrules1[i].v0 = name;
+                await casbinrules1[i].save();
+            }
+            const casbinrules2 = await CasbinRule.findAll({
+                where: {
+                    v1: oldname
+                }
+            });
+            for (i = 0; i < casbinrules2.length; i++) {
+                casbinrules2[i].v1 = name;
+                await casbinrules2[i].save();
+            }
+        }
+        role.rolename = name;
+        role.description = description;
+        await role.save();
+        ctx.response.status = 200;
+        ctx.response.body = 'edit success';
+    } else {
+        ctx.response.status = 404;
+        ctx.response.body = 'not found';
+    }
+    // sequelize.transaction(t => {
+    //     return Role.create(
+    //         { rolename: name, description },
+    //         { transaction: t }
+    //     ).then(role => {
+
+    //     });
+    // });
 });
 
 // 往指定id的role上挂父roles
