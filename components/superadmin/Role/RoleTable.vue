@@ -67,9 +67,17 @@ class RoleTable extends Vue {
         this.itemTodo = new RoleApi.Role();
         this.editorVisible = true;
     }
-    beforeEdit(item) {
-        this.itemTodo = item;
-        this.editorVisible = true;
+    async beforeEdit(item) {
+        this.roleTable.loadingOverlay();
+
+        try {
+            this.itemTodo = await RoleApi.$detail(item);
+            this.editorVisible = true;
+        } catch (e) {
+            Message.axiosError(e);
+        }
+
+        this.roleTable.unOverlay();
     }
 
     async onDelete(item) {
