@@ -343,6 +343,35 @@ roleRouter.put('/:id', async ctx => {
         role.rolename = name;
         role.description = description;
         await role.save();
+        let i;
+        let oldparents = await role.$get('parents');
+        oldparents = Array.isArray(oldparents) ? oldparents : [oldparents];
+        for (i = 0; i < oldparents.length; i++) {
+            const pname = (oldparents[i] as Role).rolename;
+            // await CasbinRule.destroy({
+            //     where: {
+            //         ptype: 'g',
+            //         v0: role.rolename,
+            //         v1: pname
+            //     }
+            // });
+            await e.removeGroupingPolicy(role.rolename, pname);
+            await role.$remove('parents', oldparents[i]);
+        }
+        for (i = 0; i < parents.length; i++) {
+            const pid = parents[i].id;
+            if(pid != role.id) {
+                const newparent = await Role.findOne({
+                    where: {
+                        id: pid
+                    }
+                });
+                if(newparent) {
+                    await role.$add('parents', newparent);
+                    await e.addGroupingPolicy(role.rolename, newparent.rolename);
+                }
+            }
+        }
         ctx.response.status = 200;
         ctx.response.body = 'edit success';
     } else {
