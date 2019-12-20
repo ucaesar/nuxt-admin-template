@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="visible" persistent max-width="1200">
+    <v-dialog :value="visible" persistent max-width="1200" scrollable>
         <v-card>
             <v-card-title class="headline">{{
                 $t('superadmin.roleTable.editorTitle')
@@ -33,16 +33,26 @@
                     </v-row>
                 </v-form>
                 <v-tabs>
-                    <v-tab>角色继承</v-tab>
-                    <v-tab>包含资源组</v-tab>
+                    <v-tab>{{
+                        $t('superadmin.roleTable.roleInputLabel')
+                    }}</v-tab>
+                    <v-tab>{{
+                        $t('superadmin.roleTable.resourceGroupInputLabel')
+                    }}</v-tab>
 
                     <v-tab-item>
                         <v-row>
                             <v-col cols="12">
                                 <chip-input
                                     :value="clonedItem.parents"
-                                    label="继承自角色"
-                                    messages="从列表中勾选角色"
+                                    :label="
+                                        $t(
+                                            'superadmin.roleTable.roleInputLabel'
+                                        )
+                                    "
+                                    :messages="
+                                        $t('superadmin.roleTable.roleInputHint')
+                                    "
                                     field="rolename"
                                     item-key="id"
                                     @input="onChangeParents"
@@ -64,8 +74,16 @@
                             <v-col cols="12">
                                 <chip-input
                                     :value="clonedItem.groups"
-                                    label="包含资源组"
-                                    messages="从列表中勾选"
+                                    :label="
+                                        $t(
+                                            'superadmin.roleTable.resourceGroupInputLabel'
+                                        )
+                                    "
+                                    :messages="
+                                        $t(
+                                            'superadmin.roleTable.resourceGroupInputHint'
+                                        )
+                                    "
                                     field="groupname"
                                     item-key="id"
                                     @input="onChangeGroups"

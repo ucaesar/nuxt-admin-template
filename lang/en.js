@@ -61,14 +61,20 @@ export default {
             newButtonText: 'New Role',
             roleNameHeaderText: 'Role Name',
             descriptionHeaderText: 'Description',
-            editorTitle: 'Edit Role'
+            editorTitle: 'Edit Role',
+            resourceGroupInputLabel: 'Resource Groups contained',
+            resourceGroupInputHint: 'Select resource groups from list below',
+            roleInputLabel: 'Roles inherited from',
+            roleInputHint: 'Select roles from list below'
         },
         resourceGroupTable: {
             tableTitle: 'Resource Groups',
             newButtonText: 'New Resource Group',
             groupNameHeaderText: 'Name',
             descriptionHeaderText: 'Description',
-            editorTitle: 'Edit Resource Group'
+            editorTitle: 'Edit Resource Group',
+            resourceInputLabel: 'Resources contained',
+            resourceInputHint: 'Select resources from list below'
         },
         resourceTable: {
             tableTitle: 'Resources',

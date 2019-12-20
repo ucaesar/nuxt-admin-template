@@ -101,7 +101,7 @@ class ResourceTable extends Vue {
             Message.axiosError(e);
         }
         this.resourceTable.unOverlay();
-        this.resourceTable.loadPage();
+        this.resourceTable.reloadPage();
     }
 
     onSelect(items) {

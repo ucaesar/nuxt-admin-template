@@ -61,14 +61,20 @@ export default {
             newButtonText: '新建角色',
             roleNameHeaderText: '角色名',
             descriptionHeaderText: '描述',
-            editorTitle: '编辑角色'
+            editorTitle: '编辑角色',
+            resourceGroupInputLabel: '包含资源组',
+            resourceGroupInputHint: '从列表中勾选资源组',
+            roleInputLabel: '继承自角色',
+            roleInputHint: '从列表中勾选角色'
         },
         resourceGroupTable: {
             tableTitle: '资源组列表',
             newButtonText: '新建资源组',
             groupNameHeaderText: '资源组名称',
             descriptionHeaderText: '描述',
-            editorTitle: '编辑资源组'
+            editorTitle: '编辑资源组',
+            resourceInputLabel: '包含资源',
+            resourceInputHint: '从列表中勾选资源'
         },
         resourceTable: {
             tableTitle: '资源列表',

@@ -104,7 +104,7 @@ class ResourceGroupTable extends Vue {
             Message.axiosError(e);
         }
         this.resourceGroupTable.unOverlay();
-        this.resourceGroupTable.loadPage();
+        this.resourceGroupTable.reloadPage();
     }
 
     onSelect(items) {
