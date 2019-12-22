@@ -343,6 +343,91 @@ roleRouter.put('/:id', async ctx => {
         role.rolename = name;
         role.description = description;
         await role.save();
+        let i;
+        let oldparents = await role.$get('parents');
+        oldparents = Array.isArray(oldparents) ? oldparents : [oldparents];
+        for (i = 0; i < oldparents.length; i++) {
+            const pname = (oldparents[i] as Role).rolename;
+            // await CasbinRule.destroy({
+            //     where: {
+            //         ptype: 'g',
+            //         v0: role.rolename,
+            //         v1: pname
+            //     }
+            // });
+            await e.removeGroupingPolicy(role.rolename, pname);
+            await role.$remove('parents', oldparents[i]);
+        }
+        for (i = 0; i < parents.length; i++) {
+            const pid = parents[i].id;
+            if (pid != role.id) {
+                const newparent = await Role.findOne({
+                    where: {
+                        id: pid
+                    }
+                });
+                if (newparent) {
+                    await role.$add('parents', newparent);
+                    await e.addGroupingPolicy(
+                        role.rolename,
+                        newparent.rolename
+                    );
+                }
+            }
+        }
+        let oldgroups = await role.$get('resourceGroups');
+        oldgroups = Array.isArray(oldgroups) ? oldgroups : [oldgroups];
+        for (i = 0; i < oldgroups.length; i++) {
+            await role.$remove('resourceGroups', oldgroups[i]);
+            let oldresouces = await (oldgroups[i] as ResourceGroup).$get(
+                'resources'
+            );
+            oldresouces = Array.isArray(oldresouces)
+                ? oldresouces
+                : [oldresouces];
+            let j;
+            for (j = 0; j < oldresouces.length; j++) {
+                const r = oldresouces[j] as Resource;
+                await e.removePolicy(role.rolename, r.url, r.action);
+            }
+        }
+        // 依次添加groups
+        const permissions = await e.getImplicitPermissionsForUser(
+            role.rolename
+        );
+        for (i = 0; i < groups.length; i++) {
+            const group = await ResourceGroup.findOne({
+                where: {
+                    id: groups[i].id
+                }
+            });
+            // 添加group的时候, 该group下的所有resource必须在casbin表里和该新role挂钩
+            if (group) {
+                let resources = await group.$get('resources');
+                resources = Array.isArray(resources) ? resources : [resources];
+                let j;
+                for (j = 0; j < resources.length; j++) {
+                    const res = resources[j] as Resource;
+                    // 当前资源不在casbin表查出的该newrole的隐藏权限里时，
+                    // 再往casbin表里添加该role与resource的权限，防止casbin表过度膨胀
+                    if (
+                        _.findIndex(permissions, [
+                            role.rolename,
+                            res.url,
+                            res.action
+                        ]) < 0
+                    ) {
+                        await e.addPolicy(
+                            role.rolename,
+                            res.url,
+                            res.action
+                        );
+                    }
+                }
+                // 建立新role与group的关系
+                await role.$add('resourceGroups', group);
+            }
+        }
         ctx.response.status = 200;
         ctx.response.body = 'edit success';
     } else {
