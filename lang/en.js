@@ -19,6 +19,13 @@ export default {
             loadingText: 'Loading...',
             submittingText: 'Submitting...'
         },
+        crudTable: {
+            newButtonText: 'New',
+            searchText: 'Search',
+            actionsHeaderText: 'Actions',
+            loadingText: 'Loading...',
+            submittingText: 'Submitting...'
+        },
         dialog: {
             okButtonText: 'OK',
             cancelButtonText: 'Cancel',

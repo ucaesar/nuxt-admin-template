@@ -18,6 +18,7 @@
                         v-if="newAction"
                         :text="$t('components.crudTable.newButtonText')"
                         class="mr-4"
+                        @new="editorDialogVisible = !editorDialogVisible"
                     />
                     <v-spacer></v-spacer>
                     <search-action
@@ -29,13 +30,15 @@
             </template>
             <template v-if="actionColumnState" v-slot:item.actions="{ item }">
                 <edit-action v-if="editAction" :item="item" @edit="onEdit" />
-                <delete-action
-                    v-if="deleteAction"
-                    :item="item"
-                />
+                <delete-action v-if="deleteAction" :item="item" />
             </template>
         </v-data-table>
+        <confirm-dialog
+            :visible="confirmDeleteDialogVisible"
+            :title="$t('components.dialog.makeSureToDeleteTitle')"
+        />
         <loading-overlay :loading="loading" :loading-text="loadingText" />
+        <slot name="editor" :prop="{ editorDialogVisible }"></slot>
     </v-card>
 </template>
 
@@ -49,15 +52,27 @@ import EditAction from './EditAction.vue';
 import DeleteAction from './DeleteAction.vue';
 import LoadingOverlay from './LoadingOverlay.vue';
 
+import ConfirmDialog from '@/components/common/ConfirmDialog.vue';
+
 import {
     ITableDataFromServer,
+    ICrudTableApi,
     IPaginationParams,
     DEFAULT_ITEMS_PER_PAGE
-} from '@/api/admin/table';
+} from '@/api/admin/crudTable';
 
 import { COMMON_TABLE_HEADER_TEXT } from '@/conf/admin/table';
 
-@Component
+@Component({
+    components: {
+        SearchAction,
+        NewAction,
+        EditAction,
+        DeleteAction,
+        LoadingOverlay,
+        ConfirmDialog
+    }
+})
 class CrudTable extends Vue {
     @Prop({ type: String, default: 'CRUDTable' }) readonly tableTitle!: string;
     @Prop({ type: Boolean, default: false }) readonly newAction!: boolean;
@@ -65,9 +80,16 @@ class CrudTable extends Vue {
     @Prop({ type: Boolean, default: false }) readonly editAction!: boolean;
     @Prop({ type: Boolean, default: false }) readonly selectAction!: boolean;
     @Prop({ type: Boolean, default: false }) readonly searchAction!: boolean;
-    @Prop({ type: Array, required: true }) readonly headersConf!: any[];
-    @Prop({ type: Object, required: true })
+    @Prop({ type: Array, required: false }) readonly headersConf!: any[];
+    @Prop({
+        type: Object,
+        required: false,
+        default() {
+            return { results: [], total: 0 };
+        }
+    })
     readonly serverData!: ITableDataFromServer;
+    @Prop({ type: Object, required: false }) readonly api!: ICrudTableApi;
 
     get actionColumnState() {
         return this.deleteAction || this.editAction;
@@ -91,6 +113,8 @@ class CrudTable extends Vue {
     searchOption = '';
     loading = false;
     loadingText = '';
+    confirmDeleteDialogVisible = false;
+    editorDialogVisible = false;
 
     computePaginationParams(): IPaginationParams {
         const { page, itemsPerPage } = this.pageOptions as any;

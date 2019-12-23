@@ -31,11 +31,15 @@
                     />
                 </v-toolbar>
             </template>
-            <template v-if="actionColumnState" v-slot:item.actions="{ item }">
-                <edit-action v-if="editAction" :item="item" @edit="onEdit" />
+            <template v-if="actionColumnState" v-slot:item.actions="itemToEdit">
+                <edit-action
+                    v-if="editAction"
+                    :item="itemToEdit.item"
+                    @edit="onEdit"
+                />
                 <delete-action
                     v-if="deleteAction"
-                    :item="item"
+                    :item="itemToEdit.item"
                     @delete="beforeDelete"
                 />
             </template>
