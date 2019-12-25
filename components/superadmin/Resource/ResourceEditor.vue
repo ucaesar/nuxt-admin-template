@@ -74,13 +74,17 @@ import { VForm, fieldRequired } from '@/utils/form';
 @Component
 class ResourecEditor extends Vue {
     @Prop({ type: Boolean, required: true }) readonly visible!: boolean;
-    @Prop({ type: Object, required: true }) readonly item!: IResource;
+    @Prop({ type: Object, required: true }) readonly item!:
+        | IResource
+        | undefined;
     @Ref('resourceForm') readonly form!: VForm;
 
     @Watch('visible')
     onOpenDialog(val: boolean, oldVal: boolean) {
         if (!oldVal && val) {
-            this.clonedItem = _.cloneDeep(this.item);
+            if (typeof this.item === 'undefined')
+                this.clonedItem = new Resource();
+            else this.clonedItem = _.cloneDeep(this.item);
             if (this.form) {
                 this.form.resetValidation();
             }

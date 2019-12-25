@@ -69,3 +69,7 @@ export async function $edit(resource: IResource) {
         throw e;
     }
 }
+
+export async function $detail(resource: IResource) {
+    return resource;
+}

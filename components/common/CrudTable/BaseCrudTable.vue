@@ -18,7 +18,7 @@
                         v-if="newAction"
                         :text="$t('components.crudTable.newButtonText')"
                         class="mr-4"
-                        @new="editorDialogVisible = !editorDialogVisible"
+                        @new="beforeNew"
                     />
                     <v-spacer></v-spacer>
                     <search-action
@@ -29,16 +29,30 @@
                 </v-toolbar>
             </template>
             <template v-if="actionColumnState" v-slot:item.actions="{ item }">
-                <edit-action v-if="editAction" :item="item" @edit="onEdit" />
-                <delete-action v-if="deleteAction" :item="item" />
+                <edit-action
+                    v-if="editAction"
+                    :item="item"
+                    @edit="beforeEdit"
+                />
+                <delete-action
+                    v-if="deleteAction"
+                    :item="item"
+                    @delete="beforeDelete"
+                />
             </template>
         </v-data-table>
         <confirm-dialog
             :visible="confirmDeleteDialogVisible"
             :title="$t('components.dialog.makeSureToDeleteTitle')"
+            @close="onDelete"
         />
         <loading-overlay :loading="loading" :loading-text="loadingText" />
-        <slot name="editor" :visible="editorDialogVisible"></slot>
+        <slot
+            name="editor"
+            :visible="editorDialogVisible"
+            :item-todo="itemTodo"
+            :close-handler="onCloseEditorDialog"
+        ></slot>
     </v-card>
 </template>
 
@@ -76,7 +90,7 @@ import * as Message from '@/utils/message';
         ConfirmDialog
     }
 })
-class CrudTable extends Vue {
+class BaseCrudTable extends Vue {
     @Prop({ type: String, default: 'CRUDTable' }) readonly tableTitle!: string;
     @Prop({ type: Boolean, default: false }) readonly newAction!: boolean;
     @Prop({ type: Boolean, default: false }) readonly deleteAction!: boolean;
@@ -84,7 +98,7 @@ class CrudTable extends Vue {
     @Prop({ type: Boolean, default: false }) readonly selectAction!: boolean;
     @Prop({ type: Boolean, default: false }) readonly searchAction!: boolean;
     @Prop({ type: Array, required: true }) readonly headersConf!: any[];
-    @Prop({ type: Object, required: true }) readonly api!: ICrudTableApi;
+    @Prop({ type: Object, required: false }) readonly crudApi!: ICrudTableApi;
 
     get actionColumnState() {
         return this.deleteAction || this.editAction;
@@ -111,6 +125,7 @@ class CrudTable extends Vue {
     confirmDeleteDialogVisible = false;
     editorDialogVisible = false;
     serverData = new TableDataFromServer();
+    itemTodo: any | undefined = {};
 
     @Watch('pageOptions', { deep: true })
     onUpdatePageOptions() {
@@ -135,7 +150,7 @@ class CrudTable extends Vue {
         this.loadingOverlay();
 
         try {
-            this.serverData = await this.api.$list(this.paginationParams);
+            this.serverData = await this.crudApi.$list(this.paginationParams);
         } catch (e) {
             Message.axiosError(e);
         }
@@ -143,11 +158,29 @@ class CrudTable extends Vue {
         this.unOverlay();
     }
 
+    beforeNew() {
+        this.itemTodo = undefined;
+        this.editorDialogVisible = true;
+    }
+
+    async beforeEdit(item) {
+        this.loadingOverlay();
+
+        try {
+            this.itemTodo = await this.crudApi.$detail(item);
+            this.editorDialogVisible = true;
+        } catch (e) {
+            Message.axiosError(e);
+        } finally {
+            this.unOverlay();
+        }
+    }
+
     async onNew(item) {
         this.submittingOverlay();
 
         try {
-            await this.api.$add(item);
+            await this.crudApi.$add(item);
             Message.axiosSuccess();
         } catch (e) {
             Message.axiosError(e);
@@ -157,11 +190,19 @@ class CrudTable extends Vue {
         this.loadPage();
     }
 
-    async onDelete(item) {
+    beforeDelete(item) {
+        this.itemTodo = item;
+        this.confirmDeleteDialogVisible = true;
+    }
+
+    async onDelete(value) {
+        this.confirmDeleteDialogVisible = false;
+        if (!value) return;
+
         this.submittingOverlay();
 
         try {
-            await this.api.$delete(item);
+            await this.crudApi.$delete(this.itemTodo);
             Message.axiosSuccess();
         } catch (e) {
             Message.axiosError(e);
@@ -175,7 +216,7 @@ class CrudTable extends Vue {
         this.submittingOverlay();
 
         try {
-            await this.api.$edit(item);
+            await this.crudApi.$edit(item);
             Message.axiosSuccess();
         } catch (e) {
             Message.axiosError(e);
@@ -188,14 +229,14 @@ class CrudTable extends Vue {
     loadingOverlay() {
         this.loading = true;
         this.loadingText = this.$t(
-            'components.curdTable.loadingText'
+            'components.crudTable.loadingText'
         ) as string;
     }
 
     submittingOverlay() {
         this.loading = true;
         this.loadingText = this.$t(
-            'components.curdTable.submittingText'
+            'components.crudTable.submittingText'
         ) as string;
     }
 
@@ -208,9 +249,18 @@ class CrudTable extends Vue {
             page: 1
         });
     }
+
+    onCloseEditorDialog(val) {
+        this.editorDialogVisible = false;
+
+        if (typeof val === 'boolean') return;
+
+        if (typeof this.itemTodo === 'undefined') this.onNew(val);
+        else this.onEdit(val);
+    }
 }
 
-export default CrudTable;
+export default BaseCrudTable;
 </script>
 
 <style>
