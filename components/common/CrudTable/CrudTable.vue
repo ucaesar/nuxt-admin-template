@@ -38,12 +38,12 @@
             :title="$t('components.dialog.makeSureToDeleteTitle')"
         />
         <loading-overlay :loading="loading" :loading-text="loadingText" />
-        <slot name="editor" :prop="{ editorDialogVisible }"></slot>
+        <slot name="editor" :visible="editorDialogVisible"></slot>
     </v-card>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'nuxt-property-decorator';
+import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator';
 import _ from 'lodash';
 
 import SearchAction from './SearchAction.vue';
@@ -58,10 +58,13 @@ import {
     ITableDataFromServer,
     ICrudTableApi,
     IPaginationParams,
-    DEFAULT_ITEMS_PER_PAGE
+    DEFAULT_ITEMS_PER_PAGE,
+    TableDataFromServer
 } from '@/api/admin/crudTable';
 
 import { COMMON_TABLE_HEADER_TEXT } from '@/conf/admin/table';
+
+import * as Message from '@/utils/message';
 
 @Component({
     components: {
@@ -80,16 +83,8 @@ class CrudTable extends Vue {
     @Prop({ type: Boolean, default: false }) readonly editAction!: boolean;
     @Prop({ type: Boolean, default: false }) readonly selectAction!: boolean;
     @Prop({ type: Boolean, default: false }) readonly searchAction!: boolean;
-    @Prop({ type: Array, required: false }) readonly headersConf!: any[];
-    @Prop({
-        type: Object,
-        required: false,
-        default() {
-            return { results: [], total: 0 };
-        }
-    })
-    readonly serverData!: ITableDataFromServer;
-    @Prop({ type: Object, required: false }) readonly api!: ICrudTableApi;
+    @Prop({ type: Array, required: true }) readonly headersConf!: any[];
+    @Prop({ type: Object, required: true }) readonly api!: ICrudTableApi;
 
     get actionColumnState() {
         return this.deleteAction || this.editAction;
@@ -115,8 +110,14 @@ class CrudTable extends Vue {
     loadingText = '';
     confirmDeleteDialogVisible = false;
     editorDialogVisible = false;
+    serverData = new TableDataFromServer();
 
-    computePaginationParams(): IPaginationParams {
+    @Watch('pageOptions', { deep: true })
+    onUpdatePageOptions() {
+        this.loadPage();
+    }
+
+    get paginationParams(): IPaginationParams {
         const { page, itemsPerPage } = this.pageOptions as any;
         const params: IPaginationParams = {
             start: (page - 1) * itemsPerPage,
@@ -128,6 +129,84 @@ class CrudTable extends Vue {
         }
 
         return params;
+    }
+
+    async loadPage() {
+        this.loadingOverlay();
+
+        try {
+            this.serverData = await this.api.$list(this.paginationParams);
+        } catch (e) {
+            Message.axiosError(e);
+        }
+
+        this.unOverlay();
+    }
+
+    async onNew(item) {
+        this.submittingOverlay();
+
+        try {
+            await this.api.$add(item);
+            Message.axiosSuccess();
+        } catch (e) {
+            Message.axiosError(e);
+        }
+
+        this.unOverlay();
+        this.loadPage();
+    }
+
+    async onDelete(item) {
+        this.submittingOverlay();
+
+        try {
+            await this.api.$delete(item);
+            Message.axiosSuccess();
+        } catch (e) {
+            Message.axiosError(e);
+        }
+
+        this.unOverlay();
+        this.resetPagination();
+    }
+
+    async onEdit(item) {
+        this.submittingOverlay();
+
+        try {
+            await this.api.$edit(item);
+            Message.axiosSuccess();
+        } catch (e) {
+            Message.axiosError(e);
+        }
+
+        this.unOverlay();
+        this.loadPage();
+    }
+
+    loadingOverlay() {
+        this.loading = true;
+        this.loadingText = this.$t(
+            'components.curdTable.loadingText'
+        ) as string;
+    }
+
+    submittingOverlay() {
+        this.loading = true;
+        this.loadingText = this.$t(
+            'components.curdTable.submittingText'
+        ) as string;
+    }
+
+    unOverlay() {
+        this.loading = false;
+    }
+
+    resetPagination() {
+        this.pageOptions = Object.assign(_.cloneDeep(this.pageOptions), {
+            page: 1
+        });
     }
 }
 
