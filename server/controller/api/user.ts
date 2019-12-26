@@ -3,14 +3,95 @@ import SessionAuthenticator from '../../SessionAuthenticator';
 const userRouter = new Router();
 // const getEnforcer = require("../../lib/enforcer");
 import User from '../../model/User';
+import Role from '../../model/Role';
+import { Op, where } from 'sequelize';
 
+/**
+ * 获取User列表
+ * url: /api/user
+ * method: GET
+ * params: GET查询参数, start为分页起始位置, count为一页的数量, filter为对name做的匹配关键词
+ */
 userRouter.get('/', async (ctx, next) => {
     // const e = await getEnforcer();
-    ctx.response.type = 'text/json';
-    ctx.response.body = await User.findAll({
-        attributes: ['id', 'username']
+    const start = ctx.request.query.start;
+    const num = ctx.request.query.count;
+    const total = await User.count();
+    const filter = ctx.request.query.filter ? ctx.request.query.filter : '';
+    let offset = 0;
+    let limit = total;
+    if (start && Number(start) >= 0 && Number(start) < total) {
+        offset = Number(start);
+    }
+    if (num && Number(num) > 0) {
+        if (offset + Number(num) <= total) {
+            limit = Number(num);
+        } else {
+            limit = total - offset;
+        }
+    }
+    const results = await User.findAll({
+        offset,
+        limit,
+        attributes: ['id', 'username'],
+        where: {
+            username: { [Op.like]: '%' + filter + '%' }
+        }
     });
+    ctx.response.type = 'text/json';
+    ctx.response.status = 200;
+    ctx.response.body = {
+        results,
+        total
+    };
     // await next();
+});
+
+/**
+ * 获取指定id的User
+ * url: /api/user/:id/ id为user的id
+ * method: GET
+ * return: { id, username,
+ *           roles: [ {id, rolename, description },  ... ]
+ *         }
+ */
+userRouter.get('/:id', async ctx => {
+    const id = ctx.params.id;
+    const user = await User.findOne({
+        attributes: ['id', 'username'],
+        where: {
+            id
+        }
+    });
+    if (user) {
+        const rolenames = await user.getRoles();
+        let roles: any[] = [];
+        let i;
+        for (i = 0; i < rolenames.length; i++) {
+            const role = await Role.findOne({
+                where: {
+                    rolename: rolenames[i]
+                }
+            });
+            if (role) {
+                roles.push({
+                    id: role.id,
+                    rolename: role.rolename,
+                    description: role.description
+                });
+            }
+        }
+        ctx.response.type = 'text/json';
+        ctx.response.status = 200;
+        ctx.response.body = {
+            id: user.id,
+            rolename: user.username,
+            roles: roles
+        };
+    } else {
+        ctx.response.status = 404;
+        ctx.response.body = 'not found';
+    }
 });
 
 // 返回当前用户能够访问的路径
