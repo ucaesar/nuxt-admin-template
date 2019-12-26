@@ -101,6 +101,7 @@
                     </v-tab-item>
                 </v-tabs>
             </v-card-text>
+            <v-divider></v-divider>
             <v-card-actions>
                 <v-spacer />
                 <v-btn color="primary" text @click.stop="onCancel">{{
@@ -141,7 +142,8 @@ class RoleEditor extends Vue {
     @Watch('visible')
     onOpenDialog(val: boolean, oldVal: boolean) {
         if (!oldVal && val) {
-            this.clonedItem = _.cloneDeep(this.item);
+            if (typeof this.item === 'undefined') this.clonedItem = new Role();
+            else this.clonedItem = _.cloneDeep(this.item);
             if (this.form) {
                 this.form.resetValidation();
             }

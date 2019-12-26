@@ -1,15 +1,18 @@
 <template>
     <v-container>
-        <resource-table new-action delete-action edit-action />
+        <resource-table
+            new-action
+            delete-action
+            edit-action
+            search-action
+        />
     </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
 
-// import ResourceTable from '@/components/superadmin/Resource/ResourceTable.vue';
-
-import ResourceTable from '@/components/superadmin/Resource/CrudTable.vue';
+import ResourceTable from '@/components/superadmin/Resource/ResourceTable.vue';
 
 @Component({
     layout: 'admin',

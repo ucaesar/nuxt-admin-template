@@ -51,6 +51,7 @@
                                 "
                             ></v-text-field></v-col></v-row></v-form
             ></v-card-text>
+            <v-divider></v-divider>
             <v-card-actions>
                 <v-spacer />
                 <v-btn color="primary" text @click.stop="onCancel">{{

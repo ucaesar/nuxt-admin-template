@@ -1,115 +1,63 @@
 <template>
-    <div>
-        <crud-server-data-table
-            ref="resourceTable"
-            :table-title="$t('superadmin.resourceTable.tableTitle')"
-            :server-data="serverData"
-            :headers-conf="headersConf"
-            v-bind="$attrs"
-            @load-page="loadPage"
-            @new="beforeNew"
-            @delete="onDelete"
-            @edit="beforeEdit"
-            @input="onSelect"
-        />
-        <resource-editor
-            :visible="editorVisible"
-            :item="itemTodo"
-            @close="onEdit"
-        />
-    </div>
+    <base-crud-table
+        :table-title="$t('superadmin.resourceTable.tableTitle')"
+        v-bind="$attrs"
+        :headers-conf="headersConf"
+        :crud-api="api"
+        @input="onSelect"
+    >
+        <template v-slot:editor="{ visible, itemTodo, closeHandler }">
+            <resource-editor
+                :visible="visible"
+                :item="itemTodo"
+                @close="closeHandler"
+            />
+        </template>
+    </base-crud-table>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Ref } from 'nuxt-property-decorator';
+import { Vue, Component, Prop } from 'nuxt-property-decorator';
 
 import ResourceEditor from './ResourceEditor.vue';
 
-import CrudServerDataTable from '@/components/common/Table/CRUDServerDataTable.vue';
-
-import { TableDataFromServer, IPaginationParams } from '@/api/admin/table';
-import * as ResourceApi from '@/api/superadmin/Resource';
+import BaseCrudTable from '@/components/common/CrudTable/BaseCrudTable.vue';
 
 import { RESOURCE_TABLE_HEADER_TEXT } from '@/conf/superadmin/Resource';
 
-import { CrudTableComponent } from '@/utils/crudTable';
-import * as Message from '@/utils/message';
+import * as ResourceApi from '@/api/superadmin/Resource';
+import { ICrudTableApi } from '@/api/admin/crudTable';
+
+class Api implements ICrudTableApi {
+    $list = ResourceApi.$list;
+    $delete = ResourceApi.$delete;
+    $add = ResourceApi.$add;
+    $edit = ResourceApi.$edit;
+    $detail = ResourceApi.$detail;
+}
 
 @Component({
     components: {
-        CrudServerDataTable,
+        BaseCrudTable,
         ResourceEditor
     },
     inheritAttrs: false
 })
-class ResourceTable extends Vue {
-    @Ref('resourceTable') readonly resourceTable!: CrudTableComponent;
-
-    serverData = new TableDataFromServer();
-    loading = false;
+class CrudTable extends Vue {
     headersConf = [
         RESOURCE_TABLE_HEADER_TEXT.name,
         RESOURCE_TABLE_HEADER_TEXT.action,
         RESOURCE_TABLE_HEADER_TEXT.url,
         RESOURCE_TABLE_HEADER_TEXT.description
     ];
-    editorVisible = false;
-    itemTodo = new ResourceApi.Resource();
-
-    async loadPage(params: IPaginationParams) {
-        this.resourceTable.loadingOverlay();
-        try {
-            this.serverData = await ResourceApi.$list(params);
-        } catch (e) {
-            Message.axiosError(e);
-        }
-        this.resourceTable.unOverlay();
-    }
-
-    beforeNew() {
-        this.itemTodo = new ResourceApi.Resource();
-        this.editorVisible = true;
-    }
-    beforeEdit(item) {
-        this.itemTodo = item;
-        this.editorVisible = true;
-    }
-
-    async onDelete(item) {
-        this.resourceTable.submittingOverlay();
-        try {
-            await ResourceApi.$delete(item);
-            Message.axiosSuccess();
-        } catch (e) {
-            Message.axiosError(e);
-        }
-        this.resourceTable.unOverlay();
-        this.resourceTable.resetPagination();
-    }
-
-    async onEdit(val: boolean | ResourceApi.Resource) {
-        this.editorVisible = false;
-
-        if (typeof val === 'boolean') return;
-
-        this.resourceTable.submittingOverlay();
-        try {
-            if (val.id !== -1) await ResourceApi.$edit(val);
-            else await ResourceApi.$add(val);
-            Message.axiosSuccess();
-        } catch (e) {
-            Message.axiosError(e);
-        }
-        this.resourceTable.unOverlay();
-        this.resourceTable.reloadPage();
-    }
+    api = new Api();
 
     onSelect(items) {
         this.$emit('input', items);
     }
 }
 
-export default ResourceTable;
+export default CrudTable;
 </script>
 
 <style>

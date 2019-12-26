@@ -1,6 +1,7 @@
 <template>
     <v-card>
         <v-data-table
+            :value="value"
             :items="serverData.results"
             :server-items-length="serverData.total"
             :headers="headers"
@@ -9,6 +10,7 @@
             :items-per-page="defaultItemsPerPage"
             :options.sync="pageOptions"
             class="elevation-1"
+            @input="onSelect"
         >
             <template v-slot:top>
                 <v-toolbar flat color="white">
@@ -25,6 +27,7 @@
                         v-if="searchAction"
                         v-model="searchOption"
                         class="flex-grow-1"
+                        @search="onSearch"
                     />
                 </v-toolbar>
             </template>
@@ -99,6 +102,7 @@ class BaseCrudTable extends Vue {
     @Prop({ type: Boolean, default: false }) readonly searchAction!: boolean;
     @Prop({ type: Array, required: true }) readonly headersConf!: any[];
     @Prop({ type: Object, required: false }) readonly crudApi!: ICrudTableApi;
+    @Prop({ type: Array }) readonly value!: any[];
 
     get actionColumnState() {
         return this.deleteAction || this.editAction;
@@ -224,6 +228,14 @@ class BaseCrudTable extends Vue {
 
         this.unOverlay();
         this.loadPage();
+    }
+
+    onSelect(items) {
+        this.$emit('input', items);
+    }
+
+    onSearch() {
+        this.resetPagination();
     }
 
     loadingOverlay() {

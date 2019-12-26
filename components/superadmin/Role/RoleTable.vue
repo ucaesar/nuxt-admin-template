@@ -1,120 +1,61 @@
 <template>
-    <div>
-        <crud-server-data-table
-            ref="roleTable"
-            :table-title="$t('superadmin.roleTable.tableTitle')"
-            :server-data="serverData"
-            :headers-conf="headersConf"
-            v-bind="$attrs"
-            @load-page="loadPage"
-            @new="beforeNew"
-            @delete="onDelete"
-            @edit="beforeEdit"
-            @input="onSelect"
-        />
-        <role-editor
-            :visible="editorVisible"
-            :item="itemTodo"
-            @close="onEdit"
-        />
-    </div>
+    <base-crud-table
+        :table-title="$t('superadmin.roleTable.tableTitle')"
+        v-bind="$attrs"
+        :headers-conf="headersConf"
+        :crud-api="api"
+        @input="onSelect"
+    >
+        <template v-slot:editor="{ visible, itemTodo, closeHandler }">
+            <role-editor
+                :visible="visible"
+                :item="itemTodo"
+                @close="closeHandler"
+            />
+        </template>
+    </base-crud-table>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref } from 'nuxt-property-decorator';
+import { Vue, Component, Prop } from 'nuxt-property-decorator';
 
 import RoleEditor from './RoleEditor.vue';
 
-import CrudServerDataTable from '@/components/common/Table/CRUDServerDataTable.vue';
+import BaseCrudTable from '@/components/common/CrudTable/BaseCrudTable.vue';
 
 import { ROLE_TABLE_HEADER_TEXT } from '@/conf/superadmin/Role';
 
-import { TableDataFromServer, IPaginationParams } from '@/api/admin/table';
 import * as RoleApi from '@/api/superadmin/Role';
+import { ICrudTableApi } from '@/api/admin/crudTable';
 
-import { CrudTableComponent } from '@/utils/crudTable';
-import * as Message from '@/utils/message';
+class Api implements ICrudTableApi {
+    $list = RoleApi.$list;
+    $delete = RoleApi.$delete;
+    $add = RoleApi.$add;
+    $edit = RoleApi.$edit;
+    $detail = RoleApi.$detail;
+}
 
 @Component({
     components: {
-        CrudServerDataTable,
+        BaseCrudTable,
         RoleEditor
     },
     inheritAttrs: false
 })
-class RoleTable extends Vue {
-    @Ref('roleTable') readonly roleTable!: CrudTableComponent;
-
-    serverData = new TableDataFromServer();
+class CrudTable extends Vue {
     headersConf = [
         ROLE_TABLE_HEADER_TEXT.roleName,
         ROLE_TABLE_HEADER_TEXT.description
     ];
-    editorVisible = false;
-    itemTodo = new RoleApi.Role();
-
-    async loadPage(params: IPaginationParams) {
-        this.roleTable.loadingOverlay();
-        try {
-            this.serverData = await RoleApi.$list(params);
-        } catch (e) {
-            Message.axiosError(e);
-        }
-        this.roleTable.unOverlay();
-    }
-
-    beforeNew() {
-        this.itemTodo = new RoleApi.Role();
-        this.editorVisible = true;
-    }
-    async beforeEdit(item) {
-        this.roleTable.loadingOverlay();
-
-        try {
-            this.itemTodo = await RoleApi.$detail(item);
-            this.editorVisible = true;
-        } catch (e) {
-            Message.axiosError(e);
-        }
-
-        this.roleTable.unOverlay();
-    }
-
-    async onDelete(item) {
-        this.roleTable.submittingOverlay();
-        try {
-            await RoleApi.$delete(item);
-            Message.axiosSuccess();
-        } catch (e) {
-            Message.axiosError(e);
-        }
-        this.roleTable.unOverlay();
-        this.roleTable.resetPagination();
-    }
-
-    async onEdit(val: boolean | RoleApi.Role) {
-        this.editorVisible = false;
-
-        if (typeof val === 'boolean') return;
-
-        this.roleTable.submittingOverlay();
-        try {
-            if (val.id !== -1) await RoleApi.$edit(val);
-            else await RoleApi.$add(val);
-            Message.axiosSuccess();
-        } catch (e) {
-            Message.axiosError(e);
-        }
-        this.roleTable.unOverlay();
-        this.roleTable.reloadPage();
-    }
+    api = new Api();
 
     onSelect(items) {
         this.$emit('input', items);
     }
 }
 
-export default RoleTable;
+export default CrudTable;
 </script>
 
 <style>

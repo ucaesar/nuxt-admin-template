@@ -1,117 +1,61 @@
 <template>
-    <div>
-        <crud-server-data-table
-            ref="resourceGroupTable"
-            :table-title="$t('superadmin.resourceGroupTable.tableTitle')"
-            :server-data="serverData"
-            :headers-conf="headersConf"
-            v-bind="$attrs"
-            @load-page="loadPage"
-            @new="beforeNew"
-            @delete="onDelete"
-            @edit="beforeEdit"
-            @input="onSelect"
-        />
-        <resource-group-editor
-            :visible="editorVisible"
-            :item="itemTodo"
-            @close="onEdit"
-        />
-    </div>
+    <base-crud-table
+        :table-title="$t('superadmin.resourceGroupTable.tableTitle')"
+        v-bind="$attrs"
+        :headers-conf="headersConf"
+        :crud-api="api"
+        @input="onSelect"
+    >
+        <template v-slot:editor="{ visible, itemTodo, closeHandler }">
+            <resource-group-editor
+                :visible="visible"
+                :item="itemTodo"
+                @close="closeHandler"
+            />
+        </template>
+    </base-crud-table>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Ref } from 'nuxt-property-decorator';
+import { Vue, Component, Prop } from 'nuxt-property-decorator';
 
 import ResourceGroupEditor from './ResourceGroupEditor.vue';
 
-import CrudServerDataTable from '@/components/common/Table/CRUDServerDataTable.vue';
-
-import { TableDataFromServer, IPaginationParams } from '@/api/admin/table';
-import * as ResourceGroupApi from '@/api/superadmin/ResourceGroup';
+import BaseCrudTable from '@/components/common/CrudTable/BaseCrudTable.vue';
 
 import { RESOURCEGROUP_TABLE_HEADER_TEXT } from '@/conf/superadmin/ResourceGroup';
 
-import { CrudTableComponent } from '@/utils/crudTable';
-import * as Message from '@/utils/message';
+import * as ResourceGroupApi from '@/api/superadmin/ResourceGroup';
+import { ICrudTableApi } from '@/api/admin/crudTable';
+
+class Api implements ICrudTableApi {
+    $list = ResourceGroupApi.$list;
+    $delete = ResourceGroupApi.$delete;
+    $add = ResourceGroupApi.$add;
+    $edit = ResourceGroupApi.$edit;
+    $detail = ResourceGroupApi.$detail;
+}
 
 @Component({
     components: {
-        CrudServerDataTable,
+        BaseCrudTable,
         ResourceGroupEditor
     },
     inheritAttrs: false
 })
-class ResourceGroupTable extends Vue {
-    @Ref('resourceGroupTable') readonly resourceGroupTable!: CrudTableComponent;
-
-    serverData = new TableDataFromServer();
+class CrudTable extends Vue {
     headersConf = [
         RESOURCEGROUP_TABLE_HEADER_TEXT.groupname,
         RESOURCEGROUP_TABLE_HEADER_TEXT.description
     ];
-    editorVisible = false;
-    itemTodo = new ResourceGroupApi.ResourceGroup();
-
-    async loadPage(params: IPaginationParams) {
-        this.resourceGroupTable.loadingOverlay();
-        try {
-            this.serverData = await ResourceGroupApi.$list(params);
-        } catch (e) {
-            Message.axiosError(e);
-        }
-        this.resourceGroupTable.unOverlay();
-    }
-
-    beforeNew() {
-        this.itemTodo = new ResourceGroupApi.ResourceGroup();
-        this.editorVisible = true;
-    }
-    async beforeEdit(item) {
-        this.resourceGroupTable.loadingOverlay();
-
-        try {
-            this.itemTodo = await ResourceGroupApi.$detail(item);
-            this.editorVisible = true;
-        } catch (e) {
-            Message.axiosError(e);
-        }
-        this.resourceGroupTable.unOverlay();
-    }
-
-    async onDelete(item) {
-        this.resourceGroupTable.submittingOverlay();
-        try {
-            await ResourceGroupApi.$delete(item);
-            Message.axiosSuccess();
-        } catch (e) {
-            Message.axiosError(e);
-        }
-        this.resourceGroupTable.unOverlay();
-        this.resourceGroupTable.resetPagination();
-    }
-    async onEdit(val: boolean | ResourceGroupApi.IResourceGroup) {
-        this.editorVisible = false;
-
-        if (typeof val === 'boolean') return;
-
-        this.resourceGroupTable.submittingOverlay();
-        try {
-            if (val.id !== -1) await ResourceGroupApi.$edit(val);
-            else await ResourceGroupApi.$add(val);
-            Message.axiosSuccess();
-        } catch (e) {
-            Message.axiosError(e);
-        }
-        this.resourceGroupTable.unOverlay();
-        this.resourceGroupTable.reloadPage();
-    }
+    api = new Api();
 
     onSelect(items) {
         this.$emit('input', items);
     }
 }
-export default ResourceGroupTable;
+
+export default CrudTable;
 </script>
 
 <style>
