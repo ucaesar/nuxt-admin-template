@@ -3,6 +3,7 @@ import SessionAuthenticator from '../../SessionAuthenticator';
 const userRouter = new Router();
 // const getEnforcer = require("../../lib/enforcer");
 import User from '../../model/User';
+import Role from '../../model/Role';
 import { Op, where } from 'sequelize';
 
 /**
@@ -44,6 +45,53 @@ userRouter.get('/', async (ctx, next) => {
         total
     };
     // await next();
+});
+
+/**
+ * 获取指定id的User
+ * url: /api/user/:id/ id为user的id
+ * method: GET
+ * return: { id, username,
+ *           roles: [ {id, rolename, description },  ... ]
+ *         }
+ */
+userRouter.get('/:id', async ctx => {
+    const id = ctx.params.id;
+    const user = await User.findOne({
+        attributes: ['id', 'username'],
+        where: {
+            id
+        }
+    });
+    if (user) {
+        const rolenames = await user.getRoles();
+        let roles: any[] = [];
+        let i;
+        for (i = 0; i < rolenames.length; i++) {
+            const role = await Role.findOne({
+                where: {
+                    rolename: rolenames[i]
+                }
+            });
+            if (role) {
+                roles.push({
+                    id: role.id,
+                    rolename: role.rolename,
+                    description: role.description
+                });
+            }
+        }
+        ctx.response.type = 'text/json';
+        ctx.response.status = 200;
+        ctx.response.body = {
+            id: user.id,
+            rolename: user.username,
+            roles: roles
+        };
+    } else {
+        ctx.response.status = 404;
+        ctx.response.body = 'not found';
+    }
 });
 
 // 返回当前用户能够访问的路径
