@@ -401,15 +401,12 @@ roleRouter.put('/:id', async ctx => {
                     id: groups[i].id
                 }
             });
-            // 添加group的时候, 该group下的所有resource必须在casbin表里和该新role挂钩
             if (group) {
                 let resources = await group.$get('resources');
                 resources = Array.isArray(resources) ? resources : [resources];
                 let j;
                 for (j = 0; j < resources.length; j++) {
                     const res = resources[j] as Resource;
-                    // 当前资源不在casbin表查出的该newrole的隐藏权限里时，
-                    // 再往casbin表里添加该role与resource的权限，防止casbin表过度膨胀
                     if (
                         _.findIndex(permissions, [
                             role.rolename,

@@ -3,13 +3,46 @@ import SessionAuthenticator from '../../SessionAuthenticator';
 const userRouter = new Router();
 // const getEnforcer = require("../../lib/enforcer");
 import User from '../../model/User';
+import { Op, where } from 'sequelize';
 
+/**
+ * 获取User列表
+ * url: /api/user
+ * method: GET
+ * params: GET查询参数, start为分页起始位置, count为一页的数量, filter为对name做的匹配关键词
+ */
 userRouter.get('/', async (ctx, next) => {
     // const e = await getEnforcer();
-    ctx.response.type = 'text/json';
-    ctx.response.body = await User.findAll({
-        attributes: ['id', 'username']
+    const start = ctx.request.query.start;
+    const num = ctx.request.query.count;
+    const total = await User.count();
+    const filter = ctx.request.query.filter ? ctx.request.query.filter : '';
+    let offset = 0;
+    let limit = total;
+    if (start && Number(start) >= 0 && Number(start) < total) {
+        offset = Number(start);
+    }
+    if (num && Number(num) > 0) {
+        if (offset + Number(num) <= total) {
+            limit = Number(num);
+        } else {
+            limit = total - offset;
+        }
+    }
+    const results = await User.findAll({
+        offset,
+        limit,
+        attributes: ['id', 'username'],
+        where: {
+            username: { [Op.like]: '%' + filter + '%' }
+        }
     });
+    ctx.response.type = 'text/json';
+    ctx.response.status = 200;
+    ctx.response.body = {
+        results,
+        total
+    };
     // await next();
 });
 
