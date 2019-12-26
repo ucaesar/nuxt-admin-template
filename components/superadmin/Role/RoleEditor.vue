@@ -119,7 +119,7 @@
 import { Vue, Component, Prop, Watch, Ref } from 'nuxt-property-decorator';
 import _ from 'lodash';
 
-import ChipInput from '@/components/common/Table/ChipInput.vue';
+import ChipInput from '@/components/common/CrudTable/ChipInput.vue';
 import ResourceGroupTable from '@/components/superadmin/ResourceGroup/ResourceGroupTable.vue';
 
 import { VForm, fieldRequired } from '@/utils/form';
