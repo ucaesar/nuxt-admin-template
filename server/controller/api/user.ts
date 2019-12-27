@@ -5,6 +5,7 @@ const userRouter = new Router();
 import User from '../../model/User';
 import Role from '../../model/Role';
 import { Op, where } from 'sequelize';
+import getEnforcer from '../../lib/enforcer';
 
 /**
  * 获取User列表
@@ -88,6 +89,40 @@ userRouter.get('/:id', async ctx => {
             rolename: user.username,
             roles: roles
         };
+    } else {
+        ctx.response.status = 404;
+        ctx.response.body = 'not found';
+    }
+});
+
+/**
+ * 编辑指定id的User,就是编辑User的Roles
+ * url: /api/user/:id/ id为user的id
+ * method: PUT
+ * params: { id?(可以不设置, 以url里的id为准),
+ *           roles: [ { id: 1 }, { id: 2 }, ... ]
+ *         }
+ */
+userRouter.put('/:id', async ctx => {
+    const id = ctx.params.id;
+    const roles = (ctx.req as any).body.roles;
+    const user = await User.findOne({
+        attributes: ['id', 'username'],
+        where: {
+            id
+        }
+    });
+    if (user) {
+        const e = await getEnforcer();
+        await e.deleteRolesForUser(user.username);
+        let i;
+        for (i = 0; i < roles.length; i++) {
+            const rid = roles[i].id;
+            const r = await Role.findOne({ where: { id: rid } });
+            if (r) {
+                await e.addRoleForUser(user.username, r.rolename);
+            }
+        }
     } else {
         ctx.response.status = 404;
         ctx.response.body = 'not found';
