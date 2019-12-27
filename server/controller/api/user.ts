@@ -151,8 +151,12 @@ userRouter.put('/:id', async ctx => {
     });
     if (user) {
         const e = await getEnforcer();
-        await e.deleteRolesForUser(user.username);
+        // await e.deleteRolesForUser(user.username);
+        const oldroles = await e.getRolesForUser(user.username);
         let i;
+        for (i = 0; i < oldroles.length; i++) {
+            await e.removeGroupingPolicy(user.username, oldroles[i]);
+        }
         for (i = 0; i < roles.length; i++) {
             const rid = roles[i].id;
             const r = await Role.findOne({ where: { id: rid } });
