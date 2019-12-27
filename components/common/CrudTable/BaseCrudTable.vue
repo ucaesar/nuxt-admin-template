@@ -186,12 +186,12 @@ class BaseCrudTable extends Vue {
         try {
             await this.crudApi.$add(item);
             Message.axiosSuccess();
+            this.loadPage();
         } catch (e) {
             Message.axiosError(e);
+        } finally {
+            this.unOverlay();
         }
-
-        this.unOverlay();
-        this.loadPage();
     }
 
     beforeDelete(item) {
@@ -208,12 +208,13 @@ class BaseCrudTable extends Vue {
         try {
             await this.crudApi.$delete(this.itemTodo);
             Message.axiosSuccess();
+
+            this.resetPagination();
         } catch (e) {
             Message.axiosError(e);
+        } finally {
+            this.unOverlay();
         }
-
-        this.unOverlay();
-        this.resetPagination();
     }
 
     async onEdit(item) {
@@ -222,12 +223,12 @@ class BaseCrudTable extends Vue {
         try {
             await this.crudApi.$edit(item);
             Message.axiosSuccess();
+            this.loadPage();
         } catch (e) {
             Message.axiosError(e);
+        } finally {
+            this.unOverlay();
         }
-
-        this.unOverlay();
-        this.loadPage();
     }
 
     onSelect(items) {
