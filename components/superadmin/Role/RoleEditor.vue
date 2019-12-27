@@ -121,6 +121,7 @@ import _ from 'lodash';
 
 import ChipInput from '@/components/common/CrudTable/ChipInput.vue';
 import ResourceGroupTable from '@/components/superadmin/ResourceGroup/ResourceGroupTable.vue';
+import RoleTable from '@/components/superadmin/Role/RoleTable.vue';
 
 import { VForm, fieldRequired } from '@/utils/form';
 
@@ -128,7 +129,7 @@ import { Role } from '@/api/superadmin/Role';
 
 @Component({
     components: {
-        RoleTable: () => import('./RoleTable.vue'),
+        RoleTable,
         ResourceGroupTable,
         ChipInput
     }

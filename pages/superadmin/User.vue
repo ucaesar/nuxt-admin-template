@@ -1,13 +1,19 @@
 <template>
-    <v-container></v-container>
+    <v-container>
+        <user-table edit-action search-action />
+    </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
 
+import UserTable from '@/components/superadmin/User/UserTable.vue';
+
 @Component({
     layout: 'admin',
-    components: {}
+    components: {
+        UserTable
+    }
 })
 class UserManager extends Vue {}
 

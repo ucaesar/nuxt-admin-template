@@ -94,7 +94,7 @@ import { IResource } from '@/api/superadmin/Resource';
 })
 class ResourceGroupEditor extends Vue {
     @Prop({ type: Boolean, required: true }) readonly visible!: boolean;
-    @Prop({ required: true }) readonly item!: ResourceGroup;
+    @Prop({ required: true }) readonly item!: ResourceGroup | undefined;
 
     @Ref('resourceGroupForm') readonly form!: VForm;
 
