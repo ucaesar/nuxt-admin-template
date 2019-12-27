@@ -42,7 +42,8 @@ export default {
             '/superadmin': '超级管理员',
             '/superadmin/resource': '资源管理',
             '/superadmin/resourcegroup': '资源组管理',
-            '/superadmin/role': '角色管理'
+            '/superadmin/role': '角色管理',
+            '/superadmin/user': '用户管理'
         }
     },
 
@@ -91,6 +92,13 @@ export default {
             urlHeaderText: '地址',
             descriptionHeaderText: '描述',
             editorTitle: '编辑资源'
+        },
+        userTable: {
+            tableTitle: '用户列表',
+            usernameHeaderText: '名称',
+            editorTitle: '编辑用户',
+            roleInputLabel: '所属角色',
+            roleInputHint: '从列表中勾选角色'
         }
     }
 };

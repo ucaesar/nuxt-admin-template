@@ -42,7 +42,8 @@ export default {
             '/superadmin': 'Super Admin',
             '/superadmin/resourcegroup': 'Resource Group Manager',
             '/superadmin/resource': 'Resource Manager',
-            '/superadmin/role': 'Role Manager'
+            '/superadmin/role': 'Role Manager',
+            '/superadmin/user': 'User Manager'
         }
     },
 
@@ -91,6 +92,13 @@ export default {
             urlHeaderText: 'Url',
             descriptionHeaderText: 'Description',
             editorTitle: 'Edit Resource'
+        },
+        userTable: {
+            tableTitle: 'Users',
+            usernameHeaderText: 'Username',
+            editorTitle: 'Edit User',
+            roleInputLabel: 'Roles',
+            roleInputHint: 'Select roles from list below'
         }
     }
 };

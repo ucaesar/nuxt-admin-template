@@ -1,4 +1,4 @@
-import { ITableDataFromServer, IPaginationParams } from '@/api/admin/table';
+import { ITableDataFromServer, IPaginationParams } from '@/api/admin/crudTable';
 import { getNuxtAxiosInstance } from '@/utils/NuxtOptions';
 
 export interface IResource {

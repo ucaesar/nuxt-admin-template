@@ -2,7 +2,7 @@ import { getNuxtAxiosInstance } from '@/utils/NuxtOptions';
 
 import { IResource } from './Resource';
 
-import { ITableDataFromServer, IPaginationParams } from '@/api/admin/table';
+import { ITableDataFromServer, IPaginationParams } from '@/api/admin/crudTable';
 
 export interface IResourceGroup {
     id: number;
