@@ -160,6 +160,8 @@ userRouter.put('/:id', async ctx => {
                 await e.addRoleForUser(user.username, r.rolename);
             }
         }
+        ctx.response.status = 200;
+        ctx.response.body = 'edit success';
     } else {
         ctx.response.status = 404;
         ctx.response.body = 'not found';
