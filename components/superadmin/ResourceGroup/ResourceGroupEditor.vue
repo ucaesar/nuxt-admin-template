@@ -76,7 +76,7 @@ import { Component, Vue, Prop, Watch, Ref } from 'nuxt-property-decorator';
 import _ from 'lodash';
 
 import ResourceTable from '@/components/superadmin/Resource/ResourceTable.vue';
-import ChipInput from '@/components/common/Table/ChipInput.vue';
+import ChipInput from '@/components/common/CrudTable/ChipInput.vue';
 
 import {
     IResourceGroup,
