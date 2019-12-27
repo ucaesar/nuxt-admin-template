@@ -1,6 +1,6 @@
 import { getNuxtAxiosInstance } from '@/utils/NuxtOptions';
 
-import { ITableDataFromServer, IPaginationParams } from '@/api/admin/table';
+import { ITableDataFromServer, IPaginationParams } from '@/api/admin/crudTable';
 import { IResourceGroup } from './ResourceGroup';
 
 export interface IRole {

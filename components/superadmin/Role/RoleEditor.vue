@@ -135,7 +135,7 @@ import { Role } from '@/api/superadmin/Role';
 })
 class RoleEditor extends Vue {
     @Prop({ type: Boolean, required: true }) readonly visible!: boolean;
-    @Prop({ type: Object, required: true }) readonly item!: Role;
+    @Prop({ required: true }) readonly item!: Role | undefined;
 
     @Ref('roleForm') readonly form!: VForm;
 

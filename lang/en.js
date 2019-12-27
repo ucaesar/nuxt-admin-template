@@ -42,7 +42,8 @@ export default {
             '/superadmin': 'Super Admin',
             '/superadmin/resourcegroup': 'Resource Group Manager',
             '/superadmin/resource': 'Resource Manager',
-            '/superadmin/role': 'Role Manager'
+            '/superadmin/role': 'Role Manager',
+            '/superadmin/user': 'User Manager'
         }
     },
 

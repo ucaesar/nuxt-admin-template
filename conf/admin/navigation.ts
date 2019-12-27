@@ -9,12 +9,7 @@ const navConf: Navigation[] = [
     {
         superadmin: {
             icon: 'mdi-home',
-            sub: ['resource','resourcegroup', 'role']
-        }
-    },
-    {
-        superadmin: {
-            icon: 'mdi-lock'
+            sub: ['resource','resourcegroup', 'role', 'user']
         }
     }
 ];

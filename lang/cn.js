@@ -42,7 +42,8 @@ export default {
             '/superadmin': '超级管理员',
             '/superadmin/resource': '资源管理',
             '/superadmin/resourcegroup': '资源组管理',
-            '/superadmin/role': '角色管理'
+            '/superadmin/role': '角色管理',
+            '/superadmin/user': '用户管理'
         }
     },
 
