@@ -209,7 +209,7 @@ class BaseCrudTable extends Vue {
             await this.crudApi.$delete(this.itemTodo);
             Message.axiosSuccess();
 
-            this.resetPagination();
+            this.loadFirstPage();
         } catch (e) {
             Message.axiosError(e);
         } finally {
@@ -236,7 +236,7 @@ class BaseCrudTable extends Vue {
     }
 
     onSearch() {
-        this.resetPagination();
+        this.loadFirstPage();
     }
 
     loadingOverlay() {
@@ -257,7 +257,7 @@ class BaseCrudTable extends Vue {
         this.loading = false;
     }
 
-    resetPagination() {
+    loadFirstPage() {
         this.pageOptions = Object.assign(_.cloneDeep(this.pageOptions), {
             page: 1
         });
@@ -270,6 +270,13 @@ class BaseCrudTable extends Vue {
 
         if (typeof this.itemTodo === 'undefined') this.onNew(val);
         else this.onEdit(val);
+    }
+
+    reset() {
+        this.searchOption = '';
+        this.pageOptions = Object.assign(_.cloneDeep(this.pageOptions), {
+            page: 1
+        });
     }
 }
 

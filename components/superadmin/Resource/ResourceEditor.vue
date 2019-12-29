@@ -10,18 +10,19 @@
                     ><v-row>
                         <v-col cols="12" md="4"
                             ><v-text-field
-                                v-model="clonedItem.name"
+                                :value="clonedItem.name"
                                 :rules="[rules.fieldRequired]"
                                 :label="
                                     $t(
                                         'superadmin.resourceTable.nameHeaderText'
                                     )
                                 "
+                                @input="val => onUpdateItem('name', val)"
                             ></v-text-field
                         ></v-col>
                         <v-col cols="12" md="4">
                             <v-select
-                                v-model="clonedItem.action"
+                                :value="clonedItem.action"
                                 :items="actionItems"
                                 :rules="[rules.fieldRequired]"
                                 :label="
@@ -29,26 +30,29 @@
                                         'superadmin.resourceTable.actionHeaderText'
                                     )
                                 "
+                                @input="val => onUpdateItem('action', val)"
                             ></v-select>
                         </v-col>
                         <v-col cols="12" md="4"
                             ><v-text-field
-                                v-model="clonedItem.url"
+                                :value="clonedItem.url"
                                 :rules="[rules.fieldRequired]"
                                 :label="
                                     $t('superadmin.resourceTable.urlHeaderText')
                                 "
+                                @input="val => onUpdateItem('url', val)"
                             ></v-text-field
                         ></v-col>
                         <v-col cols="12">
                             <v-text-field
-                                v-model="clonedItem.description"
+                                :value="clonedItem.description"
                                 :rules="[rules.fieldRequired]"
                                 :label="
                                     $t(
                                         'superadmin.resourceTable.descriptionHeaderText'
                                     )
                                 "
+                                @input="val => onUpdateItem('description', val)"
                             ></v-text-field></v-col></v-row></v-form
             ></v-card-text>
             <v-divider></v-divider>
@@ -69,25 +73,21 @@
 import { Component, Vue, Prop, Watch, Ref } from 'nuxt-property-decorator';
 import _ from 'lodash';
 
+import BaseEditorDialog from '@/components/common/CrudTable/BaseEditorDialog.vue';
+
 import { IResource, Resource } from '@/api/superadmin/Resource';
 import { VForm, fieldRequired } from '@/utils/form';
 
 @Component
-class ResourecEditor extends Vue {
-    @Prop({ type: Boolean, required: true }) readonly visible!: boolean;
-    @Prop({ required: true }) readonly item!: IResource | undefined;
+class ResourecEditor extends BaseEditorDialog {
     @Ref('resourceForm') readonly form!: VForm;
 
-    @Watch('visible')
-    onOpenDialog(val: boolean, oldVal: boolean) {
-        if (!oldVal && val) {
-            if (typeof this.item === 'undefined')
-                this.clonedItem = new Resource();
-            else this.clonedItem = _.cloneDeep(this.item);
-            if (this.form) {
-                this.form.resetValidation();
-            }
-        }
+    rules = { fieldRequired };
+
+    actionItems = ['GET', 'POST', 'DELETE', 'PUT'];
+
+    newItemFactory() {
+        return new Resource();
     }
 
     onOK() {
@@ -96,14 +96,11 @@ class ResourecEditor extends Vue {
         }
     }
 
-    onCancel() {
-        this.$emit('close', false);
+    reset() {
+        if (this.form) {
+            this.form.resetValidation();
+        }
     }
-
-    rules = { fieldRequired };
-    clonedItem = new Resource();
-
-    actionItems = ['GET', 'POST', 'DELETE', 'PUT'];
 }
 export default ResourecEditor;
 </script>

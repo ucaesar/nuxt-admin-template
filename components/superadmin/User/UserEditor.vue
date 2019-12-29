@@ -19,16 +19,17 @@
                                 "
                                 field="rolename"
                                 item-key="id"
-                                @input="onChangeRoles"
+                                @input="val => onUpdateItem('roles', val)"
                             />
                         </v-col>
                     </v-row>
                 </v-form>
                 <role-table
+                    ref="roleTable"
                     :value="clonedItem.roles"
                     select-action
                     search-action
-                    @input="onChangeRoles"
+                    @input="val => onUpdateItem('roles', val)"
                 />
             </v-card-text>
             <v-divider></v-divider>
@@ -51,8 +52,10 @@ import _ from 'lodash';
 
 import ChipInput from '@/components/common/CrudTable/ChipInput.vue';
 import RoleTable from '@/components/superadmin/Role/RoleTable.vue';
+import BaseEditorDialog from '@/components/common/CrudTable/BaseEditorDialog.vue';
 
 import { VForm, fieldRequired } from '@/utils/form';
+import { CrudTableComponent } from '@/utils/crudTable';
 
 import { User } from '@/api/superadmin/User';
 
@@ -62,25 +65,15 @@ import { User } from '@/api/superadmin/User';
         ChipInput
     }
 })
-class UserEditor extends Vue {
-    @Prop({ type: Boolean, required: true }) readonly visible!: boolean;
-    @Prop({ required: true }) readonly item!: User | undefined;
-
+class UserEditor extends BaseEditorDialog {
     @Ref('userForm') readonly form!: VForm;
-
-    @Watch('visible')
-    onOpenDialog(val: boolean, oldVal: boolean) {
-        if (!oldVal && val) {
-            if (typeof this.item === 'undefined') this.clonedItem = new User();
-            else this.clonedItem = _.cloneDeep(this.item);
-            if (this.form) {
-                this.form.resetValidation();
-            }
-        }
-    }
+    @Ref('roleTable') readonly roleTable!: CrudTableComponent;
 
     rules = { fieldRequired };
-    clonedItem = new User();
+
+    newItemFactory() {
+        return new User();
+    }
 
     onOK() {
         if (this.form.validate()) {
@@ -88,12 +81,11 @@ class UserEditor extends Vue {
         }
     }
 
-    onCancel() {
-        this.$emit('close', false);
-    }
-
-    onChangeRoles(items) {
-        this.clonedItem.roles = items;
+    reset() {
+        if (this.form) {
+            this.form.resetValidation();
+            this.roleTable.reset();
+        }
     }
 }
 

@@ -10,24 +10,26 @@
                     <v-row>
                         <v-col cols="12" md="4">
                             <v-text-field
-                                v-model="clonedItem.rolename"
+                                :value="clonedItem.rolename"
                                 :rules="[rules.fieldRequired]"
                                 :label="
                                     $t(
                                         'superadmin.roleTable.roleNameHeaderText'
                                     )
                                 "
+                                @input="val => onUpdateItem('rolename', val)"
                             ></v-text-field>
                         </v-col>
                         <v-col cols="12" md="8">
                             <v-text-field
-                                v-model="clonedItem.description"
+                                :value="clonedItem.description"
                                 :rules="[rules.fieldRequired]"
                                 :label="
                                     $t(
                                         'superadmin.roleTable.descriptionHeaderText'
                                     )
                                 "
+                                @input="val => onUpdateItem('description', val)"
                             ></v-text-field>
                         </v-col>
                     </v-row>
@@ -55,15 +57,16 @@
                                     "
                                     field="rolename"
                                     item-key="id"
-                                    @input="onChangeParents"
+                                    @input="val => onUpdateItem('parents', val)"
                                 />
                             </v-col>
                             <v-col coles="12">
                                 <role-table
+                                    ref="roleTable"
                                     :value="clonedItem.parents"
                                     select-action
                                     search-action
-                                    @input="onChangeParents"
+                                    @input="val => onUpdateItem('parents', val)"
                                 />
                             </v-col>
                         </v-row>
@@ -86,15 +89,16 @@
                                     "
                                     field="groupname"
                                     item-key="id"
-                                    @input="onChangeGroups"
+                                    @input="val => onUpdateItem('groups', val)"
                                 />
                             </v-col>
                             <v-col cols="12">
                                 <resource-group-table
+                                    ref="resourceGroupTable"
                                     :value="clonedItem.groups"
                                     select-action
                                     search-action
-                                    @input="onChangeGroups"
+                                    @input="val => onUpdateItem('groups', val)"
                                 />
                             </v-col>
                         </v-row>
@@ -119,12 +123,14 @@
 import { Vue, Component, Prop, Watch, Ref } from 'nuxt-property-decorator';
 import _ from 'lodash';
 
+import BaseEditorDialog from '@/components/common/CrudTable/BaseEditorDialog.vue';
 import ChipInput from '@/components/common/CrudTable/ChipInput.vue';
 import ResourceGroupTable from '@/components/superadmin/ResourceGroup/ResourceGroupTable.vue';
 
 import { VForm, fieldRequired } from '@/utils/form';
 
 import { Role } from '@/api/superadmin/Role';
+import { CrudTableComponent } from '@/utils/crudTable';
 
 @Component({
     components: {
@@ -133,25 +139,16 @@ import { Role } from '@/api/superadmin/Role';
         ChipInput
     }
 })
-class RoleEditor extends Vue {
-    @Prop({ type: Boolean, required: true }) readonly visible!: boolean;
-    @Prop({ required: true }) readonly item!: Role | undefined;
-
+class RoleEditor extends BaseEditorDialog {
     @Ref('roleForm') readonly form!: VForm;
-
-    @Watch('visible')
-    onOpenDialog(val: boolean, oldVal: boolean) {
-        if (!oldVal && val) {
-            if (typeof this.item === 'undefined') this.clonedItem = new Role();
-            else this.clonedItem = _.cloneDeep(this.item);
-            if (this.form) {
-                this.form.resetValidation();
-            }
-        }
-    }
+    @Ref('roleTable') readonly roleTable!: CrudTableComponent;
+    @Ref('resourceGroupTable') readonly resourceGroupTable!: CrudTableComponent;
 
     rules = { fieldRequired };
-    clonedItem = new Role();
+
+    newItemFactory() {
+        return new Role();
+    }
 
     onOK() {
         if (this.form.validate()) {
@@ -159,16 +156,16 @@ class RoleEditor extends Vue {
         }
     }
 
-    onCancel() {
-        this.$emit('close', false);
-    }
-
-    onChangeParents(items) {
-        this.clonedItem.parents = items;
-    }
-
-    onChangeGroups(items) {
-        this.clonedItem.groups = items;
+    reset() {
+        if (this.form) {
+            this.form.resetValidation();
+        }
+        if (this.roleTable) {
+            this.roleTable.reset();
+        }
+        if (this.resourceGroupTable) {
+            this.resourceGroupTable.reset();
+        }
     }
 }
 

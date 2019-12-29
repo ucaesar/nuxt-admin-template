@@ -10,24 +10,26 @@
                     <v-row>
                         <v-col cols="12" md="4">
                             <v-text-field
-                                v-model="clonedItem.groupname"
+                                :value="clonedItem.groupname"
                                 :rules="[rules.fieldRequired]"
                                 :label="
                                     $t(
                                         'superadmin.resourceGroupTable.groupNameHeaderText'
                                     )
                                 "
+                                @input="val => onUpdateItem('groupname', val)"
                             ></v-text-field>
                         </v-col>
                         <v-col cols="12" md="8">
                             <v-text-field
-                                v-model="clonedItem.description"
+                                :value="clonedItem.description"
                                 :rules="[rules.fieldRequired]"
                                 :label="
                                     $t(
                                         'superadmin.resourceGroupTable.descriptionHeaderText'
                                     )
                                 "
+                                @input="val => onUpdateItem('description', val)"
                             ></v-text-field>
                         </v-col>
                         <v-col cols="12">
@@ -45,16 +47,17 @@
                                 "
                                 field="name"
                                 item-key="id"
-                                @input="onChangeResources"
+                                @input="val => onUpdateItem('resources', val)"
                             />
                         </v-col>
                     </v-row>
                 </v-form>
                 <resource-table
+                    ref="resourceTable"
                     :value="clonedItem.resources"
                     select-action
                     search-action
-                    @input="onChangeResources"
+                    @input="val => onUpdateItem('resources', val)"
                 />
             </v-card-text>
             <v-divider></v-divider>
@@ -75,15 +78,14 @@
 import { Component, Vue, Prop, Watch, Ref } from 'nuxt-property-decorator';
 import _ from 'lodash';
 
+import BaseEditorDialog from '@/components/common/CrudTable/BaseEditorDialog.vue';
+
 import ResourceTable from '@/components/superadmin/Resource/ResourceTable.vue';
 import ChipInput from '@/components/common/CrudTable/ChipInput.vue';
 
-import {
-    IResourceGroup,
-    ResourceGroup,
-    $detail
-} from '@/api/superadmin/ResourceGroup';
+import { IResourceGroup, ResourceGroup } from '@/api/superadmin/ResourceGroup';
 import { VForm, fieldRequired } from '@/utils/form';
+import { CrudTableComponent } from '@/utils/crudTable';
 import { IResource } from '@/api/superadmin/Resource';
 
 @Component({
@@ -92,26 +94,15 @@ import { IResource } from '@/api/superadmin/Resource';
         ChipInput
     }
 })
-class ResourceGroupEditor extends Vue {
-    @Prop({ type: Boolean, required: true }) readonly visible!: boolean;
-    @Prop({ required: true }) readonly item!: ResourceGroup | undefined;
-
+class ResourceGroupEditor extends BaseEditorDialog {
     @Ref('resourceGroupForm') readonly form!: VForm;
-
-    @Watch('visible')
-    onOpenDialog(val: boolean, oldVal: boolean) {
-        if (!oldVal && val) {
-            if (typeof this.item === 'undefined')
-                this.clonedItem = new ResourceGroup();
-            else this.clonedItem = _.cloneDeep(this.item);
-            if (this.form) {
-                this.form.resetValidation();
-            }
-        }
-    }
+    @Ref('resourceTable') readonly resourceTable!: CrudTableComponent;
 
     rules = { fieldRequired };
-    clonedItem = new ResourceGroup();
+
+    newItemFactory() {
+        return new ResourceGroup();
+    }
 
     onOK() {
         if (this.form.validate()) {
@@ -119,12 +110,11 @@ class ResourceGroupEditor extends Vue {
         }
     }
 
-    onCancel() {
-        this.$emit('close', false);
-    }
-
-    onChangeResources(items) {
-        this.clonedItem.resources = items;
+    reset() {
+        if (this.form) {
+            this.form.resetValidation();
+            this.resourceTable.reset();
+        }
     }
 }
 export default ResourceGroupEditor;
