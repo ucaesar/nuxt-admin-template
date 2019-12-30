@@ -5,9 +5,10 @@
             <v-col cols="12">
                 <v-card class="elevation-12">
                     <v-toolbar color="primary" dark flat>
-                        <v-toolbar-title>{{
-                            $t('login.toolbarText')
-                        }}</v-toolbar-title>
+                        <v-btn icon><v-icon>mdi-account</v-icon></v-btn>
+                        <v-toolbar-title>
+                            {{ $t('login.toolbarText') }}
+                        </v-toolbar-title>
                     </v-toolbar>
                     <v-card-text>
                         <v-form ref="loginForm" v-model="valid">
