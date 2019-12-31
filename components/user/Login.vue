@@ -48,7 +48,10 @@
 
 <script lang="ts">
 import { Component, Vue, Ref } from 'nuxt-property-decorator';
-import { VForm, fieldRequired } from '../utils/form';
+
+import { VForm, fieldRequired } from '@/utils/form';
+
+import * as UserApi from '@/api/user/user';
 
 interface ILoginForm {
     username: '';
@@ -79,9 +82,8 @@ class Login extends Vue {
             this.clearErrorMessages();
             this.loading = true;
             try {
-                const data = (await this.$axios.$post(this.url, this.loginForm))
-                    .redirect;
-                window.location.href = data;
+                const redirect = await UserApi.login(this.loginForm);
+                window.location.href = redirect;
             } catch (error) {
                 const code = parseInt(error.response && error.response.status);
                 if (code === 401) {

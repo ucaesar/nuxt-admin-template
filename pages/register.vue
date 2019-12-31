@@ -1,21 +1,21 @@
 <template>
-    <Login />
+    <Register />
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator';
 
-import Login from '@/components/user/Login.vue';
+import Register from '@/components/user/Register.vue';
 
 @Component({
     layout: 'login-register',
     components: {
-        Login
+        Register
     }
 })
-class LoginPage extends Vue {}
+class RegisterPage extends Vue {}
 
-export default LoginPage;
+export default RegisterPage;
 </script>
 
 <style></style>

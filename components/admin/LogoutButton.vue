@@ -7,6 +7,8 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
 
+import * as UserApi from '@/api/user/user';
+
 @Component
 class LogoutButton extends Vue {
     url = 'api/user/logout';
@@ -15,8 +17,8 @@ class LogoutButton extends Vue {
     async onLogout() {
         this.loading = true;
         try {
-            const data = (await this.$axios.$post(this.url)).redirect;
-            window.location.href = data;
+            const redirect = await UserApi.logout();
+            window.location.href = redirect;
         } catch (error) {}
         this.loading = false;
     }
