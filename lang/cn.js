@@ -57,6 +57,26 @@ export default {
         }
     },
 
+    register: {
+        toolbarText: '注册',
+        usernameLabel: '用户名',
+        passwordLabel: '',
+        passwordConfirmLabel: '',
+        emailLabel: '',
+        submitButtonText: '',
+        error: {
+            usernameTypeError: '',
+            usernameLengthError: '',
+            passwordTypeError: '',
+            passwordLengthError: '',
+            differentPasswordError: '',
+
+            existedEmail: '',
+            existedUsername: '',
+            incorrectPassword: ''
+        }
+    },
+
     formValidating: {
         error: {
             fieldRequired: '必填 *'

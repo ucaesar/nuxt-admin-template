@@ -30,7 +30,9 @@
 import { Vue, Component } from 'nuxt-property-decorator';
 
 @Component
-class Register extends Vue {}
+class Register extends Vue {
+    onSubmit() {}
+}
 
 export default Register;
 </script>

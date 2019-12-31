@@ -1,9 +1,7 @@
 import { $t } from '@/utils/NuxtOptions';
 import { Vue } from 'nuxt-property-decorator';
 
-type fieldValidator = (value: any) => boolean | string;
-
-export const fieldRequired: fieldValidator = value => {
+export const fieldRequired = (value: any) => {
     return !!value || $t('formValidating.error.fieldRequired');
 };
 
