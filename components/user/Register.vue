@@ -9,7 +9,9 @@
                             {{ $t('register.toolbarText') }}
                         </v-toolbar-title>
                     </v-toolbar>
-                    <v-card-text></v-card-text>
+                    <v-card-text>
+                        <v-form ref="registerForm" v-model="valid"></v-form>
+                    </v-card-text>
                     <v-card-actions>
                         <div class="flex-grow-1"></div>
                         <v-btn
@@ -27,10 +29,46 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'nuxt-property-decorator';
+import { Vue, Component, Ref } from 'nuxt-property-decorator';
+
+import { VForm, fieldRequired } from '@/utils/form';
+import * as validator from '@/utils/validator/register';
+
+class RegisterForm {
+    username: '';
+    password: '';
+    password2: '';
+    email: '';
+}
 
 @Component
 class Register extends Vue {
+    @Ref('registerForm') readonly form!: VForm;
+
+    registerForm = new RegisterForm();
+
+    valid = true;
+    loading = false;
+
+    rules = {
+        fieldRequired,
+        isEmail: value =>
+            validator.isEmail(value) ||
+            this.$t('register.error.incorrecteEailFormatt'),
+        usernameType: value =>
+            validator.usernameType(value) ||
+            this.$t('register.error.usernameType'),
+        usernameLength: value =>
+            validator.usernameLength(value) ||
+            this.$t('register.error.usernameLength'),
+        passwordType: value =>
+            validator.passwordType(value) ||
+            this.$t('register.error.passwordType'),
+        passwordLength: value =>
+            validator.passwordLength(value) ||
+            this.$t('register.error.passwordLength')
+    };
+
     onSubmit() {}
 }
 

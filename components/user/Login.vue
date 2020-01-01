@@ -53,7 +53,7 @@ import { VForm, fieldRequired } from '@/utils/form';
 
 import * as UserApi from '@/api/user/user';
 
-interface ILoginForm {
+class LoginForm {
     username: '';
     password: '';
 }
@@ -64,12 +64,8 @@ interface ILoginForm {
     }
 })
 class Login extends Vue {
-    loginForm: ILoginForm = {
-        username: '',
-        password: ''
-    };
+    loginForm = new LoginForm();
 
-    url = 'api/user/login';
     valid = true;
     loading = false;
     errorMessages = '';

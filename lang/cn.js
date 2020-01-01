@@ -65,11 +65,12 @@ export default {
         emailLabel: '',
         submitButtonText: '',
         error: {
-            usernameTypeError: '',
-            usernameLengthError: '',
-            passwordTypeError: '',
-            passwordLengthError: '',
-            differentPasswordError: '',
+            usernameType: '',
+            usernameLength: '',
+            passwordType: '',
+            passwordLength: '',
+            differentPassword: '',
+            incorrectEmailFormatt: '',
 
             existedEmail: '',
             existedUsername: '',
