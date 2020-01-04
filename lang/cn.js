@@ -60,20 +60,20 @@ export default {
     register: {
         toolbarText: '注册',
         usernameLabel: '用户名',
-        passwordLabel: '',
-        passwordConfirmLabel: '',
-        emailLabel: '',
-        submitButtonText: '',
+        passwordLabel: '密码',
+        passwordConfirmLabel: '再次输入密码',
+        emailLabel: '电子邮件',
+        submitButtonText: '现在注册！',
         error: {
-            usernameType: '',
-            usernameLength: '',
-            passwordType: '',
-            passwordLength: '',
-            differentPassword: '',
-            incorrectEmailFormatt: '',
+            usernameType: '用户名只能包含 a~z A~Z 0~9',
+            usernameLength: '用户名长度限制在5~20之间',
+            passwordType: '密码字符异常',
+            passwordLength: '密码长度限制在8~20之间',
+            differentPassword: '两次输入的密码需要一致',
+            incorrectEmailFormatt: '邮箱格式不正确',
 
-            existedEmail: '',
-            existedUsername: '',
+            existedEmail: '注册邮箱已存在，请更换',
+            existedUsername: '注册用户名已存在',
             incorrectPassword: ''
         }
     },

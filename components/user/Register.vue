@@ -10,7 +10,44 @@
                         </v-toolbar-title>
                     </v-toolbar>
                     <v-card-text>
-                        <v-form ref="registerForm" v-model="valid"></v-form>
+                        <v-form ref="registerForm" v-model="valid">
+                            <v-text-field
+                                v-model="registerForm.email"
+                                :rules="[rules.fieldRequired, rules.isEmail]"
+                                :label="$t('register.emailLabel')"
+                                prepend-icon="mdi-email"
+                            ></v-text-field>
+                            <v-text-field
+                                v-model="registerForm.username"
+                                :rules="[
+                                    rules.fieldRequired,
+                                    rules.usernameType,
+                                    rules.usernameLength
+                                ]"
+                                :label="$t('register.usernameLabel')"
+                                prepend-icon="mdi-account"
+                            ></v-text-field>
+                            <v-text-field
+                                v-model="registerForm.password"
+                                :rules="[
+                                    rules.fieldRequired,
+                                    rules.passwordType,
+                                    rules.passwordLength
+                                ]"
+                                :label="$t('register.passwordLabel')"
+                                prepend-icon="mdi-lock"
+                            ></v-text-field>
+                            <v-text-field
+                                v-model="registerForm.password2"
+                                :rules="[
+                                    rules.fieldRequired,
+                                    rules.passwordType,
+                                    rules.passwordLength
+                                ]"
+                                :label="$t('register.passwordConfirmLabel')"
+                                prepend-icon="mdi-lock"
+                            ></v-text-field>
+                        </v-form>
                     </v-card-text>
                     <v-card-actions>
                         <div class="flex-grow-1"></div>
@@ -33,12 +70,13 @@ import { Vue, Component, Ref } from 'nuxt-property-decorator';
 
 import { VForm, fieldRequired } from '@/utils/form';
 import * as validator from '@/utils/validator/register';
+import { $t } from '@/utils/NuxtOptions';
 
 class RegisterForm {
-    username: '';
-    password: '';
-    password2: '';
-    email: '';
+    username = '';
+    password = '';
+    password2 = '';
+    email = '';
 }
 
 @Component
@@ -54,19 +92,17 @@ class Register extends Vue {
         fieldRequired,
         isEmail: value =>
             validator.isEmail(value) ||
-            this.$t('register.error.incorrecteEailFormatt'),
+            $t('register.error.incorrectEmailFormatt'),
         usernameType: value =>
-            validator.usernameType(value) ||
-            this.$t('register.error.usernameType'),
+            validator.usernameType(value) || $t('register.error.usernameType'),
         usernameLength: value =>
             validator.usernameLength(value) ||
-            this.$t('register.error.usernameLength'),
+            $t('register.error.usernameLength'),
         passwordType: value =>
-            validator.passwordType(value) ||
-            this.$t('register.error.passwordType'),
+            validator.passwordType(value) || $t('register.error.passwordType'),
         passwordLength: value =>
             validator.passwordLength(value) ||
-            this.$t('register.error.passwordLength')
+            $t('register.error.passwordLength')
     };
 
     onSubmit() {}

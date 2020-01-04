@@ -57,6 +57,27 @@ export default {
         }
     },
 
+    register: {
+        toolbarText: 'Register',
+        usernameLabel: 'Username',
+        passwordLabel: 'Password',
+        passwordConfirmLabel: 'Confirm password',
+        emailLabel: 'Email',
+        submitButtonText: 'Register Now!',
+        error: {
+            usernameType: 'Contains only a~z A~Z 0~9',
+            usernameLength: 'Length between 5~20',
+            passwordType: 'Contains bad character',
+            passwordLength: 'Length between 8~20',
+            differentPassword: 'Should be the same',
+            incorrectEmailFormatt: "Check Email's format",
+
+            existedEmail: 'Registry Email has been existed',
+            existedUsername: 'Username has been existed',
+            incorrectPassword: ''
+        }
+    },
+
     formValidating: {
         error: {
             fieldRequired: 'Required *'

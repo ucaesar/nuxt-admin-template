@@ -54,8 +54,8 @@ import { VForm, fieldRequired } from '@/utils/form';
 import * as UserApi from '@/api/user/user';
 
 class LoginForm {
-    username: '';
-    password: '';
+    username = '';
+    password = '';
 }
 
 @Component({
