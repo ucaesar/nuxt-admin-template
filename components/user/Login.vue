@@ -16,6 +16,7 @@
                                 v-model="loginForm.username"
                                 :rules="[rules.fieldRequired]"
                                 :label="$t('login.usernameLabel')"
+                                :error="error"
                                 :error-messages="errorMessages"
                                 prepend-icon="mdi-account"
                                 @input="clearErrorMessages"
@@ -24,8 +25,11 @@
                                 v-model="loginForm.password"
                                 :rules="[rules.fieldRequired]"
                                 :label="$t('login.passwordLabel')"
+                                :error="error"
                                 :error-messages="errorMessages"
                                 prepend-icon="mdi-lock"
+                                type="password"
+                                autocomplete="new-password"
                                 @input="clearErrorMessages"
                             ></v-text-field>
                         </v-form>
@@ -47,9 +51,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref } from 'nuxt-property-decorator';
+import { Component, Ref, Vue } from 'nuxt-property-decorator';
 
 import { VForm, fieldRequired } from '@/utils/form';
+import { computeLocalePath } from '@/utils/i18n';
 
 import * as UserApi from '@/api/user/user';
 
@@ -68,6 +73,7 @@ class Login extends Vue {
 
     valid = true;
     loading = false;
+    error = false;
     errorMessages = '';
     rules = { fieldRequired };
 
@@ -79,7 +85,7 @@ class Login extends Vue {
             this.loading = true;
             try {
                 const redirect = await UserApi.login(this.loginForm);
-                window.location.href = redirect;
+                window.location.href = computeLocalePath(redirect);
             } catch (error) {
                 const code = parseInt(error.response && error.response.status);
                 if (code === 401) {
@@ -90,9 +96,11 @@ class Login extends Vue {
         }
     }
     unAuthError() {
+        this.error = true;
         this.errorMessages = this.$t('login.error.invalidAccount').toString();
     }
     clearErrorMessages() {
+        this.error = false;
         this.errorMessages = '';
     }
 }

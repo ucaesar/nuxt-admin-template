@@ -73,7 +73,8 @@ const config: Configuration = {
         langDir: 'lang/',
         vueI18n: {
             fallbackLocale: 'cn'
-        }
+        },
+        strategy: 'prefix_and_default'
     },
     /*
      ** vuetify module configuration

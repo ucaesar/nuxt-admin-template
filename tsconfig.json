@@ -23,6 +23,7 @@
             "@nuxt/types",
             "@nuxtjs/axios",
             "mocha",
+            "nuxt-i18n/types",
             "vue-i18n/types",
             "vuetify"
         ]

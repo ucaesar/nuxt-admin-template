@@ -51,7 +51,7 @@ class NavigationFilter {
             const root = <string>_(conf)
                 .keys()
                 .head();
-            let pathArray: string[] = [root];
+            const pathArray: string[] = [root];
             let nav: Navigation;
 
             if (!conf[root].sub) {
@@ -85,7 +85,7 @@ class NavigationFilter {
     }
 }
 
-export default async function ({ $axios, store }) {
+export default async function({ $axios, store }) {
     consola.info('middelware: navigation.ts');
 
     if (process.server) {

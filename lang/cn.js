@@ -70,11 +70,10 @@ export default {
             passwordType: '密码字符异常',
             passwordLength: '密码长度限制在8~20之间',
             differentPassword: '两次输入的密码需要一致',
-            incorrectEmailFormatt: '邮箱格式不正确',
+            emailFormatt: '邮箱格式不正确',
 
             existedEmail: '注册邮箱已存在，请更换',
-            existedUsername: '注册用户名已存在',
-            incorrectPassword: ''
+            existedUsername: '注册用户名已存在'
         }
     },
 

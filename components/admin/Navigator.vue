@@ -5,7 +5,13 @@
                 <template v-for="(value, name) in navigation">
                     <!-- 单层菜单 -->
                     <template v-if="!value.sub">
-                        <v-list-item :key="name" :to="composeUrl([name])" nuxt exact link>
+                        <v-list-item
+                            :key="name"
+                            :to="computeUrl(composeUrl([name]))"
+                            nuxt
+                            exact
+                            link
+                        >
                             <v-list-item-action>
                                 <v-icon>{{ value.icon }}</v-icon>
                             </v-list-item-action>
@@ -37,7 +43,7 @@
                             <v-list-item
                                 v-for="subItem in value.sub"
                                 :key="subItem"
-                                :to="composeUrl([name, subItem])"
+                                :to="computeUrl(composeUrl([name, subItem]))"
                                 nuxt
                                 link
                                 exact
@@ -61,12 +67,18 @@
 import { Component, Vue, namespace } from 'nuxt-property-decorator';
 import _ from 'lodash';
 
+import { computeLocalePath } from '@/utils/i18n';
+
 const adminStore = namespace('admin');
 
 @Component
 class Navigator extends Vue {
     @adminStore.State('drawer') drawer;
     @adminStore.State('navigations') navigations;
+
+    computeUrl(path) {
+        return computeLocalePath(path);
+    }
 
     composeUrl(pathArray: string[]): string {
         return _(pathArray.slice())

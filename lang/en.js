@@ -70,11 +70,10 @@ export default {
             passwordType: 'Contains bad character',
             passwordLength: 'Length between 8~20',
             differentPassword: 'Should be the same',
-            incorrectEmailFormatt: "Check Email's format",
+            emailFormatt: "Check Email's format",
 
             existedEmail: 'Registry Email has been existed',
-            existedUsername: 'Username has been existed',
-            incorrectPassword: ''
+            existedUsername: 'Username has been existed'
         }
     },
 
