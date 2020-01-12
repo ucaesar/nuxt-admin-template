@@ -67,7 +67,10 @@ const config: Configuration = {
      ** i18n module configuration
      */
     i18n: {
-        locales: [{ code: 'en', file: 'en.js' }, { code: 'cn', file: 'cn.js' }],
+        locales: [
+            { code: 'en', name: 'English', file: 'en.js' },
+            { code: 'cn', name: '简体中文', file: 'cn.js' }
+        ],
         defaultLocale: 'cn',
         lazy: true,
         langDir: 'lang/',

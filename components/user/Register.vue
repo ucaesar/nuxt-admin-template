@@ -71,14 +71,16 @@
                         </v-form>
                     </v-card-text>
                     <v-card-actions>
-                        <div class="flex-grow-1"></div>
-                        <v-btn
-                            color="primary"
-                            class="mb-1"
-                            :loading="loading"
-                            @click="onSubmit"
-                            >{{ $t('register.submitButtonText') }}</v-btn
-                        >
+                        <v-spacer />
+                        <div class="mb-1">
+                            <lang-switch-button />
+                            <v-btn
+                                color="primary"
+                                :loading="loading"
+                                @click="onSubmit"
+                                >{{ $t('register.submitButtonText') }}
+                            </v-btn>
+                        </div>
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -88,6 +90,8 @@
 
 <script lang="ts">
 import { Vue, Component, Ref } from 'nuxt-property-decorator';
+
+import LangSwitchButton from '@/components/admin/LangSwitchButton.vue';
 
 import { VForm, fieldRequired } from '@/utils/form';
 import * as validator from '@/utils/validator/register';
@@ -112,7 +116,11 @@ class ErrorState {
     }
 }
 
-@Component
+@Component({
+    components: {
+        LangSwitchButton
+    }
+})
 class Register extends Vue {
     @Ref('registerForm') readonly form!: VForm;
     @Ref('password') readonly password: any;
@@ -129,7 +137,7 @@ class Register extends Vue {
         password: new ErrorState(),
         password2: new ErrorState()
     };
- 
+
     rules = {
         fieldRequired,
         isEmail: value =>

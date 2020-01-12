@@ -11,7 +11,6 @@ import * as UserApi from '@/api/user/user';
 
 @Component
 class LogoutButton extends Vue {
-    url = 'api/user/logout';
     loading = false;
 
     async onLogout() {

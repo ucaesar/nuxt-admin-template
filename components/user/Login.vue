@@ -35,14 +35,20 @@
                         </v-form>
                     </v-card-text>
                     <v-card-actions>
-                        <div class="flex-grow-1"></div>
-                        <v-btn
-                            color="primary"
-                            class="mb-1"
-                            :loading="loading"
-                            @click="onSubmit"
-                            >{{ $t('login.submitButtonText') }}</v-btn
-                        >
+                        <v-spacer />
+                        <div class="mb-1">
+                            <lang-switch-button />
+                            <v-btn color="primary" text @click="onRegister">
+                                {{ $t('register.submitButtonText') }}
+                            </v-btn>
+                            <v-btn
+                                color="primary"
+                                :loading="loading"
+                                @click="onSubmit"
+                            >
+                                {{ $t('login.submitButtonText') }}
+                            </v-btn>
+                        </div>
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -52,6 +58,8 @@
 
 <script lang="ts">
 import { Component, Ref, Vue } from 'nuxt-property-decorator';
+
+import LangSwitchButton from '@/components/admin/LangSwitchButton.vue';
 
 import { VForm, fieldRequired } from '@/utils/form';
 import { computeLocalePath } from '@/utils/i18n';
@@ -65,7 +73,8 @@ class LoginForm {
 
 @Component({
     components: {
-        Message: () => import('@/components/Message.vue')
+        Message: () => import('@/components/Message.vue'),
+        LangSwitchButton
     }
 })
 class Login extends Vue {
@@ -102,6 +111,9 @@ class Login extends Vue {
     clearErrorMessages() {
         this.error = false;
         this.errorMessages = '';
+    }
+    onRegister() {
+        this.$router.push(computeLocalePath('/register'));
     }
 }
 export default Login;
