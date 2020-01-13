@@ -63,6 +63,7 @@ export default {
         passwordLabel: 'Password',
         passwordConfirmLabel: 'Confirm password',
         emailLabel: 'Email',
+        loginButtonText: 'Login',
         submitButtonText: 'Register Now!',
         error: {
             usernameType: 'Contains only a~z A~Z 0~9',

@@ -1,5 +1,6 @@
 <template>
     <v-container class="fill-height" fluid>
+        <message />
         <v-row align="center" justify="center">
             <v-col cols="12">
                 <v-card class="elevation-12">
@@ -74,6 +75,9 @@
                         <v-spacer />
                         <div class="mb-1">
                             <lang-switch-button />
+                            <v-btn text color="primary" @click="onLogin">{{
+                                $t('register.loginButtonText')
+                            }}</v-btn>
                             <v-btn
                                 color="primary"
                                 :loading="loading"
@@ -96,6 +100,7 @@ import LangSwitchButton from '@/components/admin/LangSwitchButton.vue';
 import { VForm, fieldRequired } from '@/utils/form';
 import * as validator from '@/utils/validator/register';
 import { $t } from '@/utils/NuxtOptions';
+import { computeLocalePath } from '@/utils/i18n';
 
 class RegisterForm {
     username = '';
@@ -118,6 +123,7 @@ class ErrorState {
 
 @Component({
     components: {
+        Message: () => import('@/components/Message.vue'),
         LangSwitchButton
     }
 })
@@ -164,6 +170,10 @@ class Register extends Vue {
         if (this.form.validate() && this.confirmPasswords()) {
             this.loading = true;
         }
+    }
+
+    onLogin() {
+        this.$router.push(computeLocalePath('/login'));
     }
 
     setErrorState(field, state) {

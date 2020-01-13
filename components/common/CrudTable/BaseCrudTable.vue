@@ -13,7 +13,7 @@
             @input="onSelect"
         >
             <template v-slot:top>
-                <v-toolbar flat color="white">
+                <v-toolbar flat>
                     <v-toolbar-title>{{ tableTitle }}</v-toolbar-title>
                     <v-divider inset vertical class="mx-4" />
                     <new-action

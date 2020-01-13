@@ -63,6 +63,7 @@ export default {
         passwordLabel: '密码',
         passwordConfirmLabel: '再次输入密码',
         emailLabel: '电子邮件',
+        loginButtonText: '已有账户',
         submitButtonText: '现在注册！',
         error: {
             usernameType: '用户名只能包含 a~z A~Z 0~9',
