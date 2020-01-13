@@ -7,6 +7,7 @@
             <v-list-item
                 v-for="locale in locales"
                 :key="locale.code"
+                dense
                 @click="onSwitchLang(locale)"
             >
                 <v-list-item-title>{{ locale.name }}</v-list-item-title>
