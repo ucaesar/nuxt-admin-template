@@ -13,12 +13,15 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
+
 import Message from '@/components/Message.vue';
+import AdminNavigator from '@/components/admin/Navigator.vue';
+import AdminToolbar from '@/components/admin/Toolbar.vue';
 
 @Component({
     components: {
-        AdminNavigator: () => import('@/components/admin/Navigator.vue'),
-        AdminToolbar: () => import('@/components/admin/Toolbar.vue'),
+        AdminNavigator,
+        AdminToolbar,
         Message
     },
     middleware: ['admin/navigation']

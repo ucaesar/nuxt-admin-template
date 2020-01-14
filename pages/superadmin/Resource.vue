@@ -1,11 +1,6 @@
 <template>
     <v-container>
-        <resource-table
-            new-action
-            delete-action
-            edit-action
-            search-action
-        />
+        <resource-table new-action delete-action edit-action search-action />
     </v-container>
 </template>
 

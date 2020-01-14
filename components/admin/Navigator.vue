@@ -1,5 +1,11 @@
 <template>
-    <v-navigation-drawer :value="drawer" fixed app class="nav">
+    <v-navigation-drawer
+        :value="drawer"
+        fixed
+        app
+        class="nav"
+        @input="val => setDrawer(val)"
+    >
         <v-list dense nav>
             <template v-for="navigation in navigations">
                 <template v-for="(value, name) in navigation">
@@ -64,7 +70,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, namespace } from 'nuxt-property-decorator';
+import { Component, Vue, namespace, Mutation } from 'nuxt-property-decorator';
 import _ from 'lodash';
 
 import { computeLocalePath } from '@/utils/i18n';
@@ -75,6 +81,7 @@ const adminStore = namespace('admin');
 class Navigator extends Vue {
     @adminStore.State('drawer') drawer;
     @adminStore.State('navigations') navigations;
+    @adminStore.Mutation('SET_DRAWER') setDrawer;
 
     computeUrl(path) {
         return computeLocalePath(path);

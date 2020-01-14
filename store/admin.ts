@@ -1,5 +1,6 @@
-import { Navigation } from '@/conf/admin/navigation';
 import { MutationTree, ActionTree } from 'vuex/types/index';
+
+import { Navigation } from '@/conf/admin/navigation';
 
 export const state = () => ({
     drawer: true,
@@ -9,9 +10,12 @@ export const state = () => ({
 export type AdminState = ReturnType<typeof state>;
 
 export const mutations: MutationTree<AdminState> = {
-    SET_DRAWER: (state: AdminState, drawer: boolean) => (state.drawer = drawer),
-    SET_NAVIGATIONS: (state: AdminState, navigations: Navigation[]) =>
-        (state.navigations = navigations)
+    SET_DRAWER: (state: AdminState, drawer: boolean) => {
+        state.drawer = drawer;
+    },
+    SET_NAVIGATIONS: (state: AdminState, navigations: Navigation[]) => {
+        state.navigations = navigations;
+    }
 };
 
 export const actions: ActionTree<AdminState, AdminState> = {

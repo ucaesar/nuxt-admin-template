@@ -27,7 +27,7 @@ export async function $list(
     let serverData: ITableDataFromServer;
 
     try {
-        let config = paginationParams ? { params: paginationParams } : {};
+        const config = paginationParams ? { params: paginationParams } : {};
         serverData = await $axios.$get(url, config);
     } catch (e) {
         throw e;
@@ -36,13 +36,9 @@ export async function $list(
     return serverData;
 }
 
-export async function $delete() {
-    return;
-}
+export function $delete() {}
 
-export async function $add() {
-    return;
-}
+export function $add() {}
 
 export async function $detail(user: IUser): Promise<User> {
     const url = getBaseUrl() + `/${user.id}`;

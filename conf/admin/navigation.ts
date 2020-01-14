@@ -1,11 +1,11 @@
-interface Navigation {
+export interface Navigation {
     [rootName: string]: {
         icon: string;
         sub?: string[];
     };
 }
 
-const navConf: Navigation[] = [
+export const navConf: Navigation[] = [
     {
         superadmin: {
             icon: 'mdi-home',
@@ -13,5 +13,3 @@ const navConf: Navigation[] = [
         }
     }
 ];
-
-export { Navigation, navConf };
