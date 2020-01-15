@@ -70,8 +70,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, namespace, Mutation } from 'nuxt-property-decorator';
+import {
+    Component,
+    Vue,
+    namespace,
+    Mutation,
+    Prop
+} from 'nuxt-property-decorator';
 import _ from 'lodash';
+
+import * as Api from '@/api/user/permissions';
+
+import { Navigation } from '@/conf/admin/navigation';
 
 import { computeLocalePath } from '@/utils/i18n';
 
@@ -82,6 +92,7 @@ class Navigator extends Vue {
     @adminStore.State('drawer') drawer;
     @adminStore.State('navigations') navigations;
     @adminStore.Mutation('SET_DRAWER') setDrawer;
+    // @Prop({ required: true }) readonly navigations!: Navigation[];
 
     computeUrl(path) {
         return computeLocalePath(path);

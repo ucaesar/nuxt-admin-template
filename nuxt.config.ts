@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 const colors = require('vuetify/es5/util/colors').default;
 
 const config: Configuration = {
-    mode: 'universal',
+    mode: 'spa',
     /*
      ** Headers of the page
      */
