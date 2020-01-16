@@ -94,7 +94,8 @@ class Login extends Vue {
             this.loading = true;
             try {
                 const redirect = await UserApi.login(this.loginForm);
-                window.location.href = computeLocalePath(redirect);
+                // window.location.href = computeLocalePath(redirect);
+                this.$router.push(computeLocalePath(redirect));
             } catch (error) {
                 const code = parseInt(error.response && error.response.status);
                 if (code === 401) {

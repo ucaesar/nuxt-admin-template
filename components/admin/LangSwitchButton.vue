@@ -33,7 +33,8 @@ class LangSwitchButton extends Vue {
     }
 
     onSwitchLang(locale) {
-        window.location.href = this.switchLocalePath(locale.code);
+        // window.location.href = this.switchLocalePath(locale.code);
+        this.$router.push(this.switchLocalePath(locale.code));
     }
 }
 

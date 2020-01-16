@@ -9,6 +9,8 @@ import { Component, Vue } from 'nuxt-property-decorator';
 
 import * as UserApi from '@/api/user/user';
 
+import { computeLocalePath } from '@/utils/i18n';
+
 @Component
 class LogoutButton extends Vue {
     loading = false;
@@ -17,7 +19,8 @@ class LogoutButton extends Vue {
         this.loading = true;
         try {
             const redirect = await UserApi.logout();
-            window.location.href = redirect;
+            // window.location.href = redirect;
+            this.$router.push(computeLocalePath(redirect));
         } catch (error) {}
         this.loading = false;
     }
