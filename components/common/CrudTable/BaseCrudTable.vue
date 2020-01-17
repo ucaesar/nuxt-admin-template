@@ -79,7 +79,7 @@ import {
     TableDataFromServer
 } from '@/api/admin/crudTable';
 
-import { COMMON_TABLE_HEADER_TEXT } from '@/conf/admin/table';
+import { COMMON_TABLE_HEADER_TEXT } from '@/conf/admin/crudTable';
 
 import * as Message from '@/utils/message';
 
