@@ -1,6 +1,8 @@
 import { Configuration } from '@nuxt/types';
 import bodyParser from 'body-parser';
 
+import i18n from './lang';
+
 const colors = require('vuetify/es5/util/colors').default;
 
 const config: Configuration = {
@@ -52,7 +54,7 @@ const config: Configuration = {
     modules: [
         // Doc: https://axios.nuxtjs.org/usage
         '@nuxtjs/axios',
-        'nuxt-i18n',
+        ['nuxt-i18n', i18n],
         '@nuxtjs/eslint-module'
     ],
     /*
@@ -62,22 +64,6 @@ const config: Configuration = {
     axios: {
         baseURL: 'http://localhost:3000',
         browserBaseURL: '/'
-    },
-    /*
-     ** i18n module configuration
-     */
-    i18n: {
-        locales: [
-            { code: 'en', name: 'English', file: 'en.js' },
-            { code: 'cn', name: '简体中文', file: 'cn.js' }
-        ],
-        defaultLocale: 'cn',
-        lazy: true,
-        langDir: 'lang/',
-        vueI18n: {
-            fallbackLocale: 'cn'
-        },
-        strategy: 'prefix_and_default'
     },
     /*
      ** vuetify module configuration
