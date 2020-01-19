@@ -1,0 +1,15 @@
+{
+    "crudTable": {
+        "newButtonText": "新增",
+        "searchText": "搜索",
+        "actionsHeaderText": "操作",
+        "loadingText": "正在读取...",
+        "submittingText": "正在提交..."
+    },
+    "dialog": {
+        "okButtonText": "确定",
+        "cancelButtonText": "取消",
+        "submitButtonText": "提交",
+        "makeSureToDeleteTitle": "确定要删除这个吗？"
+    }
+}

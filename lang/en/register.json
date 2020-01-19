@@ -1,0 +1,20 @@
+{
+    "toolbarText": "Register",
+    "usernameLabel": "Username",
+    "passwordLabel": "Password",
+    "passwordConfirmLabel": "Confirm password",
+    "emailLabel": "Email",
+    "loginButtonText": "Login",
+    "submitButtonText": "Register Now!",
+    "error": {
+        "usernameType": "Contains only a~z A~Z 0~9",
+        "usernameLength": "Length between 5~20",
+        "passwordType": "Contains bad character",
+        "passwordLength": "Length between 8~20",
+        "differentPassword": "Should be the same",
+        "emailFormatt": "Check Email's format",
+
+        "existedEmail": "Registry Email has been existed",
+        "existedUsername": "Username has been existed"
+    }
+}

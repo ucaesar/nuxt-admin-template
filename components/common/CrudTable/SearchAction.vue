@@ -1,7 +1,7 @@
 <template>
     <v-text-field
         :value="value"
-        :placeholder="$t('components.table.searchText')"
+        :placeholder="$t('components.crudTable.searchText')"
         append-outer-icon="mdi-magnify"
         hide-details
         @input="onInput"

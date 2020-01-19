@@ -1,0 +1,38 @@
+{
+    "roleTable": {
+        "tableTitle": "Roles",
+        "newButtonText": "New Role",
+        "roleNameHeaderText": "Role Name",
+        "descriptionHeaderText": "Description",
+        "editorTitle": "Edit Role",
+        "resourceGroupInputLabel": "Resource Groups contained",
+        "resourceGroupInputHint": "Select resource groups from list below",
+        "roleInputLabel": "Roles inherited from",
+        "roleInputHint": "Select roles from list below"
+    },
+    "resourceGroupTable": {
+        "tableTitle": "Resource Groups",
+        "newButtonText": "New Resource Group",
+        "groupNameHeaderText": "Name",
+        "descriptionHeaderText": "Description",
+        "editorTitle": "Edit Resource Group",
+        "resourceInputLabel": "Resources contained",
+        "resourceInputHint": "Select resources from list below"
+    },
+    "resourceTable": {
+        "tableTitle": "Resources",
+        "newButtonText": "New Resource",
+        "nameHeaderText": "Name",
+        "actionHeaderText": "Action",
+        "urlHeaderText": "Url",
+        "descriptionHeaderText": "Description",
+        "editorTitle": "Edit Resource"
+    },
+    "userTable": {
+        "tableTitle": "Users",
+        "usernameHeaderText": "Username",
+        "editorTitle": "Edit User",
+        "roleInputLabel": "Roles",
+        "roleInputHint": "Select roles from list below"
+    }
+}

@@ -1,6 +1,6 @@
 export default {
     locales: [
-        { code: 'en', name: 'English', file: 'en.js' },
+        { code: 'en', name: 'English', file: 'en/index.js' },
         { code: 'cn', name: '简体中文', file: 'cn/index.js' }
     ],
     defaultLocale: 'cn',

@@ -1,0 +1,15 @@
+{
+    "crudTable": {
+        "newButtonText": "New",
+        "searchText": "Search",
+        "actionsHeaderText": "Operation",
+        "loadingText": "Loading...",
+        "submittingText": "Submitting..."
+    },
+    "dialog": {
+        "okButtonText": "OK",
+        "cancelButtonText": "Cancel",
+        "submitButtonText": "Submit",
+        "makeSureToDeleteTitle": "Make Sure to DELETE?"
+    }
+}

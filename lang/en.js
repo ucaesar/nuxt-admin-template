@@ -12,13 +12,6 @@ export default {
     },
 
     components: {
-        table: {
-            newButtonText: 'New',
-            searchText: 'Search',
-            actionsHeaderText: 'Actions',
-            loadingText: 'Loading...',
-            submittingText: 'Submitting...'
-        },
         crudTable: {
             newButtonText: 'New',
             searchText: 'Search',

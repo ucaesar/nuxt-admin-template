@@ -1,0 +1,12 @@
+{
+    "toolbar": {
+        "logoutButtonText": "Logout"
+    },
+    "navigator": {
+        "/superadmin": "Super Admin",
+        "/superadmin/resource": "Resource Manager",
+        "/superadmin/resourcegroup": "Resource Group Manager",
+        "/superadmin/role": "Role Manager",
+        "/superadmin/user": "User Manager"
+    }
+}
