@@ -18,8 +18,6 @@ import Message from '@/components/Message.vue';
 import AdminNavigator from '@/components/admin/Navigator.vue';
 import AdminToolbar from '@/components/admin/Toolbar.vue';
 
-import { Navigation } from '@/conf/admin/navigation';
-
 const adminStore = namespace('admin');
 
 @Component({

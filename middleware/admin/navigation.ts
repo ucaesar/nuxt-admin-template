@@ -1,6 +1,9 @@
 import _ from 'lodash';
 import consola from 'consola';
-import { navConf, Navigation } from '@/conf/admin/navigation';
+
+import { INavigation } from '@/models/admin/layout';
+
+import { navConf } from '@/conf/admin/navigation';
 
 class NavigationFilter {
     permissions: string[];
@@ -44,15 +47,15 @@ class NavigationFilter {
             .join('/');
     }
 
-    filter(): Navigation[] {
-        const navigations: Navigation[] = [];
+    filter(): INavigation[] {
+        const navigations: INavigation[] = [];
 
         for (const conf of navConf) {
             const root = <string>_(conf)
                 .keys()
                 .head();
             const pathArray: string[] = [root];
-            let nav: Navigation;
+            let nav: INavigation;
 
             if (!conf[root].sub) {
                 // root

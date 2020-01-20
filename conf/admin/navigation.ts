@@ -1,15 +1,10 @@
-export interface Navigation {
-    [rootName: string]: {
-        icon: string;
-        sub?: string[];
-    };
-}
+import { INavigation } from '@/models/admin/layout';
 
-export const navConf: Navigation[] = [
+export const navConf: INavigation[] = [
     {
         superadmin: {
             icon: 'mdi-home',
-            sub: ['resource','resourcegroup', 'role', 'user']
+            sub: ['resource', 'resourcegroup', 'role', 'user']
         }
     }
 ];

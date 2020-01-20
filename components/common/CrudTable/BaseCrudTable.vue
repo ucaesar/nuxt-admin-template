@@ -79,9 +79,20 @@ import {
     TableDataFromServer
 } from '@/api/admin/crudTable';
 
-import { COMMON_TABLE_HEADER_TEXT } from '@/conf/admin/crudTable';
-
 import * as Message from '@/utils/message';
+import { $t } from '@/utils/NuxtOptions';
+
+const COMMON_TABLE_HEADER_TEXT = {
+    get actions() {
+        return {
+            text: $t('components.crudTable.actionsHeaderText'),
+            value: 'actions',
+            sortable: false,
+            align: 'center',
+            width: '150px'
+        };
+    }
+};
 
 @Component({
     components: {
