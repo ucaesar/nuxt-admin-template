@@ -24,12 +24,11 @@ import ResourceGroupEditor from './ResourceGroupEditor.vue';
 
 import BaseCrudTable from '@/components/common/CrudTable/BaseCrudTable.vue';
 
-import { RESOURCEGROUP_TABLE_HEADER_TEXT } from '@/conf/superadmin/ResourceGroup';
-
 import * as ResourceGroupApi from '@/api/superadmin/ResourceGroup';
 import { ICrudTableApi } from '@/api/admin/crudTable';
 
 import { CrudTableComponent } from '@/utils/crudTable';
+import { $t } from '@/utils/NuxtOptions';
 
 class Api implements ICrudTableApi {
     $list = ResourceGroupApi.$list;
@@ -38,6 +37,24 @@ class Api implements ICrudTableApi {
     $edit = ResourceGroupApi.$edit;
     $detail = ResourceGroupApi.$detail;
 }
+
+const RESOURCEGROUP_TABLE_HEADER_TEXT = {
+    get groupname() {
+        return {
+            text: $t('superadmin.resourceGroupTable.groupNameHeaderText'),
+            value: 'groupname',
+            sortable: false,
+            width: '300px'
+        };
+    },
+    get description() {
+        return {
+            text: $t('superadmin.resourceGroupTable.descriptionHeaderText'),
+            value: 'description',
+            sortable: false
+        };
+    }
+};
 
 @Component({
     components: {
