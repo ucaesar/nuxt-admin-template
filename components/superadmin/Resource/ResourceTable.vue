@@ -24,12 +24,11 @@ import ResourceEditor from './ResourceEditor.vue';
 
 import BaseCrudTable from '@/components/common/CrudTable/BaseCrudTable.vue';
 
-import { RESOURCE_TABLE_HEADER_TEXT } from '@/conf/superadmin/Resource';
-
 import * as ResourceApi from '@/api/superadmin/Resource';
 import { ICrudTableApi } from '@/api/admin/crudTable';
 
 import { CrudTableComponent } from '@/utils/crudTable';
+import { $t } from '@/utils/NuxtOptions';
 
 class Api implements ICrudTableApi {
     $list = ResourceApi.$list;
@@ -38,6 +37,39 @@ class Api implements ICrudTableApi {
     $edit = ResourceApi.$edit;
     $detail = ResourceApi.$detail;
 }
+
+const RESOURCE_TABLE_HEADER_TEXT = {
+    get name() {
+        return {
+            text: $t('superadmin.resourceTable.nameHeaderText'),
+            value: 'name',
+            sortable: false,
+            width: '200px'
+        };
+    },
+    get action() {
+        return {
+            text: $t('superadmin.resourceTable.actionHeaderText'),
+            value: 'action',
+            sortable: false,
+            width: '150px'
+        };
+    },
+    get url() {
+        return {
+            text: $t('superadmin.resourceTable.urlHeaderText'),
+            value: 'url',
+            sortable: false
+        };
+    },
+    get description() {
+        return {
+            text: $t('superadmin.resourceTable.descriptionHeaderText'),
+            value: 'description',
+            sortable: false
+        };
+    }
+};
 
 @Component({
     components: {

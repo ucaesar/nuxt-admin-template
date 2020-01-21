@@ -23,10 +23,10 @@ import UserEditor from './UserEditor.vue';
 
 import BaseCrudTable from '@/components/common/CrudTable/BaseCrudTable.vue';
 
-import { USER_TABLE_HEADER_TEXT } from '@/conf/superadmin/User';
-
 import { ICrudTableApi } from '@/api/admin/crudTable';
 import * as UserApi from '@/api/superadmin/User';
+
+import { $t } from '@/utils/NuxtOptions';
 
 class Api implements ICrudTableApi {
     $list = UserApi.$list;
@@ -35,6 +35,16 @@ class Api implements ICrudTableApi {
     $edit = UserApi.$edit;
     $detail = UserApi.$detail;
 }
+
+const USER_TABLE_HEADER_TEXT = {
+    get username() {
+        return {
+            text: $t('superadmin.userTable.usernameHeaderText'),
+            value: 'username',
+            sortable: false
+        };
+    }
+};
 
 @Component({
     components: {

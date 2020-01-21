@@ -83,7 +83,7 @@ import * as Message from '@/utils/message';
 import { $t } from '@/utils/NuxtOptions';
 
 const COMMON_TABLE_HEADER_TEXT = {
-    get actions() {
+    get operations() {
         return {
             text: $t('components.crudTable.actionsHeaderText'),
             value: 'actions',
@@ -123,7 +123,7 @@ class BaseCrudTable extends Vue {
         const clonedHeaders = _.cloneDeep(this.headersConf);
 
         if (this.actionColumnState) {
-            clonedHeaders.push(COMMON_TABLE_HEADER_TEXT.actions);
+            clonedHeaders.push(COMMON_TABLE_HEADER_TEXT.operations);
         }
 
         return clonedHeaders;

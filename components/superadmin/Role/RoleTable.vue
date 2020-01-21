@@ -24,12 +24,11 @@ import RoleEditor from './RoleEditor.vue';
 
 import BaseCrudTable from '@/components/common/CrudTable/BaseCrudTable.vue';
 
-import { ROLE_TABLE_HEADER_TEXT } from '@/conf/superadmin/Role';
-
 import * as RoleApi from '@/api/superadmin/Role';
 import { ICrudTableApi } from '@/api/admin/crudTable';
 
 import { CrudTableComponent } from '@/utils/crudTable';
+import { $t } from '@/utils/NuxtOptions';
 
 class Api implements ICrudTableApi {
     $list = RoleApi.$list;
@@ -38,6 +37,25 @@ class Api implements ICrudTableApi {
     $edit = RoleApi.$edit;
     $detail = RoleApi.$detail;
 }
+
+const ROLE_TABLE_HEADER_TEXT = {
+    get roleName() {
+        return {
+            text: $t('superadmin.roleTable.roleNameHeaderText'),
+            value: 'rolename',
+            sortable: false,
+            width: '200px'
+        };
+    },
+    get description() {
+        return {
+            text: $t('superadmin.roleTable.descriptionHeaderText'),
+            value: 'description',
+            sortable: false
+        };
+    }
+};
+
 
 @Component({
     components: {
