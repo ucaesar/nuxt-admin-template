@@ -1,4 +1,63 @@
-export default {
+import _ from 'lodash';
+
+import { IProvince } from '@/models/expressweb/zone';
+
+const caStatesOrigin = {
+    AB: {
+        name: 'Alberta',
+        abbreviation: 'AB'
+    },
+    BC: {
+        name: 'British Columbia',
+        abbreviation: 'BC'
+    },
+    MB: {
+        name: 'Manitoba',
+        abbreviation: 'MB'
+    },
+    NB: {
+        name: 'New Brunswick',
+        abbreviation: 'NB'
+    },
+    NL: {
+        name: 'Newfoundland and Labrador',
+        abbreviation: 'NL'
+    },
+    NS: {
+        name: 'Nova Scotia',
+        abbreviation: 'NS'
+    },
+    ON: {
+        name: 'Ontario',
+        abbreviation: 'ON'
+    },
+    PE: {
+        name: 'Prince Edward Island',
+        abbreviation: 'PE'
+    },
+    QC: {
+        name: 'Quebec',
+        abbreviation: 'QC'
+    },
+    SK: {
+        name: 'Saskatchewan',
+        abbreviation: 'SK'
+    },
+    NT: {
+        name: 'Northwest Territories',
+        abbreviation: 'NT'
+    },
+    NU: {
+        name: 'Nunavut',
+        abbreviation: 'NU'
+    },
+    YT: {
+        name: 'Yukon',
+        abbreviation: 'YT'
+    }
+};
+
+const usStatesOrigin = {
     AL: {
         name: 'Alabama',
         abbreviation: 'AL'
@@ -214,5 +273,21 @@ export default {
     WY: {
         name: 'Wyoming',
         abbreviation: 'WY'
+    }
+};
+
+function mapProvince(obj: any): IProvince {
+    return {
+        code: obj.abbreviation,
+        name: obj.name
+    };
+}
+
+export const provinces = {
+    get ca(): IProvince[] {
+        return _.map(caStatesOrigin, mapProvince);
+    },
+    get us(): IProvince[] {
+        return _.map(usStatesOrigin, mapProvince);
     }
 };

@@ -9,5 +9,7 @@ export default {
     login: require('./login.json'),
     register: require('./register.json'),
 
-    formValidating: require('./formValidating.json')
+    formValidating: require('./formValidating.json'),
+
+    expressweb: require('./expressweb.json')
 };

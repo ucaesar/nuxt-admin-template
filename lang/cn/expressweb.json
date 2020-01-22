@@ -1,0 +1,8 @@
+{
+    "zone": {
+        "countryLabel": "国家",
+        "sendCountryHint": "必须从加拿大发货",
+
+        "provinceLabel": "省份"
+    }
+}

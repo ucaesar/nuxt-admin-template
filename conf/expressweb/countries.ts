@@ -1,4 +1,7 @@
-export default [
+import { ICountry } from '@/models/expressweb/zone';
+
+// iso 3166
+export const countries: ICountry[] = [
     {
         code: 'AF',
         name: 'Afghanistan'

@@ -1,0 +1,8 @@
+{
+    "zone": {
+        "countryLabel": "Country",
+        "sendCountryHint": "Must send from Canada",
+
+        "provinceLabel": "Province"
+    }
+}
