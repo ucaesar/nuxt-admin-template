@@ -1,8 +1,13 @@
 {
-    "zone": {
+    "address": {
+        "nameLabel": "Name",
+        "phoneLabel": "Phone",
         "countryLabel": "Country",
         "sendCountryHint": "Must send from Canada",
-
-        "provinceLabel": "Province"
+        "provinceLabel": "Province",
+        "cityLabel": "City",
+        "postcodeLabel": "Postcode",
+        "addressLabel": "Address",
+        "address2Label": "Address 2"
     }
 }

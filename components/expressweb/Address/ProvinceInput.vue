@@ -3,18 +3,20 @@
         <template v-if="asAutoComplete">
             <v-autocomplete
                 :value="value"
-                :label="$t('expressweb.zone.provinceLabel')"
+                :label="$t('expressweb.address.provinceLabel')"
                 :items="provinces"
                 :item-value="provinceValue"
                 :item-text="provinceText"
                 :rules="[rules.fieldRequired]"
+                @change="onUpdate"
             />
         </template>
         <template v-else>
             <v-text-field
                 :value="value"
-                :label="$t('expressweb.zone.provinceLabel')"
+                :label="$t('expressweb.address.provinceLabel')"
                 :rules="[rules.fieldRequired]"
+                @change="onUpdate"
             />
         </template>
     </div>
@@ -32,6 +34,7 @@ import { provinces } from '@/conf/expressweb/provinces';
 class ProvinceInput extends Vue {
     @Prop({ required: true }) readonly countryCode!: string;
     @Prop({ required: false }) readonly value!: string;
+
     rules = { fieldRequired };
 
     get provinces() {
@@ -62,6 +65,10 @@ class ProvinceInput extends Vue {
 
     provinceText(province: IProvince) {
         return `${province.code} - ${province.name}`;
+    }
+
+    onUpdate(val) {
+        this.$emit('input', val);
     }
 }
 

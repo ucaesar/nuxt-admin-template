@@ -2,13 +2,14 @@
     <v-autocomplete
         :disabled="sender"
         :value="value"
-        :label="$t('expressweb.zone.countryLabel')"
+        :label="$t('expressweb.address.countryLabel')"
         :items="countries"
         :item-value="countryValue"
         :item-text="countryText"
         :rules="[rules.fieldRequired]"
-        :hint="$props.sender ? $t('expressweb.zone.sendCountryHint') : ''"
+        :hint="$props.sender ? $t('expressweb.address.sendCountryHint') : ''"
         persistent-hint
+        @change="onUpdate"
     />
 </template>
 
@@ -34,6 +35,10 @@ class CountryInput extends Vue {
 
     countryText(country: ICountry) {
         return `${country.code} - ${country.name}`;
+    }
+
+    onUpdate(val) {
+        this.$emit('input', val);
     }
 }
 
