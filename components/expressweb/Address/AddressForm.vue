@@ -115,6 +115,10 @@ class AddressForm extends Vue {
     reset() {
         this.form.reset();
     }
+
+    resetValidation() {
+        this.form.resetValidation();
+    }
 }
 
 export default AddressForm;

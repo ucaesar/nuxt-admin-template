@@ -1,18 +1,13 @@
 <template>
     <v-card elevation="0">
         <v-card-title
-            >发送方地址
+            >接收方地址
             <v-btn color="primary" class="ml-4"
                 ><v-icon>mdi-plus</v-icon>从地址簿中选择</v-btn
             >
         </v-card-title>
         <v-card-text>
-            <address-form
-                ref="form"
-                :value="address"
-                sender
-                @input="onUpdate"
-            />
+            <address-form ref="form" :value="address" @input="onUpdate" />
         </v-card-text>
         <v-card-actions>
             <v-btn text @click="onReset">重置</v-btn>
@@ -34,14 +29,10 @@ import { VForm } from '@/utils/form';
         AddressForm
     }
 })
-class SenderAddress extends Vue {
+class ReceiverAddressForm extends Vue {
     @Ref('form') readonly form: VForm;
 
     address = new Address();
-
-    mounted() {
-        this.address.country = 'CA';
-    }
 
     onUpdate(field, value) {
         this.address[field] = value;
@@ -57,18 +48,16 @@ class SenderAddress extends Vue {
 
     onReset() {
         this.address = new Address();
-        this.address.country = 'CA';
         this.form.resetValidation();
     }
 
     onNext() {
         if ((this.form as any).checkValid()) {
         }
-        this.$emit('next');
     }
 }
 
-export default SenderAddress;
+export default ReceiverAddressForm;
 </script>
 
 <style>

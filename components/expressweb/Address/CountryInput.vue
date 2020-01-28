@@ -1,5 +1,6 @@
 <template>
     <v-autocomplete
+        :disabled="sender"
         :value="value"
         :label="$t('expressweb.address.countryLabel')"
         :items="countries"

@@ -4,9 +4,13 @@
         <v-expansion-panel-content>
             <v-window v-model="step">
                 <v-window-item :value="1">
-                    <sender-address-form />
-                </v-window-item> </v-window
-        ></v-expansion-panel-content>
+                    <sender-address-form @next="step++" />
+                </v-window-item>
+                <v-window-item :value="2">
+                    <receiver-address-form />
+                </v-window-item>
+            </v-window>
+        </v-expansion-panel-content>
     </v-expansion-panel>
 </template>
 
@@ -14,8 +18,14 @@
 import { Vue, Component } from 'nuxt-property-decorator';
 
 import SenderAddressForm from './SenderAddressForm.vue';
+import ReceiverAddressForm from './ReceiverAddressForm.vue';
 
-@Component({ components: { SenderAddressForm } })
+@Component({
+    components: {
+        SenderAddressForm,
+        ReceiverAddressForm
+    }
+})
 class CreateShipmentPanel extends Vue {
     step = 1;
 }
