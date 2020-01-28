@@ -1,26 +1,21 @@
 <template>
     <div>
-        <v-form>
-            <country-input sender />
-            <province-input country-code="CN" />
-            <address-input />
-        </v-form>
+        <shipment-panels />
     </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'nuxt-property-decorator';
+import { Vue, Component, Ref } from 'nuxt-property-decorator';
 
-import CountryInput from '@/components/expressweb/Address/CountryInput.vue';
-import ProvinceInput from '@/components/expressweb/Address/ProvinceInput.vue';
-import AddressInput from '@/components/expressweb/Address/AddressInput.vue';
+import ShipmentPanels from '@/components/expressweb/Shipment/ShipmentPanels.vue';
+
+import { Address } from '@/models/expressweb/Address';
+import { VForm } from '@/utils/form';
 
 @Component({
     layout: 'admin',
     components: {
-        CountryInput,
-        ProvinceInput,
-        AddressInput
+        ShipmentPanels
     }
 })
 class Page extends Vue {}

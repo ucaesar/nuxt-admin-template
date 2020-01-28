@@ -284,10 +284,10 @@ function mapProvince(obj: any): IProvince {
 }
 
 export const provinces = {
-    get ca(): IProvince[] {
+    get CA(): IProvince[] {
         return _.map(caStatesOrigin, mapProvince);
     },
-    get us(): IProvince[] {
+    get US(): IProvince[] {
         return _.map(usStatesOrigin, mapProvince);
     }
 };

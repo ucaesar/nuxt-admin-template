@@ -14,7 +14,7 @@ import { fieldRequired } from '@/utils/form';
 
 @Component
 class CityInput extends Vue {
-    @Prop({ required: false }) readonly value!: string;
+    @Prop({ type: String, required: true }) readonly value!: string;
 
     rules = { fieldRequired };
 

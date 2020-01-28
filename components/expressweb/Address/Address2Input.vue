@@ -13,7 +13,7 @@ import { Vue, Component, Prop } from 'nuxt-property-decorator';
 
 @Component
 class Address2Input extends Vue {
-    @Prop({ required: false }) readonly value!: string;
+    @Prop({ type: String, required: true }) readonly value!: string;
 
     onUpdate(val) {
         this.$emit('input', val);

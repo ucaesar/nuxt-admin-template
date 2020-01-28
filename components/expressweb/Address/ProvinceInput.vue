@@ -2,6 +2,7 @@
     <div>
         <template v-if="asAutoComplete">
             <v-autocomplete
+                ref="input"
                 :value="value"
                 :label="$t('expressweb.address.provinceLabel')"
                 :items="provinces"
@@ -13,6 +14,7 @@
         </template>
         <template v-else>
             <v-text-field
+                ref="input"
                 :value="value"
                 :label="$t('expressweb.address.provinceLabel')"
                 :rules="[rules.fieldRequired]"
@@ -23,39 +25,41 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'nuxt-property-decorator';
+import { Vue, Component, Prop, Ref, Watch } from 'nuxt-property-decorator';
 
-import { fieldRequired } from '@/utils/form';
+import { fieldRequired, VForm } from '@/utils/form';
 
 import { IProvince } from '@/models/expressweb/zone';
 import { provinces } from '@/conf/expressweb/provinces';
 
 @Component
 class ProvinceInput extends Vue {
-    @Prop({ required: true }) readonly countryCode!: string;
-    @Prop({ required: false }) readonly value!: string;
+    @Prop({ required: true }) readonly countryCode!: string | undefined;
+    @Prop({ required: true }) readonly value!: string | undefined;
+
+    @Ref('input') readonly input!: VForm;
+
+    @Watch('countryCode')
+    onChangeCountry() {
+        this.$emit('input', '');
+        this.input.resetValidation();
+    }
 
     rules = { fieldRequired };
 
     get provinces() {
-        const code = this.countryCode.toLowerCase();
-        switch (code) {
-            case 'ca':
-            case 'us':
-                return provinces[code];
+        if (this.asAutoComplete && typeof this.countryCode === 'string') {
+            return provinces[this.countryCode];
         }
         return [];
     }
 
     get asAutoComplete() {
-        const code = this.countryCode.toLowerCase();
-
-        switch (code) {
-            case 'ca':
-            case 'us':
+        switch (this.countryCode) {
+            case 'CA':
+            case 'US':
                 return true;
         }
-
         return false;
     }
 

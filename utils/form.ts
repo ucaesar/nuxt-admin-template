@@ -6,6 +6,7 @@ export const fieldRequired = (value: any) => {
 };
 
 export type VForm = Vue & {
+    reset: () => void;
     validate: () => boolean;
     resetValidation: () => void;
 };
