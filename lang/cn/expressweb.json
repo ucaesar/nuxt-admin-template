@@ -9,5 +9,45 @@
         "postcodeLabel": "邮编",
         "addressLabel": "地址",
         "address2Label": "地址2"
+    },
+    "package": {
+        "configUnitButtonLabel": "配置计量单位",
+        "weightUnitLabel": "重量单位",
+        "kg": "公斤",
+        "lb": "磅",
+        "dimensionUnitLabel": "长度单位",
+        "cm": "厘米",
+        "in": "英寸",
+        "orderLabel": "包裹 #",
+        "weightLabel": "重量",
+        "lengthLabel": "长",
+        "widthLabel": "宽",
+        "heightLabel": "高",
+        "packageTypeLabel": "包裹类型",
+        "type": {
+            "fedexBox": "Fedex包装盒",
+            "fedexEnvelope": "Fedex文件",
+            "fedexPak": "Fedex快递袋",
+            "yourPackaging": "自行打包"
+        },
+        "yourPackagingHint": {
+            "text": "注意：自行打包时，需要提供包装的三维数据。",
+            "rules": "Fedex规定，长 + (宽 +高) * 2 不得大于 330cm 或者 125英寸。"
+        },
+        "newPackageButtonLabel": "新增包裹",
+        "error": {
+            "dimensionType": "必须是正整数",
+            "dimensionSum": "三维不符合要求",
+            "weightType": "必须 > 0"
+        }
+    },
+    "shipment": {
+        "createShipment": {
+            "panelHeaderText": "创建运单",
+            "senderAddressHeaderText": "发送方地址",
+            "receiverAddressHeaderText": "接收方地址",
+            "fromAddressBookButtonText": "从地址簿中选择",
+            "packageHeaderText": "包裹信息"
+        }
     }
 }

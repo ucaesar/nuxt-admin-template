@@ -6,10 +6,10 @@
         :items="countries"
         :item-value="countryValue"
         :item-text="countryText"
-        :rules="[rules.fieldRequired, rules.onlyCanada]"
+        :rules="[rules.fieldRequired]"
         :hint="$props.sender ? $t('expressweb.address.sendCountryHint') : ''"
         persistent-hint
-        @change="onUpdate"
+        @input="onUpdate"
     />
 </template>
 
@@ -25,14 +25,10 @@ import { countries } from '@/conf/expressweb/countries';
 @Component
 class CountryInput extends Vue {
     @Prop({ required: true }) readonly value!: string | undefined;
-    @Prop({ type: Boolean, default: true }) readonly sender!: boolean;
+    @Prop({ type: Boolean, default: false }) readonly sender!: boolean;
 
     rules = {
-        fieldRequired,
-        onlyCanada: val => {
-            if (this.sender && this.value === 'CA') return true;
-            return $t('expressweb.address.sendCountryHint');
-        }
+        fieldRequired
     };
     countries = countries;
 

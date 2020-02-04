@@ -11,5 +11,10 @@
         "cancelButtonText": "取消",
         "submitButtonText": "提交",
         "makeSureToDeleteTitle": "确定要删除这个吗？"
+    },
+    "stepper": {
+        "backButtonText": "上一步",
+        "resetButtonText": "重置",
+        "nextButtonText": "下一步"
     }
 }

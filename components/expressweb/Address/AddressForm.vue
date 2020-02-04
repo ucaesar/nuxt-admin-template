@@ -1,51 +1,51 @@
 <template>
     <v-form ref="form">
         <v-row>
-            <v-col :cols="layout.name">
+            <v-col cols="12" md="6">
                 <name-input
                     :value="value.name"
                     @input="val => onUpdate('name', val)"
                 />
             </v-col>
-            <v-col :cols="layout.phone">
+            <v-col cols="12" md="6">
                 <phone-input
                     :value="value.phone"
                     @input="val => onUpdate('phone', val)"
                 />
             </v-col>
-            <v-col :cols="layout.country">
+            <v-col cols="12" md="6">
                 <country-input
                     :value="value.country"
                     :sender="sender"
                     @input="val => onUpdate('country', val)"
                 />
             </v-col>
-            <v-col :cols="layout.province">
+            <v-col cols="12" md="6">
                 <province-input
                     :value="value.province"
                     :country-code="value.country"
                     @input="val => onUpdate('province', val)"
                 />
             </v-col>
-            <v-col :cols="layout.city">
+            <v-col cols="12" md="6">
                 <city-input
                     :value="value.city"
                     @input="val => onUpdate('city', val)"
                 />
             </v-col>
-            <v-col :cols="layout.postcode">
+            <v-col cols="12" md="6">
                 <postcode-input
                     :value="value.postcode"
                     @input="val => onUpdate('postcode', val)"
                 />
             </v-col>
-            <v-col :cols="layout.address">
+            <v-col cols="12">
                 <address-input
                     :value="value.address"
                     @input="val => onUpdate('address', val)"
                 />
             </v-col>
-            <v-col :cols="layout.address2">
+            <v-col cols="12">
                 <address2-input
                     :value="value.address2"
                     @input="val => onUpdate('address2', val)"
@@ -84,23 +84,7 @@ import { VForm } from '@/utils/form';
 })
 class AddressForm extends Vue {
     @Prop({ type: Object, required: true }) readonly value!: Address;
-    @Prop({ type: Boolean, default: true }) readonly sender!: boolean;
-    @Prop({
-        type: Object,
-        default() {
-            return {
-                name: 6,
-                phone: 6,
-                country: 6,
-                province: 6,
-                city: 6,
-                postcode: 6,
-                address: 12,
-                address2: 12
-            };
-        }
-    })
-    readonly layout!: any;
+    @Prop({ type: Boolean, default: false }) readonly sender!: boolean;
 
     @Ref('form') readonly form!: VForm;
 
@@ -122,42 +106,6 @@ class AddressForm extends Vue {
 }
 
 export default AddressForm;
-
-/* export default {
-    components: {
-        NameInput,
-        PhoneInput,
-        CountryInput,
-        ProvinceInput,
-        CityInput,
-        PostcodeInput,
-        AddressInput,
-        Address2Input
-    },
-    props: {
-        value: {
-            type: Object,
-            required: true
-        },
-        sender: {
-            type: Boolean,
-            required: true
-        }
-    },
-
-    methods: {
-        onUpdate(field, value) {
-            if (field === 'country') {
-                this.$emit('input', 'province', '');
-                this.$refs.province.reset();
-            }
-        },
-
-        validate() {
-            this.$refs.form.validate();
-        }
-    }
-}; */
 </script>
 
 <style>

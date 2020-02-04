@@ -11,5 +11,10 @@
         "cancelButtonText": "Cancel",
         "submitButtonText": "Submit",
         "makeSureToDeleteTitle": "Make Sure to DELETE?"
+    },
+    "stepper": {
+        "backButtonText": "Back",
+        "resetButtonText": "Reset",
+        "nextButtonText": "Next"
     }
 }

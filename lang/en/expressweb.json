@@ -9,5 +9,45 @@
         "postcodeLabel": "Postcode",
         "addressLabel": "Address",
         "address2Label": "Address 2"
+    },
+    "package": {
+        "configUnitButtonLabel": "Config Units",
+        "weightUnitLabel": "Weight Unit",
+        "kg": "kg",
+        "lb": "lb",
+        "dimensionUnitLabel": "Dimension Unit",
+        "cm": "cm",
+        "in": "in",
+        "packageTypeLabel": "Package Type",
+        "type": {
+            "fedexBox": "Fedex Box",
+            "fedexEnvelope": "Fedex Envelope",
+            "fedexPak": "Fedex Pak",
+            "yourPackaging": "Your Packaging"
+        },
+        "yourPackagingHint": {
+            "text": "Notice: When Packaging yourself, dimensions are needed.",
+            "rules": "Fedex rules: Length + (Width + Height) * 2 < 330cm / 125inch"
+        },
+        "orderLabel": "Package #",
+        "weightLabel": "Weight",
+        "lengthLabel": "Length",
+        "widthLabel": "Width",
+        "heightLabel": "Height",
+        "newPackageButtonLabel": "New Package",
+        "error": {
+            "dimensionType": "Must be integer > 0",
+            "dimensionSum": "(L + W + H) invalid",
+            "weightType": "Must > 0"
+        }
+    },
+    "shipment": {
+        "createShipment": {
+            "panelHeaderText": "Create Shipment",
+            "senderAddressHeaderText": "Sender Address",
+            "receiverAddressHeaderText": "Receiver Address",
+            "fromAddressBookButtonText": "From AddressBook",
+            "packageHeaderText": "Package Infomation"
+        }
     }
 }

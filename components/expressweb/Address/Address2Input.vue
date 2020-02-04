@@ -4,7 +4,7 @@
         :label="$t('expressweb.address.address2Label')"
         auto-grow
         rows="1"
-        @change="onUpdate"
+        @input="onUpdate"
     />
 </template>
 
@@ -13,7 +13,7 @@ import { Vue, Component, Prop } from 'nuxt-property-decorator';
 
 @Component
 class Address2Input extends Vue {
-    @Prop({ type: String, required: true }) readonly value!: string;
+    @Prop({ required: true }) readonly value!: string | undefined;
 
     onUpdate(val) {
         this.$emit('input', val);

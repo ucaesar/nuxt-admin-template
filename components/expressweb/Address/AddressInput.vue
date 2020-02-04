@@ -5,7 +5,7 @@
         :rules="[rules.fieldRequired]"
         auto-grow
         rows="1"
-        @change="onUpdate"
+        @input="onUpdate"
     />
 </template>
 
@@ -16,7 +16,7 @@ import { fieldRequired } from '@/utils/form';
 
 @Component
 class AddressInput extends Vue {
-    @Prop({ type: String, required: true }) readonly value!: string;
+    @Prop({ required: true }) readonly value!: string | undefined;
     rules = { fieldRequired };
 
     onUpdate(val) {

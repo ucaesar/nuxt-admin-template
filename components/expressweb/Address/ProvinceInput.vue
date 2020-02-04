@@ -9,7 +9,7 @@
                 :item-value="provinceValue"
                 :item-text="provinceText"
                 :rules="[rules.fieldRequired]"
-                @change="onUpdate"
+                @input="onUpdate"
             />
         </template>
         <template v-else>
@@ -18,7 +18,7 @@
                 :value="value"
                 :label="$t('expressweb.address.provinceLabel')"
                 :rules="[rules.fieldRequired]"
-                @change="onUpdate"
+                @input="onUpdate"
             />
         </template>
     </div>

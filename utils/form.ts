@@ -10,3 +10,7 @@ export type VForm = Vue & {
     validate: () => boolean;
     resetValidation: () => void;
 };
+
+export type VCustomInput = Vue & {
+    checkValid: () => boolean;
+};
