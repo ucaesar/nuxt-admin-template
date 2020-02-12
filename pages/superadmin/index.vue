@@ -23,4 +23,6 @@ class Page extends Vue {}
 export default Page;
 </script>
 
-<style></style>
+<style lang="scss">
+    @import '@/assets/styles/variables.scss';
+</style>

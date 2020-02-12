@@ -24,5 +24,6 @@ class ResourceGroupManager extends Vue {}
 export default ResourceGroupManager;
 </script>
 
-<style>
+<style lang="scss">
+    @import '@/assets/styles/variables.scss';
 </style>

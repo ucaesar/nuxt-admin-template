@@ -1,7 +1,5 @@
 <template>
-    <v-expansion-panels>
-        <create-shipment-panel />
-    </v-expansion-panels>
+    <create-shipment-panel />
 </template>
 
 <script lang="ts">

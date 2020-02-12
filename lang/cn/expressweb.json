@@ -36,9 +36,10 @@
         },
         "newPackageButtonLabel": "新增包裹",
         "error": {
-            "dimensionType": "必须是正整数",
+            "required": "请填写完整包裹信息 *",
+            "dimensionType": "长宽高必须是正整数",
             "dimensionSum": "三维不符合要求",
-            "weightType": "必须 > 0"
+            "weightType": "重量必须 > 0"
         }
     },
     "shipment": {

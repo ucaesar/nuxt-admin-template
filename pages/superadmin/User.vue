@@ -20,5 +20,6 @@ class UserManager extends Vue {}
 export default UserManager;
 </script>
 
-<style>
+<style lang="scss">
+    @import '@/assets/styles/variables.scss';
 </style>

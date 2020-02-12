@@ -1,67 +1,65 @@
 <template>
-    <v-card elevation="0">
-        <v-card-title>
-            <v-avatar color="primary" size="36" class="mr-2">
-                <span class="white--text headline">{{ step }}</span>
-            </v-avatar>
-            {{
-                $t('expressweb.shipment.createShipment.senderAddressHeaderText')
-            }}
-            <v-btn color="primary" class="ml-4"
-                ><v-icon>mdi-plus</v-icon
-                >{{
+    <ct-card
+        header-color="primary"
+        :header-title="
+            $t('expressweb.shipment.createShipment.senderAddressHeaderText')
+        "
+        :header-full-width="false"
+        :show-header="mobileMode"
+    >
+        <v-card-text>
+            <v-btn text color="primary">
+                <v-icon>mdi-plus</v-icon>
+                {{
                     $t(
                         'expressweb.shipment.createShipment.fromAddressBookButtonText'
                     )
-                }}</v-btn
-            >
-        </v-card-title>
-
-        <v-row justify="center">
-            <v-col cols="12" md="10" lg="8">
-                <v-card-text>
-                    <address-form
-                        ref="form"
-                        :value="address"
-                        sender
-                        @input="onUpdate"
-                    />
-                </v-card-text>
-            </v-col>
-        </v-row>
-
+                }}
+            </v-btn>
+            <validation-observer ref="form" v-slot="{}">
+                <address-form
+                    ref="form"
+                    :value="address"
+                    sender
+                    @input="onUpdate"
+                />
+            </validation-observer>
+        </v-card-text>
         <v-card-actions>
-            <v-btn text disabled>{{
+            <v-btn disabled text color="primary" @click="onBack">{{
                 $t('components.stepper.backButtonText')
-            }}</v-btn>
-            <v-btn text @click="onReset">{{
-                $t('components.stepper.resetButtonText')
             }}</v-btn>
             <v-btn color="primary" @click="onNext">{{
                 $t('components.stepper.nextButtonText')
             }}</v-btn>
         </v-card-actions>
-    </v-card>
+    </ct-card>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Ref, Prop } from 'nuxt-property-decorator';
+import { ValidationObserver } from 'vee-validate';
 
 import AddressForm from '@/components/expressweb/Address/AddressForm.vue';
+import CtCard from '@/components/ImprovedUI/CtCard';
 
 import { Address } from '@/models/expressweb/Address';
-import { VForm } from '@/utils/form';
 
 @Component({
     components: {
-        AddressForm
+        AddressForm,
+        CtCard,
+        ValidationObserver
     }
 })
 class SenderAddress extends Vue {
-    @Prop({ type: Number, required: true }) readonly step!: number;
-    @Ref('form') readonly form!: VForm;
+    @Ref('form') readonly form!: InstanceType<typeof ValidationObserver>;
 
     address = new Address();
+
+    get mobileMode() {
+        return this.$vuetify.breakpoint.smAndDown;
+    }
 
     mounted() {
         this.address.country = 'CA';
@@ -75,24 +73,14 @@ class SenderAddress extends Vue {
         return this.address;
     }
 
-    checkValid() {
-        return (this.form as any).checkValid();
+    onBack() {
+        this.$emit('back');
     }
 
-    onReset() {
-        this.address = new Address();
-        this.address.country = 'CA';
-        this.form.resetValidation();
-    }
-
-    onNext() {
-        if ((this.form as any).checkValid()) {
-            this.$emit('next', {
-                nextStep: this.step + 1,
-                field: 'senderAddress',
-                value: this.address
-            });
-        }
+    async onNext() {
+        const valid = await this.form.validate();
+        if (!valid) return;
+        this.$emit('next');
     }
 }
 

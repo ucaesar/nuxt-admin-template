@@ -17,6 +17,12 @@
 		"mock": "cross-env NODE_ENV=development nodemon server/mock.js --watch server",
 		"prettier": "prettier --ignore-path \"node_modules/**\" --write \"./**/*.vue\""
 	},
+	"config": {
+        "nuxt": {
+            "host": "0.0.0.0",
+            "port": "3000"
+        }
+    },
 	"dependencies": {
 		"@nuxt/typescript-runtime": "^0.2.2",
 		"@nuxtjs/axios": "^5.3.6",
@@ -44,6 +50,7 @@
 		"ts-babel": "^6.1.7",
 		"ts-node": "^8.4.1",
 		"validator": "^12.1.0",
+		"vee-validate": "^3.2.3",
 		"vue-i18n": "^8.14.1",
 		"vuex-module-decorators": "^0.10.1"
 	},
@@ -53,7 +60,8 @@
 		"@nuxt/typescript-build": "^0.3.2",
 		"@nuxtjs/eslint-config": "^1.0.1",
 		"@nuxtjs/eslint-module": "^1.0.0",
-		"@nuxtjs/vuetify": "^1.10.0",
+		"@nuxtjs/style-resources": "^1.0.0",
+		"@nuxtjs/vuetify": "^1.10.3",
 		"@types/bluebird": "^3.5.28",
 		"@types/chai": "^4.2.4",
 		"@types/connect": "^3.4.32",
@@ -85,9 +93,11 @@
 		"eslint-plugin-standard": "^4.0.1",
 		"eslint-plugin-vue": "^5.2.3",
 		"mocha": "^6.2.1",
+		"node-sass": "^4.13.1",
 		"nodemon": "^1.18.9",
 		"prettier": "^1.18.2",
 		"prettier-eslint": "^9.0.0",
+		"sass-loader": "^8.0.2",
 		"vue-class-component": "^7.1.0",
 		"vue-property-decorator": "^8.3.0"
 	}

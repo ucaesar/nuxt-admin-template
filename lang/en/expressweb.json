@@ -36,9 +36,10 @@
         "heightLabel": "Height",
         "newPackageButtonLabel": "New Package",
         "error": {
-            "dimensionType": "Must be integer > 0",
-            "dimensionSum": "(L + W + H) invalid",
-            "weightType": "Must > 0"
+            "required": "Complete the package info",
+            "dimensionType": "Dimensions must be integer > 0",
+            "dimensionSum": "Dimensions invalid",
+            "weightType": "Weight must > 0"
         }
     },
     "shipment": {

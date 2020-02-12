@@ -1,5 +1,6 @@
 <template>
     <v-app>
+        <message />
         <v-content>
             <v-container class="fill-height" fluid>
                 <v-row align="center" justify="center">
@@ -12,8 +13,18 @@
     </v-app>
 </template>
 
-<script>
-export default {};
+<script lang="ts">
+import { Vue, Component } from 'nuxt-property-decorator';
+import Message from '@/components/Message.vue';
+
+@Component({
+    components: {
+        Message
+    }
+})
+class LoginRegisterLayout extends Vue {}
+
+export default LoginRegisterLayout;
 </script>
 
 <style></style>

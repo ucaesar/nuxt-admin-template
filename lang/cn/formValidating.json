@@ -1,5 +1,6 @@
 {
     "error": {
-        "fieldRequired": "必填 *"
+        "fieldRequired": "必填 *",
+        "gt0": "必须 > 0"
     }
 }

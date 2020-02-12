@@ -1,51 +1,53 @@
 <template>
-    <div>
+    <validation-provider ref="input" v-slot="{ errors }" rules="required">
         <template v-if="asAutoComplete">
             <v-autocomplete
-                ref="input"
                 :value="value"
+                :error-messages="errors[0]"
+                v-bind="$attrs"
                 :label="$t('expressweb.address.provinceLabel')"
                 :items="provinces"
                 :item-value="provinceValue"
                 :item-text="provinceText"
-                :rules="[rules.fieldRequired]"
                 @input="onUpdate"
             />
         </template>
         <template v-else>
             <v-text-field
-                ref="input"
                 :value="value"
+                :error-messages="errors[0]"
+                v-bind="$attrs"
                 :label="$t('expressweb.address.provinceLabel')"
-                :rules="[rules.fieldRequired]"
                 @input="onUpdate"
             />
         </template>
-    </div>
+    </validation-provider>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop, Ref, Watch } from 'nuxt-property-decorator';
+import { ValidationProvider } from 'vee-validate';
 
-import { fieldRequired, VForm } from '@/utils/form';
+import { VForm } from '@/utils/form';
 
 import { IProvince } from '@/models/expressweb/zone';
 import { provinces } from '@/conf/expressweb/provinces';
 
-@Component
+@Component({
+    components: {
+        ValidationProvider
+    }
+})
 class ProvinceInput extends Vue {
     @Prop({ required: true }) readonly countryCode!: string | undefined;
     @Prop({ required: true }) readonly value!: string | undefined;
 
-    @Ref('input') readonly input!: VForm;
-
+    @Ref('input') readonly input!: InstanceType<typeof ValidationProvider>;
     @Watch('countryCode')
     onChangeCountry() {
         this.$emit('input', '');
-        this.input.resetValidation();
+        this.input.reset();
     }
-
-    rules = { fieldRequired };
 
     get provinces() {
         if (this.asAutoComplete && typeof this.countryCode === 'string') {

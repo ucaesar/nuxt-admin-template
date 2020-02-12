@@ -6,7 +6,7 @@
         class="nav"
         @input="val => setDrawer(val)"
     >
-        <v-list dense nav>
+        <v-list nav>
             <template v-for="navigation in navigations">
                 <template v-for="(value, name) in navigation">
                     <!-- 单层菜单 -->

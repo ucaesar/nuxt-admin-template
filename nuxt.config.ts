@@ -1,7 +1,7 @@
 import { Configuration } from '@nuxt/types';
 import bodyParser from 'body-parser';
 
-import i18n from './lang'
+import i18n from './lang';
 const colors = require('vuetify/es5/util/colors').default;
 
 const config: Configuration = {
@@ -37,7 +37,10 @@ const config: Configuration = {
     /*
      ** Plugins to load before mounting the App
      */
-    plugins: ['~/plugins/axios'],
+    plugins: [
+        '~/plugins/axios',
+        '~/plugins/validation.ts'
+    ],
     /*
      ** Nuxt.js dev-modules
      */
@@ -74,11 +77,23 @@ const config: Configuration = {
      ** https://github.com/nuxt-community/vuetify-module
      */
     vuetify: {
-        customVariables: ['~/assets/variables.scss'],
+        customVariables: [
+            '~/assets/styles/variables.scss',
+            '~/assets/styles/styles.scss'
+        ],
         theme: {
             dark: false,
             themes: {
                 dark: {
+                    primary: colors.blue.darken2,
+                    accent: colors.grey.darken3,
+                    secondary: colors.amber.darken3,
+                    info: colors.teal.lighten1,
+                    warning: colors.amber.base,
+                    error: colors.deepOrange.accent4,
+                    success: colors.green.accent3
+                },
+                light: {
                     primary: colors.blue.darken2,
                     accent: colors.grey.darken3,
                     secondary: colors.amber.darken3,
@@ -97,6 +112,7 @@ const config: Configuration = {
         /*
          ** You can extend webpack config here
          */
+        transpile: ['vee-validate/dist/rules'],
         extend(config, ctx) {},
         babel: {
             plugins: [

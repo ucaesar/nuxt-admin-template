@@ -1,53 +1,80 @@
 <template>
-    <v-card elevation="0">
-        <v-card-title>
-            <v-avatar color="primary" size="36" class="mr-2">
-                <span class="white--text headline">{{ step }}</span>
-            </v-avatar>
-            包裹信息
-        </v-card-title>
-
-        <v-row justify="center">
-            <v-col cols="12" md="10" lg="8">
-                <v-card-text>
-                    <package-form />
-                </v-card-text>
-            </v-col>
-        </v-row>
+    <ct-card
+        header-color="primary"
+        :header-title="
+            $t('expressweb.shipment.createShipment.packageHeaderText')
+        "
+        :header-full-width="false"
+        :show-header="mobileMode"
+    >
+        <validation-observer ref="form" v-slot="{}">
+            <v-card-text>
+                <package-form :value="pac" @input="onUpdate" />
+            </v-card-text>
+        </validation-observer>
 
         <v-card-actions>
-            <v-btn text disabled>上一步</v-btn>
-            <v-btn text @click="onReset">重置</v-btn>
-            <v-btn color="primary" @click="onNext">下一步</v-btn>
+            <v-btn text color="primary" @click="onBack">{{
+                $t('components.stepper.backButtonText')
+            }}</v-btn>
+            <v-btn color="primary" @click="onNext">{{
+                $t('components.stepper.nextButtonText')
+            }}</v-btn>
         </v-card-actions>
-    </v-card>
+    </ct-card>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'nuxt-property-decorator';
+import { Vue, Component, Prop, Ref } from 'nuxt-property-decorator';
+import { ValidationObserver } from 'vee-validate';
 
 import PackageForm from '@/components/expressweb/Package/PackageForm.vue';
+import CtCard from '@/components/ImprovedUI/CtCard';
+import { PACKAGE_TYPE } from '@/components/expressweb/Package/const';
+
+import { Package, PackageItem } from '@/models/expressweb/Package';
 
 @Component({
     components: {
-        PackageForm
+        PackageForm,
+        CtCard,
+        ValidationObserver
     }
 })
-class Package extends Vue {
-    @Prop({ type: Number, required: true }) readonly step!: number;
+class PackageComponent extends Vue {
+    @Ref('form') readonly form!: InstanceType<typeof ValidationObserver>;
+
+    pac = new Package();
+
+    get mobileMode() {
+        return this.$vuetify.breakpoint.smAndDown;
+    }
+
+    onUpdate(field, value) {
+        this.pac[field] = value;
+
+        if (field === 'packageType') {
+            if (value === PACKAGE_TYPE.YOUR_PACKAGING) {
+                this.pac.packages = [new PackageItem()];
+                this.pac.weight = undefined;
+            } else {
+                this.pac.packages = undefined;
+            }
+        }
+    }
 
     onBack() {
-        this.$emit('back', this.step - 1);
+        this.$emit('back');
     }
-    onReset() {}
-    onNext() {
-        this.$emit('next', {
-            nextStep: this.step + 1
-        })
+
+    async onNext() {
+        const valid = await this.form.validate();
+        if (!valid) return;
+        this.$emit('next');
     }
 }
 
-export default Package;
+export default PackageComponent;
 </script>
 
 <style>

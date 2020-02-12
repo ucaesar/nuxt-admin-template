@@ -1,46 +1,49 @@
 <template>
     <v-form ref="form">
         <v-row>
-            <v-col cols="12">
-                <unit-input
-                    :weight-unit="pac.weightUnit"
-                    :dimension-unit="pac.dimensionUnit"
-                    @input="
-                        val => {
-                            pac.weightUnit = val.weightUnit;
-                            pac.dimensionUnit = val.dimensionUnit;
-                        }
-                    "
+            <v-col cols="12" md="6" class="py-0">
+                <weight-unit-input
+                    :value="value.weightUnit"
+                    @input="val => onUpdate('weightUnit', val)"
+                />
+            </v-col>
+            <v-col cols="12" md="6" class="py-0">
+                <dimension-unit-input
+                    :value="value.dimensionUnit"
+                    @input="val => onUpdate('dimensionUnit', val)"
                 />
             </v-col>
             <v-col cols="12" md="6">
                 <package-type-select
-                    :value="pac.packageType"
-                    @input="onChangePackageType"
+                    :value="value.packageType"
+                    @input="val => onUpdate('packageType', val)"
                 />
             </v-col>
-            <v-col v-if="pac.packages === undefined" cols="12" md="6">
+            <v-col v-if="value.packages === undefined" cols="12" md="6">
                 <weight-input
-                    ref="weightInput"
-                    v-model="pac.weight"
-                    :weight-unit="pac.weightUnit"
+                    :value="value.weight"
+                    :weight-unit="value.weightUnit"
+                    @input="val => onUpdate('weight', val)"
                 />
             </v-col>
-            <v-col v-if="pac.packages !== undefined" cols="12">
-                <package-item-list
-                    v-model="pac.packages"
-                    :dimension-unit="pac.dimensionUnit"
-                    :weight-unit="pac.weightUnit"
+            <v-col v-if="value.packages !== undefined" cols="12">
+                <package-list
+                    :value="value.packages"
+                    :dimension-unit="value.dimensionUnit"
+                    :weight-unit="value.weightUnit"
+                    @input="val => onUpdate('packages', val)"
             /></v-col>
         </v-row>
     </v-form>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch, Ref } from 'nuxt-property-decorator';
+import { Vue, Component, Prop } from 'nuxt-property-decorator';
 
+import WeightUnitInput from './WeightUnitInput.vue';
+import DimensionUnitInput from './DimensionUnitInput.vue';
 import UnitInput from './UnitInput.vue';
-import PackageItemList from './PackageItemList.vue';
+import PackageList from './PackageList.vue';
 import WeightInput from './WeightInput.vue';
 import PackageTypeSelect from './PackageTypeSelect.vue';
 import { PACKAGE_TYPE } from './const';
@@ -50,30 +53,30 @@ import { VForm } from '@/utils/form';
 
 @Component({
     components: {
-        PackageItemList,
+        PackageList,
+        WeightUnitInput,
+        DimensionUnitInput,
         UnitInput,
         WeightInput,
         PackageTypeSelect
     }
 })
 class PackageForm extends Vue {
-    @Ref('weightInput') readonly weightInput: VForm;
+    // pac = new Package();
+    @Prop({ type: Object, required: true }) readonly value!: Package;
 
-    pac = new Package();
-
-    onChangePackageType(val) {
-        this.pac.packageType = val;
-        if (val === PACKAGE_TYPE.YOUR_PACKAGING) {
-            this.pac.packages = [new PackageItem()];
-            this.pac.weight = undefined;
-            this.weightInput.resetValidation();
-        } else {
-            this.pac.packages = undefined;
-        }
+    onUpdate(field, value) {
+        this.$emit('input', field, value)
     }
 
-    checkValid() {
-        
+    onChangePackageType(val) {
+        this.value.packageType = val;
+        if (val === PACKAGE_TYPE.YOUR_PACKAGING) {
+            this.value.packages = [new PackageItem()];
+            this.value.weight = undefined;
+        } else {
+            this.value.packages = undefined;
+        }
     }
 }
 

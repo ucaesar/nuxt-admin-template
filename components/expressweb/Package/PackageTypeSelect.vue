@@ -1,28 +1,40 @@
 <template>
-    <v-select
-        outlined
-        :items="packageTypes"
-        item-value="value"
-        item-text="title"
-        :label="$t('expressweb.package.packageTypeLabel')"
-        :value="value"
-        :rules="[rules.fieldRequired]"
-        @change="val => $emit('input', val)"
-    ></v-select>
+    <validation-provider
+        v-slot="{ errors }"
+        rules="required"
+        :style="{ width: '100%' }"
+    >
+        <v-select
+            v-bind="$attrs"
+            :items="packageTypes"
+            :error-messages="errors[0]"
+            item-value="value"
+            item-text="title"
+            :label="label"
+            :value="value"
+            @change="val => $emit('input', val)"
+        ></v-select
+    ></validation-provider>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'nuxt-property-decorator';
+import { ValidationProvider } from 'vee-validate';
 
 import { PACKAGE_TYPE } from './const';
+
+import FixedLabelInput from '@/components/common/FixedLabelInput.vue';
 
 import { $t } from '@/utils/NuxtOptions';
 import { fieldRequired } from '@/utils/form';
 
-@Component
+@Component({
+    components: {
+        ValidationProvider
+    }
+})
 class PackageTypeSelect extends Vue {
     @Prop({ required: true }) readonly value!: String;
-    rules = { fieldRequired };
 
     get packageTypes() {
         return [
@@ -43,6 +55,10 @@ class PackageTypeSelect extends Vue {
                 title: this.$t('expressweb.package.type.yourPackaging')
             }
         ];
+    }
+
+    get label() {
+        return $t('expressweb.package.packageTypeLabel');
     }
 }
 

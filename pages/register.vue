@@ -5,7 +5,7 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator';
 
-import Register from '@/components/user/Register.vue';
+import Register from '@/components/user/Register/Register.vue';
 
 @Component({
     layout: 'login-register',
@@ -18,4 +18,6 @@ class RegisterPage extends Vue {}
 export default RegisterPage;
 </script>
 
-<style></style>
+<style lang="scss">
+    @import '@/assets/styles/variables.scss';
+</style>

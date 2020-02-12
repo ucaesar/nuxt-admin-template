@@ -1,35 +1,41 @@
 <template>
-    <v-autocomplete
-        :disabled="sender"
-        :value="value"
-        :label="$t('expressweb.address.countryLabel')"
-        :items="countries"
-        :item-value="countryValue"
-        :item-text="countryText"
-        :rules="[rules.fieldRequired]"
-        :hint="$props.sender ? $t('expressweb.address.sendCountryHint') : ''"
-        persistent-hint
-        @input="onUpdate"
-    />
+    <validation-provider v-slot="{ errors }" rules="required">
+        <v-autocomplete
+            :disabled="sender"
+            :value="value"
+            :error-messages="errors[0]"
+            v-bind="$attrs"
+            :label="$t('expressweb.address.countryLabel')"
+            :items="countries"
+            :item-value="countryValue"
+            :item-text="countryText"
+            :hint="
+                $props.sender ? $t('expressweb.address.sendCountryHint') : ''
+            "
+            persistent-hint
+            @input="onUpdate"
+        />
+    </validation-provider>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'nuxt-property-decorator';
+import { ValidationProvider } from 'vee-validate';
 
-import { fieldRequired } from '@/utils/form';
 import { $t } from '@/utils/NuxtOptions';
 
 import { ICountry } from '@/models/expressweb/zone';
 import { countries } from '@/conf/expressweb/countries';
 
-@Component
+@Component({
+    components: {
+        ValidationProvider
+    }
+})
 class CountryInput extends Vue {
     @Prop({ required: true }) readonly value!: string | undefined;
     @Prop({ type: Boolean, default: false }) readonly sender!: boolean;
 
-    rules = {
-        fieldRequired
-    };
     countries = countries;
 
     countryValue(country: ICountry) {

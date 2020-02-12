@@ -20,4 +20,6 @@ class RoleManager extends Vue {}
 export default RoleManager;
 </script>
 
-<style></style>
+<style lang="scss">
+    @import '@/assets/styles/variables.scss';
+</style>
