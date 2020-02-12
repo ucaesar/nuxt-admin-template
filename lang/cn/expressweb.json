@@ -42,13 +42,24 @@
             "weightType": "重量必须 > 0"
         }
     },
+    "product": {
+        "orderLabel": "商品 #",
+        "descriptionLabel": "商品描述",
+        "originLabel": "产地",
+        "weightLabel": "重量",
+        "quantityLabel": "数量",
+        "unitLabel": "单位",
+        "pricePerUnitLabel": "每单位价格",
+        "newProductButtonLabel": "新增商品"
+    },
     "shipment": {
         "createShipment": {
             "panelHeaderText": "创建运单",
             "senderAddressHeaderText": "发送方地址",
             "receiverAddressHeaderText": "接收方地址",
             "fromAddressBookButtonText": "从地址簿中选择",
-            "packageHeaderText": "包裹信息"
+            "packageHeaderText": "包裹信息",
+            "productHeaderText": "包裹内商品信息"
         }
     }
 }

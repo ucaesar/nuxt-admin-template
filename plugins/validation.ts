@@ -18,6 +18,11 @@ export default ({ app }) => {
         message: i18n.t('formValidating.error.gt0')
     });
 
+    extend('gt0Int', {
+        validate: v => validator.isInt(v, { gt: 0 }),
+        message: i18n.t('formValidating.error.gt0Int')
+    });
+
     registerExtend(i18n);
     packageExtend(i18n);
 };

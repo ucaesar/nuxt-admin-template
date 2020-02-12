@@ -1,5 +1,5 @@
 <template>
-    <v-form ref="form">
+    <v-form>
         <v-row>
             <v-col cols="12" md="6">
                 <name-input
@@ -86,22 +86,8 @@ class AddressForm extends Vue {
     @Prop({ type: Object, required: true }) readonly value!: Address;
     @Prop({ type: Boolean, default: false }) readonly sender!: boolean;
 
-    @Ref('form') readonly form!: VForm;
-
     onUpdate(field, value) {
         this.$emit('input', field, value);
-    }
-
-    checkValid() {
-        return this.form.validate();
-    }
-
-    reset() {
-        this.form.reset();
-    }
-
-    resetValidation() {
-        this.form.resetValidation();
     }
 }
 

@@ -42,13 +42,24 @@
             "weightType": "Weight must > 0"
         }
     },
+    "product": {
+        "orderLabel": "Product #",
+        "descriptionLabel": "Description",
+        "originLabel": "Origin",
+        "weightLabel": "Weight",
+        "quantityLabel": "Quantity",
+        "unitLabel": "Unit",
+        "pricePerUnitLabel": "Price per Unit",
+        "newProductButtonLabel": "New Product"
+    },
     "shipment": {
         "createShipment": {
             "panelHeaderText": "Create Shipment",
             "senderAddressHeaderText": "Sender Address",
             "receiverAddressHeaderText": "Receiver Address",
             "fromAddressBookButtonText": "From AddressBook",
-            "packageHeaderText": "Package Infomation"
+            "packageHeaderText": "Package Infomation",
+            "productHeaderText": "Products in package"
         }
     }
 }

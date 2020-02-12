@@ -71,7 +71,7 @@ class ReceiverAddressForm extends Vue {
     async onNext() {
         const valid = await this.form.validate();
         if (!valid) return;
-        this.$emit('next');
+        this.$emit('next', 'receiverAddress', this.address);
     }
 }
 

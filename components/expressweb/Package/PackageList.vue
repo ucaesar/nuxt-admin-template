@@ -1,12 +1,14 @@
 <template>
     <v-row>
-        <v-col cols="12">
+        <v-col cols="12" class="py-0">
             <v-alert
                 dense
-                text
+                dismissible
                 icon="mdi-alert-circle-outline"
                 color="warning"
                 border="left"
+                class="ma-0"
+                colored-border
             >
                 <div>{{ $t('expressweb.package.yourPackagingHint.text') }}</div>
                 <div>
@@ -29,7 +31,7 @@
 
             <v-col cols="12" class="d-flex py-0">
                 <div v-if="!inlineChip" class="package-order">
-                    <v-chip :close="value.length > 1" @click:close="onDelete">{{
+                    <v-chip :close="value.length > 1" small @click:close="onDelete">{{
                         $t('expressweb.package.orderLabel') + `${index + 1}`
                     }}</v-chip>
                 </div>
@@ -66,12 +68,15 @@ import _ from 'lodash';
 
 import PackageInput from './PackageInput.vue';
 
+import CtNotification from '@/components/ImprovedUI/CtNotification';
+
 import { PackageItem } from '@/models/expressweb/Package';
 
 @Component({
     components: {
         PackageInput,
-        ValidationProvider
+        ValidationProvider,
+        CtNotification
     }
 })
 class PackageList extends Vue {
@@ -109,7 +114,7 @@ export default PackageList;
 
 <style>
 .package-order {
-    flex: 0 0 180px;
+    flex: 0 0 150px;
     display: flex;
     align-items: center;
 }

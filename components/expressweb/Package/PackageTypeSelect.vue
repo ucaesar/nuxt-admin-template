@@ -5,6 +5,7 @@
         :style="{ width: '100%' }"
     >
         <v-select
+            id="packageTypeSelect"
             v-bind="$attrs"
             :items="packageTypes"
             :error-messages="errors[0]"
@@ -13,8 +14,8 @@
             :label="label"
             :value="value"
             @change="val => $emit('input', val)"
-        ></v-select
-    ></validation-provider>
+        ></v-select>
+    </validation-provider>
 </template>
 
 <script lang="ts">
@@ -26,7 +27,6 @@ import { PACKAGE_TYPE } from './const';
 import FixedLabelInput from '@/components/common/FixedLabelInput.vue';
 
 import { $t } from '@/utils/NuxtOptions';
-import { fieldRequired } from '@/utils/form';
 
 @Component({
     components: {

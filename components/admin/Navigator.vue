@@ -1,7 +1,7 @@
 <template>
     <v-navigation-drawer
         :value="drawer"
-        fixed
+        fixed width="320px"
         app
         class="nav"
         @input="val => setDrawer(val)"

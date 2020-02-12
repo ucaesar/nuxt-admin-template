@@ -2,7 +2,8 @@
     &.v-input {
         &:not(.v-input--is-disabled) {
             input,
-            textarea {
+            textarea,
+            .v-select__selection {
                 color: #495057;
             }
         }
@@ -11,7 +12,9 @@
 
 .v-input {
     input,
-    textarea {
+    textarea,
+    .v-select__selection,
+    .v-text-field__suffix {
         font-size: 14px;
         font-weight: 400;
     }

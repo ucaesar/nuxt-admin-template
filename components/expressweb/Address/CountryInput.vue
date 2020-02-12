@@ -5,7 +5,7 @@
             :value="value"
             :error-messages="errors[0]"
             v-bind="$attrs"
-            :label="$t('expressweb.address.countryLabel')"
+            :label="aliasLabel === '' ? label : aliasLabel"
             :items="countries"
             :item-value="countryValue"
             :item-text="countryText"
@@ -35,6 +35,11 @@ import { countries } from '@/conf/expressweb/countries';
 class CountryInput extends Vue {
     @Prop({ required: true }) readonly value!: string | undefined;
     @Prop({ type: Boolean, default: false }) readonly sender!: boolean;
+    @Prop({ type: String, default: '' }) readonly aliasLabel!: string;
+
+    get label() {
+        return $t('expressweb.address.countryLabel');
+    }
 
     countries = countries;
 

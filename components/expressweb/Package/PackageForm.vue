@@ -1,5 +1,5 @@
 <template>
-    <v-form ref="form">
+    <v-form>
         <v-row>
             <v-col cols="12" md="6" class="py-0">
                 <weight-unit-input
@@ -66,7 +66,7 @@ class PackageForm extends Vue {
     @Prop({ type: Object, required: true }) readonly value!: Package;
 
     onUpdate(field, value) {
-        this.$emit('input', field, value)
+        this.$emit('input', field, value);
     }
 
     onChangePackageType(val) {

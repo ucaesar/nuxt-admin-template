@@ -2,14 +2,18 @@
     <ct-card
         header-color="primary"
         :header-title="
-            $t('expressweb.shipment.createShipment.packageHeaderText')
+            $t('expressweb.shipment.createShipment.productHeaderText')
         "
         :header-full-width="false"
         :show-header="mobileMode"
     >
         <validation-observer ref="form" v-slot="{}">
             <v-card-text>
-                <package-form :value="pac" @input="onUpdate" />
+                <product-form
+                    :value="products"
+                    :weight-unit="weightUnit"
+                    @input="onUpdate"
+                />
             </v-card-text>
         </validation-observer>
 
@@ -28,39 +32,31 @@
 import { Vue, Component, Prop, Ref } from 'nuxt-property-decorator';
 import { ValidationObserver } from 'vee-validate';
 
-import PackageForm from '@/components/expressweb/Package/PackageForm.vue';
+import ProductForm from '@/components/expressweb/Product/ProductForm.vue';
 import CtCard from '@/components/ImprovedUI/CtCard';
-import { PACKAGE_TYPE } from '@/components/expressweb/Package/const';
 
-import { Package, PackageItem } from '@/models/expressweb/Package';
+import { Product } from '@/models/expressweb/Product';
 
 @Component({
     components: {
-        PackageForm,
+        ProductForm,
         CtCard,
         ValidationObserver
     }
 })
-class PackageComponent extends Vue {
+class ProductComponent extends Vue {
+    @Prop({ type: String, required: true }) readonly weightUnit!: String;
+
     @Ref('form') readonly form!: InstanceType<typeof ValidationObserver>;
 
-    pac = new Package();
+    products = [new Product()];
 
     get mobileMode() {
         return this.$vuetify.breakpoint.smAndDown;
     }
 
-    onUpdate(field, value) {
-        this.pac[field] = value;
-
-        if (field === 'packageType') {
-            if (value === PACKAGE_TYPE.YOUR_PACKAGING) {
-                this.pac.packages = [new PackageItem()];
-                this.pac.weight = undefined;
-            } else {
-                this.pac.packages = undefined;
-            }
-        }
+    onUpdate(products) {
+        this.products = products;
     }
 
     onBack() {
@@ -70,11 +66,11 @@ class PackageComponent extends Vue {
     async onNext() {
         const valid = await this.form.validate();
         if (!valid) return;
-        this.$emit('next', 'pac', this.pac);
+        this.$emit('next', 'products', this.products);
     }
 }
 
-export default PackageComponent;
+export default ProductComponent;
 </script>
 
 <style>

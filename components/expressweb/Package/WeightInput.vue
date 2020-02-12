@@ -8,7 +8,7 @@
             v-bind="$attrs"
             :value="value"
             :error-messages="errors[0]"
-            :label="label"
+            :label="aliasLabel === '' ? label : aliasLabel"
             type="number"
             :suffix="weightUnitTranslation"
             @input="val => $emit('input', val)"
@@ -31,6 +31,7 @@ import { $t } from '@/utils/NuxtOptions';
 class WeightInput extends Vue {
     @Prop({ required: true }) readonly value!: string;
     @Prop({ required: true, default: 'kg' }) readonly weightUnit!: string;
+    @Prop({ type: String, default: '' }) readonly aliasLabel!: string;
 
     get label() {
         return $t('expressweb.package.weightLabel');

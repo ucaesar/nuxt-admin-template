@@ -37,39 +37,69 @@
         <v-row justify="center">
             <v-col cols="12" md="8">
                 <v-stepper-header class="elevation-0">
-                    <v-stepper-step :step="1">{{
-                        $t(
-                            'expressweb.shipment.createShipment.senderAddressHeaderText'
-                        )
-                    }}</v-stepper-step>
+                    <v-stepper-step
+                        :step="SENDER_FORM_STEP"
+                        :complete="SENDER_FORM_STEP < step"
+                        >{{
+                            $t(
+                                'expressweb.shipment.createShipment.senderAddressHeaderText'
+                            )
+                        }}</v-stepper-step
+                    >
 
                     <v-divider></v-divider>
 
-                    <v-stepper-step :step="2">{{
-                        $t(
-                            'expressweb.shipment.createShipment.receiverAddressHeaderText'
-                        )
-                    }}</v-stepper-step>
+                    <v-stepper-step
+                        :step="RECEIVER_FORM_STEP"
+                        :complete="RECEIVER_FORM_STEP < step"
+                        >{{
+                            $t(
+                                'expressweb.shipment.createShipment.receiverAddressHeaderText'
+                            )
+                        }}</v-stepper-step
+                    >
 
                     <v-divider></v-divider>
 
-                    <v-stepper-step :step="3">{{
-                        $t(
-                            'expressweb.shipment.createShipment.packageHeaderText'
-                        )
-                    }}</v-stepper-step>
+                    <v-stepper-step
+                        :step="PACKAGE_FORM_STEP"
+                        :complete="PACKAGE_FORM_STEP < step"
+                        >{{
+                            $t(
+                                'expressweb.shipment.createShipment.packageHeaderText'
+                            )
+                        }}</v-stepper-step
+                    >
+                    <v-divider></v-divider>
+
+                    <v-stepper-step
+                        :step="PRODUCT_FORM_STEP"
+                        :complete="PRODUCT_FORM_STEP < step"
+                        >{{
+                            $t(
+                                'expressweb.shipment.createShipment.productHeaderText'
+                            )
+                        }}</v-stepper-step
+                    >
                 </v-stepper-header>
             </v-col>
             <v-col cols="12" md="6">
                 <v-stepper-items>
-                    <v-stepper-content :step="1" class="pa-0">
+                    <v-stepper-content :step="SENDER_FORM_STEP" class="pa-0">
                         <sender-address @next="onNext" />
                     </v-stepper-content>
-                    <v-stepper-content :step="2" class="pa-0">
+                    <v-stepper-content :step="RECEIVER_FORM_STEP" class="pa-0">
                         <receiver-address @back="onBack" @next="onNext" />
                     </v-stepper-content>
-                    <v-stepper-content :step="3" class="pa-0">
-                        <package @back="onBack" @next="onNext" />
+                    <v-stepper-content :step="PACKAGE_FORM_STEP" class="pa-0">
+                        <package-component @back="onBack" @next="onNext" />
+                    </v-stepper-content>
+                    <v-stepper-content :step="PRODUCT_FORM_STEP" class="pa-0">
+                        <product-component
+                            :weight-unit="pac.weightUnit"
+                            @back="onBack"
+                            @next="onNext"
+                        />
                     </v-stepper-content>
                 </v-stepper-items>
             </v-col>
@@ -82,28 +112,37 @@ import { Vue, Component } from 'nuxt-property-decorator';
 
 import SenderAddress from './SenderAddress.vue';
 import ReceiverAddress from './ReceiverAddress.vue';
-import Package from './Package.vue';
+import PackageComponent from './Package.vue';
+import ProductComponent from './Product.vue';
 
 import { Address } from '@/models/expressweb/Address';
+import { Package } from '@/models/expressweb/Package';
+import { Product } from '@/models/expressweb/Product';
 
 @Component({
     components: {
         SenderAddress,
         ReceiverAddress,
-        Package
+        PackageComponent,
+        ProductComponent
     }
 })
 class CreateShipmentPanel extends Vue {
     step = 1;
     firstStep = 1;
-    lastStep = 3;
+    lastStep = 4;
 
     SENDER_FORM_STEP = 1;
     RECEIVER_FORM_STEP = 2;
-    PACKAGE_FORM_STEP = 0;
+    PACKAGE_FORM_STEP = 3;
+    PRODUCT_FORM_STEP = 4;
 
     senderAddress = new Address();
     receiverAddress = new Address();
+    pac = new Package();
+    products = [new Product()];
+
+    completeState() {}
 
     onBack() {
         const backStep = this.step - 1;
@@ -112,8 +151,8 @@ class CreateShipmentPanel extends Vue {
             : (this.step = backStep);
     }
 
-    onNext() {
-        // this[field] = value;
+    onNext(field, value) {
+        this[field] = value;
         const nextStep = this.step + 1;
         if (nextStep <= this.lastStep) {
             this.step = nextStep;

@@ -1,6 +1,7 @@
 {
     "error": {
         "fieldRequired": "Required *",
-        "gt0": "Must > 0"
+        "gt0": "Must > 0",
+        "gt0Int": "Must be Integer > 0"
     }
 }
