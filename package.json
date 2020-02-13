@@ -18,11 +18,11 @@
 		"prettier": "prettier --ignore-path \"node_modules/**\" --write \"./**/*.vue\""
 	},
 	"config": {
-        "nuxt": {
-            "host": "0.0.0.0",
-            "port": "3000"
-        }
-    },
+		"nuxt": {
+			"host": "0.0.0.0",
+			"port": "3000"
+		}
+	},
 	"dependencies": {
 		"@nuxt/typescript-runtime": "^0.2.2",
 		"@nuxtjs/axios": "^5.3.6",
