@@ -1,4 +1,4 @@
-export default {
+/* export default {
     axios: require('./axios.json'),
 
     components: require('./components.json'),
@@ -12,4 +12,12 @@ export default {
     formValidating: require('./formValidating.json'),
 
     expressweb: require('./expressweb.json')
+}; */
+
+import { loadLangMessages } from './utils';
+
+export default () => {
+    return new Promise(function(resolve) {
+        resolve(loadLangMessages('cn'));
+    });
 };
