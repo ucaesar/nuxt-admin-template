@@ -10,17 +10,17 @@ export default ({ app }) => {
 
     extend('required', {
         ...required,
-        message: i18n.t('formValidating.error.fieldRequired')
+        message: i18n.t('formValidation.error.fieldRequired')
     });
 
     extend('gt0', {
         validate: v => validator.isFloat(v, { gt: 0 }),
-        message: i18n.t('formValidating.error.gt0')
+        message: i18n.t('formValidation.error.gt0')
     });
 
     extend('gt0Int', {
         validate: v => validator.isInt(v, { gt: 0 }),
-        message: i18n.t('formValidating.error.gt0Int')
+        message: i18n.t('formValidation.error.gt0Int')
     });
 
     registerExtend(i18n);

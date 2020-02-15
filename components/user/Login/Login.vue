@@ -32,7 +32,7 @@ import PasswordTextField from './PasswordTextField.vue';
 
 import LangSwitchButton from '@/components/admin/LangSwitchButton.vue';
 
-import CtCard from '@/components/ImprovedUI/CtCard';
+import CtCard from '@/components/ImprovedUI/CtCard.jsx';
 
 import { computeLocalePath } from '@/utils/i18n';
 import * as UserApi from '@/api/user/user';

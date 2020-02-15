@@ -2,7 +2,7 @@ const modules = [
     'admin',
     'axios',
     'components',
-    'formValidating',
+    'formValidation',
     'login',
     'register',
     'superadmin',

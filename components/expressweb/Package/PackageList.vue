@@ -31,9 +31,14 @@
 
             <v-col cols="12" class="d-flex py-0">
                 <div v-if="!inlineChip" class="package-order">
-                    <v-chip :close="value.length > 1" small @click:close="onDelete">{{
-                        $t('expressweb.package.orderLabel') + `${index + 1}`
-                    }}</v-chip>
+                    <v-chip
+                        :close="value.length > 1"
+                        small
+                        @click:close="onDelete"
+                        >{{
+                            $t('expressweb.package.orderLabel') + `${index + 1}`
+                        }}</v-chip
+                    >
                 </div>
 
                 <validation-provider
@@ -43,6 +48,7 @@
                 >
                     <package-input
                         :value="item"
+                        v-bind="$attrs"
                         :errors="errors"
                         :dimension-unit="dimensionUnit"
                         :weight-unit="weightUnit"

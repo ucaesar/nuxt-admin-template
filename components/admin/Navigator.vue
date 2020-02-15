@@ -1,7 +1,7 @@
 <template>
     <v-navigation-drawer
         :value="drawer"
-        fixed width="320px"
+        width="320px"
         app
         class="nav"
         @input="val => setDrawer(val)"
@@ -103,7 +103,7 @@ class Navigator extends Vue {
 
     getNavigationTitle(pathArray: string[]): string {
         const path = this.composeUrl(pathArray);
-        return this.$t('admin.navigator["' + path + '"]').toString();
+        return this.$t(`admin.navigator["${path}"]`).toString();
     }
 }
 

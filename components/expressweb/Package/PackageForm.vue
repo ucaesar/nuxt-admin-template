@@ -3,31 +3,32 @@
         <v-row>
             <v-col cols="12" md="6" class="py-0">
                 <weight-unit-input
+                    v-bind="$attrs"
                     :value="value.weightUnit"
                     @input="val => onUpdate('weightUnit', val)"
                 />
             </v-col>
             <v-col cols="12" md="6" class="py-0">
-                <dimension-unit-input
+                <dimension-unit-input v-bind="$attrs"
                     :value="value.dimensionUnit"
                     @input="val => onUpdate('dimensionUnit', val)"
                 />
             </v-col>
             <v-col cols="12" md="6">
-                <package-type-select
+                <package-type-select v-bind="$attrs"
                     :value="value.packageType"
                     @input="val => onUpdate('packageType', val)"
                 />
             </v-col>
             <v-col v-if="value.packages === undefined" cols="12" md="6">
-                <weight-input
+                <weight-input v-bind="$attrs"
                     :value="value.weight"
                     :weight-unit="value.weightUnit"
                     @input="val => onUpdate('weight', val)"
                 />
             </v-col>
             <v-col v-if="value.packages !== undefined" cols="12">
-                <package-list
+                <package-list v-bind="$attrs"
                     :value="value.packages"
                     :dimension-unit="value.dimensionUnit"
                     :weight-unit="value.weightUnit"
