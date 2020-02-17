@@ -1,5 +1,8 @@
 <template>
-    <ct-card header-color="primary" :header-title="$t('login.toolbarText')" class="mx-0">
+    <v-card>
+        <v-card-title>
+            {{ $t('login.toolbarText') }}
+        </v-card-title>
         <validation-observer ref="form" v-slot="{}">
             <v-card-text>
                 <v-form>
@@ -20,7 +23,7 @@
                 </div>
             </v-card-actions>
         </validation-observer>
-    </ct-card>
+    </v-card>
 </template>
 
 <script lang="ts">
@@ -31,8 +34,6 @@ import UsernameTextField from './UsernameTextField.vue';
 import PasswordTextField from './PasswordTextField.vue';
 
 import LangSwitchButton from '@/components/admin/LangSwitchButton.vue';
-
-import CtCard from '@/components/ImprovedUI/CtCard.jsx';
 
 import { computeLocalePath } from '@/utils/i18n';
 import * as UserApi from '@/api/user/user';
@@ -48,7 +49,6 @@ class LoginForm {
         ValidationObserver,
         UsernameTextField,
         PasswordTextField,
-        CtCard
     }
 })
 class Login extends Vue {

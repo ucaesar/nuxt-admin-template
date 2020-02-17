@@ -4,10 +4,10 @@
         <v-row align="center" justify="center">
             <v-col cols="12">
                 <validation-observer ref="form" v-slot="{}">
-                    <ct-card
-                        header-color="primary"
-                        :header-title="$t('register.toolbarText')"
-                    >
+                    <v-card>
+                        <v-card-title>
+                            {{ $t('register.toolbarText') }}
+                        </v-card-title>
                         <!--
                     <v-toolbar color="primary" dark flat>
                         <v-btn icon><v-icon>mdi-account</v-icon></v-btn>
@@ -47,7 +47,7 @@
                                 </v-btn>
                             </div>
                         </v-card-actions>
-                    </ct-card>
+                    </v-card>
                 </validation-observer>
             </v-col>
         </v-row>
@@ -65,7 +65,6 @@ import PasswordConfirmTextField from './PasswordConfirmTextField.vue';
 
 import LangSwitchButton from '@/components/admin/LangSwitchButton.vue';
 import Message from '@/components/Message.vue';
-import CtCard from '@/components/ImprovedUI/CtCard';
 
 import { computeLocalePath } from '@/utils/i18n';
 
@@ -84,8 +83,7 @@ class RegisterForm {
         EmailTextField,
         UsernameTextField,
         PasswordTextField,
-        PasswordConfirmTextField,
-        CtCard
+        PasswordConfirmTextField
     }
 })
 class Register extends Vue {

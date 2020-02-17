@@ -4,22 +4,19 @@ module.exports = {
         browser: true,
         node: true
     },
-    // parser: '@typescript-eslint/parser',
     parserOptions: {
         // parser: 'babel-eslint'
         parser: '@typescript-eslint/parser'
-        // ecmaVersion: 6,
-        // sourceType: 'module',
-        // ecmaFeatures: {
-        //     jsx: true
-        // }
     },
     extends: [
         '@nuxtjs',
-        'plugin:nuxt/recommended',
-        'plugin:prettier/recommended'
+        'prettier',
+        'prettier/vue',
+        // 'plugin:prettier/recommended',
+        'plugin:vue/recommended',
+        'plugin:nuxt/recommended'
     ],
-    plugins: ['html', '@typescript-eslint'],
+    plugins: ['vue', '@typescript-eslint'],
     // add your custom rules here
     rules: {
         'no-unused-vars': 'off',
@@ -37,6 +34,7 @@ module.exports = {
         'vue/html-closing-bracket-newline': 'off',
         'vue/max-attributes-per-line': 'off',
         'vue/html-closing-bracket-newline': 'off',
+        'vue/attributes-order': 'off',
 
         quotes: [
             2,
@@ -51,6 +49,7 @@ module.exports = {
         'no-unneeded-ternary': 'off',
         'arrow-parens': 'off',
         'space-before-function-paren': 'off',
+        'lines-between-class-members': 'off',
 
         'unicorn/throw-new-error': 'off',
         'prettier/prettier': 'off'

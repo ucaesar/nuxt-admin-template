@@ -1,12 +1,11 @@
 <template>
-    <ct-card
-        header-color="primary"
-        :header-title="
-            $t('expressweb.shipment.createShipment.productHeaderText')
-        "
-        :header-full-width="false"
-        :show-header="mobileMode"
-    >
+    <v-card>
+        <v-card-title>
+            {{
+                $t('expressweb.shipment.createShipment.productHeaderText')
+            }}
+        </v-card-title>
+        <v-divider />
         <validation-observer ref="form" v-slot="{}">
             <v-card-text>
                 <product-form
@@ -25,7 +24,7 @@
                 $t('components.stepper.nextButtonText')
             }}</v-btn>
         </v-card-actions>
-    </ct-card>
+    </v-card>
 </template>
 
 <script lang="ts">
@@ -33,14 +32,12 @@ import { Vue, Component, Prop, Ref } from 'nuxt-property-decorator';
 import { ValidationObserver } from 'vee-validate';
 
 import ProductForm from '@/components/expressweb/Product/ProductForm.vue';
-import CtCard from '@/components/ImprovedUI/CtCard';
 
 import { Product } from '@/models/expressweb/Product';
 
 @Component({
     components: {
         ProductForm,
-        CtCard,
         ValidationObserver
     }
 })

@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar fixed app>
+    <v-app-bar app color="primary" dark>
         <v-app-bar-nav-icon @click.stop="toogleDrawer"></v-app-bar-nav-icon>
         <v-spacer />
         <lang-switch-button />
@@ -28,4 +28,5 @@ class Toolbar extends Vue {
 export default Toolbar;
 </script>
 
-<style></style>
+<style>
+</style>

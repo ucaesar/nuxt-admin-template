@@ -19,6 +19,5 @@ class ResourceManager extends Vue {}
 export default ResourceManager;
 </script>
 
-<style lang="scss">
-    @import '@/assets/styles/variables.scss';
+<style>
 </style>

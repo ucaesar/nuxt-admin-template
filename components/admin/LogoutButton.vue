@@ -1,5 +1,5 @@
 <template>
-    <v-btn text color="primary" :loading="loading" @click="onLogout">
+    <v-btn text :loading="loading" @click="onLogout">
         {{ $t('admin.toolbar.logoutButtonText') }}
     </v-btn>
 </template>

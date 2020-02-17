@@ -31,7 +31,6 @@
     <v-stepper
         :value="step"
         class="elevation-0"
-        :style="{ background: '#eeeeee' }"
         alt-labels
     >
         <v-row justify="center">

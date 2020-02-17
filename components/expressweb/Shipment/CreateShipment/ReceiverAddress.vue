@@ -1,13 +1,17 @@
 <template>
-    <ct-card
+    <!-- <ct-card
         header-color="primary"
         :header-title="
             $t('expressweb.shipment.createShipment.receiverAddressHeaderText')
         "
         :header-full-width="false"
         :show-header="mobileMode"
-    >
-        <v-card-text>
+    > -->
+    <v-card>
+        <v-card-title>
+            {{
+                $t('expressweb.shipment.createShipment.senderAddressHeaderText')
+            }}
             <v-btn text color="primary">
                 <v-icon>mdi-plus</v-icon>
                 {{
@@ -16,6 +20,9 @@
                     )
                 }}
             </v-btn>
+        </v-card-title>
+        <v-divider />
+        <v-card-text>
             <validation-observer ref="form" v-slot="{}">
                 <address-form ref="form" :value="address" @input="onUpdate" />
             </validation-observer>
@@ -28,7 +35,7 @@
                 $t('components.stepper.nextButtonText')
             }}</v-btn>
         </v-card-actions>
-    </ct-card>
+    </v-card>
 </template>
 
 <script lang="ts">
@@ -36,14 +43,12 @@ import { Vue, Component, Ref, Prop } from 'nuxt-property-decorator';
 import { ValidationObserver } from 'vee-validate';
 
 import AddressForm from '@/components/expressweb/Address/AddressForm.vue';
-import CtCard from '@/components/ImprovedUI/CtCard';
 
 import { Address } from '@/models/expressweb/Address';
 
 @Component({
     components: {
         AddressForm,
-        CtCard,
         ValidationObserver
     }
 })

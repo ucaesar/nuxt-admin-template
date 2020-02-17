@@ -2,8 +2,8 @@
     <v-app>
         <Message />
         <admin-navigator />
-        <admin-toolbar />
-        <v-content>
+        <admin-toolbar id="app-toolbar" />
+        <v-content id="app-content">
             <v-container>
                 <nuxt />
             </v-container>
@@ -26,6 +26,7 @@ const adminStore = namespace('admin');
         AdminToolbar,
         Message
     }
+    // middleware: 'admin/navigation'
 })
 class Admin extends Vue {
     @adminStore.Action('setNavigations') setNavigations;
@@ -38,4 +39,7 @@ export default Admin;
 </script>
 
 <style>
+#app-content {
+    background: #eeeeee;
+}
 </style>

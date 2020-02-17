@@ -18,6 +18,4 @@ class LoginPage extends Vue {}
 export default LoginPage;
 </script>
 
-<style lang="scss">
-    @import '@/assets/styles/variables.scss';
-</style>
+<style></style>

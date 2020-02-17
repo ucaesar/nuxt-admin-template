@@ -1,7 +1,7 @@
 <template>
     <v-menu>
         <template v-slot:activator="{ on }">
-            <v-btn text color="primary" v-on="on">{{ buttonTitle }}</v-btn>
+            <v-btn v-bind="$attrs" text v-on="on">{{ buttonTitle }}</v-btn>
         </template>
         <v-list>
             <v-list-item

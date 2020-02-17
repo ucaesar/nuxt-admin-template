@@ -18,6 +18,4 @@ class RegisterPage extends Vue {}
 export default RegisterPage;
 </script>
 
-<style lang="scss">
-    @import '@/assets/styles/variables.scss';
-</style>
+<style></style>

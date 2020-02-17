@@ -91,7 +91,7 @@ class NavigationFilter {
 export default async function({ $axios, store }) {
     consola.info('middelware: navigation.ts');
 
-    if (process.client) {
+    if (process.server) {
         try {
             const data = await $axios.$get('/api/user/permissions');
             const navs = new NavigationFilter(data as string[]).filter();

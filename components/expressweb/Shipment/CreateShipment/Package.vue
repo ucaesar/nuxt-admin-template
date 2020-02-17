@@ -1,12 +1,11 @@
 <template>
-    <ct-card
-        header-color="primary"
-        :header-title="
-            $t('expressweb.shipment.createShipment.packageHeaderText')
-        "
-        :header-full-width="false"
-        :show-header="mobileMode"
-    >
+    <v-card>
+        <v-card-title>
+            {{
+                $t('expressweb.shipment.createShipment.packageHeaderText')
+            }}
+        </v-card-title>
+        <v-divider />
         <validation-observer ref="form" v-slot="{}">
             <v-card-text>
                 <package-form :value="pac" @input="onUpdate" />
@@ -21,7 +20,7 @@
                 $t('components.stepper.nextButtonText')
             }}</v-btn>
         </v-card-actions>
-    </ct-card>
+    </v-card>
 </template>
 
 <script lang="ts">
@@ -29,7 +28,6 @@ import { Vue, Component, Prop, Ref } from 'nuxt-property-decorator';
 import { ValidationObserver } from 'vee-validate';
 
 import PackageForm from '@/components/expressweb/Package/PackageForm.vue';
-import CtCard from '@/components/ImprovedUI/CtCard';
 import { PACKAGE_TYPE } from '@/components/expressweb/Package/const';
 
 import { Package, PackageItem } from '@/models/expressweb/Package';
@@ -37,7 +35,6 @@ import { Package, PackageItem } from '@/models/expressweb/Package';
 @Component({
     components: {
         PackageForm,
-        CtCard,
         ValidationObserver
     }
 })

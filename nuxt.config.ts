@@ -43,9 +43,15 @@ const config: Configuration = {
      */
     buildModules: [
         // Doc: https://github.com/nuxt-community/eslint-module
+        [
+            '@nuxt/typescript-build',
+            {
+                typeCheck: true,
+                ignoreNotFoundWarnings: true
+            }
+        ],
         '@nuxtjs/eslint-module',
-        '@nuxtjs/vuetify',
-        '@nuxt/typescript-build'
+        '@nuxtjs/vuetify'
     ],
     /*
      ** Nuxt.js modules
@@ -53,8 +59,7 @@ const config: Configuration = {
     modules: [
         // Doc: https://axios.nuxtjs.org/usage
         '@nuxtjs/axios',
-        'nuxt-i18n',
-        '@nuxtjs/eslint-module'
+        'nuxt-i18n'
     ],
     /*
      ** Axios module configuration
@@ -74,10 +79,8 @@ const config: Configuration = {
      ** https://github.com/nuxt-community/vuetify-module
      */
     vuetify: {
-        customVariables: [
-            '~/assets/styles/variables.scss',
-            '~/assets/styles/styles.scss'
-        ],
+        customVariables: ['~/assets/variables.scss'],
+        treeShake: true,
         theme: {
             dark: false,
             themes: {
@@ -100,7 +103,7 @@ const config: Configuration = {
         /*
          ** You can extend webpack config here
          */
-        transpile: ['vee-validate/dist/rules'],
+        transpile: ['vee-validate/dist/rules', 'vuetify/lib'],
         extend(config, ctx) {},
         babel: {
             plugins: [
@@ -108,10 +111,6 @@ const config: Configuration = {
                 ['@babel/plugin-proposal-class-properties', { loose: true }]
             ]
         }
-    },
-    typescript: {
-        typeCheck: true,
-        ignoreNotFoundWarnings: true
     },
     serverMiddleware: [
         bodyParser.json(),
