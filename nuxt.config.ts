@@ -37,7 +37,11 @@ const config: Configuration = {
     /*
      ** Plugins to load before mounting the App
      */
-    plugins: ['~/plugins/axios', '~/plugins/validation.ts'],
+    plugins: [
+        '~/plugins/axios',
+        '~/plugins/breakpoint.ts',
+        '~/plugins/validation.ts'
+    ],
     /*
      ** Nuxt.js dev-modules
      */

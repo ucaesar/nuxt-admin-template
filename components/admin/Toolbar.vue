@@ -1,6 +1,7 @@
 <template>
-    <v-app-bar app color="primary" dark>
-        <v-app-bar-nav-icon @click.stop="toogleDrawer"></v-app-bar-nav-icon>
+    <v-app-bar app color="primary" dark :flat="isMobile">
+        <v-app-bar-nav-icon @click.stop="toogleDrawer" />
+        <v-toolbar-title v-if="!isMobile">{{ pageTitle }}</v-toolbar-title>
         <v-spacer />
         <lang-switch-button />
         <logout-button />
@@ -23,6 +24,11 @@ const adminStore = namespace('admin');
 })
 class Toolbar extends Vue {
     @adminStore.Action('toogleDrawer') toogleDrawer;
+    @adminStore.State('pageTitle') pageTitle;
+
+    get isMobile() {
+        return (this as any).$breakpoint.isMobile;
+    }
 }
 
 export default Toolbar;

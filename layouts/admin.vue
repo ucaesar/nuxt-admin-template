@@ -2,12 +2,8 @@
     <v-app>
         <Message />
         <admin-navigator />
-        <admin-toolbar id="app-toolbar" />
-        <v-content id="app-content">
-            <v-container>
-                <nuxt />
-            </v-container>
-        </v-content>
+        <admin-toolbar />
+        <admin-content />
     </v-app>
 </template>
 
@@ -17,6 +13,7 @@ import { Component, Vue, namespace } from 'nuxt-property-decorator';
 import Message from '@/components/Message.vue';
 import AdminNavigator from '@/components/admin/Navigator.vue';
 import AdminToolbar from '@/components/admin/Toolbar.vue';
+import AdminContent from '@/components/admin/Content.vue';
 
 const adminStore = namespace('admin');
 
@@ -24,6 +21,7 @@ const adminStore = namespace('admin');
     components: {
         AdminNavigator,
         AdminToolbar,
+        AdminContent,
         Message
     }
     // middleware: 'admin/navigation'
@@ -39,7 +37,4 @@ export default Admin;
 </script>
 
 <style>
-#app-content {
-    background: #eeeeee;
-}
 </style>

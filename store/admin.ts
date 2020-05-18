@@ -1,4 +1,4 @@
-import { MutationTree, ActionTree } from 'vuex/types/index';
+import { GetterTree, MutationTree, ActionTree } from 'vuex/types/index';
 import _ from 'lodash';
 
 import { INavigation } from '@/models/admin/layout';
@@ -92,6 +92,7 @@ class NavigationFilter {
 
 export const state = () => ({
     drawer: true,
+    pageTitle: '123',
     navigations: [] as INavigation[]
 });
 
@@ -100,6 +101,9 @@ export type AdminState = ReturnType<typeof state>;
 export const mutations: MutationTree<AdminState> = {
     SET_DRAWER: (state: AdminState, drawer: boolean) => {
         state.drawer = drawer;
+    },
+    SET_PAGETITLE: (state: AdminState, pageTitle: string) => {
+        state.pageTitle = pageTitle;
     },
     SET_NAVIGATIONS: (state: AdminState, navigations: INavigation[]) => {
         state.navigations = navigations;
