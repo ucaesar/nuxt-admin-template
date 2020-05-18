@@ -1,5 +1,5 @@
 <template>
-    <v-card class="elevation-0">
+    <v-card flat>
         <v-card-text class="px-md-12">
             <product-form
                 :value="value"

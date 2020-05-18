@@ -1,56 +1,74 @@
 <template>
     <v-row justify="center">
         <v-col cols="12" md="8">
-            <v-tabs vertical>
-                <v-tab>{{
-                    $t(
-                        'expressweb.shipment.createShipment.senderAddressHeaderText'
-                    )
-                }}</v-tab>
-                <v-tab>{{
-                    $t(
-                        'expressweb.shipment.createShipment.receiverAddressHeaderText'
-                    )
-                }}</v-tab>
-                <v-tab>{{
-                    $t('expressweb.shipment.createShipment.packageHeaderText')
-                }}</v-tab>
-                <v-tab>{{
-                    $t('expressweb.shipment.createShipment.productHeaderText')
-                }}</v-tab>
+            <v-card>
+                <v-card-text>
+                    <v-tabs :vertical="!$breakpoint.isMobile" show-arrows>
+                        <v-tab>{{
+                            $t(
+                                'expressweb.shipment.createShipment.senderAddressHeaderText'
+                            )
+                        }}</v-tab>
+                        <v-tab>{{
+                            $t(
+                                'expressweb.shipment.createShipment.receiverAddressHeaderText'
+                            )
+                        }}</v-tab>
+                        <v-tab>{{
+                            $t(
+                                'expressweb.shipment.createShipment.packageHeaderText'
+                            )
+                        }}</v-tab>
+                        <v-tab>{{
+                            $t(
+                                'expressweb.shipment.createShipment.productHeaderText'
+                            )
+                        }}</v-tab>
 
-                <v-tab-item>
-                    <validation-observer ref="senderAddressForm" v-slot="{}">
-                        <sender-address-form
-                            :value="senderAddress"
-                            @input="val => onUpdate('senderAddress', val)"
-                        />
-                    </validation-observer>
-                </v-tab-item>
+                        <v-tab-item>
+                            <validation-observer
+                                ref="senderAddressForm"
+                                v-slot="{}"
+                            >
+                                <sender-address-form
+                                    :value="senderAddress"
+                                    @input="
+                                        val => onUpdate('senderAddress', val)
+                                    "
+                                />
+                            </validation-observer>
+                        </v-tab-item>
 
-                <v-tab-item
-                    ><validation-observer ref="receiverAddressForm" v-slot="{}">
-                        <receiver-address-form
-                            :value="receiverAddress"
-                            @input="val => onUpdate('receiverAddress', val)"
-                        /> </validation-observer
-                ></v-tab-item>
-                <v-tab-item
-                    ><validation-observer ref="packageForm" v-slot="{}">
-                        <package-form
-                            :value="pac"
-                            @input="val => onUpdate('pac', val)"
-                        /> </validation-observer
-                ></v-tab-item>
-                <v-tab-item
-                    ><validation-observer ref="productForm" v-slot="{}">
-                        <product-form
-                            :value="products"
-                            :weightUnit="pac.weightUnit"
-                            @input="val => onUpdate('products', val)"
-                        /> </validation-observer
-                ></v-tab-item>
-            </v-tabs>
+                        <v-tab-item
+                            ><validation-observer
+                                ref="receiverAddressForm"
+                                v-slot="{}"
+                            >
+                                <receiver-address-form
+                                    :value="receiverAddress"
+                                    @input="
+                                        val => onUpdate('receiverAddress', val)
+                                    "
+                                /> </validation-observer
+                        ></v-tab-item>
+                        <v-tab-item
+                            ><validation-observer ref="packageForm" v-slot="{}">
+                                <package-form
+                                    :value="pac"
+                                    @input="val => onUpdate('pac', val)"
+                                /> </validation-observer
+                        ></v-tab-item>
+                        <v-tab-item
+                            ><validation-observer ref="productForm" v-slot="{}">
+                                <product-form
+                                    :value="products"
+                                    :weight-unit="pac.weightUnit"
+                                    @input="val => onUpdate('products', val)"
+                                /> </validation-observer
+                        ></v-tab-item>
+                    </v-tabs>
+                </v-card-text>
+            </v-card>
         </v-col>
 
         <v-col cols="12" md="8">

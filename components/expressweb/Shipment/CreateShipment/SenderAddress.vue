@@ -9,7 +9,7 @@
     > 
     </ct-card> -->
 
-    <v-card class="elevation-0">
+    <v-card flat>
         <v-card-title>
             <v-btn text color="primary">
                 <v-icon>mdi-plus</v-icon>
