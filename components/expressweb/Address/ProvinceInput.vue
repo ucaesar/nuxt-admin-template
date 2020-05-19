@@ -5,7 +5,7 @@
                 :value="value"
                 :error-messages="errors[0]"
                 v-bind="$attrs"
-                :label="$t('expressweb.address.provinceLabel')"
+                :label="aliasLabel === '' ? label : aliasLabel"
                 :items="provinces"
                 :item-value="provinceValue"
                 :item-text="provinceText"
@@ -17,7 +17,7 @@
                 :value="value"
                 :error-messages="errors[0]"
                 v-bind="$attrs"
-                :label="$t('expressweb.address.provinceLabel')"
+                :label="aliasLabel === '' ? label : aliasLabel"
                 @input="onUpdate"
             />
         </template>
@@ -27,6 +27,8 @@
 <script lang="ts">
 import { Vue, Component, Prop, Ref, Watch } from 'nuxt-property-decorator';
 import { ValidationProvider } from 'vee-validate';
+
+import { $t } from '@/utils/NuxtOptions';
 
 import { VForm } from '@/utils/form';
 
@@ -41,12 +43,17 @@ import { provinces } from '@/conf/expressweb/provinces';
 class ProvinceInput extends Vue {
     @Prop({ required: true }) readonly countryCode!: string | undefined;
     @Prop({ required: true }) readonly value!: string | undefined;
+    @Prop({ type: String, default: '' }) readonly aliasLabel!: string;
 
     @Ref('input') readonly input!: InstanceType<typeof ValidationProvider>;
     @Watch('countryCode')
     onChangeCountry() {
         this.$emit('input', '');
         this.input.reset();
+    }
+
+    get label() {
+        return $t('expressweb.address.provinceLabel');
     }
 
     get provinces() {

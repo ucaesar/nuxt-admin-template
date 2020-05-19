@@ -4,7 +4,7 @@
             :value="value"
             :error-messages="errors[0]"
             v-bind="$attrs"
-            :label="$t('expressweb.address.postcodeLabel')"
+            :label="aliasLabel === '' ? label : aliasLabel"
             @input="onUpdate"
         />
     </validation-provider>
@@ -14,6 +14,8 @@
 import { Vue, Component, Prop } from 'nuxt-property-decorator';
 import { ValidationProvider } from 'vee-validate';
 
+import { $t } from '@/utils/NuxtOptions';
+
 @Component({
     components: {
         ValidationProvider
@@ -21,6 +23,11 @@ import { ValidationProvider } from 'vee-validate';
 })
 class PostcodeInput extends Vue {
     @Prop({ required: true }) readonly value!: string | undefined;
+    @Prop({ type: String, default: '' }) readonly aliasLabel!: string;
+
+    get label() {
+        return $t('expressweb.address.postcodeLabel');
+    }
 
     onUpdate(val) {
         this.$emit('input', val);

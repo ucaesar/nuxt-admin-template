@@ -30,7 +30,7 @@ import { $t } from '@/utils/NuxtOptions';
 })
 class WeightInput extends Vue {
     @Prop({ required: true }) readonly value!: string;
-    @Prop({ required: true, default: 'kg' }) readonly weightUnit!: string;
+    @Prop({ default: 'kg' }) readonly weightUnit!: string;
     @Prop({ type: String, default: '' }) readonly aliasLabel!: string;
 
     get label() {
