@@ -11,5 +11,10 @@ export const navConf: INavigation[] = [
         shipment: {
             icon: 'mdi-truck'
         }
+    },
+    {
+        calculator: {
+            icon: 'mdi-calculator'
+        }
     }
 ];

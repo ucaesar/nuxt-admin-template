@@ -9,6 +9,7 @@
         "/superadmin/role": "Role Manager",
         "/superadmin/user": "User Manager",
 
-        "/shipment": "Create Shipment"
+        "/shipment": "Create Shipment",
+        "/calculator": "Fee Calculator"
     }
 }
