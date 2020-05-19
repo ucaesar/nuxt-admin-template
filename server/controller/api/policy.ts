@@ -1,6 +1,6 @@
 import Router from 'koa-router';
-const policyRouter = new Router();
 import getEnforcer from '../../lib/enforcer';
+const policyRouter = new Router();
 
 policyRouter.get('/', async (ctx, next) => {
     const e = await getEnforcer();
