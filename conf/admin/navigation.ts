@@ -6,5 +6,10 @@ export const navConf: INavigation[] = [
             icon: 'mdi-home',
             sub: ['resource', 'resourcegroup', 'role', 'user']
         }
+    },
+    {
+        shipment: {
+            icon: 'mdi-truck'
+        }
     }
 ];

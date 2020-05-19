@@ -92,7 +92,7 @@ class NavigationFilter {
 
 export const state = () => ({
     drawer: true,
-    pageTitle: '123',
+    pageTitle: '',
     navigations: [] as INavigation[]
 });
 

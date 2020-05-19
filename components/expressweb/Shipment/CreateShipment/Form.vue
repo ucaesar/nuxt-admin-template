@@ -2,6 +2,11 @@
     <v-row justify="center">
         <v-col cols="12" md="8">
             <v-card>
+                <v-toolbar flat>
+                    <v-btn text color="primary"
+                        ><v-icon>mdi-plus</v-icon>读取运单</v-btn
+                    >
+                </v-toolbar>
                 <v-card-text>
                     <v-tabs :vertical="!$breakpoint.isMobile" show-arrows>
                         <v-tab>{{

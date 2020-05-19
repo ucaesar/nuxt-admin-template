@@ -7,6 +7,8 @@
         "/superadmin/resource": "Resource Manager",
         "/superadmin/resourcegroup": "Resource Group Manager",
         "/superadmin/role": "Role Manager",
-        "/superadmin/user": "User Manager"
+        "/superadmin/user": "User Manager",
+
+        "/shipment": "Create Shipment"
     }
 }
