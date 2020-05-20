@@ -20,7 +20,7 @@ export interface IPaginationParams {
 export function computePaginationParams(
     pageOptions: IPageOptions
 ): IPaginationParams {
-    let { page, itemsPerPage } = pageOptions;
+    const { page, itemsPerPage } = pageOptions;
     return {
         start: (page - 1) * itemsPerPage,
         count: itemsPerPage
@@ -33,7 +33,9 @@ export class TableDataFromServer implements ITableDataFromServer {
 }
 
 export interface ICrudTableApi {
-    $list: (paginationParams?: IPaginationParams) => Promise<ITableDataFromServer>;
+    $list: (
+        paginationParams?: IPaginationParams
+    ) => Promise<ITableDataFromServer>;
     $add: (arg0: any) => void;
     $delete: (arg0: any) => void;
     $edit: (arg0: any) => void;

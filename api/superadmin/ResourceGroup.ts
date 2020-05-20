@@ -1,6 +1,6 @@
-import { getNuxtAxiosInstance } from '@/utils/NuxtOptions';
-
 import { IResource } from './Resource';
+
+import { getNuxtAxiosInstance } from '@/utils/NuxtOptions';
 
 import { ITableDataFromServer, IPaginationParams } from '@/api/admin/crudTable';
 
@@ -29,7 +29,7 @@ export async function $list(
     let serverData: ITableDataFromServer;
 
     try {
-        let config = paginationParams ? { params: paginationParams } : {};
+        const config = paginationParams ? { params: paginationParams } : {};
         serverData = await $axios.$get(url, config);
     } catch (e) {
         throw e;

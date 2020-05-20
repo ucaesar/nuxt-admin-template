@@ -28,7 +28,7 @@ export async function $list(
     let serverData: ITableDataFromServer;
 
     try {
-        let config = paginationParams ? { params: paginationParams } : {};
+        const config = paginationParams ? { params: paginationParams } : {};
         serverData = await $axios.$get(url, config);
     } catch (e) {
         throw e;
@@ -70,6 +70,7 @@ export async function $edit(resource: IResource) {
     }
 }
 
-export async function $detail(resource: IResource) {
-    return resource;
+export async function $detail(resource: IResource): Promise<Resource> {
+    const r = await resource;
+    return r;
 }
