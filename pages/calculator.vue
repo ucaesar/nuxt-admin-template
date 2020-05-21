@@ -19,7 +19,7 @@ class Page extends Vue {
     @adminStore.Mutation('SET_PAGETITLE') setPageTitle;
 
     mounted() {
-        this.setPageTitle('Fee Calculator');
+        this.setPageTitle(this.$t('expressweb.pageTitle.calculator'));
     }
 }
 

@@ -1,4 +1,8 @@
 {
+    "pageTitle": {
+        "shipment": "创建运单",
+        "calculator": "运费计算器"
+    },
     "address": {
         "nameLabel": "姓名",
         "phoneLabel": "电话",
@@ -61,5 +65,14 @@
             "packageHeaderText": "包裹信息",
             "productHeaderText": "包裹内商品信息"
         }
+    },
+    "calculator": {
+        "senderCountryLabel": "发送方国家",
+        "senderProvinceLabel": "发送方省份",
+        "senderPostcodeLabel": "发送方邮编",
+        "receiverCountryLabel": "接收方国家",
+        "receiverProvinceLabel": "接收方省份",
+        "receiverPostcodeLabel": "接收方邮编",
+        "calButtonText": "预估费用"
     }
 }

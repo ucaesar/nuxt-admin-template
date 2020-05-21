@@ -8,48 +8,109 @@
                             <v-row>
                                 <v-col cols="12" md="4">
                                     <country-input
-                                        :value="senderAddress.country"
-                                        alias-label="发送方国家"
+                                        :value="formData.senderAddress.country"
+                                        :alias-label="
+                                            $t(
+                                                'expressweb.calculator.senderCountryLabel'
+                                            )
+                                        "
                                         sender
                                     />
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <province-input
-                                        :value="senderAddress.province"
-                                        :country-code="senderAddress.country"
-                                        alias-label="发送方省份"
+                                        :value="formData.senderAddress.province"
+                                        :country-code="
+                                            formData.senderAddress.country
+                                        "
+                                        :alias-label="
+                                            $t(
+                                                'expressweb.calculator.senderProvinceLabel'
+                                            )
+                                        "
+                                        @input="
+                                            val =>
+                                                (formData.senderAddress.province = val)
+                                        "
                                     />
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <postcode-input
-                                        :value="senderAddress.postcode"
-                                        alias-label="发送方邮编"
+                                        :value="formData.senderAddress.postcode"
+                                        :alias-label="
+                                            $t(
+                                                'expressweb.calculator.senderPostcodeLabel'
+                                            )
+                                        "
+                                        @input="
+                                            val =>
+                                                (formData.senderAddress.postcode = val)
+                                        "
                                     />
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <country-input
-                                        :value="receiverAddress.country"
-                                        alias-label="接收方国家"
+                                        :value="
+                                            formData.receiverAddress.country
+                                        "
+                                        :alias-label="
+                                            $t(
+                                                'expressweb.calculator.receiverCountryLabel'
+                                            )
+                                        "
+                                        @input="
+                                            val =>
+                                                (formData.receiverAddress.country = val)
+                                        "
                                     />
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <province-input
-                                        :value="senderAddress.province"
-                                        :country-code="receiverAddress.country"
-                                        alias-label="接收方省份"
+                                        :value="
+                                            formData.receiverAddress.province
+                                        "
+                                        :country-code="
+                                            formData.receiverAddress.country
+                                        "
+                                        :alias-label="
+                                            $t(
+                                                'expressweb.calculator.receiverProvinceLabel'
+                                            )
+                                        "
+                                        @input="
+                                            val =>
+                                                (formData.receiverAddress.province = val)
+                                        "
                                     />
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <postcode-input
-                                        :value="receiverAddress.postcode"
-                                        alias-label="接收方邮编"
+                                        :value="
+                                            formData.receiverAddress.postcode
+                                        "
+                                        :alias-label="
+                                            $t(
+                                                'expressweb.calculator.receiverPostcodeLabel'
+                                            )
+                                        "
+                                        @input="
+                                            val =>
+                                                (formData.receiverAddress.postcode = val)
+                                        "
                                     />
                                 </v-col>
                                 <v-col cols="12" md="4">
-                                    <weight-input :value="weight" />
+                                    <weight-input
+                                        :value="formData.weight"
+                                        @input="val => (formData.weight = val)"
+                                    />
                                 </v-col>
                             </v-row>
-                            <v-row><v-btn color="primary">快速计算</v-btn></v-row>
+                            <v-row
+                                ><v-btn color="primary" @click="onSubmit">{{
+                                    $t('expressweb.calculator.calButtonText')
+                                }}</v-btn></v-row
+                            >
                         </v-card-text>
                     </v-card>
                 </v-col>
@@ -68,6 +129,9 @@ import PostcodeInput from '@/components/expressweb/Address/PostcodeInput.vue';
 import WeightInput from '@/components/expressweb/Package/WeightInput.vue';
 
 import { Address } from '@/models/expressweb/Address';
+import { CalculatorData } from '@/models/expressweb/Calculator';
+
+import * as Api from '@/api/expressweb/calculator';
 
 @Component({
     components: {
@@ -81,12 +145,13 @@ import { Address } from '@/models/expressweb/Address';
 class Calculator extends Vue {
     @Ref('form') readonly form!: InstanceType<typeof ValidationObserver>;
 
-    senderAddress = new Address();
-    receiverAddress = new Address();
-    weight = '';
+    formData = new CalculatorData();
 
-    mounted() {
-        this.senderAddress.country = 'CA';
+    async onSubmit() {
+        const valid = await this.form.validate();
+        if (valid) {
+            Api.$post(this.formData);
+        }
     }
 }
 

@@ -25,7 +25,7 @@ class Page extends Vue {
     @adminStore.Mutation('SET_PAGETITLE') setPageTitle;
 
     mounted() {
-        this.setPageTitle('Create Shipment');
+        this.setPageTitle(this.$t('expressweb.pageTitle.shipment'));
     }
 }
 

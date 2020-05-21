@@ -1,4 +1,8 @@
 {
+    "pageTitle": {
+        "shipment": "Create Shipment",
+        "calculator": "Rate Caculator"
+    },
     "address": {
         "nameLabel": "Name",
         "phoneLabel": "Phone",
@@ -61,5 +65,14 @@
             "packageHeaderText": "Package Infomation",
             "productHeaderText": "Products in package"
         }
+    },
+    "calculator": {
+        "senderCountryLabel": "Sender Country",
+        "senderProvinceLabel": "Sender Province",
+        "senderPostcodeLabel": "Sender Postcode",
+        "receiverCountryLabel": "Receiver Country",
+        "receiverProvinceLabel": "Receiver Province",
+        "receiverPostcodeLabel": "Receiver Postcode",
+        "calButtonText": "Quick Calculate"
     }
 }

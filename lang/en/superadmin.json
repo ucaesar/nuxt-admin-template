@@ -1,4 +1,10 @@
 {
+    "pageTitle": {
+        "resource": "Resource Manager",
+        "resourceGroup": "Resource Group Manager",
+        "role": "Role Manager",
+        "user": "User Manager"
+    },
     "roleTable": {
         "tableTitle": "Roles",
         "newButtonText": "New Role",

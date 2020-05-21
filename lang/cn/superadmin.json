@@ -1,4 +1,10 @@
 {
+    "pageTitle": {
+        "resource": "资源管理",
+        "resourceGroup": "资源组管理",
+        "role": "角色管理",
+        "user": "用户管理"
+    },
     "roleTable": {
         "tableTitle": "角色列表",
         "newButtonText": "新建角色",
