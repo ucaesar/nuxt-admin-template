@@ -36,7 +36,7 @@
                                 v-slot="{}"
                             >
                                 <sender-address-form
-                                    :value="senderAddress"
+                                    :value="formData.senderAddress"
                                     @input="
                                         val => onUpdate('senderAddress', val)
                                     "
@@ -50,7 +50,7 @@
                                 v-slot="{}"
                             >
                                 <receiver-address-form
-                                    :value="receiverAddress"
+                                    :value="formData.receiverAddress"
                                     @input="
                                         val => onUpdate('receiverAddress', val)
                                     "
@@ -59,15 +59,15 @@
                         <v-tab-item
                             ><validation-observer ref="packageForm" v-slot="{}">
                                 <package-form
-                                    :value="pac"
+                                    :value="formData.pac"
                                     @input="val => onUpdate('pac', val)"
                                 /> </validation-observer
                         ></v-tab-item>
                         <v-tab-item
                             ><validation-observer ref="productForm" v-slot="{}">
                                 <product-form
-                                    :value="products"
-                                    :weight-unit="pac.weightUnit"
+                                    :value="formData.products"
+                                    :weight-unit="formData.pac.weightUnit"
                                     @input="val => onUpdate('products', val)"
                                 /> </validation-observer
                         ></v-tab-item>
@@ -93,9 +93,7 @@ import ReceiverAddressForm from './ReceiverAddress.vue';
 import PackageForm from './Package.vue';
 import ProductForm from './Product.vue';
 
-import { Address } from '@/models/expressweb/Address';
-import { Package } from '@/models/expressweb/Package';
-import { Product } from '@/models/expressweb/Product';
+import { ShipmentData } from '@/models/expressweb/Shipment';
 
 @Component({
     components: {
@@ -120,17 +118,10 @@ class CreateShipmentForm extends Vue {
         typeof ValidationObserver
     >;
 
-    senderAddress = new Address();
-    receiverAddress = new Address();
-    pac = new Package();
-    products = [new Product()];
-
-    mounted() {
-        this.senderAddress.country = 'CA';
-    }
+    formData = new ShipmentData();
 
     onUpdate(field, value) {
-        this[field] = value;
+        this.formData[field] = value;
     }
 }
 
