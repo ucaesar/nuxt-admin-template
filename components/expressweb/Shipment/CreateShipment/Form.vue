@@ -8,27 +8,50 @@
                     >
                 </v-toolbar>
                 <v-card-text>
-                    <v-tabs :vertical="!$breakpoint.isMobile" show-arrows>
-                        <v-tab>{{
-                            $t(
-                                'expressweb.shipment.createShipment.senderAddressHeaderText'
-                            )
-                        }}</v-tab>
-                        <v-tab>{{
-                            $t(
-                                'expressweb.shipment.createShipment.receiverAddressHeaderText'
-                            )
-                        }}</v-tab>
-                        <v-tab>{{
-                            $t(
-                                'expressweb.shipment.createShipment.packageHeaderText'
-                            )
-                        }}</v-tab>
-                        <v-tab>{{
-                            $t(
-                                'expressweb.shipment.createShipment.productHeaderText'
-                            )
-                        }}</v-tab>
+                    <v-tabs
+                        :vertical="!$breakpoint.isMobile"
+                        show-arrows
+                        center-active
+                        :class="$breakpoint.isMobile ? '' : 'my-tabs'"
+                    >
+                        <form-tab
+                            :label="
+                                $t(
+                                    'expressweb.shipment.createShipment.senderAddressHeaderText'
+                                )
+                            "
+                            error
+                            icon="mdi-map-marker"
+                        >
+                        </form-tab>
+                        <form-tab
+                            :label="
+                                $t(
+                                    'expressweb.shipment.createShipment.receiverAddressHeaderText'
+                                )
+                            "
+                            error
+                            icon="mdi-map-marker"
+                        >
+                        </form-tab>
+                        <form-tab
+                            :label="
+                                $t(
+                                    'expressweb.shipment.createShipment.packageHeaderText'
+                                )
+                            "
+                            error
+                            icon="mdi-package-variant"
+                        ></form-tab>
+                        <form-tab
+                            :label="
+                                $t(
+                                    'expressweb.shipment.createShipment.productHeaderText'
+                                )
+                            "
+                            error
+                            icon="mdi-sack"
+                        ></form-tab>
 
                         <v-tab-item>
                             <validation-observer
@@ -88,6 +111,7 @@ import { Vue, Component, Ref } from 'nuxt-property-decorator';
 import { ValidationObserver } from 'vee-validate';
 import _ from 'lodash';
 
+import FormTab from './FormTab.vue';
 import SenderAddressForm from './SenderAddress.vue';
 import ReceiverAddressForm from './ReceiverAddress.vue';
 import PackageForm from './Package.vue';
@@ -101,7 +125,8 @@ import { ShipmentData } from '@/models/expressweb/Shipment';
         ReceiverAddressForm,
         PackageForm,
         ProductForm,
-        ValidationObserver
+        ValidationObserver,
+        FormTab
     }
 })
 class CreateShipmentForm extends Vue {
@@ -118,6 +143,12 @@ class CreateShipmentForm extends Vue {
         typeof ValidationObserver
     >;
 
+    get tabStyle() {
+        return (this as any).$breakpoint.isMobile
+            ? {}
+            : { 'justify-content': 'flex-start' };
+    }
+
     formData = new ShipmentData();
 
     onUpdate(field, value) {
@@ -127,3 +158,9 @@ class CreateShipmentForm extends Vue {
 
 export default CreateShipmentForm;
 </script>
+
+<style>
+.my-tabs [role='tab'] {
+    justify-content: flex-start;
+}
+</style>
