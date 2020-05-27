@@ -151,6 +151,11 @@ class CreateShipmentForm extends Vue {
 
     formData = new ShipmentData();
 
+    SENDER_ADDRESS_STEP = 0;
+    RECEIVER_ADDRESS_STEP = 1;
+    PACKAGE_STEP = 2;
+    PRODUCT_STEP = 3;
+
     onUpdate(field, value) {
         this.formData[field] = value;
     }
