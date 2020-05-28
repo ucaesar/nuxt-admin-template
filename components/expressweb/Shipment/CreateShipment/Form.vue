@@ -56,13 +56,15 @@
                         <v-tab-item>
                             <validation-observer
                                 ref="senderAddressForm"
-                                v-slot="{}"
+                                v-slot="{ failed }"
                             >
                                 <sender-address-form
                                     :value="formData.senderAddress"
+                                    :failed="failed"
                                     @input="
                                         val => onUpdate('senderAddress', val)
                                     "
+                                    @failed="val => (senderAddressFailed = val)"
                                 />
                             </validation-observer>
                         </v-tab-item>
@@ -155,6 +157,8 @@ class CreateShipmentForm extends Vue {
     RECEIVER_ADDRESS_STEP = 1;
     PACKAGE_STEP = 2;
     PRODUCT_STEP = 3;
+
+    senderAddressFailed = false;
 
     onUpdate(field, value) {
         this.formData[field] = value;
