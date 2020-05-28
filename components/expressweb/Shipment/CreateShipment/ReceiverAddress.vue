@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Ref, Prop } from 'nuxt-property-decorator';
+import { Vue, Component, Ref, Prop, Watch } from 'nuxt-property-decorator';
 
 import _ from 'lodash';
 
@@ -48,6 +48,12 @@ import { Address } from '@/models/expressweb/Address';
 })
 class ReceiverAddressForm extends Vue {
     @Prop({ type: Object, required: true }) readonly value!: Address;
+    @Prop({ required: false }) readonly failed!: boolean;
+
+    @Watch('failed')
+    failedChanged(val) {
+        this.$emit('failed', val);
+    }
 
     get mobileMode() {
         return this.$vuetify.breakpoint.smAndDown;

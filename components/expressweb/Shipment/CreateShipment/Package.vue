@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Ref } from 'nuxt-property-decorator';
+import { Vue, Component, Prop, Ref, Watch } from 'nuxt-property-decorator';
 import _ from 'lodash';
 
 import PackageForm from '@/components/expressweb/Package/PackageForm.vue';
@@ -31,6 +31,12 @@ import { Package, PackageItem } from '@/models/expressweb/Package';
 })
 class PackageComponent extends Vue {
     @Prop({ type: Object, required: true }) readonly value!: Package;
+    @Prop({ required: false }) readonly failed!: boolean;
+
+    @Watch('failed')
+    failedChanged(val) {
+        this.$emit('failed', val);
+    }
 
     get mobileMode() {
         return this.$vuetify.breakpoint.smAndDown;

@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Ref } from 'nuxt-property-decorator';
+import { Vue, Component, Prop, Ref, Watch } from 'nuxt-property-decorator';
 
 import ProductForm from '@/components/expressweb/Product/ProductForm.vue';
 
@@ -34,6 +34,12 @@ import { Product } from '@/models/expressweb/Product';
 class ProductComponent extends Vue {
     @Prop({ type: Array, required: true }) readonly value;
     @Prop({ type: String, required: true }) readonly weightUnit!: String;
+    @Prop({ required: false }) readonly failed!: boolean;
+
+    @Watch('failed')
+    failedChanged(val) {
+        this.$emit('failed', val);
+    }
 
     // products = [new Product()];
 
