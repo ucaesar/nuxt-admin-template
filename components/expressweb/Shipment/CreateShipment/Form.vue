@@ -13,6 +13,8 @@
                         show-arrows
                         center-active
                         :class="$breakpoint.isMobile ? '' : 'my-tabs'"
+                        :color="silderColor"
+                        @change="onTabChanged"
                     >
                         <form-tab
                             :label="
@@ -20,7 +22,7 @@
                                     'expressweb.shipment.createShipment.senderAddressHeaderText'
                                 )
                             "
-                            error
+                            :error="failedFlags[SENDER_ADDRESS_STEP]"
                             icon="mdi-map-marker"
                         >
                         </form-tab>
@@ -30,7 +32,7 @@
                                     'expressweb.shipment.createShipment.receiverAddressHeaderText'
                                 )
                             "
-                            error
+                            :error="failedFlags[RECEIVER_ADDRESS_STEP]"
                             icon="mdi-map-marker"
                         >
                         </form-tab>
@@ -40,7 +42,7 @@
                                     'expressweb.shipment.createShipment.packageHeaderText'
                                 )
                             "
-                            error
+                            :error="failedFlags[PACKAGE_STEP]"
                             icon="mdi-package-variant"
                         ></form-tab>
                         <form-tab
@@ -49,11 +51,11 @@
                                     'expressweb.shipment.createShipment.productHeaderText'
                                 )
                             "
-                            error
+                            :error="failedFlags[PRODUCTS_STEP]"
                             icon="mdi-sack"
                         ></form-tab>
 
-                        <v-tab-item>
+                        <v-tab-item eager>
                             <validation-observer
                                 ref="senderAddressForm"
                                 v-slot="{ failed }"
@@ -64,36 +66,65 @@
                                     @input="
                                         val => onUpdate('senderAddress', val)
                                     "
-                                    @failed="val => (senderAddressFailed = val)"
+                                    @failed="
+                                        val =>
+                                            setFailedFlags(
+                                                SENDER_ADDRESS_STEP,
+                                                val
+                                            )
+                                    "
                                 />
                             </validation-observer>
                         </v-tab-item>
 
-                        <v-tab-item
+                        <v-tab-item eager
                             ><validation-observer
                                 ref="receiverAddressForm"
-                                v-slot="{}"
+                                v-slot="{ failed }"
                             >
                                 <receiver-address-form
                                     :value="formData.receiverAddress"
+                                    :failed="failed"
                                     @input="
                                         val => onUpdate('receiverAddress', val)
                                     "
+                                    @failed="
+                                        val =>
+                                            setFailedFlags(
+                                                RECEIVER_ADDRESS_STEP,
+                                                val
+                                            )
+                                    "
                                 /> </validation-observer
                         ></v-tab-item>
-                        <v-tab-item
-                            ><validation-observer ref="packageForm" v-slot="{}">
+                        <v-tab-item eager
+                            ><validation-observer
+                                ref="packageForm"
+                                v-slot="{ failed }"
+                            >
                                 <package-form
                                     :value="formData.pac"
+                                    :failed="failed"
                                     @input="val => onUpdate('pac', val)"
+                                    @failed="
+                                        val => setFailedFlags(PACKAGE_STEP, val)
+                                    "
                                 /> </validation-observer
                         ></v-tab-item>
-                        <v-tab-item
-                            ><validation-observer ref="productForm" v-slot="{}">
+                        <v-tab-item eager
+                            ><validation-observer
+                                ref="productsForm"
+                                v-slot="{ failed }"
+                            >
                                 <product-form
                                     :value="formData.products"
+                                    :failed="failed"
                                     :weight-unit="formData.pac.weightUnit"
                                     @input="val => onUpdate('products', val)"
+                                    @failed="
+                                        val =>
+                                            setFailedFlags(PRODUCTS_STEP, val)
+                                    "
                                 /> </validation-observer
                         ></v-tab-item>
                     </v-tabs>
@@ -102,7 +133,7 @@
         </v-col>
 
         <v-col cols="12" md="8">
-            <v-btn color="primary" dark>创建运单</v-btn>
+            <v-btn color="primary" dark @click="onSubmit">创建运单</v-btn>
             <v-btn text>重置</v-btn>
         </v-col>
     </v-row>
@@ -120,6 +151,8 @@ import PackageForm from './Package.vue';
 import ProductForm from './Product.vue';
 
 import { ShipmentData } from '@/models/expressweb/Shipment';
+
+import * as Api from '@/api/expressweb/createShipment';
 
 @Component({
     components: {
@@ -141,27 +174,50 @@ class CreateShipmentForm extends Vue {
     @Ref('packageForm') readonly packageForm!: InstanceType<
         typeof ValidationObserver
     >;
-    @Ref('productForm') readonly productForm!: InstanceType<
+    @Ref('productsForm') readonly productsForm!: InstanceType<
         typeof ValidationObserver
     >;
 
-    get tabStyle() {
-        return (this as any).$breakpoint.isMobile
-            ? {}
-            : { 'justify-content': 'flex-start' };
+    get silderColor() {
+        return this.failedFlags[this.curStep] ? 'red' : '';
     }
 
     formData = new ShipmentData();
 
+    failedFlags = [false, false, false, false];
+
+    curStep = 0;
     SENDER_ADDRESS_STEP = 0;
     RECEIVER_ADDRESS_STEP = 1;
     PACKAGE_STEP = 2;
-    PRODUCT_STEP = 3;
-
-    senderAddressFailed = false;
+    PRODUCTS_STEP = 3;
 
     onUpdate(field, value) {
         this.formData[field] = value;
+    }
+
+    onTabChanged(number) {
+        this.curStep = number;
+    }
+
+    setFailedFlags(index, val) {
+        this.$set(this.failedFlags, index, val);
+    }
+
+    async onSubmit() {
+        const senderAddressValid = await this.senderAddressForm.validate();
+        const receiverAddressValid = await this.receiverAddressForm.validate();
+        const packageValid = await this.packageForm.validate();
+        const productsValid = await this.productsForm.validate();
+
+        if (
+            senderAddressValid &&
+            receiverAddressValid &&
+            packageValid &&
+            productsValid
+        ) {
+            Api.$post(this.formData);
+        }
     }
 }
 

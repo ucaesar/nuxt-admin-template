@@ -1,12 +1,12 @@
 import { getNuxtAxiosInstance } from '@/utils/NuxtOptions';
 
-import { ICalculatorData } from '@/models/expressweb/Calculator';
+import { IShipment } from '@/models/expressweb/Shipment';
 
 function getBaseUrl() {
-    return '/api/expressweb/calculator';
+    return '/api/shipment/create';
 }
 
-export async function $post(data: ICalculatorData) {
+export async function $post(data: IShipment) {
     const url = getBaseUrl();
     const $axios = getNuxtAxiosInstance();
 

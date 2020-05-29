@@ -1,6 +1,6 @@
 <template>
-    <v-tab>
-        <v-icon left>{{ icon }}</v-icon>
+    <v-tab :style="colorStyle">
+        <v-icon left :style="colorStyle">{{ iconString }}</v-icon>
         {{ label }}
     </v-tab>
 </template>
@@ -13,6 +13,14 @@ class FormTab extends Vue {
     @Prop({ required: true }) readonly label!: string;
     @Prop({ required: true }) readonly error!: boolean;
     @Prop({ required: true }) readonly icon!: string;
+
+    get iconString() {
+        return this.error ? 'mdi-alert' : this.icon;
+    }
+
+    get colorStyle() {
+        return this.error ? { color: 'red' } : {};
+    }
 }
 
 export default FormTab;
