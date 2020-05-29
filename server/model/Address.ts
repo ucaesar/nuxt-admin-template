@@ -11,10 +11,6 @@ import {
     ForeignKey
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
-import Resource from './Resource';
-import Role from './Role';
-import ResourceResourceGroup from './ResourceResourceGroup';
-import RoleResourceGroup from './RoleResourceGroup';
 
 @Table({ tableName: 'address' })
 class Address extends Model<Address> {
