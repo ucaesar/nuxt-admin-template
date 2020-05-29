@@ -3,6 +3,7 @@ import roleRouter from './role';
 import userRouter from './user';
 import resourceGroupRouter from './resource-group';
 import resourceRouter from './resource';
+import shipmentRouter from './shipment';
 import Router from 'koa-router';
 
 const apiRouter = new Router();
@@ -16,4 +17,5 @@ apiRouter.use('/api/role', roleRouter.routes());
 apiRouter.use('/api/user', userRouter.routes());
 apiRouter.use('/api/resource-group', resourceGroupRouter.routes());
 apiRouter.use('/api/resource', resourceRouter.routes());
+apiRouter.use('/api/shipment', shipmentRouter.routes());
 export default apiRouter;

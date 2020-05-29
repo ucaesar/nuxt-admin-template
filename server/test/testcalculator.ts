@@ -4,6 +4,7 @@ const expect = require('chai').expect;
 // const FedExAPI = require('node-shipping-fedex');
 const FedExAPI = require('fedex-manager');
 console.log(FedExAPI);
+const fs = require('fs');
 // const fedex = new FedExAPI({
 //     environment: 'live', // or live
 //     debug: true,
@@ -15,7 +16,7 @@ console.log(FedExAPI);
 // });
 const fedex = new FedExAPI({
     environment: 'sandbox', // or live
-    debug: true,
+    debug: false,
     key: 'DtKE3OM6Kb5RrLHt',
     password: 'hS8OZSrhAnlcMafNaRFSDRVUo',
     account_number: '510087500',
@@ -149,14 +150,90 @@ const fedex = new FedExAPI({
 //     }
 // });
 // console.log(process.env.FDX_ACC_NUM);
-console.log(fedex.options.account_number);
-fedex.rates(
+// console.log(fedex.options.account_number);
+// fedex.rates(
+//     {
+//         ReturnTransitAndCommit: true,
+//         CarrierCodes: ['FDXE', 'FDXG'],
+//         RequestedShipment: {
+//             DropoffType: 'REGULAR_PICKUP',
+//             // ServiceType: 'FEDEX_GROUND',
+//             PackagingType: 'YOUR_PACKAGING',
+//             Shipper: {
+//                 Contact: {
+//                     PersonName: 'Sender Name',
+//                     CompanyName: 'Company Name',
+//                     PhoneNumber: '5555555555'
+//                 },
+//                 Address: {
+//                     StreetLines: ['1436 Harwood St'],
+//                     City: 'Vancouver',
+//                     StateOrProvinceCode: 'BC',
+//                     PostalCode: 'V6G 1X5',
+//                     CountryCode: 'CA'
+//                 }
+//             },
+//             Recipient: {
+//                 Contact: {
+//                     PersonName: 'Recipient Name',
+//                     CompanyName: 'Company Receipt Name',
+//                     PhoneNumber: '5555555555'
+//                 },
+//                 Address: {
+//                     StreetLines: ['601 W Cordova St'],
+//                     City: 'Vancouver',
+//                     StateOrProvinceCode: 'BC',
+//                     PostalCode: 'V6B 1G1',
+//                     CountryCode: 'CA',
+//                     Residential: false
+//                 }
+//             },
+//             ShippingChargesPayment: {
+//                 PaymentType: 'SENDER',
+//                 Payor: {
+//                     ResponsibleParty: {
+//                         AccountNumber: fedex.options.account_number
+//                     }
+//                 }
+//             },
+//             // PackageCount: '1',
+//             // RequestedPackageLineItems: {
+//             //     SequenceNumber: 1,
+//             //     GroupPackageCount: 1,
+//             //     Weight: {
+//             //         Units: 'LB',
+//             //         Value: '50.0'
+//             //     },
+//             //     Dimensions: {
+//             //         Length: 108,
+//             //         Width: 5,
+//             //         Height: 5,
+//             //         Units: 'IN'
+//             //     }
+//             // }
+//         }
+//     },
+//     function(err, res) {
+//         if (err) {
+//             return console.log(err);
+//         }
+
+//         console.log(res);
+//     }
+// );
+
+/**
+ * Ship
+ */
+const date = new Date();
+fedex.ship(
     {
-        ReturnTransitAndCommit: true,
-        CarrierCodes: ['FDXE', 'FDXG'],
         RequestedShipment: {
+            ShipTimestamp: new Date(
+                date.getTime() + 24 * 60 * 60 * 1000
+            ).toISOString(),
             DropoffType: 'REGULAR_PICKUP',
-            // ServiceType: 'FEDEX_GROUND',
+            ServiceType: 'FEDEX_GROUND',
             PackagingType: 'YOUR_PACKAGING',
             Shipper: {
                 Contact: {
@@ -187,117 +264,55 @@ fedex.rates(
                     Residential: false
                 }
             },
-            // ShippingChargesPayment: {
-            //     PaymentType: 'SENDER',
-            //     Payor: {
-            //         ResponsibleParty: {
-            //             AccountNumber: fedex.options.account_number
-            //         }
-            //     }
-            // },
-            PackageCount: '1',
-            RequestedPackageLineItems: {
-                SequenceNumber: 1,
-                GroupPackageCount: 1,
-                Weight: {
-                    Units: 'LB',
-                    Value: '50.0'
-                },
-                Dimensions: {
-                    Length: 108,
-                    Width: 5,
-                    Height: 5,
-                    Units: 'IN'
+            ShippingChargesPayment: {
+                PaymentType: 'SENDER',
+                Payor: {
+                    ResponsibleParty: {
+                        AccountNumber: fedex.options.account_number
+                    }
                 }
-            }
+            },
+            LabelSpecification: {
+                LabelFormatType: 'COMMON2D',
+                ImageType: 'PDF',
+                LabelStockType: 'PAPER_4X6'
+            },
+            PackageCount: '1',
+            RequestedPackageLineItems: [
+                {
+                    SequenceNumber: 1,
+                    GroupPackageCount: 1,
+                    Weight: {
+                        Units: 'LB',
+                        Value: '50.0'
+                    },
+                    Dimensions: {
+                        Length: 108,
+                        Width: 5,
+                        Height: 5,
+                        Units: 'IN'
+                    }
+                }
+            ]
         }
     },
     function(err, res) {
         if (err) {
-            return console.log(err);
+            return console.log(util.inspect(err, { depth: null }));
         }
 
-        console.log(res);
+        //   console.log(util.inspect(res, {depth: null}));
+        const a =
+            res.CompletedShipmentDetail.CompletedPackageDetails[0].Label
+                .Parts[0].Image;
+        const b = Buffer.from(a,'base64');
+        console.log(b);
+        fs.writeFile('aaa.pdf', b, 'binary', function(err) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('The file was saved!');
+            }
+        });
     }
 );
-
-
-/**
- * Ship
- */
-const date = new Date();
-fedex.ship({
-  RequestedShipment: {
-    ShipTimestamp: new Date(date.getTime() + (24*60*60*1000)).toISOString(),
-    DropoffType: 'REGULAR_PICKUP',
-    ServiceType: 'FEDEX_GROUND',
-    PackagingType: 'YOUR_PACKAGING',
-    Shipper: {
-      Contact: {
-        PersonName: 'Sender Name',
-        CompanyName: 'Company Name',
-        PhoneNumber: '5555555555'
-      },
-      Address: {
-        StreetLines: [
-          'Address Line 1'
-        ],
-        City: 'Collierville',
-        StateOrProvinceCode: 'TN',
-        PostalCode: '38017',
-        CountryCode: 'US'
-      }
-    },
-    Recipient: {
-      Contact: {
-        PersonName: 'Recipient Name',
-        CompanyName: 'Company Receipt Name',
-        PhoneNumber: '5555555555'
-      },
-      Address: {
-        StreetLines: [
-          'Address Line 1'
-        ],
-        City: 'Charlotte',
-        StateOrProvinceCode: 'NC',
-        PostalCode: '28202',
-        CountryCode: 'US',
-        Residential: false
-      }
-    },
-    ShippingChargesPayment: {
-      PaymentType: 'SENDER',
-      Payor: {
-        ResponsibleParty: {
-          AccountNumber: fedex.options.account_number
-        }
-      }
-    },
-    LabelSpecification: {
-      LabelFormatType: 'COMMON2D',
-      ImageType: 'PDF',
-      LabelStockType: 'PAPER_4X6'
-    },
-    PackageCount: '1',
-    RequestedPackageLineItems: [{
-      SequenceNumber: 1,
-      GroupPackageCount: 1,
-      Weight: {
-        Units: 'LB',
-        Value: '50.0'
-      },
-      Dimensions: {
-        Length: 108,
-        Width: 5,
-        Height: 5,
-        Units: 'IN'
-      }
-    }]
-  }
-}, function(err, res) {
-  if(err) {
-    return console.log(util.inspect(err, {depth: null}));
-  }
-
-  console.log(util.inspect(res, {depth: null}));
-});
