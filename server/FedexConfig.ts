@@ -1,4 +1,4 @@
-export default {
+const fedexConfig = {
     environment: 'sandbox', // or live
     debug: false,
     key: 'DtKE3OM6Kb5RrLHt',
@@ -7,3 +7,4 @@ export default {
     meter_number: '119118039',
     imperial: false // set to false for metric
 };
+export default fedexConfig;
