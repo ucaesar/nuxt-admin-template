@@ -226,93 +226,182 @@ const fedex = new FedExAPI({
  * Ship
  */
 const date = new Date();
-fedex.ship(
-    {
-        RequestedShipment: {
-            ShipTimestamp: new Date(
-                date.getTime() + 24 * 60 * 60 * 1000
-            ).toISOString(),
-            DropoffType: 'REGULAR_PICKUP',
-            ServiceType: 'FEDEX_GROUND',
-            PackagingType: 'YOUR_PACKAGING',
-            Shipper: {
-                Contact: {
-                    PersonName: 'Sender Name',
-                    CompanyName: 'Company Name',
-                    PhoneNumber: '5555555555'
+let masterid = '';
+const masterItem = {
+    RequestedShipment: {
+        ShipTimestamp: new Date(
+            date.getTime() + 24 * 60 * 60 * 1000
+        ).toISOString(),
+        DropoffType: 'REGULAR_PICKUP',
+        ServiceType: 'FEDEX_GROUND',
+        PackagingType: 'YOUR_PACKAGING',
+        Shipper: {
+            Contact: {
+                PersonName: 'Sender Name',
+                CompanyName: 'Company Name',
+                PhoneNumber: '5555555555'
+            },
+            Address: {
+                StreetLines: ['Address Line 1'],
+                City: 'Collierville',
+                StateOrProvinceCode: 'TN',
+                PostalCode: '38017',
+                CountryCode: 'US'
+            }
+        },
+        Recipient: {
+            Contact: {
+                PersonName: 'Recipient Name',
+                CompanyName: 'Company Receipt Name',
+                PhoneNumber: '5555555555'
+            },
+            Address: {
+                StreetLines: ['Address Line 1'],
+                City: 'Charlotte',
+                StateOrProvinceCode: 'NC',
+                PostalCode: '28202',
+                CountryCode: 'US',
+                Residential: false
+            }
+        },
+        ShippingChargesPayment: {
+            PaymentType: 'SENDER',
+            Payor: {
+                ResponsibleParty: {
+                    AccountNumber: fedex.options.account_number
+                }
+            }
+        },
+        LabelSpecification: {
+            LabelFormatType: 'COMMON2D',
+            ImageType: 'PDF',
+            LabelStockType: 'PAPER_4X6'
+        },
+        PackageCount: '2',
+        RequestedPackageLineItems: [
+            {
+                SequenceNumber: 1,
+                GroupPackageCount: 1,
+                Weight: {
+                    Units: 'LB',
+                    Value: '50.0'
                 },
-                Address: {
-                    StreetLines: ['Address Line 1'],
-                    City: 'Collierville',
-                    StateOrProvinceCode: 'TN',
-                    PostalCode: '38017',
-                    CountryCode: 'US'
+                Dimensions: {
+                    Length: 5,
+                    Width: 5,
+                    Height: 5,
+                    Units: 'IN'
                 }
+            }
+        ]
+    }
+};
+const childItem = {
+    RequestedShipment: {
+        ShipTimestamp: new Date(
+            date.getTime() + 24 * 60 * 60 * 1000
+        ).toISOString(),
+        DropoffType: 'REGULAR_PICKUP',
+        ServiceType: 'FEDEX_GROUND',
+        PackagingType: 'YOUR_PACKAGING',
+        Shipper: {
+            Contact: {
+                PersonName: 'Sender Name',
+                CompanyName: 'Company Name',
+                PhoneNumber: '5555555555'
             },
-            Recipient: {
-                Contact: {
-                    PersonName: 'Recipient Name',
-                    CompanyName: 'Company Receipt Name',
-                    PhoneNumber: '5555555555'
+            Address: {
+                StreetLines: ['Address Line 1'],
+                City: 'Collierville',
+                StateOrProvinceCode: 'TN',
+                PostalCode: '38017',
+                CountryCode: 'US'
+            }
+        },
+        Recipient: {
+            Contact: {
+                PersonName: 'Recipient Name',
+                CompanyName: 'Company Receipt Name',
+                PhoneNumber: '5555555555'
+            },
+            Address: {
+                StreetLines: ['Address Line 1'],
+                City: 'Charlotte',
+                StateOrProvinceCode: 'NC',
+                PostalCode: '28202',
+                CountryCode: 'US',
+                Residential: false
+            }
+        },
+        // ShippingChargesPayment: {
+        //     PaymentType: 'SENDER',
+        //     Payor: {
+        //         ResponsibleParty: {
+        //             AccountNumber: fedex.options.account_number
+        //         }
+        //     }
+        // },
+        LabelSpecification: {
+            LabelFormatType: 'COMMON2D',
+            ImageType: 'PDF',
+            LabelStockType: 'PAPER_4X6'
+        },
+        MasterTrackingId: {},
+        PackageCount: '2',
+        RequestedPackageLineItems: [
+            {
+                SequenceNumber: 2,
+                GroupPackageCount: 1,
+                Weight: {
+                    Units: 'LB',
+                    Value: '50.0'
                 },
-                Address: {
-                    StreetLines: ['Address Line 1'],
-                    City: 'Charlotte',
-                    StateOrProvinceCode: 'NC',
-                    PostalCode: '28202',
-                    CountryCode: 'US',
-                    Residential: false
+                Dimensions: {
+                    Length: 5,
+                    Width: 5,
+                    Height: 5,
+                    Units: 'IN'
                 }
-            },
-            ShippingChargesPayment: {
-                PaymentType: 'SENDER',
-                Payor: {
-                    ResponsibleParty: {
-                        AccountNumber: fedex.options.account_number
-                    }
-                }
-            },
-            LabelSpecification: {
-                LabelFormatType: 'COMMON2D',
-                ImageType: 'PDF',
-                LabelStockType: 'PAPER_4X6'
-            },
-            PackageCount: '1',
-            RequestedPackageLineItems: [
-                {
-                    SequenceNumber: 1,
-                    GroupPackageCount: 1,
-                    Weight: {
-                        Units: 'LB',
-                        Value: '50.0'
-                    },
-                    Dimensions: {
-                        Length: 108,
-                        Width: 5,
-                        Height: 5,
-                        Units: 'IN'
-                    }
-                }
-            ]
+            }
+        ]
+    }
+};
+fedex.ship(masterItem, function(err, res) {
+    if (err) {
+        return console.log(util.inspect(err, { depth: null }));
+    }
+
+    //   console.log(util.inspect(res, {depth: null}));
+    masterid = res.CompletedShipmentDetail.MasterTrackingId;
+    childItem.RequestedShipment.MasterTrackingId = masterid;
+    console.log(masterid);
+    const a =
+        res.CompletedShipmentDetail.CompletedPackageDetails[0].Label.Parts[0]
+            .Image;
+    const b = Buffer.from(a, 'base64');
+    console.log(b);
+    fs.writeFile('aaa.pdf', b, 'binary', function(err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('The master file was saved!');
         }
-    },
-    function(err, res) {
+    });
+    fedex.ship(childItem, function(err, res) {
         if (err) {
             return console.log(util.inspect(err, { depth: null }));
         }
-
-        //   console.log(util.inspect(res, {depth: null}));
         const a =
             res.CompletedShipmentDetail.CompletedPackageDetails[0].Label
                 .Parts[0].Image;
-        const b = Buffer.from(a,'base64');
+        const b = Buffer.from(a, 'base64');
         console.log(b);
-        fs.writeFile('aaa.pdf', b, 'binary', function(err) {
+        fs.writeFile('bbb.pdf', b, 'binary', function(err) {
             if (err) {
                 console.log(err);
             } else {
-                console.log('The file was saved!');
+                console.log('The child file was saved!');
             }
         });
-    }
-);
+    });
+});
