@@ -1,6 +1,5 @@
 import Router from 'koa-router';
 import fedexConfig from '../../FedexConfig';
-import { exception } from 'console';
 const shipmentRouter = new Router();
 const util = require('util');
 const FedExAPI = require('fedex-manager');
