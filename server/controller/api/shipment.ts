@@ -29,7 +29,7 @@ shipmentRouter.post('/create', async ctx => {
                     .Parts[0].Image
             ]
         };
-        packages.children.forEach(async child => {
+        for (const child of packages.children) {
             (child as any).MasterTrackingId = masterid;
             const res = await ship({
                 RequestedShipment: child
@@ -45,10 +45,11 @@ shipmentRouter.post('/create', async ctx => {
                 res.CompletedShipmentDetail.CompletedPackageDetails[0].Label
                     .Parts[0].Image
             );
-        });
+        }
     } catch (err) {
         console.log(err);
         result = { error: err };
+        throw err;
     } finally {
         ctx.response.type = 'text/json';
         ctx.response.status = 200;
@@ -180,6 +181,8 @@ function bulidRequestShipments(ctx) {
                 label
             );
             childitem.PackageCount = packsInfo.length;
+            (childitem as any).TotalWeight.Units = (ctx.req as any).body.pac.weightUnit.toUpperCase();
+            (childitem as any).TotalWeight.Value = totalWeight;
             childitem.RequestedPackageLineItems = [
                 {
                     SequenceNumber: i,
@@ -229,6 +232,7 @@ function newRequest(
             Recipient: recipient,
             ShippingChargesPayment: payment,
             LabelSpecification: label,
+            MasterTrackingId: {},
             PackageCount: '',
             RequestedPackageLineItems: [
                 {
