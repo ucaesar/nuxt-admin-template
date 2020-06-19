@@ -3,14 +3,14 @@ export interface IRequestedShipment {
     DropoffType: DropoffType;
     ServiceType: ServiceType;
     PackagingType: PackagingType;
-    TotalWeight?: Weight;
-    Shipper: Party;
-    Recipient: Party;
-    ShippingChargesPayment?: Payment;
-    // LabelSpecification: LabelSpecification,
-    MasterTrackingId?: {};
+    TotalWeight?: IWeight;
+    Shipper: IParty;
+    Recipient: IParty;
+    ShippingChargesPayment?: IPayment;
+    LabelSpecification: ILabelSpecification;
+    MasterTrackingId?: ITrackingId;
     PackageCount: number;
-    RequestedPackageLineItems: [];
+    RequestedPackageLineItems: IRequestedPackageLineItem[];
 }
 
 export enum DropoffType {
@@ -81,17 +81,63 @@ export enum PaymentType {
     THIRD_PARTY = 'THIRD_PARTY'
 }
 
-export interface Weight {
+export enum LabelFormatType {
+    COMMON2D = 'COMMON2D',
+    FEDEX_FREIGHT_STRAIGHT_BILL_OF_LADING = 'FEDEX_FREIGHT_STRAIGHT_BILL_OF_LADING',
+    LABEL_DATA_ONLY = 'LABEL_DATA_ONLY',
+    VICS_BILL_OF_LADING = 'VICS_BILL_OF_LADING'
+}
+
+export enum ShippingDocumentImageType {
+    DOC = 'DOC',
+    EPL2 = 'EPL2',
+    PDF = 'PDF',
+    PNG = 'PNG',
+    RTF = 'RTF',
+    TEXT = 'TEXT',
+    ZPLII = 'ZPLII'
+}
+
+export enum LabelStockType {
+    PAPER_4X6 = 'PAPER_4X6',
+    PAPER_4X8 = 'PAPER_4X8',
+    PAPER_4X9 = 'PAPER_4X9',
+    PAPER_7X4 = 'PAPER_7X4.75',
+    PAPER_8DOT5X11_BOTTOM_HALF_LABEL = 'PAPER_8.5X11_BOTTOM_HALF_LABEL',
+    PAPER_8DOT5X11_TOP_HALF_LABEL = 'PAPER_8.5X11_TOP_HALF_LABEL',
+    PAPER_LETTER = 'PAPER_LETTER',
+    STOCK_4X6 = 'STOCK_4X6',
+    STOCK_4X6DOT75_LEADING_DOC_TAB = 'STOCK_4X6.75_LEADING_DOC_TAB',
+    STOCK_4X6DOT75_TRAILING_DOC_TAB = 'STOCK_4X6.75_TRAILING_DOC_TAB',
+    STOCK_4X8 = 'STOCK_4X8',
+    STOCK_4X9_LEADING_DOC_TAB = 'STOCK_4X9_LEADING_DOC_TAB',
+    STOCK_4X9_TRAILING_DOC_TAB = 'STOCK_4X9_TRAILING_DOC_TAB'
+}
+
+export enum TrackingIdType {
+    EXPRESS = 'EXPRESS',
+    FEDEX = 'FEDEX',
+    FREIGHT = 'FREIGHT',
+    GROUND = 'GROUND',
+    USPS = 'USPS'
+}
+
+export enum LinearUnits {
+    CM = 'CM',
+    IN = 'IN'
+}
+
+export interface IWeight {
     Units: WeightUnits;
     Value: number;
 }
 
-export interface Money {
+export interface IMoney {
     Currency: string;
     Amount: number;
 }
 
-export interface Contact {
+export interface IContact {
     ContactId?: string;
     PersonName?: string;
     Title?: string;
@@ -104,7 +150,7 @@ export interface Contact {
     EMailAddress?: string;
 }
 
-export interface Address {
+export interface IAddress {
     StreetLines?: string[];
     City?: string;
     StateOrProvinceCode?: string;
@@ -116,18 +162,58 @@ export interface Address {
     GeographicCoordinates?: string;
 }
 
-export interface Party {
+export interface IParty {
     AccountNumber?: string;
     // Tins?: TaxpayerIdentification;
-    Contact?: Contact;
-    Address?: Address;
+    Contact?: IContact;
+    Address?: IAddress;
 }
 
-export interface Payor {
-    ResponsibleParty?: Party;
+export interface IPayor {
+    ResponsibleParty?: IParty;
 }
 
-export interface Payment {
+export interface IPayment {
     PaymentType: PaymentType;
-    Payor?: Payor;
+    Payor?: IPayor;
+}
+
+export interface ILabelSpecification {
+    // Dispositions?: ShippingDocumentDispositionDetail;
+    LabelFormatType: LabelFormatType;
+    ImageType?: ShippingDocumentImageType;
+    LabelStockType?: LabelStockType;
+    // LabelPrintingOrientation?: LabelPrintingOrientationType;
+    // LabelOrder?: LabelOrderType;
+    // PrintedLabelOrigin?: ContactAndAddress;
+    // CustomerSpecifiedDetail?: CustomerSpecifiedLabelDetail;
+}
+
+export interface ITrackingId {
+    TrackingIdType?: TrackingIdType;
+    FormId?: string;
+    UspsApplicationId?: string;
+    TrackingNumber?: string;
+}
+
+export interface IRequestedPackageLineItem {
+    SequenceNumber?: number;
+    GroupNumber?: number;
+    GroupPackageCount?: number;
+    // VariableHandlingChargeDetail?:VariableHandlingChargeDetail;
+    InsuredValue?: IMoney;
+    Weight?: IWeight;
+    Dimensions?: IDimensions;
+    ItemDescription?: string;
+    ItemDescriptionForClearance?: string;
+    // CustomerReferences?:CustomerReference;
+    // SpecialServicesRequested?:PackageSpecialServicesRequested;
+    // ContentRecords?:ContentRecord;
+}
+
+export interface IDimensions {
+    Length: number;
+    Width: number;
+    Height: number;
+    Units: LinearUnits;
 }
