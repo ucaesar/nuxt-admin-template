@@ -13,13 +13,38 @@ export interface IRequestedShipment {
     RequestedPackageLineItems: IRequestedPackageLineItem[];
 }
 
+export interface IProcessShipmentRequest {
+    WebAuthenticationDetail: IWebAuthenticationDetail;
+    ClientDetail: IClientDetail;
+    TransactionDetail?: ITransactionDetail;
+    Version: IVersionId;
+    RequestedShipment: IRequestedShipment;
+}
+
+export interface IWebAuthenticationDetail {
+    ParentCredential?: IWebAuthenticationCredential;
+    UserCredential: IWebAuthenticationCredential;
+}
+
+export interface IWebAuthenticationCredential {
+    Key: string;
+    Password: string;
+}
+
+export interface IClientDetail {
+    AccountNumber: string;
+    MeterNumber: string;
+    IntegratorId?: string;
+    Localization?: ILocalization;
+}
+
 export interface IProcessShipmentReply {
     HighestSeverity: NotificationSeverityType;
     Notifications: INotification[];
     TransactionDetail?: ITransactionDetail;
     Version: IVersionId;
     JobId?: string;
-    CompletedShipmentDetai?: ICompletedShipmentDetail;
+    CompletedShipmentDetail?: ICompletedShipmentDetail;
     ErrorLabels: IShippingDocument[];
 }
 
@@ -60,26 +85,135 @@ export interface ICompletedShipmentDetail {
     MasterTrackingId?: ITrackingId;
     ServiceTypeDescription?: string;
     PackagingDescription?: string;
-    // OperationalDetail?: ShipmentOperationalDetail;
-    // AccessDetail?: PendingShipmentAccessDetail;
-    // TagDetail?: CompletedTagDetail;
-    // SmartPostDetail?: CompletedSmartPostDetail;
-    // HazardousShipmentDetail?: CompletedHazardousShipmentDetail;
+    OperationalDetail?: IShipmentOperationalDetail;
+    AccessDetail?: IPendingShipmentAccessDetail;
+    TagDetail?: ICompletedTagDetail;
+    SmartPostDetail?: ICompletedSmartPostDetail;
+    HazardousShipmentDetail?: ICompletedHazardousShipmentDetail;
     ShipmentRating?: IShipmentRating;
-    // CompletedHoldAtLocationDetail?: CompletedHoldAtLocationDetail;
+    CompletedHoldAtLocationDetail?: ICompletedHoldAtLocationDetail;
     ExportComplianceStatement?: string;
-    // DocumentRequirements?: DocumentRequirementsDetail;
-    // CompletedEtdDetail?: CompletedEtdDetail;
+    DocumentRequirements?: IDocumentRequirementsDetail;
+    CompletedEtdDetail?: ICompletedEtdDetail;
     ShipmentDocuments: IShippingDocument[];
-    // AssociatedShipments: AssociatedShipmentDetail[];
-    // CompletedCodDetail?: CompletedCodDetail;
-    // CompletedPackageDetails: CompletedPackageDetail[];
+    AssociatedShipments: IAssociatedShipmentDetail[];
+    CompletedCodDetail?: ICompletedCodDetail;
+    CompletedPackageDetails: ICompletedPackageDetail[];
+}
+
+export interface IShipmentOperationalDetail {
+    UrsaPrefixCode?: string;
+    UrsaSuffixCode?: string;
+    OriginLocationId?: string;
+    OriginLocationNumber?: number;
+    OriginServiceArea?: string;
+    DestinationLocationId?: string;
+    DestinationLocationNumber?: number;
+    DestinationServiceArea?: string;
+    DestinationLocationStateOrProvinceCode?: string;
+    DeliveryDate?: Date;
+    DeliveryDay?: DayOfWeekType;
+    PublishedDeliveryTime?: string;
+    CommitDate?: Date;
+    CommitDay?: DayOfWeekType;
+    TransitTime?: TransitTimeType;
+    MaximumTransitTime?: TransitTimeType;
+    CustomTransitTime?: TransitTimeType;
+    IneligibleForMoneyBackGuarantee?: boolean;
+    DeliveryEligibilities: GroundDeliveryEligibilityType[];
+    AstraPlannedServiceLevel?: string;
+    AstraDescription?: string;
+    PostalCode?: string;
+    StateOrProvinceCode?: string;
+    CountryCode?: string;
+    AirportId?: string;
+    ServiceCode?: string;
+    PackagingCode?: string;
+    Scac?: string;
+}
+
+export interface IPendingShipmentAccessDetail {
+    AccessorDetails: IPendingShipmentAccessorDetail[];
+}
+
+export interface IPendingShipmentAccessorDetail {
+    Role?: AccessorRoleType;
+    UserId?: string;
+    Password?: string;
+    EmailLabelUrl?: string;
+}
+
+export interface ICompletedTagDetail {
+    ConfirmationNumber: string;
+    // <xs:element name="AccessTime" type="xs:duration" minOccurs="0">
+    AccessTime?: string;
+    // <xs:element name="CutoffTime" type="xs:time" minOccurs="0">;
+    CutoffTime?: string;
+    Location?: string;
+    // <xs:element name="DeliveryCommitment" type="xs:dateTime" minOccurs="0">;
+    DeliveryCommitment?: string;
+    // <xs:element name="DispatchDate" type="xs:date" minOccurs="0">;
+    DispatchDate?: Date;
+}
+
+export interface ICompletedSmartPostDetail {
+    PickUpCarrier?: CarrierCodeType;
+    Machinable?: boolean;
+}
+
+export interface ICompletedHazardousShipmentDetail {
+    HazardousSummaryDetail?: ICompletedHazardousSummaryDetail;
+    // <xs:element name="DryIceDetail" type="ns:ShipmentDryIceDetail" minOccurs="0"/>
+    // <xs:element name="AdrLicense" type="ns:AdrLicenseDetail" minOccurs="0">
+}
+
+export interface ICompletedHazardousSummaryDetail {
+    SmallQuantityExceptionPackageCount?: number;
 }
 
 export interface IShipmentRating {
     ActualRateType?: ReturnedRateType;
     EffectiveNetDiscount?: IMoney;
     ShipmentRateDetails: IShipmentRateDetail[];
+}
+
+export interface ICompletedHoldAtLocationDetail {
+    HoldingLocation?: IContactAndAddress;
+    HoldingLocationType?: FedExLocationType;
+}
+
+export interface IContactAndAddress {
+    Contact?: IContact;
+    Address?: IAddress;
+}
+
+export interface IDocumentRequirementsDetail {
+    RequiredDocuments: RequiredDocumentType[];
+    GenerationDetails: IDocumentGenerationDetail[];
+    ProhibitedDocuments: EnterpriseDocumentType[];
+}
+
+export interface IDocumentGenerationDetail {
+    Type?: EnterpriseDocumentType;
+    MinimumCopiesRequired?: number;
+    Letterhead?: RequirementType;
+    ElectronicSignature?: RequirementType;
+}
+
+export interface ICompletedEtdDetail {
+    FolderId?: string;
+    Type?: CompletedEtdType;
+    UploadDocumentReferenceDetails: IUploadDocumentReferenceDetail[];
+}
+
+export interface IUploadDocumentReferenceDetail {
+    LineNumber?: number;
+    CustomerReference?: string;
+    Description?: string;
+    DocumentProducer?: UploadDocumentProducerType;
+    DocumentType?: UploadDocumentType;
+    DocumentId?: string;
+    DocumentIdProducer?: UploadDocumentIdProducer;
 }
 
 export interface IShipmentRateDetail {
@@ -109,7 +243,7 @@ export interface IShipmentRateDetail {
     TotalDutiesTaxesAndFees?: IMoney;
     TotalNetChargeWithDutiesAndTaxes?: IMoney;
     ShipmentLegRateDetails: IShipmentLegRateDetail[];
-    //   <xs:element name="FreightRateDetail" type="ns:FreightRateDetail" minOccurs="0">
+    FreightRateDetail?: IFreightRateDetail;
     FreightDiscounts: IRateDiscount[];
     Rebates: IRebate[];
     Surcharges: ISurcharge[];
@@ -182,11 +316,11 @@ export interface IVariableHandlingCharges {
 }
 
 export interface IShipmentLegRateDetail {
-    //   <xs:element name="LegDescription" type="xs:string" minOccurs="0">
-    //   <xs:element name="LegOrigin" type="ns:Address" minOccurs="0">
-    //   <xs:element name="LegOriginLocationId" type="xs:string" minOccurs="0">
-    //   <xs:element name="LegDestination" type="ns:Address" minOccurs="0">
-    //   <xs:element name="LegDestinationLocationId" type="xs:string" minOccurs="0">
+    LegDescription?: string;
+    LegOrigin?: IAddress;
+    LegOriginLocationId?: string;
+    LegDestination?: IAddress;
+    LegDestinationLocationId?: string;
     RateType?: ReturnedRateType;
     RateScale?: string;
     RateZone?: string;
@@ -210,7 +344,7 @@ export interface IShipmentLegRateDetail {
     TotalRebates?: IMoney;
     TotalDutiesAndTaxes?: IMoney;
     TotalNetChargeWithDutiesAndTaxes?: IMoney;
-    //   <xs:element name="FreightRateDetail" type="ns:FreightRateDetail" minOccurs="0">
+    FreightRateDetail?: IFreightRateDetail;
     FreightDiscounts: IRateDiscount[];
     Rebates: IRebate[];
     Surcharges: ISurcharge[];
@@ -218,6 +352,30 @@ export interface IShipmentLegRateDetail {
     DutiesAndTaxes: IEdtCommodityTax[];
     VariableHandlingCharges?: IVariableHandlingCharges;
     TotalVariableHandlingCharges?: IVariableHandlingCharges;
+}
+
+export interface IFreightRateDetail {
+    QuoteNumber?: string;
+    QuoteType?: FreightRateQuoteType;
+    BaseChargeCalculation?: FreightBaseChargeCalculationType;
+    BaseCharges: IFreightBaseCharge[];
+    Notations?: IFreightRateNotation[];
+}
+
+export interface IFreightBaseCharge {
+    FreightClass?: FreightClassType;
+    RatedAsClass?: FreightClassType;
+    NmfcCode?: string;
+    Description?: string;
+    Weight?: IWeight;
+    ChargeRate?: IMoney;
+    ChargeBasis?: FreightChargeBasisType;
+    ExtendedAmount?: IMoney;
+}
+
+export interface IFreightRateNotation {
+    Code?: string;
+    Description?: string;
 }
 
 export interface IShippingDocument {
@@ -232,9 +390,168 @@ export interface IShippingDocument {
     Parts: IShippingDocumentPart[];
 }
 
+export interface ICodReturnPackageDetail {
+    CollectionAmount?: IMoney;
+    AdjustmentType?: CodAdjustmentType;
+    Electronic?: boolean;
+    Barcodes?: IPackageBarcodes;
+    Label?: IShippingDocument;
+}
+
+export interface IAssociatedShipmentDetail {
+    Type?: AssociatedShipmentType;
+    Sender?: IParty;
+    Recipient?: IParty;
+    ServiceType?: ServiceType;
+    PackagingType?: PackagingType;
+    TrackingId?: ITrackingId;
+    CustomerReferences: ICustomerReference[];
+    ShipmentOperationalDetail?: IShipmentOperationalDetail;
+    PackageOperationalDetail?: IPackageOperationalDetail;
+    Label?: IShippingDocument;
+}
+
+export interface ICustomerReference {
+    CustomerReferenceType: CustomerReferenceType;
+    Value?: string;
+}
+
 export interface IShippingDocumentPart {
     DocumentPartSequenceNumber?: number;
     Image?: string; // base64Binary
+}
+
+export interface IPackageOperationalDetail {
+    AstraHandlingText?: string;
+    OperationalInstructions: IOperationalInstruction[];
+    Barcodes: IPackageBarcodes;
+    GroundServiceCode?: string;
+}
+
+export interface ICompletedCodDetail {
+    CollectionAmount?: IMoney;
+    AdjustmentType?: CodAdjustmentType;
+}
+
+export interface IOperationalInstruction {
+    Number?: number;
+    Content?: string;
+}
+
+export interface IPackageBarcodes {
+    BinaryBarcodes: IBinaryBarcode[];
+    StringBarcodes: IStringBarcode[];
+}
+
+export interface IBinaryBarcode {
+    Type?: BinaryBarcodeType;
+    Value?: string; // // base64Binary
+}
+
+export interface IStringBarcode {
+    Type?: StringBarcodeType;
+    Value?: string; // // base64Binary
+}
+
+export interface ICompletedPackageDetail {
+    SequenceNumber?: number;
+    TrackingIds: ITrackingId[];
+    GroupNumber?: number;
+    OversizeClass?: OversizeClassType;
+    PackageRating?: IPackageRating;
+    OperationalDetail?: IPackageOperationalDetail;
+    Label?: IShippingDocument;
+    PackageDocuments: IShippingDocument[];
+    CodReturnDetail?: ICodReturnPackageDetail;
+    SignatureOption?: SignatureOptionType;
+    DryIceWeight?: IWeight;
+    HazardousPackageDetail?: ICompletedHazardousPackageDetail;
+}
+
+export interface IPackageRating {
+    ActualRateType?: ReturnedRateType;
+    EffectiveNetDiscount?: IMoney;
+    PackageRateDetails: IPackageRateDetail[];
+}
+
+export interface IPackageRateDetail {
+    RateType: ReturnedRateType;
+    RatedWeightMethod?: RatedWeightMethod;
+    MinimumChargeType?: MinimumChargeType;
+    BillingWeight?: IWeight;
+    DimWeight?: IWeight;
+    OversizeWeight?: IWeight;
+    BaseCharge?: IMoney;
+    TotalFreightDiscounts?: IMoney;
+    NetFreight?: IMoney;
+    TotalSurcharges?: IMoney;
+    NetFedExCharge?: IMoney;
+    TotalTaxes?: IMoney;
+    NetCharge?: IMoney;
+    TotalRebates?: IMoney;
+    FreightDiscounts: IRateDiscount[];
+    Rebates: IRebate[];
+    Surcharges: ISurcharge[];
+    Taxes: ITax[];
+    VariableHandlingCharges?: IVariableHandlingCharges;
+}
+
+export interface ICompletedHazardousPackageDetail {
+    ReferenceId?: string;
+    Accessibility?: DangerousGoodsAccessibilityType;
+    CargoAircraftOnly?: boolean;
+    Regulation?: HazardousCommodityRegulationType;
+    RadioactiveTransportIndex?: number;
+    LabelType?: RadioactiveLabelType;
+    Containers: IValidatedHazardousContainer[];
+}
+
+export interface IValidatedHazardousContainer {
+    QValue?: number;
+    HazardousCommodities: IValidatedHazardousCommodityContent[];
+}
+
+export interface IValidatedHazardousCommodityContent {
+    Description?: IValidatedHazardousCommodityDescription;
+    Quantity?: IHazardousCommodityQuantityDetail;
+    MassPoints?: number;
+    Options?: IHazardousCommodityOptionDetail;
+    NetExplosiveDetail?: INetExplosiveDetail;
+}
+
+export interface IValidatedHazardousCommodityDescription {
+    Id?: string;
+    SequenceNumber?: number;
+    PackingGroup?: HazardousCommodityPackingGroupType;
+    PackingInstructions?: string;
+    ProperShippingName?: string;
+    ProperShippingNameAndDescription?: string;
+    TechnicalName?: string;
+    HazardClass?: string;
+    SubsidiaryClasses: string[];
+    Symbols?: string;
+    TunnelRestrictionCode?: string;
+    SpecialProvisions?: string;
+    Attributes?: HazardousCommodityAttributeType;
+    Authorization?: string;
+    LabelText?: string;
+}
+
+export interface IHazardousCommodityQuantityDetail {
+    Amount?: number;
+    Units?: string;
+    QuantityType?: HazardousCommodityQuantityType;
+}
+
+export interface IHazardousCommodityOptionDetail {
+    LabelTextOption?: HazardousCommodityLabelTextOptionType;
+    CustomerSuppliedLabelText?: string;
+}
+
+export interface INetExplosiveDetail {
+    Type?: NetExplosiveClassificationType;
+    Amount?: number;
+    Units?: string;
 }
 
 export interface IWeight {
@@ -697,4 +1014,238 @@ export enum AncillaryFeeAndTaxType {
     GOODS_AND_SERVICES_TAX = 'GOODS_AND_SERVICES_TAX',
     HARMONIZED_SALES_TAX = 'HARMONIZED_SALES_TAX',
     OTHER = 'OTHER'
+}
+
+export enum FreightRateQuoteType {
+    AUTOMATED = 'AUTOMATED',
+    MANUAL = 'MANUAL'
+}
+
+export enum FreightBaseChargeCalculationType {
+    BEYOND = 'BEYOND',
+    LINE_ITEMS = 'LINE_ITEMS',
+    UNIT_PRICING = 'UNIT_PRICING'
+}
+
+export enum FreightClassType {
+    CLASS_050 = 'CLASS_050',
+    CLASS_055 = 'CLASS_055',
+    CLASS_060 = 'CLASS_060',
+    CLASS_065 = 'CLASS_065',
+    CLASS_070 = 'CLASS_070',
+    CLASS_077_5 = 'CLASS_077_5',
+    CLASS_085 = 'CLASS_085',
+    CLASS_092_5 = 'CLASS_092_5',
+    CLASS_100 = 'CLASS_100',
+    CLASS_110 = 'CLASS_110',
+    CLASS_125 = 'CLASS_125',
+    CLASS_150 = 'CLASS_150',
+    CLASS_175 = 'CLASS_175',
+    CLASS_200 = 'CLASS_200',
+    CLASS_250 = 'CLASS_250',
+    CLASS_300 = 'CLASS_300',
+    CLASS_400 = 'CLASS_400',
+    CLASS_500 = 'CLASS_500'
+}
+
+export enum FreightChargeBasisType {
+    CWT = 'CWT',
+    FLAT = 'FLAT',
+    MINIMUM = 'MINIMUM'
+}
+
+export enum DayOfWeekType {
+    FRI = 'FRI',
+    MON = 'MON',
+    SAT = 'SAT',
+    SUN = 'SUN',
+    THU = 'THU',
+    TUE = 'TUE',
+    WED = 'WED'
+}
+
+export enum TransitTimeType {
+    EIGHTEEN_DAYS = 'EIGHTEEN_DAYS',
+    EIGHT_DAYS = 'EIGHT_DAYS',
+    ELEVEN_DAYS = 'ELEVEN_DAYS',
+    FIFTEEN_DAYS = 'FIFTEEN_DAYS',
+    FIVE_DAYS = 'FIVE_DAYS',
+    FOURTEEN_DAYS = 'FOURTEEN_DAYS',
+    FOUR_DAYS = 'FOUR_DAYS',
+    NINETEEN_DAYS = 'NINETEEN_DAYS',
+    NINE_DAYS = 'NINE_DAYS',
+    ONE_DAY = 'ONE_DAY',
+    SEVENTEEN_DAYS = 'SEVENTEEN_DAYS',
+    SEVEN_DAYS = 'SEVEN_DAYS',
+    SIXTEEN_DAYS = 'SIXTEEN_DAYS',
+    SIX_DAYS = 'SIX_DAYS',
+    TEN_DAYS = 'TEN_DAYS',
+    THIRTEEN_DAYS = 'THIRTEEN_DAYS',
+    THREE_DAYS = 'THREE_DAYS',
+    TWELVE_DAYS = 'TWELVE_DAYS',
+    TWENTY_DAYS = 'TWENTY_DAYS',
+    TWO_DAYS = 'TWO_DAYS',
+    UNKNOWN = 'UNKNOWN'
+}
+
+export enum GroundDeliveryEligibilityType {
+    ALTERNATE_DAY_SERVICE = 'ALTERNATE_DAY_SERVICE',
+    CARTAGE_AGENT_DELIVERY = 'CARTAGE_AGENT_DELIVERY',
+    SATURDAY_DELIVERY = 'SATURDAY_DELIVERY',
+    USPS_DELIVERY = 'USPS_DELIVERY'
+}
+
+export enum AccessorRoleType {
+    SHIPMENT_COMPLETOR = 'SHIPMENT_COMPLETOR',
+    SHIPMENT_INITIATOR = 'SHIPMENT_INITIATOR'
+}
+
+export enum FedExLocationType {
+    FEDEX_EXPRESS_STATION = 'FEDEX_EXPRESS_STATION',
+    FEDEX_FACILITY = 'FEDEX_FACILITY',
+    FEDEX_FREIGHT_SERVICE_CENTER = 'FEDEX_FREIGHT_SERVICE_CENTER',
+    FEDEX_GROUND_TERMINAL = 'FEDEX_GROUND_TERMINAL',
+    FEDEX_HOME_DELIVERY_STATION = 'FEDEX_HOME_DELIVERY_STATION',
+    FEDEX_OFFICE = 'FEDEX_OFFICE',
+    FEDEX_SHIPSITE = 'FEDEX_SHIPSITE',
+    FEDEX_SMART_POST_HUB = 'FEDEX_SMART_POST_HUB'
+}
+
+export enum RequiredDocumentType {
+    AIR_WAYBILL = 'AIR_WAYBILL',
+    CERTIFICATE_OF_ORIGIN = 'CERTIFICATE_OF_ORIGIN',
+    COMMERCIAL_INVOICE = 'COMMERCIAL_INVOICE',
+    COMMERCIAL_OR_PRO_FORMA_INVOICE = 'COMMERCIAL_OR_PRO_FORMA_INVOICE',
+    NAFTA_CERTIFICATE_OF_ORIGIN = 'NAFTA_CERTIFICATE_OF_ORIGIN',
+    PRO_FORMA_INVOICE = 'PRO_FORMA_INVOICE'
+}
+
+export enum EnterpriseDocumentType {
+    AIR_WAYBILL = 'AIR_WAYBILL',
+    CERTIFICATE_OF_ORIGIN = 'CERTIFICATE_OF_ORIGIN',
+    COMMERCIAL_INVOICE = 'COMMERCIAL_INVOICE',
+    NAFTA_CERTIFICATE_OF_ORIGIN = 'NAFTA_CERTIFICATE_OF_ORIGIN',
+    PRO_FORMA_INVOICE = 'PRO_FORMA_INVOICE'
+}
+
+export enum RequirementType {
+    OPTIONAL = 'OPTIONAL',
+    PROHIBITEDe = 'PROHIBITED',
+    REQUIRED = 'REQUIRED'
+}
+
+export enum CompletedEtdType {
+    ELECTRONIC_DOCUMENTS_ONLY = 'ELECTRONIC_DOCUMENTS_ONLY',
+    ELECTRONIC_DOCUMENTS_WITH_ORIGINALS = 'ELECTRONIC_DOCUMENTS_WITH_ORIGINALS'
+}
+
+export enum UploadDocumentProducerType {
+    CUSTOMER = 'CUSTOMER'
+}
+
+export enum UploadDocumentIdProducer {
+    CUSTOMER = 'CUSTOMER'
+}
+
+export enum UploadDocumentType {
+    CERTIFICATE_OF_ORIGIN = 'CERTIFICATE_OF_ORIGIN',
+    COMMERCIAL_INVOICE = 'COMMERCIAL_INVOICE',
+    ETD_LABEL = 'ETD_LABEL',
+    NAFTA_CERTIFICATE_OF_ORIGIN = 'NAFTA_CERTIFICATE_OF_ORIGIN',
+    NET_RATE_SHEET = 'NET_RATE_SHEET',
+    OTHER = 'OTHER',
+    PRO_FORMA_INVOICE = 'PRO_FORMA_INVOICE'
+}
+
+export enum AssociatedShipmentType {
+    COD_AND_DELIVERY_ON_INVOICE_ACCEPTANCE_RETURN = 'COD_AND_DELIVERY_ON_INVOICE_ACCEPTANCE_RETURN',
+    COD_RETURN = 'COD_RETURN',
+    DELIVERY_ON_INVOICE_ACCEPTANCE_RETURN = 'DELIVERY_ON_INVOICE_ACCEPTANCE_RETURN'
+}
+
+export enum BinaryBarcodeType {
+    COMMON_2D = 'COMMON_2D'
+}
+
+export enum StringBarcodeType {
+    ADDRESS = 'ADDRESS',
+    ASTRA = 'ASTRA',
+    FEDEX_1D = 'FEDEX_1D',
+    GROUND = 'GROUND',
+    POSTAL = 'POSTAL',
+    USPS = 'USPS'
+}
+
+export enum CustomerReferenceType {
+    CUSTOMER_REFERENCE = 'CUSTOMER_REFERENCE',
+    DEPARTMENT_NUMBER = 'DEPARTMENT_NUMBER',
+    INTRACOUNTRY_REGULATORY_REFERENCE = 'INTRACOUNTRY_REGULATORY_REFERENCE',
+    INVOICE_NUMBER = 'INVOICE_NUMBER',
+    P_O_NUMBER = 'P_O_NUMBER',
+    RMA_ASSOCIATION = 'RMA_ASSOCIATION',
+    SHIPMENT_INTEGRITY = 'SHIPMENT_INTEGRITY'
+}
+
+export enum CodAdjustmentType {
+    CHARGES_ADDED = 'CHARGES_ADDED',
+    NONE = 'NONE'
+}
+
+export enum OversizeClassType {
+    OVERSIZE_1 = 'OVERSIZE_1',
+    OVERSIZE_2 = 'OVERSIZE_2',
+    OVERSIZE_3 = 'OVERSIZE_3'
+}
+
+export enum SignatureOptionType {
+    ADULT = 'ADULT',
+    DIRECT = 'DIRECT',
+    INDIRECT = 'INDIRECT',
+    NO_SIGNATURE_REQUIRED = 'NO_SIGNATURE_REQUIRED',
+    SERVICE_DEFAULT = 'SERVICE_DEFAULT'
+}
+
+export enum DangerousGoodsAccessibilityType {
+    ACCESSIBLE = 'ACCESSIBLE',
+    INACCESSIBLE = 'INACCESSIBLE'
+}
+
+export enum HazardousCommodityRegulationType {
+    ADR = 'ADR',
+    DOT = 'DOT',
+    IATA = 'IATA',
+    ORMD = 'ORMD'
+}
+
+export enum RadioactiveLabelType {
+    III_YELLOW = 'III_YELLOW',
+    II_YELLOW = 'II_YELLOW',
+    I_WHITE = 'I_WHITE'
+}
+
+export enum HazardousCommodityPackingGroupType {
+    DEFAULT = 'DEFAULT',
+    I = 'I',
+    II = 'II',
+    III = 'III'
+}
+
+export enum HazardousCommodityAttributeType {
+    NOT_SUBJECT_TO_REGULATIONS = 'NOT_SUBJECT_TO_REGULATIONS',
+    PLACARDED_VEHICLE_REQUIRED = 'PLACARDED_VEHICLE_REQUIRED'
+}
+
+export enum HazardousCommodityQuantityType {}
+
+export enum HazardousCommodityLabelTextOptionType {
+    APPEND = 'APPEND',
+    OVERRIDE = 'OVERRIDE',
+    STANDARD = 'STANDARD'
+}
+
+export enum NetExplosiveClassificationType {
+    NET_EXPLOSIVE_CONTENT = 'NET_EXPLOSIVE_CONTENT',
+    NET_EXPLOSIVE_MASS = 'NET_EXPLOSIVE_MASS',
+    NET_EXPLOSIVE_QUANTITY = 'NET_EXPLOSIVE_QUANTITY',
+    NET_EXPLOSIVE_WEIGHT = 'NET_EXPLOSIVE_WEIGHT'
 }

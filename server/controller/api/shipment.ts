@@ -13,7 +13,7 @@ shipmentRouter.post('/create', async ctx => {
     try {
         // const packages = bulidRequestShipments(ctx);
         const packages = bulidRequestedShipments(ctx);
-        const res = await ship({
+        const res: ShipService.IProcessShipmentReply = await ship({
             RequestedShipment: packages.master
         });
         if (res.HighestSeverity === 'ERROR') {
@@ -23,27 +23,27 @@ shipmentRouter.post('/create', async ctx => {
             console.log('source:' + res.Notifications[0].Source);
             throw res.Notifications[0].Message;
         }
-        const masterid = res.CompletedShipmentDetail.MasterTrackingId;
+        const masterid = res.CompletedShipmentDetail!.MasterTrackingId;
         result = {
             labels: [
-                res.CompletedShipmentDetail.CompletedPackageDetails[0].Label
+                res.CompletedShipmentDetail!.CompletedPackageDetails[0]!.Label!
                     .Parts[0].Image
             ]
         };
         for (const child of packages.children) {
             (child as any).MasterTrackingId = masterid;
-            const res = await ship({
+            const childRes : ShipService.IProcessShipmentReply = await ship({
                 RequestedShipment: child
             });
-            if (res.HighestSeverity === 'ERROR') {
-                console.log('code:' + res.Notifications[0].Code);
-                console.log('message:' + res.Notifications[0].Message);
-                console.log('severity:' + res.Notifications[0].Severity);
-                console.log('source:' + res.Notifications[0].Source);
-                throw res.Notifications[0].Message;
+            if (childRes.HighestSeverity === 'ERROR') {
+                console.log('code:' + childRes.Notifications[0].Code);
+                console.log('message:' + childRes.Notifications[0].Message);
+                console.log('severity:' + childRes.Notifications[0].Severity);
+                console.log('source:' + childRes.Notifications[0].Source);
+                throw childRes.Notifications[0].Message;
             }
             result.labels.push(
-                res.CompletedShipmentDetail.CompletedPackageDetails[0].Label
+                childRes.CompletedShipmentDetail!.CompletedPackageDetails[0]!.Label!
                     .Parts[0].Image
             );
         }
@@ -331,7 +331,7 @@ function bulidRequestedShipments(ctx): IRequestedShipmentResult {
         }
     };
     const payment: ShipService.IPayment = {
-        PaymentType: ShipService.PaymentType.SENDER,
+        PaymentType: ShipService.PaymentType.THIRD_PARTY,
         Payor: {
             ResponsibleParty: {
                 AccountNumber: fedexConfig.account_number
