@@ -1,33 +1,20 @@
 <template>
     <div>
-        <create-shipment-form />
+        <pdf src="~/assets/aaa.pdf" />
     </div>
 </template>
 
-<script lang="ts">
+<script>
 import { Vue, Component, Ref, namespace } from 'nuxt-property-decorator';
-
-// import ShipmentPanels from '@/components/expressweb/Shipment/ShipmentPanels.vue';
-import CreateShipmentForm from '@/components/expressweb/Shipment/CreateShipment/Form.vue';
-
-import { Address } from '@/models/expressweb/Address';
-import { VForm } from '@/utils/form';
-
-const adminStore = namespace('admin');
+import pdf from 'vue-pdf';
 
 @Component({
     layout: 'admin',
     components: {
-        CreateShipmentForm
+        pdf
     }
 })
-class Page extends Vue {
-    @adminStore.Mutation('SET_PAGETITLE') setPageTitle;
-
-    mounted() {
-        this.setPageTitle('Create Shipment');
-    }
-}
+class Page extends Vue {}
 
 export default Page;
 </script>

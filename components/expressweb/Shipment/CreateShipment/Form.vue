@@ -219,6 +219,46 @@ class CreateShipmentForm extends Vue {
             Api.$post(this.formData);
         }
     }
+
+    mounted() {
+        this.formData = this.getTestFormData();
+    }
+
+    getTestFormData() {
+        const formData = new ShipmentData();
+
+        formData.senderAddress.name = 'James Wang';
+        formData.senderAddress.phone = '123';
+        formData.senderAddress.country = 'CA';
+        formData.senderAddress.province = 'BC';
+        formData.senderAddress.city = 'Vanconver';
+        formData.senderAddress.postcode = 'V5K 1A1';
+        formData.senderAddress.address = 'test address';
+
+        formData.receiverAddress.name = 'Caesar You';
+        formData.receiverAddress.phone = '123';
+        formData.receiverAddress.country = 'CN';
+        formData.receiverAddress.province = 'Fujian';
+        formData.receiverAddress.city = 'Fuzhou';
+        formData.receiverAddress.postcode = '350005';
+        formData.receiverAddress.address = 'test address';
+
+        formData.pac.weightUnit = 'kg';
+        formData.pac.dimensionUnit = 'cm';
+        formData.pac.packageType = '1';
+        formData.pac.weight = '0.1';
+
+        formData.products[0] = {
+            description: 'desc',
+            origin: 'CN',
+            weight: '1',
+            quantity: '1',
+            unit: 'piece',
+            pricePerUnit: '35'
+        };
+
+        return formData;
+    }
 }
 
 export default CreateShipmentForm;
