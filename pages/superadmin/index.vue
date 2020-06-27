@@ -1,6 +1,31 @@
 <template>
     <div>
-        <pdf src="~/assets/aaa.pdf" />
+        <button
+            @click="
+                $refs.myPdfComponent.print(100, [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14
+                ])
+            "
+        >
+            print
+        </button>
+        <pdf
+            ref="myPdfComponent"
+            src="https://cdn.rawgit.com/mozilla/pdf.js/c6e8ca86/test/pdfs/freeculture.pdf"
+        />
     </div>
 </template>
 
