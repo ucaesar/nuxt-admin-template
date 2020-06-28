@@ -231,17 +231,17 @@ class CreateShipmentForm extends Vue {
         formData.senderAddress.phone = '123';
         formData.senderAddress.country = 'CA';
         formData.senderAddress.province = 'BC';
-        formData.senderAddress.city = 'Vanconver';
-        formData.senderAddress.postcode = 'V5K 1A1';
-        formData.senderAddress.address = 'test address';
+        formData.senderAddress.city = 'Burnaby';
+        formData.senderAddress.postcode = 'V5C 3J1';
+        formData.senderAddress.address = '3845 William St';
 
         formData.receiverAddress.name = 'Caesar You';
         formData.receiverAddress.phone = '123';
-        formData.receiverAddress.country = 'CN';
-        formData.receiverAddress.province = 'Fujian';
-        formData.receiverAddress.city = 'Fuzhou';
-        formData.receiverAddress.postcode = '350005';
-        formData.receiverAddress.address = 'test address';
+        formData.receiverAddress.country = 'CA';
+        formData.receiverAddress.province = 'BC';
+        formData.receiverAddress.city = 'Vancouver';
+        formData.receiverAddress.postcode = 'V6B 2T9';
+        formData.receiverAddress.address = '1111 Mainland St';
 
         formData.pac.weightUnit = 'kg';
         formData.pac.dimensionUnit = 'cm';
