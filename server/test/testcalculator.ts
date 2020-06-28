@@ -269,35 +269,6 @@ const masterItem = {
                 Residential: false
             }
         },
-        // Shipper: {
-        //     Contact: {
-        //         PersonName: 'Sender Name',
-        //         CompanyName: 'Company Name',
-        //         PhoneNumber: '5555555555'
-        //     },
-        //     Address: {
-        //         StreetLines: ['Address Line 1'],
-        //         City: 'Collierville',
-        //         StateOrProvinceCode: 'TN',
-        //         PostalCode: '38017',
-        //         CountryCode: 'US'
-        //     }
-        // },
-        // Recipient: {
-        //     Contact: {
-        //         PersonName: 'Recipient Name',
-        //         CompanyName: 'Company Receipt Name',
-        //         PhoneNumber: '5555555555'
-        //     },
-        //     Address: {
-        //         StreetLines: ['Address Line 1'],
-        //         City: 'Charlotte',
-        //         StateOrProvinceCode: 'NC',
-        //         PostalCode: '28202',
-        //         CountryCode: 'US',
-        //         Residential: false
-        //     }
-        // },
         ShippingChargesPayment: {
             PaymentType: 'SENDER',
             Payor: {
@@ -338,35 +309,6 @@ const childItem = {
         DropoffType: 'REGULAR_PICKUP',
         ServiceType: 'FEDEX_GROUND',
         PackagingType: 'YOUR_PACKAGING',
-        // Shipper: {
-        //     Contact: {
-        //         PersonName: 'Sender Name',
-        //         CompanyName: 'Company Name',
-        //         PhoneNumber: '5555555555'
-        //     },
-        //     Address: {
-        //         StreetLines: ['Address Line 1'],
-        //         City: 'Collierville',
-        //         StateOrProvinceCode: 'TN',
-        //         PostalCode: '38017',
-        //         CountryCode: 'US'
-        //     }
-        // },
-        // Recipient: {
-        //     Contact: {
-        //         PersonName: 'Recipient Name',
-        //         CompanyName: 'Company Receipt Name',
-        //         PhoneNumber: '5555555555'
-        //     },
-        //     Address: {
-        //         StreetLines: ['Address Line 1'],
-        //         City: 'Charlotte',
-        //         StateOrProvinceCode: 'NC',
-        //         PostalCode: '28202',
-        //         CountryCode: 'US',
-        //         Residential: false
-        //     }
-        // },
         Shipper: {
             Contact: {
                 PersonName: 'Sender Name',
@@ -429,49 +371,139 @@ const childItem = {
         ]
     }
 };
-fedex.ship(masterItem, function(err, res) {
-    if (err) {
-        return console.log(util.inspect(err, { depth: null }));
-    }
+// fedex.ship(masterItem, function(err, res) {
+//     if (err) {
+//         return console.log(util.inspect(err, { depth: null }));
+//     }
 
-    //   console.log(util.inspect(res, {depth: null}));
-    if( res.HighestSeverity === 'ERROR') {
-        console.log('code:'+res.Notifications[0].Code);
-        console.log('message:'+res.Notifications[0].Message);
-        console.log('severity:'+res.Notifications[0].Severity);
-        console.log('source:'+res.Notifications[0].Source);
-        return;
+//     //   console.log(util.inspect(res, {depth: null}));
+//     if (res.HighestSeverity === 'ERROR') {
+//         console.log('code:' + res.Notifications[0].Code);
+//         console.log('message:' + res.Notifications[0].Message);
+//         console.log('severity:' + res.Notifications[0].Severity);
+//         console.log('source:' + res.Notifications[0].Source);
+//         return;
+//     }
+//     masterid = res.CompletedShipmentDetail.MasterTrackingId;
+//     childItem.RequestedShipment.MasterTrackingId = masterid;
+//     console.log(masterid);
+//     const a =
+//         res.CompletedShipmentDetail.CompletedPackageDetails[0].Label.Parts[0]
+//             .Image;
+//     const b = Buffer.from(a, 'base64');
+//     console.log(b);
+//     fs.writeFile('aaa.pdf', b, 'binary', function(err) {
+//         if (err) {
+//             console.log(err);
+//         } else {
+//             console.log('The master file was saved!');
+//         }
+//     });
+//     // fedex.ship(childItem, function(err, res) {
+//     //     if (err) {
+//     //         return console.log(util.inspect(err, { depth: null }));
+//     //     }
+//     //     const a =
+//     //         res.CompletedShipmentDetail.CompletedPackageDetails[0].Label
+//     //             .Parts[0].Image;
+//     //     const b = Buffer.from(a, 'base64');
+//     //     console.log(b);
+//     //     fs.writeFile('bbb.pdf', b, 'binary', function(err) {
+//     //         if (err) {
+//     //             console.log(err);
+//     //         } else {
+//     //             console.log('The child file was saved!');
+//     //         }
+//     //     });
+//     // });
+// });
+
+
+/**
+ * Rate
+ */
+const rateDate = new Date();
+const rateItem = {
+    RequestedShipment: {
+        ShipTimestamp: new Date(
+            rateDate.getTime() + 24 * 60 * 60 * 1000
+        ).toISOString(),
+        DropoffType: 'DROP_BOX',
+        ServiceType: 'STANDARD_OVERNIGHT',
+        // ServiceType: 'FEDEX_GROUND',
+        PackagingType: 'YOUR_PACKAGING',
+        TotalWeight: {
+            Units: 'KG',
+            Value: 1
+        },
+        Shipper: {
+            Contact: {
+                PersonName: 'aaaaa',
+                CompanyName: 'Company Name',
+                PhoneNumber: '666666'
+            },
+            Address: {
+                StreetLines: ['3845 William St'],
+                City: 'Burnaby',
+                StateOrProvinceCode: 'BC',
+                PostalCode: 'V5C 3J1',
+                CountryCode: 'CA'
+            }
+        },
+        Recipient: {
+            Contact: {
+                PersonName: 'bbbbb',
+                CompanyName: 'Company Receipt Name',
+                PhoneNumber: '888888'
+            },
+            Address: {
+                StreetLines: ['1111 Mainland St'],
+                City: 'Vancouver',
+                StateOrProvinceCode: 'BC',
+                PostalCode: 'V6B 2T9',
+                CountryCode: 'CA',
+                Residential: false
+            }
+        },
+        ShippingChargesPayment: {
+            PaymentType: 'SENDER',
+            Payor: {
+                ResponsibleParty: {
+                    AccountNumber: fedex.options.account_number
+                }
+            }
+        },
+        LabelSpecification: {
+            LabelFormatType: 'COMMON2D',
+            ImageType: 'PDF',
+            LabelStockType: 'PAPER_4X6'
+        },
+        PackageCount: '1',
+        RequestedPackageLineItems: [
+            {
+                SequenceNumber: 1,
+                GroupPackageCount: 1,
+                Weight: {
+                    Units: 'KG',
+                    Value: 1
+                },
+                Dimensions: {
+                    Length: 5,
+                    Width: 5,
+                    Height: 5,
+                    Units: 'CM'
+                }
+            }
+        ]
     }
-    masterid = res.CompletedShipmentDetail.MasterTrackingId;
-    childItem.RequestedShipment.MasterTrackingId = masterid;
-    console.log(masterid);
-    const a =
-        res.CompletedShipmentDetail.CompletedPackageDetails[0].Label.Parts[0]
-            .Image;
-    const b = Buffer.from(a, 'base64');
-    console.log(b);
-    fs.writeFile('aaa.pdf', b, 'binary', function(err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('The master file was saved!');
-        }
-    });
-    // fedex.ship(childItem, function(err, res) {
-    //     if (err) {
-    //         return console.log(util.inspect(err, { depth: null }));
-    //     }
-    //     const a =
-    //         res.CompletedShipmentDetail.CompletedPackageDetails[0].Label
-    //             .Parts[0].Image;
-    //     const b = Buffer.from(a, 'base64');
-    //     console.log(b);
-    //     fs.writeFile('bbb.pdf', b, 'binary', function(err) {
-    //         if (err) {
-    //             console.log(err);
-    //         } else {
-    //             console.log('The child file was saved!');
-    //         }
-    //     });
-    // });
+};
+
+fedex.rates(rateItem, (err, res) => {
+    if (err) {
+        console.log('results from server err');
+        console.log(err);
+    } else {
+        console.log('success');
+        console.log(res);
+    }
 });

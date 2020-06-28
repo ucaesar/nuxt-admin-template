@@ -32,7 +32,7 @@ shipmentRouter.post('/create', async ctx => {
         };
         for (const child of packages.children) {
             (child as any).MasterTrackingId = masterid;
-            const childRes : ShipService.IProcessShipmentReply = await ship({
+            const childRes: ShipService.IProcessShipmentReply = await ship({
                 RequestedShipment: child
             });
             if (childRes.HighestSeverity === 'ERROR') {
@@ -43,8 +43,8 @@ shipmentRouter.post('/create', async ctx => {
                 throw childRes.Notifications[0].Message;
             }
             result.labels.push(
-                childRes.CompletedShipmentDetail!.CompletedPackageDetails[0]!.Label!
-                    .Parts[0].Image
+                childRes.CompletedShipmentDetail!.CompletedPackageDetails[0]!
+                    .Label!.Parts[0].Image
             );
         }
     } catch (err) {
@@ -309,7 +309,10 @@ function bulidRequestedShipments(ctx): IRequestedShipmentResult {
             PhoneNumber: sender.phone
         },
         Address: {
-            StreetLines: [sender.address, sender.address2],
+            StreetLines: [
+                sender.address,
+                sender.address2 ? sender.address2 : ''
+            ],
             City: sender.city,
             StateOrProvinceCode: sender.province,
             PostalCode: sender.postcode,
@@ -323,7 +326,10 @@ function bulidRequestedShipments(ctx): IRequestedShipmentResult {
             PhoneNumber: receiver.phone
         },
         Address: {
-            StreetLines: [receiver.address, receiver.address2],
+            StreetLines: [
+                receiver.address,
+                receiver.address2 ? receiver.address2 : ''
+            ],
             City: receiver.city,
             StateOrProvinceCode: receiver.province,
             PostalCode: receiver.postcode,
@@ -331,7 +337,7 @@ function bulidRequestedShipments(ctx): IRequestedShipmentResult {
         }
     };
     const payment: ShipService.IPayment = {
-        PaymentType: ShipService.PaymentType.THIRD_PARTY,
+        PaymentType: ShipService.PaymentType.SENDER,
         Payor: {
             ResponsibleParty: {
                 AccountNumber: fedexConfig.account_number
