@@ -58,7 +58,8 @@
 		"validator": "^12.1.0",
 		"vee-validate": "^3.2.3",
 		"vue-pdf": "^4.1.0",
-		"vuex-module-decorators": "^0.10.1"
+		"vuex-module-decorators": "^0.10.1",
+		"xml2js": "^0.4.23"
 	},
 	"devDependencies": {
 		"@babel/register": "^7.9.0",

@@ -54,7 +54,8 @@ shipmentRouter.post('/create', async ctx => {
     } finally {
         ctx.response.type = 'text/json';
         ctx.response.status = 200;
-        ctx.response.body = { result };
+        // ctx.response.body = { result };
+        ctx.response.body = result;
     }
 });
 
