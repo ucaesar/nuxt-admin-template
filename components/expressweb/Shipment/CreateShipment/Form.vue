@@ -188,7 +188,8 @@ class CreateShipmentForm extends Vue {
         return this.failedFlags[this.curStep] ? 'red' : '';
     }
 
-    formData = new ShipmentData();
+    // formData = new ShipmentData();
+    formData = this.getTestFormData();
 
     failedFlags = [false, false, false, false];
 
@@ -224,10 +225,6 @@ class CreateShipmentForm extends Vue {
         ) {
             Api.$post(this.formData);
         }
-    }
-
-    mounted() {
-        this.formData = this.getTestFormData();
     }
 
     getTestFormData() {
