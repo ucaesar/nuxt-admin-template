@@ -1,10 +1,11 @@
 const util = require('util');
+const fs = require('fs');
 import chai from 'chai';
 const expect = require('chai').expect;
 // const FedExAPI = require('node-shipping-fedex');
 const FedExAPI = require('fedex-manager');
 console.log(FedExAPI);
-const fs = require('fs');
+
 // const fedex = new FedExAPI({
 //     environment: 'live', // or live
 //     debug: true,
@@ -418,7 +419,6 @@ const childItem = {
 //     // });
 // });
 
-
 /**
  * Rate
  */
@@ -505,5 +505,36 @@ fedex.rates(rateItem, (err, res) => {
     } else {
         console.log('success');
         console.log(res);
+        const fee =
+            res.RateReplyDetails[0].RatedShipmentDetails[0].TotalBaseCharge
+                .Amount;
     }
 });
+
+// const xml2js = require('xml2js');
+// const parser = new xml2js.Parser();
+// const path = require('path');
+// const filepath = path.join(
+//     __dirname,
+//     '..',
+//     '..',
+//     'node_modules',
+//     'fedex-manager',
+//     'lib',
+//     'wsdl',
+//     'RateService_v24.wsdl'
+// );
+// fs.readFile(filepath, function(err, data) {
+//     if (err) {
+//         console.log('read file error');
+//         return;
+//     }
+//     parser.parseString(data, function(err, result) {
+//         if (err) {
+//             console.log('parse xml error');
+//             return;
+//         }
+//         console.dir(result);
+//         console.log('Done');
+//     });
+// });
