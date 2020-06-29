@@ -2,11 +2,14 @@
     <v-row justify="center">
         <v-col cols="12" md="8">
             <v-card>
-                <v-toolbar flat>
-                    <v-btn text color="primary"
-                        ><v-icon>mdi-plus</v-icon>读取运单</v-btn
-                    >
-                </v-toolbar>
+                <v-card-title
+                    ><v-toolbar flat>
+                        <v-btn text color="primary"
+                            ><v-icon>mdi-plus</v-icon>读取运单</v-btn
+                        >
+                    </v-toolbar></v-card-title
+                >
+
                 <v-card-text>
                     <v-tabs
                         :vertical="!$breakpoint.isMobile"
@@ -129,12 +132,15 @@
                         ></v-tab-item>
                     </v-tabs>
                 </v-card-text>
+                <v-card-actions>
+                    <v-toolbar flat>
+                        <v-btn color="primary" dark @click="onSubmit"
+                            >创建运单
+                        </v-btn>
+                        <v-btn text>重置</v-btn></v-toolbar
+                    >
+                </v-card-actions>
             </v-card>
-        </v-col>
-
-        <v-col cols="12" md="8">
-            <v-btn color="primary" dark @click="onSubmit">创建运单</v-btn>
-            <v-btn text>重置</v-btn>
         </v-col>
     </v-row>
 </template>
@@ -182,7 +188,8 @@ class CreateShipmentForm extends Vue {
         return this.failedFlags[this.curStep] ? 'red' : '';
     }
 
-    formData = new ShipmentData();
+    // formData = new ShipmentData();
+    formData = this.getTestFormData();
 
     failedFlags = [false, false, false, false];
 
@@ -218,10 +225,6 @@ class CreateShipmentForm extends Vue {
         ) {
             Api.$post(this.formData);
         }
-    }
-
-    mounted() {
-        this.formData = this.getTestFormData();
     }
 
     getTestFormData() {
