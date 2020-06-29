@@ -21,6 +21,126 @@ export interface IProcessShipmentRequest {
     RequestedShipment: IRequestedShipment;
 }
 
+export interface IRateRequest {
+    WebAuthenticationDetail: IWebAuthenticationDetail;
+    ClientDetail: IClientDetail;
+    TransactionDetail?: ITransactionDetail;
+    Version: IVersionId;
+    ReturnTransitAndCommit?: boolean;
+    CarrierCodes: CarrierCodeType[];
+    VariableOptions: ServiceOptionType[];
+    ConsolidationKey?: IConsolidationKey;
+    RequestedShipment?: IRequestedShipment;
+}
+
+export interface IRateReply {
+    HighestSeverity: NotificationSeverityType;
+    Notifications: INotification[];
+    TransactionDetail: ITransactionDetail;
+    Version: IVersionId;
+    RateReplyDetails: IRateReplyDetail[];
+}
+
+export interface IConsolidationKey {
+    Type?: ConsolidationType;
+    Index?: string;
+    Date?: Date;
+}
+
+export interface IRateReplyDetail {
+    ServiceType?: ServiceType;
+    ServiceDescription?: IServiceDescription;
+    PackagingType?: PackagingType;
+    AppliedOptions: ServiceOptionType[];
+    AppliedSubOptions?: IServiceSubOptionDetail;
+    DeliveryStation?: string;
+    DeliveryDayOfWeek?: DayOfWeekType;
+    DeliveryTimestamp?: string;
+    CommitDetails: ICommitDetail[];
+    DestinationAirportId?: string;
+    IneligibleForMoneyBackGuarantee?: boolean;
+    OriginServiceArea?: string;
+    DestinationServiceArea?: string;
+    TransitTime?: TransitTimeType;
+    MaximumTransitTime?: TransitTimeType;
+    SignatureOption?: SignatureOptionType;
+    ActualRateType?: ReturnedRateType;
+    RatedShipmentDetails: IRatedShipmentDetail[];
+}
+
+export interface IServiceDescription {
+    ServiceType?: ServiceType;
+    Code?: string;
+    Names: IProductName[];
+    Description?: string;
+    AstraDescription?: string;
+}
+
+export interface IProductName {
+    Type?: string;
+    Encoding?: string;
+    Value?: string;
+}
+
+export interface IServiceSubOptionDetail {
+    FreightGuarantee?: FreightGuaranteeType;
+    SmartPostHubId?: string;
+    SmartPostIndicia?: SmartPostIndiciaType;
+}
+
+export interface ICommitDetail {
+    CommodityName?: string;
+    ServiceType?: ServiceType;
+    ServiceDescription?: IServiceDescription;
+    AppliedOptions: ServiceOptionType[];
+    AppliedSubOptions?: IServiceSubOptionDetail;
+    DerivedShipmentSignatureOption?: ISignatureOptionDetail;
+    DerivedPackageSignatureOptions: ISignatureOptionDetail[];
+    DerivedOriginDetail?: ICleansedAddressAndLocationDetail;
+    DerivedDestinationDetail?: ICleansedAddressAndLocationDetail;
+    CommitTimestamp?: string;
+    DayOfWeek?: DayOfWeekType;
+    TransitTime?: TransitTimeType;
+    MaximumTransitTime?: TransitTimeType;
+    DestinationServiceArea?: string;
+    BrokerAddress?: IAddress;
+    BrokerLocationId?: string;
+    BrokerCommitTimestamp?: string;
+    BrokerCommitDayOfWeek?: DayOfWeekType;
+    BrokerToDestinationDays?: number;
+    ProofOfDeliveryDate?: Date;
+    ProofOfDeliveryDayOfWeek?: DayOfWeekType;
+    CommitMessages: INotification[];
+    DeliveryMessages: string[];
+    DelayDetails: IDelayDetail[];
+    DocumentContent?: InternationalDocumentContentType;
+    RequiredDocuments: RequiredShippingDocumentType[];
+    FreightCommitDetail?: IFreightCommitDetail;
+}
+
+export interface ISignatureOptionDetail {
+    OptionType?: SignatureOptionType;
+    SignatureReleaseNumber?: string;
+}
+
+export interface ICleansedAddressAndLocationDetail {
+    CountryCode?: string;
+    StateOrProvinceCode?: string;
+    PostalCode?: string;
+    ServiceArea?: string;
+    LocationId?: string;
+    LocationNumber?: number;
+    AirportId?: string;
+}
+
+export interface IDelayDetail {
+    Date?: Date;
+    Level?: DelayLevelType;
+    Point?: DelayPointType;
+    Type?: CommitmentDelayType;
+    Description?: string;
+}
+
 export interface IWebAuthenticationDetail {
     ParentCredential?: IWebAuthenticationCredential;
     UserCredential: IWebAuthenticationCredential;
@@ -36,6 +156,47 @@ export interface IClientDetail {
     MeterNumber: string;
     IntegratorId?: string;
     Localization?: ILocalization;
+}
+
+export interface IFreightCommitDetail {
+    OriginDetail?: IFreightServiceCenterDetail;
+    DestinationDetail?: IFreightServiceCenterDetail;
+    TotalDistance?: IDistance;
+}
+
+export interface IDistance {
+    Value?: number;
+    Units?: DistanceUnits;
+}
+
+export interface IFreightServiceCenterDetail {
+    InterlineCarrierCode?: string;
+    InterlineCarrierName?: string;
+    AdditionalDays?: number;
+    LocalService?: ServiceType;
+    LocalDistance?: IDistance;
+    LocalDuration?: string;
+    LocalServiceScheduling?: FreightServiceSchedulingType;
+    LimitedServiceDays: DayOfWeekType[];
+    GatewayLocationId?: string;
+    Location?: string;
+    ContactAndAddress?: IContactAndAddress;
+}
+
+export interface IRatedShipmentDetail {
+    EffectiveNetDiscount?: IMoney;
+    AdjustedCodCollectionAmount?: IMoney;
+    ShipmentRateDetail?: IShipmentRateDetail;
+    RatedPackages: IRatedPackageDetail[];
+}
+
+export interface IRatedPackageDetail {
+    TrackingIds: ITrackingId[];
+    GroupNumber?: number;
+    EffectiveNetDiscount?: IMoney;
+    AdjustedCodCollectionAmount?: IMoney;
+    OversizeClass?: OversizeClassType;
+    PackageRateDetail?: IPackageRateDetail;
 }
 
 export interface IProcessShipmentReply {
@@ -1248,4 +1409,90 @@ export enum NetExplosiveClassificationType {
     NET_EXPLOSIVE_MASS = 'NET_EXPLOSIVE_MASS',
     NET_EXPLOSIVE_QUANTITY = 'NET_EXPLOSIVE_QUANTITY',
     NET_EXPLOSIVE_WEIGHT = 'NET_EXPLOSIVE_WEIGHT'
+}
+
+export enum ConsolidationType {
+    INTERNATIONAL_DISTRIBUTION_FREIGHT = 'INTERNATIONAL_DISTRIBUTION_FREIGHT',
+    INTERNATIONAL_ECONOMY_DISTRIBUTION = 'INTERNATIONAL_ECONOMY_DISTRIBUTION',
+    INTERNATIONAL_GROUND_DISTRIBUTION = 'INTERNATIONAL_GROUND_DISTRIBUTION',
+    INTERNATIONAL_PRIORITY_DISTRIBUTION = 'INTERNATIONAL_PRIORITY_DISTRIBUTION',
+    TRANSBORDER_DISTRIBUTION = 'TRANSBORDER_DISTRIBUTION'
+}
+
+export enum ServiceOptionType {
+    FEDEX_ONE_RATE = 'FEDEX_ONE_RATE',
+    FREIGHT_GUARANTEE = 'FREIGHT_GUARANTEE',
+    SATURDAY_DELIVERY = 'SATURDAY_DELIVERY',
+    SMART_POST_ALLOWED_INDICIA = 'SMART_POST_ALLOWED_INDICIA',
+    SMART_POST_HUB_ID = 'SMART_POST_HUB_ID'
+}
+
+export enum SmartPostIndiciaType {
+    MEDIA_MAIL = 'MEDIA_MAIL',
+    PARCEL_RETURN = 'PARCEL_RETURN',
+    PARCEL_SELECT = 'PARCEL_SELECT',
+    PRESORTED_BOUND_PRINTED_MATTER = 'PRESORTED_BOUND_PRINTED_MATTER',
+    PRESORTED_STANDARD = 'PRESORTED_STANDARD'
+}
+
+export enum FreightGuaranteeType {
+    GUARANTEED_DATE = 'GUARANTEED_DATE',
+    GUARANTEED_MORNING = 'GUARANTEED_MORNING'
+}
+
+export enum CommitmentDelayType {
+    HOLIDAY = 'HOLIDAY',
+    NON_WORKDAY = 'NON_WORKDAY',
+    NO_CITY_DELIVERY = 'NO_CITY_DELIVERY',
+    NO_HOLD_AT_LOCATION = 'NO_HOLD_AT_LOCATION',
+    NO_LOCATION_DELIVERY = 'NO_LOCATION_DELIVERY',
+    NO_SERVICE_AREA_DELIVERY = 'NO_SERVICE_AREA_DELIVERY',
+    NO_SERVICE_AREA_SPECIAL_SERVICE_DELIVERY = 'NO_SERVICE_AREA_SPECIAL_SERVICE_DELIVERY',
+    NO_SPECIAL_SERVICE_DELIVERY = 'NO_SPECIAL_SERVICE_DELIVERY',
+    NO_ZIP_DELIVERY = 'NO_ZIP_DELIVERY',
+    WEEKEND = 'WEEKEND',
+    WEEKEND_SPECIAL = 'WEEKEND_SPECIAL'
+}
+
+export enum DelayPointType {
+    BROKER = 'BROKER',
+    DESTINATION = 'DESTINATION',
+    ORIGIN = 'ORIGIN',
+    ORIGIN_DESTINATION_PAIR = 'ORIGIN_DESTINATION_PAIR',
+    PROOF_OF_DELIVERY_POINT = 'PROOF_OF_DELIVERY_POINT'
+}
+
+export enum DelayLevelType {
+    CITY = 'CITY',
+    COUNTRY = 'COUNTRY',
+    LOCATION = 'LOCATION',
+    POSTAL_CODE = 'POSTAL_CODE',
+    SERVICE_AREA = 'SERVICE_AREA',
+    SERVICE_AREA_SPECIAL_SERVICE = 'SERVICE_AREA_SPECIAL_SERVICE',
+    SPECIAL_SERVICE = 'SPECIAL_SERVICE'
+}
+
+export enum InternationalDocumentContentType {
+    DOCUMENTS_ONLY = 'DOCUMENTS_ONLY',
+    NON_DOCUMENTS = 'NON_DOCUMENTS'
+}
+
+export enum RequiredShippingDocumentType {
+    CANADIAN_B13A = 'CANADIAN_B13A',
+    CERTIFICATE_OF_ORIGIN = 'CERTIFICATE_OF_ORIGIN',
+    COMMERCIAL_INVOICE = 'COMMERCIAL_INVOICE',
+    INTERNATIONAL_AIRWAY_BILL = 'INTERNATIONAL_AIRWAY_BILL',
+    MAIL_SERVICE_AIRWAY_BILL = 'MAIL_SERVICE_AIRWAY_BILL',
+    SHIPPERS_EXPORT_DECLARATION = 'SHIPPERS_EXPORT_DECLARATION'
+}
+
+export enum DistanceUnits {
+    KM = 'KM',
+    MI = 'MI'
+}
+
+export enum FreightServiceSchedulingType {
+    LIMITED = 'LIMITED',
+    STANDARD = 'STANDARD',
+    WILL_CALL = 'WILL_CALL'
 }

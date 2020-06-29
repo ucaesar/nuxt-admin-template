@@ -434,7 +434,7 @@ const rateItem = {
         PackagingType: 'YOUR_PACKAGING',
         TotalWeight: {
             Units: 'KG',
-            Value: 1
+            Value: 2
         },
         Shipper: {
             Contact: {
@@ -478,7 +478,7 @@ const rateItem = {
             ImageType: 'PDF',
             LabelStockType: 'PAPER_4X6'
         },
-        PackageCount: '1',
+        PackageCount: '2',
         RequestedPackageLineItems: [
             {
                 SequenceNumber: 1,
@@ -486,6 +486,20 @@ const rateItem = {
                 Weight: {
                     Units: 'KG',
                     Value: 1
+                },
+                Dimensions: {
+                    Length: 5,
+                    Width: 5,
+                    Height: 5,
+                    Units: 'CM'
+                }
+            },
+            {
+                SequenceNumber: 2,
+                GroupPackageCount: 1,
+                Weight: {
+                    Units: 'KG',
+                    Value: 20
                 },
                 Dimensions: {
                     Length: 5,
@@ -506,8 +520,9 @@ fedex.rates(rateItem, (err, res) => {
         console.log('success');
         console.log(res);
         const fee =
-            res.RateReplyDetails[0].RatedShipmentDetails[0].TotalBaseCharge
-                .Amount;
+            res.RateReplyDetails[0].RatedShipmentDetails[0].ShipmentRateDetail
+                .TotalBaseCharge.Amount;
+        console.log(fee);
     }
 });
 

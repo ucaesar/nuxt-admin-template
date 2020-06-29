@@ -5,6 +5,42 @@ const shipmentRouter = new Router();
 const util = require('util');
 const FedExAPI = require('fedex-manager');
 
+shipmentRouter.post('/rate', async ctx => {
+    const fedex = new FedExAPI(fedexConfig);
+    let result: any = 'a';
+    const rate = util.promisify(fedex.rates);
+    try {
+        const packages = bulidRequestedShipments(ctx);
+        const pack = transferShipRequestToRateRequest(packages);
+        const res: ShipService.IRateReply = await rate({
+            RequestedShipment: pack
+        });
+        if (res.HighestSeverity === 'ERROR') {
+            console.log('code:' + res.Notifications[0].Code);
+            console.log('message:' + res.Notifications[0].Message);
+            console.log('severity:' + res.Notifications[0].Severity);
+            console.log('source:' + res.Notifications[0].Source);
+            throw res.Notifications[0].Message;
+        }
+        const money = res.RateReplyDetails[0].RatedShipmentDetails[0]
+            .ShipmentRateDetail!.TotalBaseCharge;
+        result = {
+            money: {
+                currency: money!.Currency,
+                amount: money!.Amount
+            }
+        };
+    } catch (err) {
+        console.log(err);
+        result = { error: err };
+        throw err;
+    } finally {
+        ctx.response.type = 'text/json';
+        ctx.response.status = 200;
+        ctx.response.body = result;
+    }
+});
+
 shipmentRouter.post('/create', async ctx => {
     const fedex = new FedExAPI(fedexConfig);
     let result: any = 'a';
@@ -284,6 +320,18 @@ shipmentRouter.get('/', ctx => {
 interface IRequestedShipmentResult {
     master: ShipService.IRequestedShipment;
     children: ShipService.IRequestedShipment[];
+}
+
+function transferShipRequestToRateRequest(
+    packages: IRequestedShipmentResult
+): ShipService.IRequestedShipment {
+    const master = packages.master;
+    packages.children.forEach(child => {
+        master.RequestedPackageLineItems.push(
+            child.RequestedPackageLineItems[0]
+        );
+    });
+    return master;
 }
 
 function bulidRequestedShipments(ctx): IRequestedShipmentResult {
