@@ -57,14 +57,16 @@
         "newProductButtonLabel": "New Product"
     },
     "shipment": {
-        "createShipment": {
-            "panelHeaderText": "Create Shipment",
+        "completeForm": {
+            "stepHeaderText": "Complete Form",
             "senderAddressHeaderText": "Sender Address",
             "receiverAddressHeaderText": "Receiver Address",
             "fromAddressBookButtonText": "From AddressBook",
             "packageHeaderText": "Package Infomation",
             "productHeaderText": "Products in package"
-        }
+        },
+        "rate": { "stepHeaderText": "Estimated Rate" },
+        "order": { "stepHeaderText": "Make Order" }
     },
     "calculator": {
         "senderCountryLabel": "Sender Country",

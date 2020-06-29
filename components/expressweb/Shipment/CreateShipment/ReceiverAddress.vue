@@ -13,7 +13,7 @@
                 <v-icon>mdi-plus</v-icon>
                 {{
                     $t(
-                        'expressweb.shipment.createShipment.fromAddressBookButtonText'
+                        'expressweb.shipment.completeForm.fromAddressBookButtonText'
                     )
                 }}
             </v-btn>
