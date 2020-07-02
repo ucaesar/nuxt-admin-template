@@ -1,7 +1,5 @@
 <template>
-    <v-card flat>
-        <pdf :src="base64Src" />
-    </v-card>
+    <pdf :src="base64Src" />
 </template>
 
 <script>

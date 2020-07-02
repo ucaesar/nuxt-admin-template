@@ -113,7 +113,7 @@
                 <v-btn text>重置</v-btn></v-toolbar
             >
         </v-card-actions>
-        <pdf-label v-if="labels.length > 0" :src="labels[0]" />
+        <label-carousel v-if="labels.length > 0" :pdf-list="labels" />
     </v-card>
 </template>
 
@@ -127,7 +127,7 @@ import SenderAddressForm from './SenderAddress.vue';
 import ReceiverAddressForm from './ReceiverAddress.vue';
 import PackageForm from './Package.vue';
 import ProductForm from './Product.vue';
-import PdfLabel from './PdfLabel.vue';
+import LabelCarousel from './LabelCarousel.vue';
 
 import { ShipmentData } from '@/models/expressweb/Shipment';
 
@@ -141,7 +141,7 @@ import * as Api from '@/api/expressweb/shipment/create';
         ProductForm,
         ValidationObserver,
         FormTab,
-        PdfLabel
+        LabelCarousel
     }
 })
 class CreateShipmentForm extends Vue {
