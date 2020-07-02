@@ -113,6 +113,7 @@
                 <v-btn text>重置</v-btn></v-toolbar
             >
         </v-card-actions>
+        <pdf-label v-if="labels.length > 0" :src="labels[0]" />
     </v-card>
 </template>
 
@@ -126,10 +127,11 @@ import SenderAddressForm from './SenderAddress.vue';
 import ReceiverAddressForm from './ReceiverAddress.vue';
 import PackageForm from './Package.vue';
 import ProductForm from './Product.vue';
+import PdfLabel from './PdfLabel.vue';
 
 import { ShipmentData } from '@/models/expressweb/Shipment';
 
-import * as Api from '@/api/expressweb/createShipment';
+import * as Api from '@/api/expressweb/shipment/create';
 
 @Component({
     components: {
@@ -138,7 +140,8 @@ import * as Api from '@/api/expressweb/createShipment';
         PackageForm,
         ProductForm,
         ValidationObserver,
-        FormTab
+        FormTab,
+        PdfLabel
     }
 })
 class CreateShipmentForm extends Vue {
@@ -170,6 +173,8 @@ class CreateShipmentForm extends Vue {
     PACKAGE_STEP = 2;
     PRODUCTS_STEP = 3;
 
+    labels: string[] = [];
+
     onUpdate(field, value) {
         this.formData[field] = value;
     }
@@ -194,7 +199,8 @@ class CreateShipmentForm extends Vue {
             packageValid &&
             productsValid
         ) {
-            Api.$post(this.formData);
+            const ret = await Api.$post(this.formData);
+            this.labels = ret.labels!;
         }
     }
 
