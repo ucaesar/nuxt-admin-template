@@ -806,6 +806,74 @@ export interface IDimensions {
     Units: LinearUnits;
 }
 
+export interface ITrackRequest {
+    WebAuthenticationDetail: IWebAuthenticationDetail;
+    ClientDetail: IClientDetail;
+    TransactionDetail?: ITransactionDetail;
+    Version: IVersionId;
+    SelectionDetails: ITrackSelectionDetail[];
+    TransactionTimeOutValueInMilliseconds?: number;
+    ProcessingOptions: TrackRequestProcessingOptionType[];
+}
+
+export interface ITrackSelectionDetail {
+    // <xs:element name="CarrierCode" type="ns:CarrierCodeType" minOccurs="0">
+    //         <xs:annotation>
+    //           <xs:documentation>The FedEx operating company (transportation) used for this package's delivery.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    //       <xs:element name="OperatingCompany" type="ns:OperatingCompanyType" minOccurs="0">
+    //         <xs:annotation>
+    //           <xs:documentation>Identifies operating transportation company that is the specific to the carrier code.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    //       <xs:element name="PackageIdentifier" type="ns:TrackPackageIdentifier" minOccurs="0">
+    //         <xs:annotation>
+    //           <xs:documentation>The type and value of the package identifier that is to be used to retrieve the tracking information for a package or group of packages.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    //       <xs:element name="TrackingNumberUniqueIdentifier" type="xs:string" minOccurs="0">
+    //         <xs:annotation>
+    //           <xs:documentation>Used to distinguish duplicate FedEx tracking numbers.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    //       <xs:element name="ShipDateRangeBegin" type="xs:date" minOccurs="0">
+    //         <xs:annotation>
+    //           <xs:documentation>To narrow the search to a period in time the ShipDateRangeBegin and ShipDateRangeEnd can be used to help eliminate duplicates.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    //       <xs:element name="ShipDateRangeEnd" type="xs:date" minOccurs="0">
+    //         <xs:annotation>
+    //           <xs:documentation>To narrow the search to a period in time the ShipDateRangeBegin and ShipDateRangeEnd can be used to help eliminate duplicates.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    //       <xs:element name="ShipmentAccountNumber" type="xs:string" minOccurs="0">
+    //         <xs:annotation>
+    //           <xs:documentation>For tracking by references information either the account number or destination postal code and country must be provided.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    //       <xs:element name="SecureSpodAccount" type="xs:string" minOccurs="0">
+    //         <xs:annotation>
+    //           <xs:documentation>Specifies the SPOD account number for the shipment being tracked.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    //       <xs:element name="Destination" type="ns:Address" minOccurs="0">
+    //         <xs:annotation>
+    //           <xs:documentation>For tracking by references information either the account number or destination postal code and country must be provided.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    //       <xs:element name="PagingDetail" type="ns:PagingDetail" minOccurs="0">
+    //         <xs:annotation>
+    //           <xs:documentation>Specifies the details about how to retrieve the subsequent pages when there is more than one page in the TrackReply.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    //       <xs:element name="CustomerSpecifiedTimeOutValueInMilliseconds" type="xs:nonNegativeInteger" minOccurs="0">
+    //         <xs:annotation>
+    //           <xs:documentation>The customer can specify a desired time out value for this particular tracking number.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+}
+
 export enum DropoffType {
     BUSINESS_SERVICE_CENTER = 'BUSINESS_SERVICE_CENTER',
     DROP_BOX = 'DROP_BOX',
@@ -1495,4 +1563,8 @@ export enum FreightServiceSchedulingType {
     LIMITED = 'LIMITED',
     STANDARD = 'STANDARD',
     WILL_CALL = 'WILL_CALL'
+}
+
+export enum TrackRequestProcessingOptionType {
+    INCLUDE_DETAILED_SCANS = 'INCLUDE_DETAILED_SCANS'
 }
