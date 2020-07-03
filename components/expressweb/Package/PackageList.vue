@@ -24,9 +24,13 @@
             class="py-0"
         >
             <v-col v-if="inlineChip" cols="12" class="py-0">
-                <v-chip :close="value.length > 1" @click:close="onDelete">{{
-                    $t('expressweb.package.orderLabel') + `${index + 1}`
-                }}</v-chip>
+                <v-chip
+                    :close="value.length > 1"
+                    @click:close="onDelete(index)"
+                    >{{
+                        $t('expressweb.package.orderLabel') + `${index + 1}`
+                    }}</v-chip
+                >
             </v-col>
 
             <v-col cols="12" class="d-flex py-0">
@@ -34,7 +38,7 @@
                     <v-chip
                         :close="value.length > 1"
                         small
-                        @click:close="onDelete"
+                        @click:close="onDelete(index)"
                         >{{
                             $t('expressweb.package.orderLabel') + `${index + 1}`
                         }}</v-chip

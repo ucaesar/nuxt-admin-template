@@ -68,7 +68,7 @@
 		"@nuxtjs/eslint-config": "^2.0.2",
 		"@nuxtjs/eslint-module": "^1.1.0",
 		"@nuxtjs/style-resources": "^1.0.0",
-		"@nuxtjs/vuetify": "^1.10.3",
+		"@nuxtjs/vuetify": "^1.11.2",
 		"@types/bluebird": "^3.5.28",
 		"@types/chai": "^4.2.4",
 		"@types/connect": "^3.4.32",
