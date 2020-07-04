@@ -86,7 +86,7 @@ shipmentRouter.post('/create', async ctx => {
     } catch (err) {
         console.log(err);
         result = { error: err };
-        throw err;
+        // throw err;
     } finally {
         ctx.response.type = 'text/json';
         ctx.response.status = 200;
