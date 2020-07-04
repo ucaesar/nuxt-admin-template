@@ -1,14 +1,14 @@
 <template>
     <v-card flat>
         <v-card-title
-            ><v-toolbar flat>
+            ><v-toolbar flat dense>
                 <v-btn text color="primary"
                     ><v-icon>mdi-plus</v-icon>读取运单</v-btn
                 >
             </v-toolbar></v-card-title
         >
 
-        <v-card-text>
+        <v-card-text class="px-0">
             <v-tabs
                 :vertical="!$breakpoint.isMobile"
                 show-arrows
@@ -199,8 +199,7 @@ class CreateShipmentForm extends Vue {
             packageValid &&
             productsValid
         ) {
-            const ret = await Api.$post(this.formData);
-            this.labels = ret.labels!;
+            this.$emit('submit', this.formData);
         }
     }
 

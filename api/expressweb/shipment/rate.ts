@@ -3,12 +3,15 @@ import { getNuxtAxiosInstance } from '@/utils/NuxtOptions';
 import { IShipment } from '@/models/expressweb/Shipment';
 
 export interface IReturnData {
-    labels?: string[];
+    money?: {
+        currency: string;
+        amount: number;
+    };
     error?: string;
 }
 
 function getBaseUrl() {
-    return '/api/shipment/create';
+    return '/api/shipment/rate';
 }
 
 export async function $post(data: IShipment): Promise<IReturnData> {

@@ -67,9 +67,9 @@ import SearchAction from './SearchAction.vue';
 import NewAction from './NewAction.vue';
 import EditAction from './EditAction.vue';
 import DeleteAction from './DeleteAction.vue';
-import LoadingOverlay from './LoadingOverlay.vue';
 
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue';
+import LoadingOverlay from '@/components/common/LoadingOverlay.vue';
 
 import {
     ITableDataFromServer,

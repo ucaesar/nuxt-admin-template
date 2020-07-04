@@ -1,8 +1,8 @@
 <template>
     <v-row justify="center">
-        <v-col cols="12" md="8">
+        <v-col cols="12" md="8" class="px-0">
             <v-expansion-panels v-model="curStep" accordion>
-                <v-expansion-panel :key="COMPLETE_FORM_STEP">
+                <v-expansion-panel :disabled="curStep !== COMPLETE_FORM_STEP">
                     <expansion-step-header
                         :step="COMPLETE_FORM_STEP"
                         :header-text="
@@ -16,7 +16,7 @@
                     /></v-expansion-panel-content>
                 </v-expansion-panel>
 
-                <v-expansion-panel :key="RATE_STEP">
+                <v-expansion-panel :disabled="curStep !== RATE_STEP">
                     <expansion-step-header
                         :step="RATE_STEP"
                         :header-text="
@@ -26,7 +26,7 @@
                     <v-expansion-panel-content></v-expansion-panel-content>
                 </v-expansion-panel>
 
-                <v-expansion-panel :key="ORDER_STEP">
+                <v-expansion-panel :disabled="curStep !== ORDER_STEP">
                     <expansion-step-header
                         :step="ORDER_STEP"
                         :header-text="

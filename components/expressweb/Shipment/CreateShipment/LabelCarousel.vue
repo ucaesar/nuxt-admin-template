@@ -1,25 +1,9 @@
 <template>
     <v-card flat>
-        <v-card-actions class="justify-space-between">
-            <v-btn text @click="prev">
-                <v-icon>mdi-chevron-left</v-icon>
-            </v-btn>
-            <v-item-group v-model="curPdf" class="text-center" mandatory>
-                <v-item
-                    v-for="n in pdfList.length"
-                    :key="`btn-${n}`"
-                    v-slot:default="{ active, toggle }"
-                >
-                    <v-btn :input-value="active" icon @click="toggle">
-                        <v-icon>mdi-record</v-icon>
-                    </v-btn>
-                </v-item>
-            </v-item-group>
-            <v-btn text @click="next">
-                <v-icon>mdi-chevron-right</v-icon>
-            </v-btn>
+        <v-card-actions v-if="pdfList.length > 1" class="justify-center">
+            <v-pagination v-model="curPdf" :length="pdfList.length" circle />
         </v-card-actions>
-        <v-window v-model="curPdf" show-arrows>
+        <v-window :value="windowIndex" show-arrows @change="changeIndex">
             <v-window-item v-for="(pdf, i) in pdfList" :key="`pdf-${i}`">
                 <pdf-label :src="pdf" />
             </v-window-item>
@@ -39,15 +23,14 @@ import PdfLabel from './PdfLabel.vue';
 class LabelCarousel extends Vue {
     @Prop({ type: Array, required: true }) readonly pdfList!: string[];
 
-    curPdf = 0;
+    curPdf = 1;
 
-    next() {
-        this.curPdf =
-            this.curPdf + 1 === this.pdfList.length ? 0 : this.curPdf + 1;
+    get windowIndex() {
+        return this.curPdf - 1;
     }
-    prev() {
-        this.curPdf =
-            this.curPdf - 1 < 0 ? this.pdfList.length - 1 : this.curPdf - 1;
+
+    changeIndex(val) {
+        this.curPdf = val + 1;
     }
 }
 

@@ -2,9 +2,9 @@
     <validation-observer ref="form" v-slot="{}">
         <v-form>
             <v-row justify="center">
-                <v-col cols="12" md="8">
+                <v-col cols="12" md="8" class="px-0">
                     <v-card>
-                        <v-card-text class="px-md-12">
+                        <v-card-text>
                             <v-row>
                                 <v-col cols="12" md="4">
                                     <country-input
