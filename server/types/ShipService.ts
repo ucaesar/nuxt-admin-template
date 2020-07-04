@@ -806,6 +806,78 @@ export interface IDimensions {
     Units: LinearUnits;
 }
 
+export interface ITrackRequest {
+    WebAuthenticationDetail: IWebAuthenticationDetail;
+    ClientDetail: IClientDetail;
+    TransactionDetail?: ITransactionDetail;
+    Version: IVersionId;
+    SelectionDetails: ITrackSelectionDetail[];
+    TransactionTimeOutValueInMilliseconds?: number;
+    ProcessingOptions: TrackRequestProcessingOptionType[];
+}
+
+export interface ITrackSelectionDetail {
+    CarrierCode?: CarrierCodeType;
+    OperatingCompany?: OperatingCompanyType;
+    PackageIdentifier?: ITrackPackageIdentifier;
+    TrackingNumberUniqueIdentifier?: string;
+    ShipDateRangeBegin?: Date;
+    ShipDateRangeEnd?: Date;
+    ShipmentAccountNumber?: string;
+    SecureSpodAccount?: string;
+    Destination?: IAddress;
+    PagingDetail?: IPagingDetail;
+    CustomerSpecifiedTimeOutValueInMilliseconds?: number;
+}
+
+export interface ITrackPackageIdentifier {
+    Type: TrackIdentifierType;
+    Value: string;
+}
+
+export interface IPagingDetail {
+    PagingToken?: string;
+    NumberOfResultsPerPage?: number;
+}
+
+export interface ITrackReply {
+    HighestSeverity: NotificationSeverityType;
+    Notifications: Notification[];
+    TransactionDetail?: ITransactionDetail;
+    Version: IVersionId;
+    CompletedTrackDetails:ICompletedTrackDetail[];
+}
+
+export interface ICompletedTrackDetail {
+    // <xs:element name="HighestSeverity" type="ns:NotificationSeverityType;
+    // <xs:element name="Notifications" type="ns:Notification" minOccurs="0" maxOccurs="unbounded"/>
+    // <xs:element name="DuplicateWaybill" type="xs:boolean" minOccurs="0">
+    //   <xs:annotation>
+    //     <xs:documentation>True if duplicate packages (more than one package with the same tracking number) have been found, and only limited data will be provided for each one.</xs:documentation>
+    //   </xs:annotation>
+    // </xs:element>
+    // <xs:element name="MoreData" type="xs:boolean" minOccurs="0">
+    //   <xs:annotation>
+    //     <xs:documentation>True if additional packages remain to be retrieved.</xs:documentation>
+    //   </xs:annotation>
+    // </xs:element>
+    // <xs:element name="PagingToken" type="xs:string" minOccurs="0">
+    //   <xs:annotation>
+    //     <xs:documentation>Value that must be passed in a TrackNotification request to retrieve the next set of packages (when MoreDataAvailable = true).</xs:documentation>
+    //   </xs:annotation>
+    // </xs:element>
+    // <xs:element name="TrackDetailsCount" type="xs:nonNegativeInteger" minOccurs="0">
+    //   <xs:annotation>
+    //     <xs:documentation>Identifies the total number of available track details across all pages.</xs:documentation>
+    //   </xs:annotation>
+    // </xs:element>
+    // <xs:element name="TrackDetails" type="ns:TrackDetail" minOccurs="0" maxOccurs="unbounded">
+    //   <xs:annotation>
+    //     <xs:documentation>Contains detailed tracking information for the requested packages(s).</xs:documentation>
+    //   </xs:annotation>
+    // </xs:element>
+}
+
 export enum DropoffType {
     BUSINESS_SERVICE_CENTER = 'BUSINESS_SERVICE_CENTER',
     DROP_BOX = 'DROP_BOX',
@@ -1495,4 +1567,51 @@ export enum FreightServiceSchedulingType {
     LIMITED = 'LIMITED',
     STANDARD = 'STANDARD',
     WILL_CALL = 'WILL_CALL'
+}
+
+export enum TrackRequestProcessingOptionType {
+    INCLUDE_DETAILED_SCANS = 'INCLUDE_DETAILED_SCANS'
+}
+
+export enum OperatingCompanyType {
+    FEDEX_CARGO = 'FEDEX_CARGO',
+    FEDEX_CORPORATE_SERVICES = 'FEDEX_CORPORATE_SERVICES',
+    FEDEX_CORPORATION = 'FEDEX_CORPORATION',
+    FEDEX_CUSTOMER_INFORMATION_SYSTEMS = 'FEDEX_CUSTOMER_INFORMATION_SYSTEMS',
+    FEDEX_CUSTOM_CRITICAL = 'FEDEX_CUSTOM_CRITICAL',
+    FEDEX_EXPRESS = 'FEDEX_EXPRESS',
+    FEDEX_FREIGHT = 'FEDEX_FREIGHT',
+    FEDEX_GROUND = 'FEDEX_GROUND',
+    FEDEX_KINKOS = 'FEDEX_KINKOS',
+    FEDEX_OFFICE = 'FEDEX_OFFICE',
+    FEDEX_SERVICES = 'FEDEX_SERVICES',
+    FEDEX_TRADE_NETWORKS = 'FEDEX_TRADE_NETWORKS'
+}
+
+export enum TrackIdentifierType {
+    BILL_OF_LADING = 'BILL_OF_LADING',
+    COD_RETURN_TRACKING_NUMBER = 'COD_RETURN_TRACKING_NUMBER',
+    CUSTOMER_AUTHORIZATION_NUMBER = 'CUSTOMER_AUTHORIZATION_NUMBER',
+    CUSTOMER_REFERENCE = 'CUSTOMER_REFERENCE',
+    DEPARTMENT = 'DEPARTMENT',
+    DOCUMENT_AIRWAY_BILL = 'DOCUMENT_AIRWAY_BILL',
+    FREE_FORM_REFERENCE = 'FREE_FORM_REFERENCE',
+    GROUND_INTERNATIONAL = 'GROUND_INTERNATIONAL',
+    GROUND_SHIPMENT_ID = 'GROUND_SHIPMENT_ID',
+    GROUP_MPS = 'GROUP_MPS',
+    INVOICE = 'INVOICE',
+    JOB_GLOBAL_TRACKING_NUMBER = 'JOB_GLOBAL_TRACKING_NUMBER',
+    ORDER_GLOBAL_TRACKING_NUMBER = 'ORDER_GLOBAL_TRACKING_NUMBER',
+    ORDER_TO_PAY_NUMBER = 'ORDER_TO_PAY_NUMBER',
+    OUTBOUND_LINK_TO_RETURN = 'OUTBOUND_LINK_TO_RETURN',
+    PARTNER_CARRIER_NUMBER = 'PARTNER_CARRIER_NUMBER',
+    PART_NUMBER = 'PART_NUMBER',
+    PURCHASE_ORDER = 'PURCHASE_ORDER',
+    REROUTE_TRACKING_NUMBER = 'REROUTE_TRACKING_NUMBER',
+    RETURNED_TO_SHIPPER_TRACKING_NUMBER = 'RETURNED_TO_SHIPPER_TRACKING_NUMBER',
+    RETURN_MATERIALS_AUTHORIZATION = 'RETURN_MATERIALS_AUTHORIZATION',
+    SHIPPER_REFERENCE = 'SHIPPER_REFERENCE',
+    STANDARD_MPS = 'STANDARD_MPS',
+    TRACKING_NUMBER_OR_DOORTAG = 'TRACKING_NUMBER_OR_DOORTAG',
+    TRANSPORTATION_CONTROL_NUMBER = 'TRANSPORTATION_CONTROL_NUMBER'
 }

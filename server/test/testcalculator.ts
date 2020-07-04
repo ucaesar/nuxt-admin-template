@@ -512,19 +512,34 @@ const rateItem = {
     }
 };
 
-fedex.rates(rateItem, (err, res) => {
-    if (err) {
-        console.log('results from server err');
-        console.log(err);
-    } else {
-        console.log('success');
-        console.log(res);
-        const fee =
-            res.RateReplyDetails[0].RatedShipmentDetails[0].ShipmentRateDetail
-                .TotalBaseCharge.Amount;
-        console.log(fee);
+// fedex.rates(rateItem, (err, res) => {
+//     if (err) {
+//         console.log('results from server err');
+//         console.log(err);
+//     } else {
+//         console.log('success');
+//         console.log(res);
+//         const fee =
+//             res.RateReplyDetails[0].RatedShipmentDetails[0].ShipmentRateDetail
+//                 .TotalBaseCharge.Amount;
+//         console.log(fee);
+//     }
+// });
+
+fedex.track({
+    SelectionDetails: {
+      PackageIdentifier: {
+        Type: 'TRACKING_NUMBER_OR_DOORTAG',
+        Value: '123456789012'
+      }
     }
-});
+  }, function(err, res) {
+    if(err) {
+      return console.log(err);
+    }
+  
+    console.log(res);
+  });
 
 // const xml2js = require('xml2js');
 // const parser = new xml2js.Parser();
