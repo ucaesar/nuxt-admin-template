@@ -845,37 +845,154 @@ export interface ITrackReply {
     Notifications: Notification[];
     TransactionDetail?: ITransactionDetail;
     Version: IVersionId;
-    CompletedTrackDetails:ICompletedTrackDetail[];
+    CompletedTrackDetails: ICompletedTrackDetail[];
 }
 
 export interface ICompletedTrackDetail {
-    // <xs:element name="HighestSeverity" type="ns:NotificationSeverityType;
-    // <xs:element name="Notifications" type="ns:Notification" minOccurs="0" maxOccurs="unbounded"/>
-    // <xs:element name="DuplicateWaybill" type="xs:boolean" minOccurs="0">
-    //   <xs:annotation>
-    //     <xs:documentation>True if duplicate packages (more than one package with the same tracking number) have been found, and only limited data will be provided for each one.</xs:documentation>
-    //   </xs:annotation>
-    // </xs:element>
-    // <xs:element name="MoreData" type="xs:boolean" minOccurs="0">
-    //   <xs:annotation>
-    //     <xs:documentation>True if additional packages remain to be retrieved.</xs:documentation>
-    //   </xs:annotation>
-    // </xs:element>
-    // <xs:element name="PagingToken" type="xs:string" minOccurs="0">
-    //   <xs:annotation>
-    //     <xs:documentation>Value that must be passed in a TrackNotification request to retrieve the next set of packages (when MoreDataAvailable = true).</xs:documentation>
-    //   </xs:annotation>
-    // </xs:element>
-    // <xs:element name="TrackDetailsCount" type="xs:nonNegativeInteger" minOccurs="0">
-    //   <xs:annotation>
-    //     <xs:documentation>Identifies the total number of available track details across all pages.</xs:documentation>
-    //   </xs:annotation>
-    // </xs:element>
-    // <xs:element name="TrackDetails" type="ns:TrackDetail" minOccurs="0" maxOccurs="unbounded">
-    //   <xs:annotation>
-    //     <xs:documentation>Contains detailed tracking information for the requested packages(s).</xs:documentation>
-    //   </xs:annotation>
-    // </xs:element>
+    HighestSeverity?: NotificationSeverityType;
+    Notifications: INotification[];
+    DuplicateWaybill?: boolean;
+    MoreData?: boolean;
+    PagingToken?: string;
+    TrackDetailsCount?: number;
+    TrackDetails: ITrackDetail[];
+}
+
+export interface ITrackDetail {
+    Notification?: INotification;
+    TrackingNumber?: string;
+    Barcode?: IStringBarcode;
+    TrackingNumberUniqueIdentifier?: string;
+    //       <xs:element name="StatusDetail" type="ns:TrackStatusDetail" minOccurs="0">
+    //         <xs:annotation>
+    //           <xs:documentation>Specifies details about the status of the shipment being tracked.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    //       <xs:element name="InformationNotes" type="ns:TrackInformationNoteDetail" minOccurs="0" maxOccurs="unbounded">
+    //         <xs:annotation>
+    //           <xs:documentation>Notifications to the end user that provide additional information relevant to the tracked shipment. For example, a notification may indicate that a change in behavior has occurred.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    //       <xs:element name="CustomerExceptionRequests" type="ns:CustomerExceptionRequestDetail" minOccurs="0" maxOccurs="unbounded"/>
+    //       <xs:element name="Reconciliation" type="ns:TrackReconciliation" minOccurs="0">
+    //         <xs:annotation>
+    //           <xs:documentation>Used to report the status of a piece of a multiple piece shipment which is no longer traveling with the rest of the packages in the shipment or has not been accounted for.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    ServiceCommitMessage?: string;
+    DestinationServiceArea?: string;
+    DestinationServiceAreaDescription?: string;
+    CarrierCode?: CarrierCodeType;
+    OperatingCompany?: OperatingCompanyType;
+    OperatingCompanyOrCarrierDescription?: string;
+    CartageAgentCompanyName?: string;
+    ProductionLocationContactAndAddress?: IContactAndAddress;
+    //       <xs:element name="OtherIdentifiers" type="ns:TrackOtherIdentifierDetail" minOccurs="0" maxOccurs="unbounded"/>
+    FormId?: string;
+    //       <xs:element name="Service" type="ns:TrackServiceDescriptionDetail" minOccurs="0">
+    //         <xs:annotation>
+    //           <xs:documentation>Specifies details about service such as service description and type.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    PackageWeight?: IWeight;
+    PackageDimensions?: IDimensions;
+    PackageDimensionalWeight?: IWeight;
+    ShipmentWeight?: IWeight;
+    Packaging?: string;
+    PackagingType?: PackagingType;
+    // PhysicalPackagingType?:PhysicalPackagingType;
+    PackageSequenceNumber?: number;
+    PackageCount?: number;
+    CreatorSoftwareId?: string;
+    //       <xs:element name="Charges?:TrackChargeDetail" minOccurs="0" maxOccurs="unbounded">
+    //         <xs:annotation>
+    //           <xs:documentation>Specifies the details about the SPOC details.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    NickName?: string;
+    Notes?: string;
+    //       <xs:element name="Attributes" type="ns:TrackDetailAttributeType" minOccurs="0" maxOccurs="unbounded"/>
+    // ShipmentContents:IContentRecord[];
+    PackageContents: string[];
+    ClearanceLocationCode?: string;
+    // Commodities:ICommodity[];
+    //       <xs:element name="ReturnDetail" type="ns:TrackReturnDetail" minOccurs="0"/>
+    // CustomsOptionDetails:ICustomsOptionDetail[];
+    //       <xs:element name="AdvanceNotificationDetail" type="ns:TrackAdvanceNotificationDetail" minOccurs="0"/>
+    //       <xs:element name="SpecialHandlings" type="ns:TrackSpecialHandling" minOccurs="0" maxOccurs="unbounded">
+    //         <xs:annotation>
+    //           <xs:documentation>List of special handlings that applied to this package.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    //       <xs:element name="Payments" type="ns:TrackPayment" minOccurs="0" maxOccurs="unbounded">
+    //         <xs:annotation>
+    //           <xs:documentation>Specifies the details about the payments for the shipment being tracked.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    Shipper?: IContact;
+    //       <xs:element name="PossessionStatus" type="ns:TrackPossessionStatusType" minOccurs="0">
+    //         <xs:annotation>
+    //           <xs:documentation>Indicates last-known possession of package (Returned for CSR SL only.)</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    ShipperAddress?: IAddress;
+    OriginLocationAddress?: IAddress;
+    OriginStationId?: string;
+    //       <xs:element name="DatesOrTimes" type="ns:TrackingDateOrTimestamp" minOccurs="0" maxOccurs="unbounded"/>
+    TotalTransitDistance?: IDistance;
+    DistanceToDestination?: IDistance;
+    //       <xs:element name="SpecialInstructions" type="ns:TrackSpecialInstruction" minOccurs="0" maxOccurs="unbounded">
+    //         <xs:annotation>
+    //           <xs:documentation>Provides additional details about package delivery.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    Recipient?: IContact;
+    LastUpdatedDestinationAddress?: IAddress;
+    DestinationAddress?: IAddress;
+    HoldAtLocationContact?: IContact;
+    HoldAtLocationAddress?: IAddress;
+    DestinationStationId?: string;
+    DestinationLocationAddress?: IAddress;
+    //       <xs:element name="DestinationLocationType" type="ns:FedExLocationType;
+    DestinationLocationTimeZoneOffset?: string;
+    ActualDeliveryAddress?: IAddress;
+    //       <xs:element name="OfficeOrderDeliveryMethod" type="ns:OfficeOrderDeliveryMethodType" minOccurs="0">
+    //         <xs:annotation>
+    //           <xs:documentation>Identifies the method of office order delivery.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    //       <xs:element name="DeliveryLocationType" type="ns:TrackDeliveryLocationType" minOccurs="0">
+    //         <xs:annotation>
+    //           <xs:documentation>Strict text indicating the delivery location at the delivered to address.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    DeliveryLocationDescription?: string;
+    DeliveryAttempts?: number;
+    DeliverySignatureName?: string;
+    //       <xs:element name="PieceCountVerificationDetails" type="ns:PieceCountVerificationDetail" minOccurs="0" maxOccurs="unbounded">
+    //         <xs:annotation>
+    //           <xs:documentation>Specifies the details about the count of the packages delivered at the delivery location and the count of the packages at the origin.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    TotalUniqueAddressCountInConsolidation?: number;
+    //       <xs:element name="AvailableImages" type="ns:AvailableImagesDetail" minOccurs="0" maxOccurs="unbounded"/>
+    //       <xs:element name="Signature" type="ns:SignatureImageDetail" minOccurs="0"/>
+    //       <xs:element name="NotificationEventsAvailable" type="ns:NotificationEventType" minOccurs="0" maxOccurs="unbounded"/>
+    //       <xs:element name="SplitShipmentParts" type="ns:TrackSplitShipmentPart" minOccurs="0" maxOccurs="unbounded">
+    //         <xs:annotation>
+    //           <xs:documentation>Returned for cargo shipments only when they are currently split across vehicles.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    //       <xs:element name="DeliveryOptionEligibilityDetails" type="ns:DeliveryOptionEligibilityDetail" minOccurs="0" maxOccurs="unbounded">
+    //         <xs:annotation>
+    //           <xs:documentation>Specifies the details about the eligibility for different delivery options.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
+    //       <xs:element name="Events" type="ns:TrackEvent" minOccurs="0" maxOccurs="unbounded">
+    //         <xs:annotation>
+    //           <xs:documentation>Event information for a tracking number.</xs:documentation>
+    //         </xs:annotation>
+    //       </xs:element>
 }
 
 export enum DropoffType {
