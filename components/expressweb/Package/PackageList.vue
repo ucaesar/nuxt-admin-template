@@ -2,13 +2,11 @@
     <v-row>
         <v-col cols="12" class="py-0">
             <v-alert
-                dense
+                text
                 dismissible
                 icon="mdi-alert-circle-outline"
                 color="warning"
-                border="left"
                 class="ma-0"
-                colored-border
             >
                 <div>{{ $t('expressweb.package.yourPackagingHint.text') }}</div>
                 <div>

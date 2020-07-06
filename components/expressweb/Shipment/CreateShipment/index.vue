@@ -67,7 +67,7 @@ class IndexPage extends Vue {
     maxStep = 2;
 
     formData: IShipment;
-    rateData: RateApi.IReturnData = { error: '123' };
+    rateData: RateApi.IReturnData = {};
 
     next() {
         this.curStep + 1 > this.maxStep
@@ -81,7 +81,10 @@ class IndexPage extends Vue {
             : (this.curStep = this.curStep - 1);
     }
 
-    rateStep() {}
+    async rateStep(formData: IShipment) {
+        this.rateData = await RateApi.$post(formData);
+        this.next();
+    }
 }
 
 export default IndexPage;
