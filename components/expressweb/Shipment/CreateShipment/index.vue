@@ -12,7 +12,7 @@
                         "
                     />
                     <v-expansion-panel-content
-                        ><shipment-form
+                        ><shipment-form @submit="rateStep"
                     /></v-expansion-panel-content>
                 </v-expansion-panel>
 
@@ -23,7 +23,9 @@
                             $t('expressweb.shipment.rate.stepHeaderText')
                         "
                     />
-                    <v-expansion-panel-content></v-expansion-panel-content>
+                    <v-expansion-panel-content>
+                        <rate-card :rate-data="rateData" />
+                    </v-expansion-panel-content>
                 </v-expansion-panel>
 
                 <v-expansion-panel :disabled="curStep !== ORDER_STEP">
@@ -41,13 +43,19 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Ref, namespace } from 'nuxt-property-decorator';
+import { Vue, Component, Ref } from 'nuxt-property-decorator';
+import _ from 'lodash';
 
 import ShipmentForm from './Form.vue';
 import ExpansionStepHeader from './ExpansionStepHeader.vue';
+import RateCard from './RateCard.vue';
+
+import * as RateApi from '@/api/expressweb/shipment/rate';
+import * as CreateApi from '@/api/expressweb/shipment/create';
+import { IShipment } from '@/models/expressweb/Shipment';
 
 @Component({
-    components: { ShipmentForm, ExpansionStepHeader }
+    components: { ShipmentForm, ExpansionStepHeader, RateCard }
 })
 class IndexPage extends Vue {
     COMPLETE_FORM_STEP = 0;
@@ -55,6 +63,25 @@ class IndexPage extends Vue {
     ORDER_STEP = 2;
 
     curStep = this.COMPLETE_FORM_STEP;
+    minStep = 0;
+    maxStep = 2;
+
+    formData: IShipment;
+    rateData: RateApi.IReturnData = { error: '123' };
+
+    next() {
+        this.curStep + 1 > this.maxStep
+            ? (this.curStep = this.maxStep)
+            : (this.curStep = this.curStep + 1);
+    }
+
+    back() {
+        this.curStep - 1 < this.minStep
+            ? (this.curStep = this.minStep)
+            : (this.curStep = this.curStep - 1);
+    }
+
+    rateStep() {}
 }
 
 export default IndexPage;

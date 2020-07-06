@@ -1,4 +1,5 @@
 <template>
+    <!-- this.$emit('submit', formData) -->
     <v-card flat>
         <v-card-title
             ><v-toolbar flat dense>
@@ -109,8 +110,12 @@
         </v-card-text>
         <v-card-actions>
             <v-toolbar flat>
-                <v-btn color="primary" dark @click="onSubmit">创建运单 </v-btn>
-                <v-btn text>重置</v-btn></v-toolbar
+                <v-btn color="primary" dark @click="onSubmit">{{
+                    $t('components.stepper.nextButtonText')
+                }}</v-btn>
+                <v-btn text>{{
+                    $t('components.stepper.resetButtonText')
+                }}</v-btn></v-toolbar
             >
         </v-card-actions>
         <label-carousel v-if="labels.length > 0" :pdf-list="labels" />
