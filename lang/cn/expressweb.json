@@ -65,7 +65,11 @@
             "packageHeaderText": "包裹信息",
             "productHeaderText": "包裹内商品信息"
         },
-        "rate": { "stepHeaderText": "预估费用" },
+        "rate": {
+            "stepHeaderText": "预估费用",
+            "errorHint": "该错误信息来自于FedEx服务器。请返回修改表单信息。",
+            "loadingText": "正在计算..."
+        },
         "order": { "stepHeaderText": "下单" }
     },
     "calculator": {

@@ -109,7 +109,7 @@
             </v-tabs>
         </v-card-text>
         <v-card-actions>
-            <v-toolbar flat>
+            <v-toolbar flat dense>
                 <v-btn color="primary" dark @click="onSubmit">{{
                     $t('components.stepper.nextButtonText')
                 }}</v-btn>

@@ -1,7 +1,11 @@
 <template>
     <v-row justify="center">
         <v-col cols="12" md="8" class="px-0">
-            <v-expansion-panels v-model="curStep" accordion>
+            <v-expansion-panels v-model="curStep" accordion mandatory>
+                <loading-overlay
+                    :loading="loading"
+                    :loading-text="loadingText"
+                />
                 <v-expansion-panel :disabled="curStep !== COMPLETE_FORM_STEP">
                     <expansion-step-header
                         :step="COMPLETE_FORM_STEP"
@@ -24,7 +28,7 @@
                         "
                     />
                     <v-expansion-panel-content>
-                        <rate-card :rate-data="rateData" />
+                        <rate-card :rate-data="rateData" @back="back" />
                     </v-expansion-panel-content>
                 </v-expansion-panel>
 
@@ -50,12 +54,19 @@ import ShipmentForm from './Form.vue';
 import ExpansionStepHeader from './ExpansionStepHeader.vue';
 import RateCard from './RateCard.vue';
 
+import LoadingOverlay from '@/components/common/LoadingOverlay.vue';
+
 import * as RateApi from '@/api/expressweb/shipment/rate';
 import * as CreateApi from '@/api/expressweb/shipment/create';
 import { IShipment } from '@/models/expressweb/Shipment';
 
 @Component({
-    components: { ShipmentForm, ExpansionStepHeader, RateCard }
+    components: {
+        ShipmentForm,
+        ExpansionStepHeader,
+        RateCard,
+        LoadingOverlay
+    }
 })
 class IndexPage extends Vue {
     COMPLETE_FORM_STEP = 0;
@@ -68,6 +79,9 @@ class IndexPage extends Vue {
 
     formData: IShipment;
     rateData: RateApi.IReturnData = {};
+
+    loading: boolean = false;
+    loadingText: string = '';
 
     next() {
         this.curStep + 1 > this.maxStep
@@ -82,7 +96,15 @@ class IndexPage extends Vue {
     }
 
     async rateStep(formData: IShipment) {
+        this.loading = true;
+        this.loadingText = this.$t(
+            'expressweb.shipment.rate.loadingText'
+        ) as string;
+
+        this.formData = formData;
         this.rateData = await RateApi.$post(formData);
+
+        this.loading = false;
         this.next();
     }
 }

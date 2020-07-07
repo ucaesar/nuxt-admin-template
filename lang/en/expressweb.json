@@ -65,7 +65,11 @@
             "packageHeaderText": "Package Infomation",
             "productHeaderText": "Products in package"
         },
-        "rate": { "stepHeaderText": "Estimated Rate" },
+        "rate": {
+            "stepHeaderText": "Estimated Rate",
+            "errorHint": "This error message came from FedEx Server. Please go back and check your shimpment form.",
+            "loadingText": "Calcuating..."
+        },
         "order": { "stepHeaderText": "Make Order" }
     },
     "calculator": {

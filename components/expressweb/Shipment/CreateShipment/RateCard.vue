@@ -1,15 +1,25 @@
 <template>
     <v-card flat>
+        <v-card-title v-if="!hasError"> {{ rateText }}</v-card-title>
         <v-card-text>
-            <v-alert
-                v-if="hasError"
-                icon="mdi-alert-circle"
-                color="error"
-                text
-            >
-                {{ rateData.error }}
+            <v-alert v-if="hasError" icon="mdi-alert-circle" color="error" text>
+                <div>{{ rateData.error }}</div>
+                <div>{{ $t('expressweb.shipment.rate.errorHint') }}</div>
             </v-alert>
         </v-card-text>
+        <v-card-actions>
+            <v-toolbar dense flat>
+                <v-btn
+                    :disabled="!!hasError"
+                    color="primary"
+                    @click="next"
+                    >{{ $t('components.stepper.nextButtonText') }}</v-btn
+                >
+                <v-btn text @click="back">{{
+                    $t('components.stepper.backButtonText')
+                }}</v-btn>
+            </v-toolbar>
+        </v-card-actions>
     </v-card>
 </template>
 
@@ -24,6 +34,20 @@ class RateCard extends Vue {
 
     get hasError() {
         return this.rateData.error;
+    }
+
+    get rateText() {
+        return `${this.rateData.money!.amount} ${
+            this.rateData.money!.currency
+        }`;
+    }
+
+    back() {
+        this.$emit('back');
+    }
+
+    next() {
+        this.$emit('next');
     }
 }
 
