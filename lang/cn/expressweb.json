@@ -68,9 +68,15 @@
         "rate": {
             "stepHeaderText": "预估费用",
             "errorHint": "该错误信息来自于FedEx服务器。请返回修改表单信息。",
-            "loadingText": "正在计算..."
+            "loadingText": "正在计算...",
+            "payButtonText": "付款"
         },
-        "order": { "stepHeaderText": "下单" }
+        "showLabel" : {
+            "stepHeaderText": "运单标签",
+            "printButtonText": "打印此标签",
+            "downloadButtonText": "下载此标签",
+            "loadingText": "正在生成运单标签..."
+        }
     },
     "calculator": {
         "senderCountryLabel": "发送方国家",

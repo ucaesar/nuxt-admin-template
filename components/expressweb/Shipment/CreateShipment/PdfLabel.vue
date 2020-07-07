@@ -2,8 +2,13 @@
     <v-card flat>
         <v-card-title>
             <v-toolbar dense flat>
-                <v-btn color="primary" @click="print">
-                    <v-icon>mdi-printer</v-icon>打印此标签
+                <v-btn color="primary" @click="print" class="mr-2">
+                    <v-icon>mdi-printer</v-icon
+                    >{{ $t('expressweb.shipment.showLabel.printButtonText') }}
+                </v-btn>
+                <v-btn color="primary">
+                    <v-icon>mdi-download</v-icon
+                    >{{ $t('expressweb.shipment.showLabel.downloadButtonText') }}
                 </v-btn>
             </v-toolbar>
         </v-card-title>

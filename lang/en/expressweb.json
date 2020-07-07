@@ -68,9 +68,15 @@
         "rate": {
             "stepHeaderText": "Estimated Rate",
             "errorHint": "This error message came from FedEx Server. Please go back and check your shimpment form.",
-            "loadingText": "Calcuating..."
+            "loadingText": "Calcuating...",
+            "payButtonText": "Pay for it"
         },
-        "order": { "stepHeaderText": "Make Order" }
+        "showLabel": {
+            "stepHeaderText": "Shipment Labels",
+            "printButtonText": "Print",
+            "downloadButtonText": "Download",
+            "loadingText": "Generating Labels..."
+        }
     },
     "calculator": {
         "senderCountryLabel": "Sender Country",

@@ -13,7 +13,7 @@
                     :disabled="!!hasError"
                     color="primary"
                     @click="next"
-                    >{{ $t('components.stepper.nextButtonText') }}</v-btn
+                    >{{ $t('expressweb.shipment.rate.payButtonText') }}</v-btn
                 >
                 <v-btn text @click="back">{{
                     $t('components.stepper.backButtonText')

@@ -28,18 +28,24 @@
                         "
                     />
                     <v-expansion-panel-content>
-                        <rate-card :rate-data="rateData" @back="back" />
+                        <rate-card
+                            :rate-data="rateData"
+                            @back="back"
+                            @next="showLabelStep"
+                        />
                     </v-expansion-panel-content>
                 </v-expansion-panel>
 
-                <v-expansion-panel :disabled="curStep !== ORDER_STEP">
+                <v-expansion-panel :disabled="curStep !== SHOW_LABEL_STEP">
                     <expansion-step-header
-                        :step="ORDER_STEP"
+                        :step="SHOW_LABEL_STEP"
                         :header-text="
-                            $t('expressweb.shipment.order.stepHeaderText')
+                            $t('expressweb.shipment.showLabel.stepHeaderText')
                         "
                     />
-                    <v-expansion-panel-content></v-expansion-panel-content>
+                    <v-expansion-panel-content>
+                        <label-carousel :label-data="labelData" />
+                    </v-expansion-panel-content>
                 </v-expansion-panel>
             </v-expansion-panels>
         </v-col>
@@ -53,6 +59,7 @@ import _ from 'lodash';
 import ShipmentForm from './Form.vue';
 import ExpansionStepHeader from './ExpansionStepHeader.vue';
 import RateCard from './RateCard.vue';
+import LabelCarousel from './LabelCarousel.vue';
 
 import LoadingOverlay from '@/components/common/LoadingOverlay.vue';
 
@@ -65,13 +72,14 @@ import { IShipment } from '@/models/expressweb/Shipment';
         ShipmentForm,
         ExpansionStepHeader,
         RateCard,
-        LoadingOverlay
+        LoadingOverlay,
+        LabelCarousel
     }
 })
 class IndexPage extends Vue {
     COMPLETE_FORM_STEP = 0;
     RATE_STEP = 1;
-    ORDER_STEP = 2;
+    SHOW_LABEL_STEP = 2;
 
     curStep = this.COMPLETE_FORM_STEP;
     minStep = 0;
@@ -79,6 +87,7 @@ class IndexPage extends Vue {
 
     formData: IShipment;
     rateData: RateApi.IReturnData = {};
+    labelData: CreateApi.IReturnData = {};
 
     loading: boolean = false;
     loadingText: string = '';
@@ -103,6 +112,18 @@ class IndexPage extends Vue {
 
         this.formData = formData;
         this.rateData = await RateApi.$post(formData);
+
+        this.loading = false;
+        this.next();
+    }
+
+    async showLabelStep() {
+        this.loading = true;
+        this.loadingText = this.$t(
+            'expressweb.shipment.showLabel.loadingText'
+        ) as string;
+
+        this.labelData = await CreateApi.$post(this.formData);
 
         this.loading = false;
         this.next();
