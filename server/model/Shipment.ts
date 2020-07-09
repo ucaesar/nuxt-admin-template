@@ -5,7 +5,8 @@ import {
     ForeignKey,
     BelongsTo,
     CreatedAt,
-    UpdatedAt
+    UpdatedAt,
+    HasOne
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 import User from './User';
