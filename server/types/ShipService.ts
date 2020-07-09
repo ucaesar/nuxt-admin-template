@@ -863,22 +863,10 @@ export interface ITrackDetail {
     TrackingNumber?: string;
     Barcode?: IStringBarcode;
     TrackingNumberUniqueIdentifier?: string;
-    //       <xs:element name="StatusDetail" type="ns:TrackStatusDetail" minOccurs="0">
-    //         <xs:annotation>
-    //           <xs:documentation>Specifies details about the status of the shipment being tracked.</xs:documentation>
-    //         </xs:annotation>
-    //       </xs:element>
-    //       <xs:element name="InformationNotes" type="ns:TrackInformationNoteDetail" minOccurs="0" maxOccurs="unbounded">
-    //         <xs:annotation>
-    //           <xs:documentation>Notifications to the end user that provide additional information relevant to the tracked shipment. For example, a notification may indicate that a change in behavior has occurred.</xs:documentation>
-    //         </xs:annotation>
-    //       </xs:element>
-    //       <xs:element name="CustomerExceptionRequests" type="ns:CustomerExceptionRequestDetail" minOccurs="0" maxOccurs="unbounded"/>
-    //       <xs:element name="Reconciliation" type="ns:TrackReconciliation" minOccurs="0">
-    //         <xs:annotation>
-    //           <xs:documentation>Used to report the status of a piece of a multiple piece shipment which is no longer traveling with the rest of the packages in the shipment or has not been accounted for.</xs:documentation>
-    //         </xs:annotation>
-    //       </xs:element>
+    StatusDetail?: ITrackStatusDetail;
+    InformationNotes: ITrackInformationNoteDetail[];
+    CustomerExceptionRequests: ICustomerExceptionRequestDetail[];
+    Reconciliation?: ITrackReconciliation;
     ServiceCommitMessage?: string;
     DestinationServiceArea?: string;
     DestinationServiceAreaDescription?: string;
@@ -887,65 +875,41 @@ export interface ITrackDetail {
     OperatingCompanyOrCarrierDescription?: string;
     CartageAgentCompanyName?: string;
     ProductionLocationContactAndAddress?: IContactAndAddress;
-    //       <xs:element name="OtherIdentifiers" type="ns:TrackOtherIdentifierDetail" minOccurs="0" maxOccurs="unbounded"/>
+    OtherIdentifiers: ITrackOtherIdentifierDetail[];
     FormId?: string;
-    //       <xs:element name="Service" type="ns:TrackServiceDescriptionDetail" minOccurs="0">
-    //         <xs:annotation>
-    //           <xs:documentation>Specifies details about service such as service description and type.</xs:documentation>
-    //         </xs:annotation>
-    //       </xs:element>
+    Service?: ITrackServiceDescriptionDetail;
     PackageWeight?: IWeight;
     PackageDimensions?: IDimensions;
     PackageDimensionalWeight?: IWeight;
     ShipmentWeight?: IWeight;
     Packaging?: string;
     PackagingType?: PackagingType;
-    // PhysicalPackagingType?:PhysicalPackagingType;
+    PhysicalPackagingType?: PhysicalPackagingType;
     PackageSequenceNumber?: number;
     PackageCount?: number;
     CreatorSoftwareId?: string;
-    //       <xs:element name="Charges?:TrackChargeDetail" minOccurs="0" maxOccurs="unbounded">
-    //         <xs:annotation>
-    //           <xs:documentation>Specifies the details about the SPOC details.</xs:documentation>
-    //         </xs:annotation>
-    //       </xs:element>
+    Charges: ITrackChargeDetail[];
     NickName?: string;
     Notes?: string;
-    //       <xs:element name="Attributes" type="ns:TrackDetailAttributeType" minOccurs="0" maxOccurs="unbounded"/>
-    // ShipmentContents:IContentRecord[];
+    Attributes: TrackDetailAttributeType[];
+    ShipmentContents: IContentRecord[];
     PackageContents: string[];
     ClearanceLocationCode?: string;
-    // Commodities:ICommodity[];
-    //       <xs:element name="ReturnDetail" type="ns:TrackReturnDetail" minOccurs="0"/>
-    // CustomsOptionDetails:ICustomsOptionDetail[];
-    //       <xs:element name="AdvanceNotificationDetail" type="ns:TrackAdvanceNotificationDetail" minOccurs="0"/>
-    //       <xs:element name="SpecialHandlings" type="ns:TrackSpecialHandling" minOccurs="0" maxOccurs="unbounded">
-    //         <xs:annotation>
-    //           <xs:documentation>List of special handlings that applied to this package.</xs:documentation>
-    //         </xs:annotation>
-    //       </xs:element>
-    //       <xs:element name="Payments" type="ns:TrackPayment" minOccurs="0" maxOccurs="unbounded">
-    //         <xs:annotation>
-    //           <xs:documentation>Specifies the details about the payments for the shipment being tracked.</xs:documentation>
-    //         </xs:annotation>
-    //       </xs:element>
+    Commodities: ICommodity[];
+    ReturnDetail?: ITrackReturnDetail;
+    CustomsOptionDetails: ICustomsOptionDetail[];
+    AdvanceNotificationDetail?: ITrackAdvanceNotificationDetail;
+    SpecialHandlings: ITrackSpecialHandling[];
+    Payments: ITrackPayment[];
     Shipper?: IContact;
-    //       <xs:element name="PossessionStatus" type="ns:TrackPossessionStatusType" minOccurs="0">
-    //         <xs:annotation>
-    //           <xs:documentation>Indicates last-known possession of package (Returned for CSR SL only.)</xs:documentation>
-    //         </xs:annotation>
-    //       </xs:element>
+    PossessionStatus?: TrackPossessionStatusType;
     ShipperAddress?: IAddress;
     OriginLocationAddress?: IAddress;
     OriginStationId?: string;
-    //       <xs:element name="DatesOrTimes" type="ns:TrackingDateOrTimestamp" minOccurs="0" maxOccurs="unbounded"/>
+    DatesOrTimes: ITrackingDateOrTimestamp[];
     TotalTransitDistance?: IDistance;
     DistanceToDestination?: IDistance;
-    //       <xs:element name="SpecialInstructions" type="ns:TrackSpecialInstruction" minOccurs="0" maxOccurs="unbounded">
-    //         <xs:annotation>
-    //           <xs:documentation>Provides additional details about package delivery.</xs:documentation>
-    //         </xs:annotation>
-    //       </xs:element>
+    SpecialInstructions: ITrackSpecialInstruction[];
     Recipient?: IContact;
     LastUpdatedDestinationAddress?: IAddress;
     DestinationAddress?: IAddress;
@@ -953,46 +917,498 @@ export interface ITrackDetail {
     HoldAtLocationAddress?: IAddress;
     DestinationStationId?: string;
     DestinationLocationAddress?: IAddress;
-    //       <xs:element name="DestinationLocationType" type="ns:FedExLocationType;
+    DestinationLocationType?: FedExLocationType;
     DestinationLocationTimeZoneOffset?: string;
     ActualDeliveryAddress?: IAddress;
-    //       <xs:element name="OfficeOrderDeliveryMethod" type="ns:OfficeOrderDeliveryMethodType" minOccurs="0">
-    //         <xs:annotation>
-    //           <xs:documentation>Identifies the method of office order delivery.</xs:documentation>
-    //         </xs:annotation>
-    //       </xs:element>
-    //       <xs:element name="DeliveryLocationType" type="ns:TrackDeliveryLocationType" minOccurs="0">
-    //         <xs:annotation>
-    //           <xs:documentation>Strict text indicating the delivery location at the delivered to address.</xs:documentation>
-    //         </xs:annotation>
-    //       </xs:element>
+    OfficeOrderDeliveryMethod?: OfficeOrderDeliveryMethodType;
+    DeliveryLocationType?: TrackDeliveryLocationType;
     DeliveryLocationDescription?: string;
     DeliveryAttempts?: number;
     DeliverySignatureName?: string;
-    //       <xs:element name="PieceCountVerificationDetails" type="ns:PieceCountVerificationDetail" minOccurs="0" maxOccurs="unbounded">
-    //         <xs:annotation>
-    //           <xs:documentation>Specifies the details about the count of the packages delivered at the delivery location and the count of the packages at the origin.</xs:documentation>
-    //         </xs:annotation>
-    //       </xs:element>
+    PieceCountVerificationDetails: IPieceCountVerificationDetail[];
     TotalUniqueAddressCountInConsolidation?: number;
-    //       <xs:element name="AvailableImages" type="ns:AvailableImagesDetail" minOccurs="0" maxOccurs="unbounded"/>
-    //       <xs:element name="Signature" type="ns:SignatureImageDetail" minOccurs="0"/>
-    //       <xs:element name="NotificationEventsAvailable" type="ns:NotificationEventType" minOccurs="0" maxOccurs="unbounded"/>
-    //       <xs:element name="SplitShipmentParts" type="ns:TrackSplitShipmentPart" minOccurs="0" maxOccurs="unbounded">
-    //         <xs:annotation>
-    //           <xs:documentation>Returned for cargo shipments only when they are currently split across vehicles.</xs:documentation>
-    //         </xs:annotation>
-    //       </xs:element>
-    //       <xs:element name="DeliveryOptionEligibilityDetails" type="ns:DeliveryOptionEligibilityDetail" minOccurs="0" maxOccurs="unbounded">
-    //         <xs:annotation>
-    //           <xs:documentation>Specifies the details about the eligibility for different delivery options.</xs:documentation>
-    //         </xs:annotation>
-    //       </xs:element>
-    //       <xs:element name="Events" type="ns:TrackEvent" minOccurs="0" maxOccurs="unbounded">
-    //         <xs:annotation>
-    //           <xs:documentation>Event information for a tracking number.</xs:documentation>
-    //         </xs:annotation>
-    //       </xs:element>
+    AvailableImages: IAvailableImagesDetail[];
+    Signature?: ISignatureImageDetail;
+    NotificationEventsAvailable: NotificationEventType[];
+    SplitShipmentParts: ITrackSplitShipmentPart[];
+    DeliveryOptionEligibilityDetails: IDeliveryOptionEligibilityDetail[];
+    Events: ITrackEvent[];
+}
+
+export interface ITrackEvent {
+    Timestamp?: string;
+    EventType?: string;
+    EventDescription?: string;
+    StatusExceptionCode?: string;
+    StatusExceptionDescription?: string;
+    Address?: IAddress;
+    StationId?: string;
+    ArrivalLocation?: ArrivalLocationType;
+}
+
+export interface IDeliveryOptionEligibilityDetail {
+    Option?: DeliveryOptionType;
+    Eligibility?: EligibilityType;
+}
+
+export interface ITrackSplitShipmentPart {
+    PieceCount?: number;
+    Timestamp?: string;
+    StatusCode?: string;
+    StatusDescription?: string;
+}
+
+export interface ISignatureImageDetail {
+    Image?: string;
+    Notifications: INotification[];
+}
+
+export interface IAvailableImagesDetail {
+    Type?: AvailableImageType;
+    Size?: ImageSizeType;
+}
+
+export interface IPieceCountVerificationDetail {
+    CountLocationType?: PieceCountLocationType;
+    Count?: number;
+    Description?: string;
+}
+
+export interface ITrackSpecialInstruction {
+    Description?: string;
+    DeliveryOption?: TrackDeliveryOptionType;
+    StatusDetail?: ISpecialInstructionStatusDetail;
+    OriginalEstimatedDeliveryTimestamp?: string;
+    OriginalRequestTime?: string;
+    RequestedAppointmentTime?: IAppointmentDetail;
+}
+
+export interface IAppointmentDetail {
+    Date?: Date;
+    WindowDetails: IAppointmentTimeDetail[];
+}
+
+export interface IAppointmentTimeDetail {
+    Type?: AppointmentWindowType;
+    Window?: ILocalTimeRange;
+    Description?: string;
+}
+
+export interface ILocalTimeRange {
+    Begins?: string;
+    Ends?: string;
+}
+
+export interface ISpecialInstructionStatusDetail {
+    Status?: SpecialInstructionsStatusCode;
+    StatusCreateTime?: string;
+}
+
+export interface ITrackingDateOrTimestamp {
+    Type?: TrackingDateOrTimestampType;
+    DateOrTimestamp?: string;
+}
+
+export interface ITrackStatusDetail {
+    CreationTime?: string;
+    Code?: string;
+    Description?: string;
+    Location?: IAddress;
+    AncillaryDetails: ITrackStatusAncillaryDetail[];
+}
+
+export interface ITrackStatusAncillaryDetail {
+    Reason?: string;
+    ReasonDescription?: string;
+    Action?: string;
+    ActionDescription?: string;
+}
+
+export interface ITrackInformationNoteDetail {
+    Code?: string;
+    Description?: string;
+}
+
+export interface ICustomerExceptionRequestDetail {
+    Id?: string;
+    StatusCode?: string;
+    StatusDescription?: string;
+    CreateTime?: string;
+}
+
+export interface ITrackReconciliation {
+    Status: string;
+    Description: string;
+}
+
+export interface ITrackOtherIdentifierDetail {
+    PackageIdentifier?: ITrackPackageIdentifier;
+    TrackingNumberUniqueIdentifier?: string;
+    CarrierCode?: CarrierCodeType;
+}
+
+export interface ITrackServiceDescriptionDetail {
+    Type?: ServiceType;
+    Description?: string;
+    ShortDescription?: string;
+}
+
+export interface ITrackChargeDetail {
+    Type?: TrackChargeDetailType;
+    ChargeAmount?: IMoney;
+}
+
+export interface IContentRecord {
+    PartNumber?: string;
+    ItemNumber?: string;
+    ReceivedQuantity?: number;
+    Description?: string;
+}
+
+export interface ICommodity {
+    CommodityId?: string;
+    Name?: string;
+    NumberOfPieces?: number;
+    Description?: string;
+    Purpose?: CommodityPurposeType;
+    CountryOfManufacture?: string;
+    HarmonizedCode?: string;
+    Weight?: IWeight;
+    Quantity?: number;
+    QuantityUnits?: string;
+    AdditionalMeasures: IMeasure[];
+    UnitPrice?: IMoney;
+    CustomsValue?: IMoney;
+    ExciseConditions: IEdtExciseCondition[];
+    ExportLicenseNumber?: string;
+    ExportLicenseExpirationDate?: Date;
+    CIMarksAndNumbers?: string;
+    PartNumber?: string;
+    //   <xs:element name="NaftaDetail" type="ns:NaftaCommodityDetail" minOccurs="0">
+    //     <xs:annotation>
+    //       <xs:documentation>All data required for this commodity in NAFTA Certificate of Origin.</xs:documentation>
+    //     </xs:annotation>
+    //   </xs:element>
+}
+
+export interface ITrackAdvanceNotificationDetail {
+    EstimatedTimeOfArrival?: string;
+    Reason?: string;
+    Status?: TrackAdvanceNotificationStatusType;
+    StatusDescription?: string;
+    StatusTime?: string;
+}
+
+export interface IMeasure {
+    Quantity?: number;
+    Units?: string;
+}
+
+export interface IEdtExciseCondition {
+    Category?: string;
+    Value?: string;
+}
+
+export interface ITrackReturnDetail {
+    MovementStatus?: TrackReturnMovementStatusType;
+    LabelType?: TrackReturnLabelType;
+    Description?: string;
+    AuthorizationName?: string;
+}
+
+export interface ICustomsOptionDetail {
+    Type?: CustomsOptionType;
+    Description?: string;
+}
+
+export interface ITrackSpecialHandling {
+    Type?: TrackSpecialHandlingType;
+    Description?: string;
+    PaymentType?: TrackPaymentType;
+}
+
+export interface ITrackPayment {
+    Classification?: TrackChargesPaymentClassificationType;
+    Type?: TrackPaymentType;
+    Description?: string;
+}
+
+export enum ArrivalLocationType {
+    AIRPORT = 'AIRPORT',
+    CUSTOMER = 'CUSTOMER',
+    CUSTOMS_BROKER = 'CUSTOMS_BROKER',
+    DELIVERY_LOCATION = 'DELIVERY_LOCATION',
+    DESTINATION_AIRPORT = 'DESTINATION_AIRPORT',
+    DESTINATION_FEDEX_FACILITY = 'DESTINATION_FEDEX_FACILITY',
+    DROP_BOX = 'DROP_BOX',
+    ENROUTE = 'ENROUTE',
+    FEDEX_FACILITY = 'FEDEX_FACILITY',
+    FEDEX_OFFICE_LOCATION = 'FEDEX_OFFICE_LOCATION',
+    INTERLINE_CARRIER = 'INTERLINE_CARRIER',
+    NON_FEDEX_FACILITY = 'NON_FEDEX_FACILITY',
+    ORIGIN_AIRPORT = 'ORIGIN_AIRPORT',
+    ORIGIN_FEDEX_FACILITY = 'ORIGIN_FEDEX_FACILITY',
+    PICKUP_LOCATION = 'PICKUP_LOCATION',
+    PLANE = 'PLANE',
+    PORT_OF_ENTRY = 'PORT_OF_ENTRY',
+    SHIP_AND_GET_LOCATION = 'SHIP_AND_GET_LOCATION',
+    SORT_FACILITY = 'SORT_FACILITY',
+    TURNPOINT = 'TURNPOINT',
+    VEHICLE = 'VEHICLE'
+}
+
+export enum EligibilityType {
+    ELIGIBLE = 'ELIGIBLE',
+    INELIGIBLE = 'INELIGIBLE',
+    POSSIBLY_ELIGIBLE = 'POSSIBLY_ELIGIBLE'
+}
+
+export enum DeliveryOptionType {
+    INDIRECT_SIGNATURE_RELEASE = 'INDIRECT_SIGNATURE_RELEASE',
+    REDIRECT_TO_HOLD_AT_LOCATION = 'REDIRECT_TO_HOLD_AT_LOCATION',
+    REROUTE = 'REROUTE',
+    RESCHEDULE = 'RESCHEDULE'
+}
+
+export enum NotificationEventType {
+    ON_DELIVERY = 'ON_DELIVERY',
+    ON_ESTIMATED_DELIVERY = 'ON_ESTIMATED_DELIVERY',
+    ON_EXCEPTION = 'ON_EXCEPTION',
+    ON_SHIPMENT = 'ON_SHIPMENT',
+    ON_TENDER = 'ON_TENDER'
+}
+
+export enum ImageSizeType {
+    LARGE = 'LARGE',
+    SMALL = 'SMALL'
+}
+
+export enum AvailableImageType {
+    BILL_OF_LADING = 'BILL_OF_LADING',
+    SIGNATURE_PROOF_OF_DELIVERY = 'SIGNATURE_PROOF_OF_DELIVERY'
+}
+
+export enum PieceCountLocationType {
+    DESTINATION = 'DESTINATION',
+    ORIGIN = 'ORIGIN'
+}
+
+export enum TrackDeliveryLocationType {
+    APARTMENT_OFFICE = 'APARTMENT_OFFICE',
+    FEDEX_LOCATION = 'FEDEX_LOCATION',
+    GATE_HOUSE = 'GATE_HOUSE',
+    GUARD_OR_SECURITY_STATION = 'GUARD_OR_SECURITY_STATION',
+    IN_BOND_OR_CAGE = 'IN_BOND_OR_CAGE',
+    LEASING_OFFICE = 'LEASING_OFFICE',
+    MAILROOM = 'MAILROOM',
+    MAIN_OFFICE = 'MAIN_OFFICE',
+    MANAGER_OFFICE = 'MANAGER_OFFICE',
+    OTHER = 'OTHER',
+    PHARMACY = 'PHARMACY',
+    RECEPTIONIST_OR_FRONT_DESK = 'RECEPTIONIST_OR_FRONT_DESK',
+    RENTAL_OFFICE = 'RENTAL_OFFICE',
+    RESIDENCE = 'RESIDENCE',
+    SHIPPING_RECEIVING = 'SHIPPING_RECEIVING'
+}
+
+export enum AppointmentWindowType {
+    AFTERNOON = 'AFTERNOON',
+    LATE_AFTERNOON = 'LATE_AFTERNOON',
+    MID_DAY = 'MID_DAY',
+    MORNING = 'MORNING'
+}
+
+export enum SpecialInstructionsStatusCode {
+    ACCEPTED = 'ACCEPTED',
+    CANCELLED = 'CANCELLED',
+    DENIED = 'DENIED',
+    HELD = 'HELD',
+    MODIFIED = 'MODIFIED',
+    RELINQUISHED = 'RELINQUISHED',
+    REQUESTED = 'REQUESTED',
+    SET = 'SET'
+}
+
+export enum TrackDeliveryOptionType {
+    APPOINTMENT = 'APPOINTMENT',
+    DATE_CERTAIN = 'DATE_CERTAIN',
+    ELECTRONIC_SIGNATURE_RELEASE = 'ELECTRONIC_SIGNATURE_RELEASE',
+    EVENING = 'EVENING',
+    REDIRECT_TO_HOLD_AT_LOCATION = 'REDIRECT_TO_HOLD_AT_LOCATION',
+    REROUTE = 'REROUTE'
+}
+
+export enum OfficeOrderDeliveryMethodType {
+    COURIER = 'COURIER',
+    OTHER = 'OTHER',
+    PICKUP = 'PICKUP',
+    SHIPMENT = 'SHIPMENT'
+}
+
+export enum TrackingDateOrTimestampType {
+    ACTUAL_DELIVERY = 'ACTUAL_DELIVERY',
+    ACTUAL_PICKUP = 'ACTUAL_PICKUP',
+    ACTUAL_TENDER = 'ACTUAL_TENDER',
+    ANTICIPATED_TENDER = 'ANTICIPATED_TENDER',
+    APPOINTMENT_DELIVERY = 'APPOINTMENT_DELIVERY',
+    ESTIMATED_DELIVERY = 'ESTIMATED_DELIVERY',
+    ESTIMATED_PICKUP = 'ESTIMATED_PICKUP',
+    SHIP = 'SHIP'
+}
+
+export enum TrackChargesPaymentClassificationType {
+    DUTIES_AND_TAXES = 'DUTIES_AND_TAXES',
+    TRANSPORTATION = 'TRANSPORTATION'
+}
+
+export enum TrackPaymentType {
+    CASH_OR_CHECK_AT_DESTINATION = 'CASH_OR_CHECK_AT_DESTINATION',
+    CASH_OR_CHECK_AT_ORIGIN = 'CASH_OR_CHECK_AT_ORIGIN',
+    CREDIT_CARD_AT_DESTINATION = 'CREDIT_CARD_AT_DESTINATION',
+    CREDIT_CARD_AT_ORIGIN = 'CREDIT_CARD_AT_ORIGIN',
+    OTHER = 'OTHER',
+    RECIPIENT_ACCOUNT = 'RECIPIENT_ACCOUNT',
+    SHIPPER_ACCOUNT = 'SHIPPER_ACCOUNT',
+    THIRD_PARTY_ACCOUNT = 'THIRD_PARTY_ACCOUNT'
+}
+
+export enum TrackSpecialHandlingType {
+    ACCESSIBLE_DANGEROUS_GOODS = 'ACCESSIBLE_DANGEROUS_GOODS',
+    ADULT_SIGNATURE_OPTION = 'ADULT_SIGNATURE_OPTION',
+    AIRBILL_AUTOMATION = 'AIRBILL_AUTOMATION',
+    AIRBILL_DELIVERY = 'AIRBILL_DELIVERY',
+    ALCOHOL = 'ALCOHOL',
+    AM_DELIVERY_GUARANTEE = 'AM_DELIVERY_GUARANTEE',
+    APPOINTMENT_DELIVERY = 'APPOINTMENT_DELIVERY',
+    BATTERY = 'BATTERY',
+    BILL_RECIPIENT = 'BILL_RECIPIENT',
+    BROKER_SELECT_OPTION = 'BROKER_SELECT_OPTION',
+    CALL_BEFORE_DELIVERY = 'CALL_BEFORE_DELIVERY',
+    CALL_TAG = 'CALL_TAG',
+    CALL_TAG_DAMAGE = 'CALL_TAG_DAMAGE',
+    CHARGEABLE_CODE = 'CHARGEABLE_CODE',
+    COD = 'COD',
+    COLLECT = 'COLLECT',
+    CONSOLIDATION = 'CONSOLIDATION',
+    CONSOLIDATION_SMALLS_BAG = 'CONSOLIDATION_SMALLS_BAG',
+    CURRENCY = 'CURRENCY',
+    CUT_FLOWERS = 'CUT_FLOWERS',
+    DATE_CERTAIN_DELIVERY = 'DATE_CERTAIN_DELIVERY',
+    DELIVERY_ON_INVOICE_ACCEPTANCE = 'DELIVERY_ON_INVOICE_ACCEPTANCE',
+    DELIVERY_REATTEMPT = 'DELIVERY_REATTEMPT',
+    DELIVERY_RECEIPT = 'DELIVERY_RECEIPT',
+    DELIVER_WEEKDAY = 'DELIVER_WEEKDAY',
+    DIRECT_SIGNATURE_OPTION = 'DIRECT_SIGNATURE_OPTION',
+    DOMESTIC = 'DOMESTIC',
+    DO_NOT_BREAK_DOWN_PALLETS = 'DO_NOT_BREAK_DOWN_PALLETS',
+    DO_NOT_STACK_PALLETS = 'DO_NOT_STACK_PALLETS',
+    DRY_ICE = 'DRY_ICE',
+    DRY_ICE_ADDED = 'DRY_ICE_ADDED',
+    EAST_COAST_SPECIAL = 'EAST_COAST_SPECIAL',
+    ELECTRONIC_COD = 'ELECTRONIC_COD',
+    ELECTRONIC_DOCUMENTS_WITH_ORIGINALS = 'ELECTRONIC_DOCUMENTS_WITH_ORIGINALS',
+    ELECTRONIC_SIGNATURE_SERVICE = 'ELECTRONIC_SIGNATURE_SERVICE',
+    ELECTRONIC_TRADE_DOCUMENTS = 'ELECTRONIC_TRADE_DOCUMENTS',
+    EVENING_DELIVERY = 'EVENING_DELIVERY',
+    EXCLUSIVE_USE = 'EXCLUSIVE_USE',
+    EXTENDED_DELIVERY = 'EXTENDED_DELIVERY',
+    EXTENDED_PICKUP = 'EXTENDED_PICKUP',
+    EXTRA_LABOR = 'EXTRA_LABOR',
+    EXTREME_LENGTH = 'EXTREME_LENGTH',
+    FOOD = 'FOOD',
+    FREIGHT_ON_VALUE_CARRIER_RISK = 'FREIGHT_ON_VALUE_CARRIER_RISK',
+    FREIGHT_ON_VALUE_OWN_RISK = 'FREIGHT_ON_VALUE_OWN_RISK',
+    FREIGHT_TO_COLLECT = 'FREIGHT_TO_COLLECT',
+    FULLY_REGULATED_DANGEROUS_GOODS = 'FULLY_REGULATED_DANGEROUS_GOODS',
+    GEL_PACKS_ADDED_OR_REPLACED = 'GEL_PACKS_ADDED_OR_REPLACED',
+    GROUND_SUPPORT_FOR_SMARTPOST = 'GROUND_SUPPORT_FOR_SMARTPOST',
+    GUARANTEED_FUNDS = 'GUARANTEED_FUNDS',
+    HAZMAT = 'HAZMAT',
+    HIGH_FLOOR = 'HIGH_FLOOR',
+    HOLD_AT_LOCATION = 'HOLD_AT_LOCATION',
+    HOLIDAY_DELIVERY = 'HOLIDAY_DELIVERY',
+    INACCESSIBLE_DANGEROUS_GOODS = 'INACCESSIBLE_DANGEROUS_GOODS',
+    INDIRECT_SIGNATURE_OPTION = 'INDIRECT_SIGNATURE_OPTION',
+    INSIDE_DELIVERY = 'INSIDE_DELIVERY',
+    INSIDE_PICKUP = 'INSIDE_PICKUP',
+    INTERNATIONAL = 'INTERNATIONAL',
+    INTERNATIONAL_CONTROLLED_EXPORT = 'INTERNATIONAL_CONTROLLED_EXPORT',
+    INTERNATIONAL_MAIL_SERVICE = 'INTERNATIONAL_MAIL_SERVICE',
+    INTERNATIONAL_TRAFFIC_IN_ARMS_REGULATIONS = 'INTERNATIONAL_TRAFFIC_IN_ARMS_REGULATIONS',
+    LIFTGATE = 'LIFTGATE',
+    LIFTGATE_DELIVERY = 'LIFTGATE_DELIVERY',
+    LIFTGATE_PICKUP = 'LIFTGATE_PICKUP',
+    LIMITED_ACCESS_DELIVERY = 'LIMITED_ACCESS_DELIVERY',
+    LIMITED_ACCESS_PICKUP = 'LIMITED_ACCESS_PICKUP',
+    LIMITED_QUANTITIES_DANGEROUS_GOODS = 'LIMITED_QUANTITIES_DANGEROUS_GOODS',
+    MARKING_OR_TAGGING = 'MARKING_OR_TAGGING',
+    NET_RETURN = 'NET_RETURN',
+    NON_BUSINESS_TIME = 'NON_BUSINESS_TIME',
+    NON_STANDARD_CONTAINER = 'NON_STANDARD_CONTAINER',
+    NO_SIGNATURE_REQUIRED_SIGNATURE_OPTION = 'NO_SIGNATURE_REQUIRED_SIGNATURE_OPTION',
+    ORDER_NOTIFY = 'ORDER_NOTIFY',
+    OTHER = 'OTHER',
+    OTHER_REGULATED_MATERIAL_DOMESTIC = 'OTHER_REGULATED_MATERIAL_DOMESTIC',
+    PACKAGE_RETURN_PROGRAM = 'PACKAGE_RETURN_PROGRAM',
+    PIECE_COUNT_VERIFICATION = 'PIECE_COUNT_VERIFICATION',
+    POISON = 'POISON',
+    PREPAID = 'PREPAID',
+    PRIORITY_ALERT = 'PRIORITY_ALERT',
+    PRIORITY_ALERT_PLUS = 'PRIORITY_ALERT_PLUS',
+    PROTECTION_FROM_FREEZING = 'PROTECTION_FROM_FREEZING',
+    RAIL_MODE = 'RAIL_MODE',
+    RECONSIGNMENT_CHARGES = 'RECONSIGNMENT_CHARGES',
+    REROUTE_CROSS_COUNTRY_DEFERRED = 'REROUTE_CROSS_COUNTRY_DEFERRED',
+    REROUTE_CROSS_COUNTRY_EXPEDITED = 'REROUTE_CROSS_COUNTRY_EXPEDITED',
+    REROUTE_LOCAL = 'REROUTE_LOCAL',
+    RESIDENTIAL_DELIVERY = 'RESIDENTIAL_DELIVERY',
+    RESIDENTIAL_PICKUP = 'RESIDENTIAL_PICKUP',
+    RETURNS_CLEARANCE = 'RETURNS_CLEARANCE',
+    RETURNS_CLEARANCE_SPECIAL_ROUTING_REQUIRED = 'RETURNS_CLEARANCE_SPECIAL_ROUTING_REQUIRED',
+    RETURN_MANAGER = 'RETURN_MANAGER',
+    SATURDAY_DELIVERY = 'SATURDAY_DELIVERY',
+    SHIPMENT_PLACED_IN_COLD_STORAGE = 'SHIPMENT_PLACED_IN_COLD_STORAGE',
+    SINGLE_SHIPMENT = 'SINGLE_SHIPMENT',
+    SMALL_QUANTITY_EXCEPTION = 'SMALL_QUANTITY_EXCEPTION',
+    SORT_AND_SEGREGATE = 'SORT_AND_SEGREGATE',
+    SPECIAL_DELIVERY = 'SPECIAL_DELIVERY',
+    SPECIAL_EQUIPMENT = 'SPECIAL_EQUIPMENT',
+    STANDARD_GROUND_SERVICE = 'STANDARD_GROUND_SERVICE',
+    STORAGE = 'STORAGE',
+    SUNDAY_DELIVERY = 'SUNDAY_DELIVERY',
+    THIRD_PARTY_BILLING = 'THIRD_PARTY_BILLING',
+    THIRD_PARTY_CONSIGNEE = 'THIRD_PARTY_CONSIGNEE',
+    TOP_LOAD = 'TOP_LOAD',
+    WEEKEND_DELIVERY = 'WEEKEND_DELIVERY',
+    WEEKEND_PICKUP = 'WEEKEND_PICKUP'
+}
+
+export enum CustomsOptionType {
+    COURTESY_RETURN_LABEL = 'COURTESY_RETURN_LABEL',
+    EXHIBITION_TRADE_SHOW = 'EXHIBITION_TRADE_SHOW',
+    FAULTY_ITEM = 'FAULTY_ITEM',
+    FOLLOWING_REPAIR = 'FOLLOWING_REPAIR',
+    FOR_REPAIR = 'FOR_REPAIR',
+    ITEM_FOR_LOAN = 'ITEM_FOR_LOAN',
+    OTHER = 'OTHER',
+    REJECTED = 'REJECTED',
+    REPLACEMENT = 'REPLACEMENT',
+    TRIAL = 'TRIAL'
+}
+
+export enum TrackAdvanceNotificationStatusType {
+    BACK_ON_TRACK = 'BACK_ON_TRACK',
+    FAIL = 'FAIL'
+}
+
+export enum TrackPossessionStatusType {
+    BROKER = 'BROKER',
+    CARRIER = 'CARRIER',
+    CUSTOMS = 'CUSTOMS',
+    RECIPIENT = 'RECIPIENT',
+    SHIPPER = 'SHIPPER',
+    SPLIT_STATUS = 'SPLIT_STATUS',
+    TRANSFER_PARTNER = 'TRANSFER_PARTNER'
 }
 
 export enum DropoffType {
@@ -1731,4 +2147,61 @@ export enum TrackIdentifierType {
     STANDARD_MPS = 'STANDARD_MPS',
     TRACKING_NUMBER_OR_DOORTAG = 'TRACKING_NUMBER_OR_DOORTAG',
     TRANSPORTATION_CONTROL_NUMBER = 'TRANSPORTATION_CONTROL_NUMBER'
+}
+
+export enum PhysicalPackagingType {
+    BAG = 'BAG',
+    BARREL = 'BARREL',
+    BASKET = 'BASKET',
+    BOX = 'BOX',
+    BUCKET = 'BUCKET',
+    BUNDLE = 'BUNDLE',
+    CAGE = 'CAGE',
+    CARTON = 'CARTON',
+    CASE = 'CASE',
+    CHEST = 'CHEST',
+    CONTAINER = 'CONTAINER',
+    CRATE = 'CRATE',
+    CYLINDER = 'CYLINDER',
+    DRUM = 'DRUM',
+    ENVELOPE = 'ENVELOPE',
+    HAMPER = 'HAMPER',
+    OTHER = 'OTHER',
+    PACKAGE = 'PACKAGE',
+    PAIL = 'PAIL',
+    PALLET = 'PALLET',
+    PARCEL = 'PARCEL',
+    PIECE = 'PIECE',
+    REEL = 'REEL',
+    ROLL = 'ROLL',
+    SACK = 'SACK',
+    SHRINK_WRAPPED = 'SHRINK_WRAPPED',
+    SKID = 'SKID',
+    TANK = 'TANK',
+    TOTE_BIN = 'TOTE_BIN',
+    TUBE = 'TUBE',
+    UNIT = 'UNIT'
+}
+
+export enum TrackChargeDetailType {
+    ORIGINAL_CHARGES = 'ORIGINAL_CHARGES'
+}
+
+export enum TrackDetailAttributeType {
+    INCLUDED_IN_WATCHLIST = 'INCLUDED_IN_WATCHLIST'
+}
+
+export enum CommodityPurposeType {
+    BUSINESS = 'BUSINESS',
+    CONSUMER = 'CONSUMER'
+}
+
+export enum TrackReturnMovementStatusType {
+    MOVEMENT_OCCURRED = 'MOVEMENT_OCCURRED',
+    NO_MOVEMENT = 'NO_MOVEMENT'
+}
+
+export enum TrackReturnLabelType {
+    EMAIL = 'EMAIL',
+    PRINT = 'PRINT'
 }
