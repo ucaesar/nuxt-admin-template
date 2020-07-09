@@ -35,6 +35,7 @@
 		"casbin-sequelize-adapter": "^2.0.0",
 		"cross-env": "^7.0.0",
 		"crypto": "^1.0.1",
+		"delivery-tracker": "^2.4.2",
 		"express-session": "^1.17.0",
 		"fedex-manager": "^1.0.1",
 		"fedex-nodejs": "^1.1.0",

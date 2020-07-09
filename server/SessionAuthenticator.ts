@@ -25,13 +25,13 @@ export default class SessionAthenticator extends BaseAuthenticator {
                     id: uid
                 }
             });
-            if (!u) {
-                u = await SuperAdmin.findOne({
-                    where: {
-                        id: uid
-                    }
-                });
-            }
+            // if (!u) {
+            //     u = await SuperAdmin.findOne({
+            //         where: {
+            //             id: uid
+            //         }
+            //     });
+            // }
             if (!u) {
                 context.state.currentUser = { id: '-1', username: 'anonymous' };
                 return;
@@ -59,7 +59,8 @@ export default class SessionAthenticator extends BaseAuthenticator {
         // const password = isSuper ? "superadmin" : "aaa";
         const username: string = context.req.body.username || '';
         const password = context.req.body.password || '';
-        const a = isSuper ? SuperAdmin : User;
+        // const a = isSuper ? SuperAdmin : User;
+        const a = User;
         const u = await a.findOne({
             // atrributes: ['id', 'username'],
             where: {

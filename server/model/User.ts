@@ -3,6 +3,7 @@ import {
     Column,
     Table,
     BelongsToMany,
+    HasMany,
     Scopes,
     CreatedAt,
     UpdatedAt
@@ -11,6 +12,7 @@ import { DataTypes } from 'sequelize';
 import getEnforcer from '../lib/enforcer';
 import RoleUser from './RoleUser';
 import Role from './Role';
+import Shipment from './Shipment';
 
 @Table({ tableName: 'userabcs' })
 class User extends Model<User> {
@@ -36,8 +38,14 @@ class User extends Model<User> {
     password!: string;
     // public email!: string
 
-    @BelongsToMany(() => Role, () => RoleUser)
+    @BelongsToMany(
+        () => Role,
+        () => RoleUser
+    )
     roles?: Role[];
+
+    @HasMany(() => Shipment)
+    shipments: Shipment[];
 
     @CreatedAt
     @Column

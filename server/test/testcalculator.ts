@@ -2,7 +2,6 @@ const util = require('util');
 const fs = require('fs');
 import chai from 'chai';
 const expect = require('chai').expect;
-// const FedExAPI = require('node-shipping-fedex');
 const FedExAPI = require('fedex-manager');
 console.log(FedExAPI);
 
@@ -526,20 +525,47 @@ const rateItem = {
 //     }
 // });
 
-fedex.track({
-    SelectionDetails: {
-      PackageIdentifier: {
-        Type: 'TRACKING_NUMBER_OR_DOORTAG',
-        Value: '123456789012'
-      }
-    }
-  }, function(err, res) {
-    if(err) {
-      return console.log(err);
-    }
-  
-    console.log(res);
-  });
+// fedex.track(
+//     {
+//         SelectionDetails: {
+//             PackageIdentifier: {
+//                 Type: 'TRACKING_NUMBER_OR_DOORTAG',
+//                 Value: '774557410164'
+//             }
+//         }
+//     },
+//     function(err, res) {
+//         if (err) {
+//             return console.log(err);
+//         }
+
+//         console.log(res);
+//     }
+// );
+
+fedex.deleteshipment({
+    TrackingId: {
+        TrackingIdType: 'FEDEX', // EXPRESS || FEDEX || GROUND || USPS
+        TrackingNumber: '794616047257'
+    },
+    DeletionControl: 'DELETE_ALL_PACKAGES' // or DELETE_ONE_PACKAGE or LEGACY
+}, function(err, res) {
+  if (err) {
+    return console.log(util.inspect(err, {depth: null}));
+  }
+
+  console.log(util.inspect(res, {depth: 4}));
+});
+
+// const tracker = require('delivery-tracker');
+// const courier = tracker.courier(tracker.COURIER.FEDEX.CODE);
+// const trace_number = '774557410164';
+// courier.trace('774557410164', function(err, result) {
+//     if (err) {
+//         return console.log(err);
+//     }
+//     console.log(result);
+// });
 
 // const xml2js = require('xml2js');
 // const parser = new xml2js.Parser();
@@ -568,3 +594,32 @@ fedex.track({
 //         console.log('Done');
 //     });
 // });
+
+// import FedExAPI from 'node-shipping-fedex';
+// const FedExAPI = require('node-shipping-fedex');
+// const fedex1 = new FedExAPI({
+//     environment: 'sandbox', // or live
+//     debug: false,
+//     key: 'DtKE3OM6Kb5RrLHt',
+//     password: 'hS8OZSrhAnlcMafNaRFSDRVUo',
+//     account_number: '510087500',
+//     meter_number: '119118039',
+//     imperial: false // set to false for metric
+// });
+// fedex1.track(
+//     {
+//         SelectionDetails: {
+//             PackageIdentifier: {
+//                 Type: 'TRACKING_NUMBER_OR_DOORTAG',
+//                 Value: '774557410164'
+//             }
+//         }
+//     },
+//     function(err, res) {
+//         if (err) {
+//             return console.log(err);
+//         }
+
+//         console.log(res);
+//     }
+// );

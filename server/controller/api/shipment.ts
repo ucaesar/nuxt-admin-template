@@ -1,11 +1,42 @@
 import Router from 'koa-router';
 import fedexConfig from '../../FedexConfig';
 import * as ShipService from '../../types/ShipService';
+import User from '../../model/User';
+import Shipment from '../../model/Shipment';
 const shipmentRouter = new Router();
 const util = require('util');
 const FedExAPI = require('fedex-manager');
 
+shipmentRouter.post('/delete', ctx => {});
+
+shipmentRouter.post('/track', async ctx => {
+    let result: any = 'a';
+    const tracker = require('delivery-tracker');
+    const courier = tracker.courier(tracker.COURIER.FEDEX.CODE);
+    const track = util.promisify(courier.trace);
+    try {
+        const trackNo: any = (ctx.req as any).body;
+        const r = await track(trackNo);
+        if (r.status === 'Pending') {
+            throw 'Track Number Error.';
+        }
+        const checkpoint = r.checkpoints[0];
+        const timelines = [
+            { status: checkpoint.message, time: checkpoint.time }
+        ];
+        result = { timelines };
+    } catch (err) {
+        console.log(err);
+        result = { error: err };
+    } finally {
+        ctx.response.type = 'text/json';
+        ctx.response.status = 200;
+        ctx.response.body = result;
+    }
+});
+
 shipmentRouter.post('/rate', async ctx => {
+    const u = ctx.state.currentUser;
     const fedex = new FedExAPI(fedexConfig);
     let result: any = 'a';
     const rate = util.promisify(fedex.rates);
@@ -35,6 +66,7 @@ shipmentRouter.post('/rate', async ctx => {
         result = { error: err };
         // throw err;
     } finally {
+        (ctx as any).session.money = result.money;
         ctx.response.type = 'text/json';
         ctx.response.status = 200;
         ctx.response.body = result;
@@ -45,9 +77,17 @@ shipmentRouter.post('/create', async ctx => {
     const fedex = new FedExAPI(fedexConfig);
     let result: any = 'a';
     const ship = util.promisify(fedex.ship);
-
+    const shipmentResults: any[] = [];
     try {
-        // const packages = bulidRequestShipments(ctx);
+        const u = ctx.state.currentUser;
+        if (!(ctx as any).session.money) {
+            throw 'Please Rate first';
+        }
+        const user = await User.findOne({
+            where: {
+                id: u.id
+            }
+        });
         const packages = bulidRequestedShipments(ctx);
         const res: ShipService.IProcessShipmentReply = await ship({
             RequestedShipment: packages.master
@@ -66,6 +106,15 @@ shipmentRouter.post('/create', async ctx => {
                     .Parts[0].Image
             ]
         };
+        shipmentResults.push({
+            trackno: res.CompletedShipmentDetail!.CompletedPackageDetails[0]!
+                .TrackingIds[0].TrackingNumber,
+            image: res.CompletedShipmentDetail!.CompletedPackageDetails[0]!
+                .Label!.Parts[0].Image,
+            fee: JSON.stringify((ctx as any).session.money),
+            userId: u.id
+        });
+
         for (const child of packages.children) {
             (child as any).MasterTrackingId = masterid;
             const childRes: ShipService.IProcessShipmentReply = await ship({
@@ -82,6 +131,17 @@ shipmentRouter.post('/create', async ctx => {
                 childRes.CompletedShipmentDetail!.CompletedPackageDetails[0]!
                     .Label!.Parts[0].Image
             );
+            shipmentResults.push({
+                trackno: childRes.CompletedShipmentDetail!
+                    .CompletedPackageDetails[0]!.TrackingIds[0].TrackingNumber,
+                image: childRes.CompletedShipmentDetail!
+                    .CompletedPackageDetails[0]!.Label!.Parts[0].Image,
+                userId: u.id
+            });
+        }
+
+        for (const sr of shipmentResults) {
+            await Shipment.create(sr);
         }
     } catch (err) {
         console.log(err);
@@ -95,10 +155,35 @@ shipmentRouter.post('/create', async ctx => {
     }
 });
 
-shipmentRouter.get('/', ctx => {
+shipmentRouter.get('/', async ctx => {
+    // 获取分页参数
+    const start = ctx.request.query.start;
+    const num = ctx.request.query.count;
+    const total = await Shipment.count();
+    const filter = ctx.request.query.filter ? ctx.request.query.filter : '';
+    let offset = 0;
+    let limit = total;
+    if (start && Number(start) >= 0 && Number(start) < total) {
+        offset = Number(start);
+    }
+    if (num && Number(num) > 0) {
+        if (offset + Number(num) <= total) {
+            limit = Number(num);
+        } else {
+            limit = total - offset;
+        }
+    }
+    const results = await Shipment.findAll({
+        offset,
+        limit,
+        attributes: ['trackno', 'image', 'fee', 'createdAt']
+    });
     ctx.response.type = 'text/json';
     ctx.response.status = 200;
-    ctx.response.body = {};
+    ctx.response.body = {
+        results,
+        total
+    };
 });
 
 interface IRequestedShipmentResult {
