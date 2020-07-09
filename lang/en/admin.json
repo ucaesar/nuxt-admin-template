@@ -10,6 +10,9 @@
         "/superadmin/user": "User Manager",
 
         "/shipment": "Create Shipment",
-        "/calculator": "Fee Calculator"
+        "/calculator": "Fee Calculator",
+
+        "/account": "My Account",
+        "/account/shipment": "My Shipment"
     }
 }
