@@ -5,11 +5,11 @@ import {
     ForeignKey,
     BelongsTo,
     CreatedAt,
-    UpdatedAt,
-    HasOne
+    UpdatedAt
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 import User from './User';
+import ShipmentDetail from './ShipmentDetail';
 
 @Table({ tableName: 'shipment' })
 class Shipment extends Model<Shipment> {
@@ -29,7 +29,7 @@ class Shipment extends Model<Shipment> {
     image!: string;
 
     @Column({
-        type: DataTypes.STRING,
+        type: DataTypes.JSON,
         unique: false,
         allowNull: true
     })
@@ -41,6 +41,13 @@ class Shipment extends Model<Shipment> {
 
     @BelongsTo(() => User)
     user: User;
+
+    @ForeignKey(() => ShipmentDetail)
+    @Column
+    detailId!: number;
+
+    @BelongsTo(() => ShipmentDetail)
+    shipmentDetail: ShipmentDetail;
 
     @CreatedAt
     @Column
