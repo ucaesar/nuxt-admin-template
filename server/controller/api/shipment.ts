@@ -233,7 +233,7 @@ shipmentRouter.get('/', async ctx => {
     const shipments = await Shipment.findAll({
         offset,
         limit,
-        attributes: ['trackno', 'fee','detailId']
+        attributes: ['trackno', 'fee', 'detailId']
     });
     const results: any[] = [];
     for (const shipment of shipments) {
@@ -247,11 +247,13 @@ shipmentRouter.get('/', async ctx => {
             senderAddress: {
                 name: detail.shipperPersonName,
                 city: detail.shipperCity,
+                province: detail.shipperStateOrProvinceCode,
                 country: detail.shipperCountryCode
             },
             receiverAddress: {
                 name: detail.recipientPersonName,
                 city: detail.recipientCity,
+                province: detail.shipperStateOrProvinceCode,
                 country: detail.recipientCountryCode
             }
         });
