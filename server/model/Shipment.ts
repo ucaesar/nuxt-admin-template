@@ -5,8 +5,7 @@ import {
     ForeignKey,
     BelongsTo,
     CreatedAt,
-    UpdatedAt,
-    HasOne
+    UpdatedAt
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 import User from './User';
@@ -29,7 +28,7 @@ class Shipment extends Model<Shipment> {
     image!: string;
 
     @Column({
-        type: DataTypes.STRING,
+        type: DataTypes.JSON,
         unique: false,
         allowNull: true
     })

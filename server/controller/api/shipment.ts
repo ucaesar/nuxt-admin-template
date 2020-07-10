@@ -111,7 +111,8 @@ shipmentRouter.post('/create', async ctx => {
                 .TrackingIds[0].TrackingNumber,
             image: res.CompletedShipmentDetail!.CompletedPackageDetails[0]!
                 .Label!.Parts[0].Image,
-            fee: JSON.stringify((ctx as any).session.money),
+            // fee: JSON.stringify((ctx as any).session.money),
+            fee: (ctx as any).session.money,
             userId: u.id
         });
 
