@@ -89,5 +89,15 @@
         "receiverProvinceLabel": "Receiver Province",
         "receiverPostcodeLabel": "Receiver Postcode",
         "calButtonText": "Quick Calculate"
+    },
+    "account": {
+        "shipment": {
+            "tableTitle": "Shipments",
+            "trackNumberHeaderText": "Track No.",
+            "createdTimeHeaderText": "Created At",
+            "moneyHeaderText": "Fee",
+            "senderInfoHeaderText": "Sender",
+            "receiverInfoHeaderText": "Receiver"
+        }
     }
 }

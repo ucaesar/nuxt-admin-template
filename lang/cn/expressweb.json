@@ -89,5 +89,15 @@
         "receiverProvinceLabel": "接收方省份",
         "receiverPostcodeLabel": "接收方邮编",
         "calButtonText": "预估费用"
+    },
+    "account": {
+        "shipment": {
+            "tableTitle": "运单列表",
+            "trackNumberHeaderText": "运单号",
+            "createdTimeHeaderText": "创建时间",
+            "moneyHeaderText": "费用",
+            "senderInfoHeaderText": "发送方",
+            "receiverInfoHeaderText": "接收方"
+        }
     }
 }

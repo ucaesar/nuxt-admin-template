@@ -2,6 +2,21 @@ import { getNuxtAxiosInstance } from '@/utils/NuxtOptions';
 
 import { ITableDataFromServer, IPaginationParams } from '@/api/admin/crudTable';
 
+export interface IAddress {
+    name: string;
+    country: string;
+    province: string;
+    city: string;
+}
+
+export interface IShipment {
+    trackno: string;
+    fee: string;
+    createAt: string;
+    senderAddress: IAddress;
+    receiverAddress: IAddress;
+}
+
 function getBaseUrl() {
     return '/api/shipment';
 }
@@ -24,4 +39,6 @@ export function $add() {}
 
 export function $edit() {}
 
-export function $detail() {}
+export function $detail() {
+    return null;
+}
