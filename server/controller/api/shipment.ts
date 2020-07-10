@@ -3,6 +3,7 @@ import fedexConfig from '../../FedexConfig';
 import * as ShipService from '../../types/ShipService';
 import User from '../../model/User';
 import Shipment from '../../model/Shipment';
+import ShipmentDetail from '../../model/ShipmentDetail';
 const shipmentRouter = new Router();
 const util = require('util');
 const FedExAPI = require('fedex-manager');
@@ -78,6 +79,32 @@ shipmentRouter.post('/create', async ctx => {
     let result: any = 'a';
     const ship = util.promisify(fedex.ship);
     const shipmentResults: any[] = [];
+    const sd = {
+        id: 0,
+        shipperPersonName: '',
+        shipperPhoneNumber: '',
+        shipperCompanyName: '',
+        shipperStreetLine1: '',
+        shipperStreetLine2: '',
+        shipperCity: '',
+        shipperStateOrProvinceCode: '',
+        shipperPostalCode: '',
+        shipperCountryCode: '',
+        recipientPersonName: '',
+        recipientPhoneNumber: '',
+        recipientCompanyName: '',
+        recipientStreetLine1: '',
+        recipientStreetLine2: '',
+        recipientCity: '',
+        recipientStateOrProvinceCode: '',
+        recipientPostalCode: '',
+        recipientCountryCode: '',
+        shipTimestamp: '',
+        dropoffType: '',
+        serviceType: '',
+        packagingType: '',
+        packageCount: 0
+    };
     try {
         const u = ctx.state.currentUser;
         if (!(ctx as any).session.money) {
@@ -141,7 +168,36 @@ shipmentRouter.post('/create', async ctx => {
             });
         }
 
+        sd.shipTimestamp = packages.master.ShipTimestamp;
+        sd.dropoffType = packages.master.DropoffType;
+        sd.serviceType = packages.master.ServiceType;
+        sd.packagingType = packages.master.PackagingType;
+        sd.packageCount = packages.master.PackageCount;
+
+        sd.shipperPersonName = packages.master.Shipper.Contact!.PersonName!;
+        sd.shipperPhoneNumber = packages.master.Shipper.Contact!.PhoneNumber!;
+        sd.shipperCompanyName = packages.master.Shipper.Contact!.CompanyName!;
+        sd.shipperStreetLine1 = packages.master.Shipper.Address!.StreetLines![0];
+        sd.shipperStreetLine2 = packages.master.Shipper.Address!.StreetLines![1];
+        sd.shipperCity = packages.master.Shipper.Address!.City!;
+        sd.shipperStateOrProvinceCode = packages.master.Shipper.Address!.StateOrProvinceCode!;
+        sd.shipperPostalCode = packages.master.Shipper.Address!.PostalCode!;
+        sd.shipperCountryCode = packages.master.Shipper.Address!.CountryCode!;
+
+        sd.recipientPersonName = packages.master.Recipient.Contact!.PersonName!;
+        sd.recipientPhoneNumber = packages.master.Recipient.Contact!.PhoneNumber!;
+        sd.recipientCompanyName = packages.master.Recipient.Contact!.CompanyName!;
+        sd.recipientStreetLine1 = packages.master.Recipient.Address!.StreetLines![0];
+        sd.recipientStreetLine2 = packages.master.Recipient.Address!.StreetLines![1];
+        sd.recipientCity = packages.master.Recipient.Address!.City!;
+        sd.recipientStateOrProvinceCode = packages.master.Recipient.Address!.StateOrProvinceCode!;
+        sd.recipientPostalCode = packages.master.Recipient.Address!.PostalCode!;
+        sd.recipientCountryCode = packages.master.Recipient.Address!.CountryCode!;
+
+        const shipmentDetail = await ShipmentDetail.create(sd);
+
         for (const sr of shipmentResults) {
+            sr.detailId = shipmentDetail.id;
             await Shipment.create(sr);
         }
     } catch (err) {
@@ -174,11 +230,32 @@ shipmentRouter.get('/', async ctx => {
             limit = total - offset;
         }
     }
-    const results = await Shipment.findAll({
+    const shipments = await Shipment.findAll({
         offset,
         limit,
-        attributes: ['trackno', 'image', 'fee', 'createdAt']
+        attributes: ['trackno', 'fee','detailId']
     });
+    const results: any[] = [];
+    for (const shipment of shipments) {
+        const detail = (await shipment.$get(
+            'shipmentDetail'
+        )) as ShipmentDetail;
+        results.push({
+            trackno: shipment.trackno,
+            fee: shipment.fee,
+            createdAt: detail.shipperPersonName,
+            senderAddress: {
+                name: detail.shipperPersonName,
+                city: detail.shipperCity,
+                country: detail.shipperCountryCode
+            },
+            receiverAddress: {
+                name: detail.recipientPersonName,
+                city: detail.recipientCity,
+                country: detail.recipientCountryCode
+            }
+        });
+    }
     ctx.response.type = 'text/json';
     ctx.response.status = 200;
     ctx.response.body = {

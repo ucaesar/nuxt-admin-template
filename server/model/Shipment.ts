@@ -9,6 +9,7 @@ import {
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 import User from './User';
+import ShipmentDetail from './ShipmentDetail';
 
 @Table({ tableName: 'shipment' })
 class Shipment extends Model<Shipment> {
@@ -40,6 +41,13 @@ class Shipment extends Model<Shipment> {
 
     @BelongsTo(() => User)
     user: User;
+
+    @ForeignKey(() => ShipmentDetail)
+    @Column
+    detailId!: number;
+
+    @BelongsTo(() => ShipmentDetail)
+    shipmentDetail: ShipmentDetail;
 
     @CreatedAt
     @Column
