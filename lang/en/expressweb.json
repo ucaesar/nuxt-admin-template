@@ -1,7 +1,10 @@
 {
     "pageTitle": {
         "shipment": "Create Shipment",
-        "calculator": "Rate Caculator"
+        "calculator": "Rate Caculator",
+        "account": {
+            "shipment": "My Shipment"
+        }
     },
     "address": {
         "nameLabel": "Name",

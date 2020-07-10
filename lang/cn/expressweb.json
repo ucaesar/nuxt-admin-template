@@ -1,7 +1,10 @@
 {
     "pageTitle": {
         "shipment": "创建运单",
-        "calculator": "运费计算器"
+        "calculator": "运费计算器",
+        "account": {
+            "shipment": "我的运单"
+        }
     },
     "address": {
         "nameLabel": "姓名",

@@ -10,6 +10,9 @@
         "/superadmin/user": "用户管理",
 
         "/shipment": "创建运单",
-        "/calculator": "运费计算器"
+        "/calculator": "运费计算器",
+
+        "/account": "我的账户",
+        "/account/shipment": "我的运单"
     }
 }

@@ -16,5 +16,11 @@ export const navConf: INavigation[] = [
         calculator: {
             icon: 'mdi-calculator'
         }
+    },
+    {
+        account: {
+            icon: 'mdi-account',
+            sub: ['shipment']
+        }
     }
 ];
