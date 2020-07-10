@@ -29,14 +29,9 @@ export async function $list(
 ): Promise<ITableDataFromServer> {
     const url = getBaseUrl();
     const $axios = getNuxtAxiosInstance();
-    let serverData: ITableDataFromServer;
 
-    try {
-        const config = paginationParams ? { params: paginationParams } : {};
-        serverData = await $axios.$get(url, config);
-    } catch (e) {
-        throw e;
-    }
+    const config = paginationParams ? { params: paginationParams } : {};
+    const serverData: ITableDataFromServer = await $axios.$get(url, config);
 
     return serverData;
 }
@@ -45,34 +40,20 @@ export async function $delete(role: IRole) {
     const url = getBaseUrl() + `/${role.id}`;
     const $axios = getNuxtAxiosInstance();
 
-    try {
-        await $axios.$delete(url);
-    } catch (e) {
-        throw e;
-    }
+    await $axios.$delete(url);
 }
 
 export async function $add(role: IRole) {
     const url = getBaseUrl();
     const $axios = getNuxtAxiosInstance();
 
-    try {
-        await $axios.$post(url, role);
-    } catch (e) {
-        throw e;
-    }
+    await $axios.$post(url, role);
 }
 
 export async function $detail(role: IRole): Promise<Role> {
     const url = getBaseUrl() + `/${role.id}`;
     const $axios = getNuxtAxiosInstance();
-    let result: Role;
-
-    try {
-        result = await $axios.$get(url);
-    } catch (e) {
-        throw e;
-    }
+    const result: Role = await $axios.$get(url);
 
     return result;
 }
@@ -81,9 +62,5 @@ export async function $edit(role: IRole) {
     const url = getBaseUrl() + `/${role.id}`;
     const $axios = getNuxtAxiosInstance();
 
-    try {
-        await $axios.$put(url, role);
-    } catch (e) {
-        throw e;
-    }
+    await $axios.$put(url, role);
 }

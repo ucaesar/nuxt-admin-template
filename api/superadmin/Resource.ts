@@ -25,14 +25,9 @@ export async function $list(
 ): Promise<ITableDataFromServer> {
     const url = getBaseUrl();
     const $axios = getNuxtAxiosInstance();
-    let serverData: ITableDataFromServer;
 
-    try {
-        const config = paginationParams ? { params: paginationParams } : {};
-        serverData = await $axios.$get(url, config);
-    } catch (e) {
-        throw e;
-    }
+    const config = paginationParams ? { params: paginationParams } : {};
+    const serverData: ITableDataFromServer = await $axios.$get(url, config);
 
     return serverData;
 }
@@ -41,33 +36,21 @@ export async function $add(resource: IResource) {
     const url = getBaseUrl();
     const $axios = getNuxtAxiosInstance();
 
-    try {
-        await $axios.$post(url, resource);
-    } catch (e) {
-        throw e;
-    }
+    await $axios.$post(url, resource);
 }
 
 export async function $delete(resource: IResource) {
     const url = getBaseUrl() + `/${resource.id}`;
     const $axios = getNuxtAxiosInstance();
 
-    try {
-        await $axios.$delete(url);
-    } catch (e) {
-        throw e;
-    }
+    await $axios.$delete(url);
 }
 
 export async function $edit(resource: IResource) {
     const url = getBaseUrl() + `/${resource.id}`;
     const $axios = getNuxtAxiosInstance();
 
-    try {
-        await $axios.$put(url, resource);
-    } catch (e) {
-        throw e;
-    }
+    await $axios.$put(url, resource);
 }
 
 export async function $detail(resource: IResource): Promise<Resource> {
