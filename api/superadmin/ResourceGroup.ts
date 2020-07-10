@@ -26,14 +26,9 @@ export async function $list(
 ): Promise<ITableDataFromServer> {
     const url = getBaseUrl() + '/1/children';
     const $axios = getNuxtAxiosInstance();
-    let serverData: ITableDataFromServer;
 
-    try {
-        const config = paginationParams ? { params: paginationParams } : {};
-        serverData = await $axios.$get(url, config);
-    } catch (e) {
-        throw e;
-    }
+    const config = paginationParams ? { params: paginationParams } : {};
+    const serverData: ITableDataFromServer = await $axios.$get(url, config);
 
     return serverData;
 }
@@ -42,22 +37,14 @@ export async function $delete(resourceGroup: IResourceGroup) {
     const url = getBaseUrl() + `/${resourceGroup.id}`;
     const $axios = getNuxtAxiosInstance();
 
-    try {
-        await $axios.$delete(url);
-    } catch (e) {
-        throw e;
-    }
+    await $axios.$delete(url);
 }
 
 export async function $add(resourceGroup: IResourceGroup) {
     const url = getBaseUrl() + '/1/children';
     const $axios = getNuxtAxiosInstance();
 
-    try {
-        await $axios.$post(url, resourceGroup);
-    } catch (e) {
-        throw e;
-    }
+    await $axios.$post(url, resourceGroup);
 }
 
 export async function $detail(
@@ -65,13 +52,7 @@ export async function $detail(
 ): Promise<ResourceGroup> {
     const url = getBaseUrl() + `/${resourceGroup.id}`;
     const $axios = getNuxtAxiosInstance();
-    let group: ResourceGroup;
-
-    try {
-        group = await $axios.$get(url);
-    } catch (e) {
-        throw e;
-    }
+    const group: ResourceGroup = await $axios.$get(url);
 
     return group;
 }
@@ -80,9 +61,5 @@ export async function $edit(resourceGroup: IResourceGroup) {
     const url = getBaseUrl() + `/${resourceGroup.id}`;
     const $axios = getNuxtAxiosInstance();
 
-    try {
-        await $axios.$put(url, resourceGroup);
-    } catch (e) {
-        throw e;
-    }
+    await $axios.$put(url, resourceGroup);
 }

@@ -24,14 +24,9 @@ export async function $list(
 ): Promise<ITableDataFromServer> {
     const url = getBaseUrl();
     const $axios = getNuxtAxiosInstance();
-    let serverData: ITableDataFromServer;
 
-    try {
-        const config = paginationParams ? { params: paginationParams } : {};
-        serverData = await $axios.$get(url, config);
-    } catch (e) {
-        throw e;
-    }
+    const config = paginationParams ? { params: paginationParams } : {};
+    const serverData: ITableDataFromServer = await $axios.$get(url, config);
 
     return serverData;
 }
@@ -43,13 +38,7 @@ export function $add() {}
 export async function $detail(user: IUser): Promise<User> {
     const url = getBaseUrl() + `/${user.id}`;
     const $axios = getNuxtAxiosInstance();
-    let result: User;
-
-    try {
-        result = await $axios.$get(url);
-    } catch (e) {
-        throw e;
-    }
+    const result: User = await $axios.$get(url);
 
     return result;
 }
@@ -58,9 +47,5 @@ export async function $edit(user: IUser) {
     const url = getBaseUrl() + `/${user.id}`;
     const $axios = getNuxtAxiosInstance();
 
-    try {
-        await $axios.$put(url, user);
-    } catch (e) {
-        throw e;
-    }
+    await $axios.$put(url, user);
 }
