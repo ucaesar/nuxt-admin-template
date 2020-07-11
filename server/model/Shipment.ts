@@ -4,6 +4,7 @@ import {
     Table,
     ForeignKey,
     BelongsTo,
+    HasMany,
     CreatedAt,
     UpdatedAt
 } from 'sequelize-typescript';
@@ -48,6 +49,16 @@ class Shipment extends Model<Shipment> {
 
     @BelongsTo(() => ShipmentDetail)
     shipmentDetail: ShipmentDetail;
+
+    @ForeignKey(() => Shipment)
+    @Column
+    masterno: string;
+
+    @HasMany(() => Shipment, { onDelete: 'CASCADE' })
+    children!: Shipment[];
+
+    @BelongsTo(() => Shipment)
+    master!: Shipment;
 
     @CreatedAt
     @Column
