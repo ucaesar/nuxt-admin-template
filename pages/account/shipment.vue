@@ -1,18 +1,23 @@
 <template>
-    <div></div>
+    <index-page />
 </template>
 
 <script lang="ts">
 import { Vue, Component, namespace } from 'nuxt-property-decorator';
 
+import IndexPage from '@/components/expressweb/Account/Shipment/index.vue';
+
 const adminStore = namespace('admin');
 
 @Component({
-    layout: 'admin'
+    layout: 'admin',
+    components: {
+        IndexPage
+    }
 })
 class ShipmentPage extends Vue {
     @adminStore.Mutation('SET_PAGETITLE') setPageTitle;
-    
+
     mounted() {
         this.setPageTitle(this.$t('expressweb.pageTitle.account.shipment'));
     }
