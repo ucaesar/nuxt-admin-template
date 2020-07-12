@@ -39,6 +39,4 @@ export function $add() {}
 
 export function $edit() {}
 
-export function $detail() {
-    return null;
-}
+export function $detail() {}

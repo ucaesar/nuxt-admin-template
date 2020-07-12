@@ -1,5 +1,18 @@
 <template>
-    <div></div>
+    <base-crud-table
+        :table-title="$t('expressweb.account.shipment.tableTitle')"
+        v-bind="$attrs"
+        :headers-conf="headersConf"
+        :crud-api="api"
+        :custom-column-names="customColumnNames"
+    >
+        <template v-slot:senderAddress="{ item }">
+            {{ addressText(item.senderAddress) }}
+        </template>
+        <template v-slot:receiverAddress="{ item }">
+            {{ addressText(item.receiverAddress) }}
+        </template>
+    </base-crud-table>
 </template>
 
 <script lang="ts">
@@ -21,10 +34,61 @@ class Api implements ICrudTableApi {
     $detail = ShipmentApi.$detail;
 }
 
+const SHIPMENT_TABLE_HEADER_TEXT = {
+    get trackno() {
+        return {
+            text: $t('expressweb.account.shipment.trackNumberHeaderText'),
+            value: 'trackno',
+            sortable: false,
+            width: '200px'
+        };
+    },
+    get createdTime() {
+        return {
+            text: $t('expressweb.account.shipment.createdTimeHeaderText'),
+            value: 'createdAt',
+            sortable: false,
+            width: '300px'
+        };
+    },
+    get senderInfo() {
+        return {
+            text: $t('expressweb.account.shipment.senderInfoHeaderText'),
+            value: 'senderAddress',
+            sortable: false
+        };
+    },
+    get receiverInfo() {
+        return {
+            text: $t('expressweb.account.shipment.receiverInfoHeaderText'),
+            value: 'receiverAddress',
+            sortable: false
+        };
+    }
+};
+
 @Component({
-    components: {}
+    components: {
+        BaseCrudTable
+    },
+    inheritAttrs: false
 })
-class ShipmentTable extends Vue {}
+class ShipmentTable extends Vue {
+    headersConf = [
+        SHIPMENT_TABLE_HEADER_TEXT.trackno,
+        SHIPMENT_TABLE_HEADER_TEXT.createdTime,
+        SHIPMENT_TABLE_HEADER_TEXT.senderInfo,
+        SHIPMENT_TABLE_HEADER_TEXT.receiverInfo
+    ];
+
+    customColumnNames = ['senderAddress', 'receiverAddress'];
+
+    api = new Api();
+
+    addressText(item: ShipmentApi.IAddress) {
+        return `${item.name}, ${item.city}, ${item.province}, ${item.country}`;
+    }
+}
 
 export default ShipmentTable;
 </script>

@@ -43,6 +43,12 @@
                     @delete="beforeDelete"
                 />
             </template>
+            <template
+                v-for="columnName in customColumnNames"
+                v-slot:[`item.${columnName}`]="{ item }"
+            >
+                <slot :name="columnName" :item="item" />
+            </template>
         </v-data-table>
         <confirm-dialog
             :visible="confirmDeleteDialogVisible"
@@ -114,6 +120,7 @@ class BaseCrudTable extends Vue {
     @Prop({ type: Array, required: true }) readonly headersConf!: any[];
     @Prop({ type: Object, required: false }) readonly crudApi!: ICrudTableApi;
     @Prop({ type: Array }) readonly value!: any[];
+    @Prop({ type: Array }) readonly customColumnNames!: string[];
 
     get actionColumnState() {
         return this.deleteAction || this.editAction;
@@ -179,6 +186,8 @@ class BaseCrudTable extends Vue {
     }
 
     async beforeEdit(item) {
+        if (!this.crudApi.$detail) return;
+
         this.loadingOverlay();
 
         try {
@@ -192,6 +201,8 @@ class BaseCrudTable extends Vue {
     }
 
     async onNew(item) {
+        if (!this.crudApi.$add) return;
+
         this.submittingOverlay();
 
         try {
@@ -211,6 +222,8 @@ class BaseCrudTable extends Vue {
     }
 
     async onDelete(value) {
+        if (!this.crudApi.$delete) return;
+
         this.confirmDeleteDialogVisible = false;
         if (!value) return;
 
@@ -229,6 +242,8 @@ class BaseCrudTable extends Vue {
     }
 
     async onEdit(item) {
+        if (!this.crudApi.$edit) return;
+
         this.submittingOverlay();
 
         try {
