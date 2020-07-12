@@ -12,6 +12,9 @@
         <template v-slot:receiverAddress="{ item }">
             {{ addressText(item.receiverAddress) }}
         </template>
+        <template v-slot:fee="{ item }">
+            {{ moneyText(item) }}
+        </template>
     </base-crud-table>
 </template>
 
@@ -25,6 +28,9 @@ import { ICrudTableApi } from '@/api/admin/crudTable';
 
 import { CrudTableComponent } from '@/utils/crudTable';
 import { $t } from '@/utils/NuxtOptions';
+
+import { getCountryNameByCode } from '@/conf/expressweb/countries';
+import { getProvinceNameByCode } from '@/conf/expressweb/provinces';
 
 class Api implements ICrudTableApi {
     $list = ShipmentApi.$list;
@@ -40,7 +46,7 @@ const SHIPMENT_TABLE_HEADER_TEXT = {
             text: $t('expressweb.account.shipment.trackNumberHeaderText'),
             value: 'trackno',
             sortable: false,
-            width: '200px'
+            width: '150px'
         };
     },
     get createdTime() {
@@ -48,7 +54,15 @@ const SHIPMENT_TABLE_HEADER_TEXT = {
             text: $t('expressweb.account.shipment.createdTimeHeaderText'),
             value: 'createdAt',
             sortable: false,
-            width: '300px'
+            width: '250px'
+        };
+    },
+    get fee() {
+        return {
+            text: $t('expressweb.account.shipment.moneyHeaderText'),
+            value: 'fee',
+            sortable: false,
+            width: '150px'
         };
     },
     get senderInfo() {
@@ -77,16 +91,23 @@ class ShipmentTable extends Vue {
     headersConf = [
         SHIPMENT_TABLE_HEADER_TEXT.trackno,
         SHIPMENT_TABLE_HEADER_TEXT.createdTime,
+        SHIPMENT_TABLE_HEADER_TEXT.fee,
         SHIPMENT_TABLE_HEADER_TEXT.senderInfo,
         SHIPMENT_TABLE_HEADER_TEXT.receiverInfo
     ];
 
-    customColumnNames = ['senderAddress', 'receiverAddress'];
+    customColumnNames = ['senderAddress', 'receiverAddress', 'fee'];
 
     api = new Api();
 
     addressText(item: ShipmentApi.IAddress) {
-        return `${item.name}, ${item.city}, ${item.province}, ${item.country}`;
+        const country = getCountryNameByCode(item.country);
+        const province = getProvinceNameByCode(item.country, item.province);
+        return `${item.name}, ${item.city}, ${province}, ${country}`;
+    }
+
+    moneyText(item: ShipmentApi.IShipment) {
+        return `${item.fee.amount} ${item.fee.currency}`;
     }
 }
 
