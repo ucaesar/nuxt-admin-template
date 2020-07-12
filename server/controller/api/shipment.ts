@@ -164,7 +164,8 @@ shipmentRouter.post('/create', async ctx => {
                     .CompletedPackageDetails[0]!.TrackingIds[0].TrackingNumber,
                 image: childRes.CompletedShipmentDetail!
                     .CompletedPackageDetails[0]!.Label!.Parts[0].Image,
-                userId: u.id
+                userId: u.id,
+                masterno: masterid!.TrackingNumber
             });
         }
 
@@ -216,7 +217,11 @@ shipmentRouter.get('/', async ctx => {
     // 获取分页参数
     const start = ctx.request.query.start;
     const num = ctx.request.query.count;
-    const total = await Shipment.count();
+    const total = await Shipment.count({
+        where: {
+            masterno: null
+        }
+    });
     const filter = ctx.request.query.filter ? ctx.request.query.filter : '';
     let offset = 0;
     let limit = total;
@@ -233,7 +238,10 @@ shipmentRouter.get('/', async ctx => {
     const shipments = await Shipment.findAll({
         offset,
         limit,
-        attributes: ['trackno', 'fee', 'detailId']
+        attributes: ['trackno', 'fee', 'detailId'],
+        where: {
+            masterno: null
+        }
     });
     const results: any[] = [];
     for (const shipment of shipments) {
@@ -243,7 +251,7 @@ shipmentRouter.get('/', async ctx => {
         results.push({
             trackno: shipment.trackno,
             fee: shipment.fee,
-            createdAt: detail.shipperPersonName,
+            createdAt: detail.shipTimestamp,
             senderAddress: {
                 name: detail.shipperPersonName,
                 city: detail.shipperCity,
