@@ -15,7 +15,7 @@ export interface IShipment {
         currency: string;
         amount: number;
     };
-    createAt: string;
+    createdAt: string;
     senderAddress: IAddress;
     receiverAddress: IAddress;
 }
