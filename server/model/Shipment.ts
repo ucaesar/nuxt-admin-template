@@ -5,12 +5,14 @@ import {
     ForeignKey,
     BelongsTo,
     HasMany,
+    HasOne,
     CreatedAt,
     UpdatedAt
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 import User from './User';
 import ShipmentDetail from './ShipmentDetail';
+import ShipmentPackage from './ShipmentPackage';
 
 @Table({ tableName: 'shipment' })
 class Shipment extends Model<Shipment> {
@@ -59,6 +61,9 @@ class Shipment extends Model<Shipment> {
 
     @BelongsTo(() => Shipment)
     master!: Shipment;
+
+    @HasOne(() => ShipmentPackage, { onDelete: 'CASCADE' })
+    pac: ShipmentPackage;
 
     @CreatedAt
     @Column

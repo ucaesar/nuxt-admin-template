@@ -241,7 +241,8 @@ shipmentRouter.get('/', async ctx => {
         attributes: ['trackno', 'fee', 'detailId'],
         where: {
             masterno: null
-        }
+        },
+        order: [['createdAt', 'DESC']]
     });
     const results: any[] = [];
     for (const shipment of shipments) {
@@ -273,6 +274,8 @@ shipmentRouter.get('/', async ctx => {
         total
     };
 });
+
+shipmentRouter.post('/:trackno', ctx => {});
 
 interface IRequestedShipmentResult {
     master: ShipService.IRequestedShipment;
@@ -479,7 +482,7 @@ function newRequestedShipment(
     if (packagetype === 'YOUR_PACKAGING')
         return {
             ShipTimestamp: new Date(
-                date.getTime() + 24 * 60 * 60 * 1000
+                date.getTime()
             ).toISOString(),
             DropoffType: dropoff,
             ServiceType: service,
@@ -514,7 +517,7 @@ function newRequestedShipment(
     else
         return {
             ShipTimestamp: new Date(
-                date.getTime() + 24 * 60 * 60 * 1000
+                date.getTime()
             ).toISOString(),
             DropoffType: dropoff,
             ServiceType: service,
