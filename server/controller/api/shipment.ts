@@ -241,7 +241,8 @@ shipmentRouter.get('/', async ctx => {
         attributes: ['trackno', 'fee', 'detailId'],
         where: {
             masterno: null
-        }
+        },
+        order: [['createdAt', 'DESC']]
     });
     const results: any[] = [];
     for (const shipment of shipments) {
