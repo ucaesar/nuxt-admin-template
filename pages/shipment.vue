@@ -1,12 +1,15 @@
 <template>
-    <index-page />
+    <page-container>
+        <index-page />
+    </page-container>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Ref, namespace } from 'nuxt-property-decorator';
 
-// import ShipmentPanels from '@/components/expressweb/Shipment/ShipmentPanels.vue';
 import IndexPage from '@/components/expressweb/Shipment/CreateShipment/index.vue';
+
+import PageContainer from '@/components/common/PageContainer.vue';
 
 import { Address } from '@/models/expressweb/Address';
 import { VForm } from '@/utils/form';
@@ -16,6 +19,7 @@ const adminStore = namespace('admin');
 @Component({
     layout: 'admin',
     components: {
+        PageContainer,
         IndexPage
     }
 })

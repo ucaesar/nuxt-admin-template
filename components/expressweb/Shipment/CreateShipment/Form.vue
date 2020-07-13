@@ -59,6 +59,7 @@
                         v-slot="{ failed }"
                     >
                         <sender-address-form
+                            :disabled="disabled"
                             :value="formData.senderAddress"
                             :failed="failed"
                             @input="val => onUpdate('senderAddress', val)"
@@ -75,6 +76,7 @@
                         v-slot="{ failed }"
                     >
                         <receiver-address-form
+                            :disabled="disabled"
                             :value="formData.receiverAddress"
                             :failed="failed"
                             @input="val => onUpdate('receiverAddress', val)"
@@ -87,6 +89,7 @@
                 <v-tab-item eager
                     ><validation-observer ref="packageForm" v-slot="{ failed }">
                         <package-form
+                            :disabled="disabled"
                             :value="formData.pac"
                             :failed="failed"
                             @input="val => onUpdate('pac', val)"
@@ -99,6 +102,7 @@
                         v-slot="{ failed }"
                     >
                         <product-form
+                            :disabled="disabled"
                             :value="formData.products"
                             :failed="failed"
                             :weight-unit="formData.pac.weightUnit"
@@ -118,12 +122,11 @@
                 }}</v-btn></v-toolbar
             >
         </v-card-actions>
-        <label-carousel v-if="labels.length > 0" :pdf-list="labels" />
     </v-card>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Ref } from 'nuxt-property-decorator';
+import { Vue, Component, Ref, Prop } from 'nuxt-property-decorator';
 import { ValidationObserver } from 'vee-validate';
 import _ from 'lodash';
 
@@ -132,7 +135,6 @@ import SenderAddressForm from './SenderAddress.vue';
 import ReceiverAddressForm from './ReceiverAddress.vue';
 import PackageForm from './Package.vue';
 import ProductForm from './Product.vue';
-import LabelCarousel from './LabelCarousel.vue';
 
 import { ShipmentData } from '@/models/expressweb/Shipment';
 
@@ -145,11 +147,12 @@ import * as Api from '@/api/expressweb/shipment/create';
         PackageForm,
         ProductForm,
         ValidationObserver,
-        FormTab,
-        LabelCarousel
+        FormTab
     }
 })
 class CreateShipmentForm extends Vue {
+    @Prop({ type: Boolean, default: false }) readonly disabled!: boolean;
+
     @Ref('senderAddressForm') readonly senderAddressForm!: InstanceType<
         typeof ValidationObserver
     >;
@@ -177,8 +180,6 @@ class CreateShipmentForm extends Vue {
     RECEIVER_ADDRESS_STEP = 1;
     PACKAGE_STEP = 2;
     PRODUCTS_STEP = 3;
-
-    labels: string[] = [];
 
     onUpdate(field, value) {
         this.formData[field] = value;

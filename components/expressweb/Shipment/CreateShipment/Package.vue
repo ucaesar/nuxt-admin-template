@@ -1,7 +1,11 @@
 <template>
     <v-card flat>
         <v-card-text class="px-md-12">
-            <package-form :value="value" @input="onUpdate" />
+            <package-form
+                :disabled="disabled"
+                :value="value"
+                @input="onUpdate"
+            />
         </v-card-text>
 
         <!-- <v-card-actions>
@@ -32,6 +36,7 @@ import { Package, PackageItem } from '@/models/expressweb/Package';
 class PackageComponent extends Vue {
     @Prop({ type: Object, required: true }) readonly value!: Package;
     @Prop({ required: false }) readonly failed!: boolean;
+    @Prop({ type: Boolean, default: false }) readonly disabled!: boolean;
 
     @Watch('failed')
     failedChanged(val) {

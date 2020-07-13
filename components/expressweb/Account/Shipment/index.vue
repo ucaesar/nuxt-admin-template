@@ -1,7 +1,5 @@
 <template>
-    <v-container>
-        <shipment-table />
-    </v-container>
+    <shipment-table />
 </template>
 
 <script lang="ts">

@@ -15,6 +15,9 @@
         <template v-slot:fee="{ item }">
             {{ moneyText(item) }}
         </template>
+        <template v-slot:createdAt="{ item }">
+            {{ dateText(item) }}
+        </template>
     </base-crud-table>
 </template>
 
@@ -96,18 +99,29 @@ class ShipmentTable extends Vue {
         SHIPMENT_TABLE_HEADER_TEXT.receiverInfo
     ];
 
-    customColumnNames = ['senderAddress', 'receiverAddress', 'fee'];
+    customColumnNames = [
+        'senderAddress',
+        'receiverAddress',
+        'fee',
+        'createdAt'
+    ];
 
     api = new Api();
 
     addressText(item: ShipmentApi.IAddress) {
         const country = getCountryNameByCode(item.country);
         const province = getProvinceNameByCode(item.country, item.province);
-        return `${item.name}, ${item.city}, ${province}, ${country}`;
+        return `${item.name} @ ${item.city}, ${province}, ${country}`;
     }
 
     moneyText(item: ShipmentApi.IShipment) {
         return `${item.fee.amount} ${item.fee.currency}`;
+    }
+
+    dateText(item: ShipmentApi.IShipment) {
+        return new Date(Date.parse(item.createdAt)).toLocaleString(
+            this.$i18n.locale
+        );
     }
 }
 
