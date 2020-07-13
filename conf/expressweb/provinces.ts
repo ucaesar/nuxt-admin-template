@@ -291,3 +291,17 @@ export const provinces = {
         return _.map(usStatesOrigin, mapProvince);
     }
 };
+
+export function getProvinceNameByCode(
+    countryCode: string,
+    provinceCode: string
+) {
+    if (countryCode !== 'US' && countryCode !== 'CA') {
+        return provinceCode;
+    }
+
+    const provinceList = provinces[countryCode];
+    for (const province of provinceList) {
+        if (province.code === provinceCode) return province.name;
+    }
+}

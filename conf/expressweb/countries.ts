@@ -999,3 +999,9 @@ export const countries: ICountry[] = [
         name: 'Zimbabwe'
     }
 ];
+
+export function getCountryNameByCode(code: string) {
+    for (const c of countries) {
+        if (c.code === code) return c.name;
+    }
+}

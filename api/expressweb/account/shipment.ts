@@ -11,7 +11,10 @@ export interface IAddress {
 
 export interface IShipment {
     trackno: string;
-    fee: string;
+    fee: {
+        currency: string;
+        amount: number;
+    };
     createAt: string;
     senderAddress: IAddress;
     receiverAddress: IAddress;
@@ -39,6 +42,4 @@ export function $add() {}
 
 export function $edit() {}
 
-export function $detail() {
-    return null;
-}
+export function $detail() {}

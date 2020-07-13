@@ -36,8 +36,8 @@ export interface ICrudTableApi {
     $list: (
         paginationParams?: IPaginationParams
     ) => Promise<ITableDataFromServer>;
-    $add: (arg0: any) => void;
-    $delete: (arg0: any) => void;
-    $edit: (arg0: any) => void;
-    $detail: (arg0: any) => Promise<any>;
+    $add?: (arg0: any) => void;
+    $delete?: (arg0: any) => void;
+    $edit?: (arg0: any) => void;
+    $detail?: (arg0: any) => Promise<any> | void;
 }
