@@ -10,7 +10,7 @@
     </ct-card> -->
 
     <v-card flat>
-        <v-card-title>
+        <v-card-title v-if="!disabled">
             <v-btn text color="primary">
                 <v-icon>mdi-plus</v-icon>
                 {{
@@ -21,7 +21,12 @@
             </v-btn>
         </v-card-title>
         <v-card-text class="px-md-12">
-            <address-form :value="value" sender @input="onUpdate" />
+            <address-form
+                :disabled="disabled"
+                :value="value"
+                sender
+                @input="onUpdate"
+            />
         </v-card-text>
         <!-- <v-card-actions>
             <v-btn disabled text color="primary" @click="onBack">{{
@@ -50,6 +55,7 @@ import { Address } from '@/models/expressweb/Address';
 class SenderAddress extends Vue {
     @Prop({ type: Object, required: true }) readonly value!: Address;
     @Prop({ required: false }) readonly failed!: boolean;
+    @Prop({ type: Boolean, default: false }) readonly disabled!: boolean;
 
     @Watch('failed')
     failedChanged(val) {

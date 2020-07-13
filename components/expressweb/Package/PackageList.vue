@@ -34,7 +34,7 @@
             <v-col cols="12" class="d-flex py-0">
                 <div v-if="!inlineChip" class="package-order">
                     <v-chip
-                        :close="value.length > 1"
+                        :close="!disabled && value.length > 1"
                         small
                         @click:close="onDelete(index)"
                         >{{
@@ -60,7 +60,7 @@
             </v-col>
         </v-col>
 
-        <v-col>
+        <v-col v-if="!disabled">
             <v-btn color="primary" outlined @click="onAdd">
                 <v-icon>mdi-plus</v-icon
                 >{{ $t('expressweb.package.newPackageButtonLabel') }}
@@ -91,6 +91,7 @@ class PackageList extends Vue {
     @Prop({ type: Array, required: true }) readonly value: PackageItem[];
     @Prop({ required: true, default: 'cm' }) readonly dimensionUnit!: string;
     @Prop({ required: true, default: 'kg' }) readonly weightUnit!: string;
+    @Prop({ type: Boolean, default: false }) readonly disabled!: boolean;
 
     get inlineChip() {
         /* const name = this.$vuetify.breakpoint.name;

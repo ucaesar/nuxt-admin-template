@@ -1,8 +1,12 @@
 <template>
-    <v-form>
+    <v-form :disabled="disabled">
         <v-row v-for="(item, index) in value" :key="index">
             <v-col cols="12">
-                <v-chip :close="value.length > 1" small @click:close="onDelete">
+                <v-chip
+                    :close="!disabled && value.length > 1"
+                    small
+                    @click:close="onDelete"
+                >
                     {{ $t('expressweb.product.orderLabel') + `${index + 1}` }}
                 </v-chip>
             </v-col>
@@ -45,7 +49,7 @@
                 />
             </v-col>
         </v-row>
-        <v-btn color="primary" outlined @click="onAdd">
+        <v-btn v-if="!disabled" color="primary" outlined @click="onAdd">
             <v-icon>mdi-plus</v-icon
             >{{ $t('expressweb.product.newProductButtonLabel') }}
         </v-btn>
@@ -79,6 +83,7 @@ import { Product } from '@/models/expressweb/Product';
 class ProductForm extends Vue {
     @Prop({ type: Array, required: true }) value: Product[];
     @Prop({ type: String, required: true }) readonly weightUnit!: String;
+    @Prop({ type: Boolean, default: false }) readonly disabled!: boolean;
 
     onUpdate(field, value, index) {
         const newProduct = _.cloneDeep(this.value[index]);
