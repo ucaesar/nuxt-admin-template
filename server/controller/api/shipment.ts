@@ -274,6 +274,8 @@ shipmentRouter.get('/', async ctx => {
     };
 });
 
+shipmentRouter.post('/:trackno', ctx => {});
+
 interface IRequestedShipmentResult {
     master: ShipService.IRequestedShipment;
     children: ShipService.IRequestedShipment[];
@@ -479,7 +481,7 @@ function newRequestedShipment(
     if (packagetype === 'YOUR_PACKAGING')
         return {
             ShipTimestamp: new Date(
-                date.getTime() + 24 * 60 * 60 * 1000
+                date.getTime()
             ).toISOString(),
             DropoffType: dropoff,
             ServiceType: service,
@@ -514,7 +516,7 @@ function newRequestedShipment(
     else
         return {
             ShipTimestamp: new Date(
-                date.getTime() + 24 * 60 * 60 * 1000
+                date.getTime()
             ).toISOString(),
             DropoffType: dropoff,
             ServiceType: service,
