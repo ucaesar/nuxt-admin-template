@@ -4,6 +4,7 @@ import * as ShipService from '../../types/ShipService';
 import User from '../../model/User';
 import Shipment from '../../model/Shipment';
 import ShipmentDetail from '../../model/ShipmentDetail';
+import ShipmentPackage from '../../model/ShipmentPackage';
 const shipmentRouter = new Router();
 const util = require('util');
 const FedExAPI = require('fedex-manager');
@@ -79,6 +80,7 @@ shipmentRouter.post('/create', async ctx => {
     let result: any = 'a';
     const ship = util.promisify(fedex.ship);
     const shipmentResults: any[] = [];
+    const packageResults: any[] = [];
     const sd = {
         id: 0,
         shipperPersonName: '',
@@ -142,6 +144,29 @@ shipmentRouter.post('/create', async ctx => {
             fee: (ctx as any).session.money,
             userId: u.id
         });
+        const masterPackage = packages.master.RequestedPackageLineItems[0];
+        packageResults.push({
+            id: 0,
+            sequenceNumber: masterPackage.SequenceNumber,
+            groupNumber: masterPackage.GroupNumber,
+            groupPackageCount: masterPackage.GroupPackageCount,
+            weightUnits: masterPackage.Weight!.Units,
+            weight: masterPackage.Weight!.Value,
+            linearUnits: masterPackage.Dimensions
+                ? masterPackage.Dimensions.Units
+                : null,
+            length: masterPackage.Dimensions
+                ? masterPackage.Dimensions.Length
+                : null,
+            width: masterPackage.Dimensions
+                ? masterPackage.Dimensions.Width
+                : null,
+            height: masterPackage.Dimensions
+                ? masterPackage.Dimensions.Height
+                : null,
+            trackno: res.CompletedShipmentDetail!.CompletedPackageDetails[0]!
+                .TrackingIds[0].TrackingNumber
+        });
 
         for (const child of packages.children) {
             (child as any).MasterTrackingId = masterid;
@@ -166,6 +191,24 @@ shipmentRouter.post('/create', async ctx => {
                     .CompletedPackageDetails[0]!.Label!.Parts[0].Image,
                 userId: u.id,
                 masterno: masterid!.TrackingNumber
+            });
+            packageResults.push({
+                id: 0,
+                sequenceNumber:
+                    child.RequestedPackageLineItems[0].SequenceNumber,
+                groupNumber: child.RequestedPackageLineItems[0].GroupNumber,
+                groupPackageCount:
+                    child.RequestedPackageLineItems[0].GroupPackageCount,
+                weightUnits: packages.master.RequestedPackageLineItems[0]
+                    .Weight!.Units,
+                weight: child.RequestedPackageLineItems[0].Weight!.Value,
+                linearUnits: child.RequestedPackageLineItems[0].Dimensions!
+                    .Units,
+                length: child.RequestedPackageLineItems[0].Dimensions!.Length,
+                width: child.RequestedPackageLineItems[0].Dimensions!.Width,
+                height: child.RequestedPackageLineItems[0].Dimensions!.Height,
+                trackno: childRes.CompletedShipmentDetail!
+                    .CompletedPackageDetails[0]!.TrackingIds[0].TrackingNumber
             });
         }
 
@@ -200,6 +243,10 @@ shipmentRouter.post('/create', async ctx => {
         for (const sr of shipmentResults) {
             sr.detailId = shipmentDetail.id;
             await Shipment.create(sr);
+        }
+
+        for (const pr of packageResults) {
+            await ShipmentPackage.create(pr);
         }
     } catch (err) {
         console.log(err);
@@ -275,7 +322,87 @@ shipmentRouter.get('/', async ctx => {
     };
 });
 
-shipmentRouter.post('/:trackno', ctx => {});
+shipmentRouter.get('/:trackno', async ctx => {
+    const trackno = ctx.params.trackno;
+    const packageTypeMap = {
+        FEDEX_BOX: '0',
+        FEDEX_ENVELOPE: '1',
+        FEDEX_PAK: '2',
+        FEDEX_TUBE: '3',
+        YOUR_PACKAGING: '4'
+    };
+    let result: any = {};
+    try {
+        const shipment = await Shipment.findOne({
+            where: {
+                trackno
+            }
+        });
+        if (!shipment) {
+            throw 'can not find this package, check tracking number please';
+        }
+        const detail = (await shipment.$get(
+            'shipmentDetail'
+        )) as ShipmentDetail;
+        const pac = (await shipment.$get('pac')) as ShipmentPackage;
+        if (!detail || !pac) {
+            throw 'shipment information error';
+        }
+        result.senderAddress = {
+            name: detail.shipperPersonName,
+            phone: detail.shipperPhoneNumber,
+            address: detail.shipperStreetLine1,
+            address2:
+                detail.shipperStreetLine2.length > 0
+                    ? detail.shipperStreetLine2
+                    : undefined,
+            city: detail.shipperCity,
+            province: detail.shipperStateOrProvinceCode,
+            postcode: detail.shipperPostalCode,
+            country: detail.shipperCountryCode
+        };
+        result.receiverAddress = {
+            name: detail.recipientPersonName,
+            phone: detail.recipientPhoneNumber,
+            address: detail.recipientStreetLine1,
+            address2:
+                detail.recipientStreetLine2.length > 0
+                    ? detail.recipientStreetLine2
+                    : undefined,
+            city: detail.recipientCity,
+            province: detail.recipientStateOrProvinceCode,
+            postcode: detail.recipientPostalCode,
+            country: detail.recipientCountryCode
+        };
+        result.pac = {
+            packageType: packageTypeMap[detail.packagingType]
+        };
+        if (detail.packagingType !== 'YOUR_PACKAGING') {
+            result.pac.weightUnit = pac.weightUnits;
+            result.pac.weight = pac.weight;
+        } else {
+            result.pac.weightUnit = pac.weightUnits;
+            result.pac.dimensionUnit = pac.linearUnits;
+            const packages: any[] = [];
+            packages.push({
+                trackno: pac.trackno,
+                weight: pac.weight,
+                length: pac.length,
+                width: pac.width,
+                height: pac.height
+            });
+        }
+    } catch (err) {
+        console.log(err);
+        result = { error: err };
+        // throw err;
+    } finally {
+        (ctx as any).session.money = result.money;
+        ctx.response.type = 'text/json';
+        ctx.response.status = 200;
+        ctx.response.body = result;
+    }
+});
 
 interface IRequestedShipmentResult {
     master: ShipService.IRequestedShipment;
@@ -481,9 +608,7 @@ function newRequestedShipment(
     const date = new Date();
     if (packagetype === 'YOUR_PACKAGING')
         return {
-            ShipTimestamp: new Date(
-                date.getTime()
-            ).toISOString(),
+            ShipTimestamp: new Date(date.getTime()).toISOString(),
             DropoffType: dropoff,
             ServiceType: service,
             PackagingType: packagetype,
@@ -516,9 +641,7 @@ function newRequestedShipment(
         };
     else
         return {
-            ShipTimestamp: new Date(
-                date.getTime()
-            ).toISOString(),
+            ShipTimestamp: new Date(date.getTime()).toISOString(),
             DropoffType: dropoff,
             ServiceType: service,
             PackagingType: packagetype,
