@@ -121,7 +121,7 @@ shipmentRouter.post('/create', async ctx => {
         const res: ShipService.IProcessShipmentReply = await ship({
             RequestedShipment: packages.master
         });
-        if (res.HighestSeverity === 'ERROR') {
+        if (res.HighestSeverity === 'ERROR' || res.HighestSeverity === 'FAILURE') {
             console.log('code:' + res.Notifications[0].Code);
             console.log('message:' + res.Notifications[0].Message);
             console.log('severity:' + res.Notifications[0].Severity);
@@ -338,9 +338,11 @@ shipmentRouter.get('/:trackno', async ctx => {
                 trackno
             }
         });
+        const labels: any[] = [];
         if (!shipment) {
             throw 'can not find this package, check tracking number please';
         }
+        labels.push(shipment.image);
         const detail = (await shipment.$get(
             'shipmentDetail'
         )) as ShipmentDetail;
@@ -378,6 +380,7 @@ shipmentRouter.get('/:trackno', async ctx => {
             packageType: packageTypeMap[detail.packagingType]
         };
         if (detail.packagingType !== 'YOUR_PACKAGING') {
+            result.pac.trackno = pac.trackno;
             result.pac.weightUnit = pac.weightUnits;
             result.pac.weight = pac.weight;
         } else {
@@ -391,7 +394,26 @@ shipmentRouter.get('/:trackno', async ctx => {
                 width: pac.width,
                 height: pac.height
             });
+            let shipmentChildren = await shipment.$get('children');
+            shipmentChildren = Array.isArray(shipmentChildren)
+                ? shipmentChildren
+                : [shipmentChildren];
+            for (const child of shipmentChildren) {
+                const childPac = (await (child as Shipment).$get(
+                    'pac'
+                )) as ShipmentPackage;
+                packages.push({
+                    trackno: childPac.trackno,
+                    weight: childPac.weight,
+                    length: childPac.length,
+                    width: childPac.width,
+                    height: childPac.height
+                });
+                labels.push((child as Shipment).image);
+            }
+            result.pac.packages = packages;
         }
+        result.labels = labels;
     } catch (err) {
         console.log(err);
         result = { error: err };
