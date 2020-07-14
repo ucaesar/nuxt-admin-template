@@ -18,7 +18,7 @@ const fedex = new FedExAPI({
     environment: 'sandbox', // or live
     debug: false,
     key: 'DtKE3OM6Kb5RrLHt',
-    password: 'hS8OZSrhAnlcMafNaRFSDRVUo',
+    password: '78Ix3kkoKh7QdhyUP6jrIsH8z',
     account_number: '510087500',
     meter_number: '119118039',
     imperial: false // set to false for metric
@@ -371,52 +371,52 @@ const childItem = {
         ]
     }
 };
-fedex.ship(masterItem, function(err, res) {
-    if (err) {
-        return console.log(util.inspect(err, { depth: null }));
-    }
+// fedex.ship(masterItem, function(err, res) {
+//     if (err) {
+//         return console.log(util.inspect(err, { depth: null }));
+//     }
 
-    //   console.log(util.inspect(res, {depth: null}));
-    if (res.HighestSeverity === 'ERROR'|| res.HighestSeverity === 'FAILURE') {
-        console.log('code:' + res.Notifications[0].Code);
-        console.log('message:' + res.Notifications[0].Message);
-        console.log('severity:' + res.Notifications[0].Severity);
-        console.log('source:' + res.Notifications[0].Source);
-        return;
-    }
-    masterid = res.CompletedShipmentDetail.MasterTrackingId;
-    childItem.RequestedShipment.MasterTrackingId = masterid;
-    console.log(masterid);
-    const a =
-        res.CompletedShipmentDetail.CompletedPackageDetails[0].Label.Parts[0]
-            .Image;
-    const b = Buffer.from(a, 'base64');
-    console.log(b);
-    fs.writeFile('aaa.pdf', b, 'binary', function(err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('The master file was saved!');
-        }
-    });
-    // fedex.ship(childItem, function(err, res) {
-    //     if (err) {
-    //         return console.log(util.inspect(err, { depth: null }));
-    //     }
-    //     const a =
-    //         res.CompletedShipmentDetail.CompletedPackageDetails[0].Label
-    //             .Parts[0].Image;
-    //     const b = Buffer.from(a, 'base64');
-    //     console.log(b);
-    //     fs.writeFile('bbb.pdf', b, 'binary', function(err) {
-    //         if (err) {
-    //             console.log(err);
-    //         } else {
-    //             console.log('The child file was saved!');
-    //         }
-    //     });
-    // });
-});
+//     //   console.log(util.inspect(res, {depth: null}));
+//     if (res.HighestSeverity === 'ERROR'|| res.HighestSeverity === 'FAILURE') {
+//         console.log('code:' + res.Notifications[0].Code);
+//         console.log('message:' + res.Notifications[0].Message);
+//         console.log('severity:' + res.Notifications[0].Severity);
+//         console.log('source:' + res.Notifications[0].Source);
+//         return;
+//     }
+//     masterid = res.CompletedShipmentDetail.MasterTrackingId;
+//     childItem.RequestedShipment.MasterTrackingId = masterid;
+//     console.log(masterid);
+//     const a =
+//         res.CompletedShipmentDetail.CompletedPackageDetails[0].Label.Parts[0]
+//             .Image;
+//     const b = Buffer.from(a, 'base64');
+//     console.log(b);
+//     fs.writeFile('aaa.pdf', b, 'binary', function(err) {
+//         if (err) {
+//             console.log(err);
+//         } else {
+//             console.log('The master file was saved!');
+//         }
+//     });
+//     // fedex.ship(childItem, function(err, res) {
+//     //     if (err) {
+//     //         return console.log(util.inspect(err, { depth: null }));
+//     //     }
+//     //     const a =
+//     //         res.CompletedShipmentDetail.CompletedPackageDetails[0].Label
+//     //             .Parts[0].Image;
+//     //     const b = Buffer.from(a, 'base64');
+//     //     console.log(b);
+//     //     fs.writeFile('bbb.pdf', b, 'binary', function(err) {
+//     //         if (err) {
+//     //             console.log(err);
+//     //         } else {
+//     //             console.log('The child file was saved!');
+//     //         }
+//     //     });
+//     // });
+// });
 
 /**
  * Rate
@@ -543,19 +543,19 @@ const rateItem = {
 //     }
 // );
 
-// fedex.deleteshipment({
-//     TrackingId: {
-//         TrackingIdType: 'FEDEX', // EXPRESS || FEDEX || GROUND || USPS
-//         TrackingNumber: '794616047257'
-//     },
-//     DeletionControl: 'DELETE_ALL_PACKAGES' // or DELETE_ONE_PACKAGE or LEGACY
-// }, function(err, res) {
-//   if (err) {
-//     return console.log(util.inspect(err, {depth: null}));
-//   }
+fedex.deleteshipment({
+    TrackingId: {
+        TrackingIdType: 'FEDEX', // EXPRESS || FEDEX || GROUND || USPS
+        TrackingNumber: '794617374461'
+    },
+    DeletionControl: 'DELETE_ALL_PACKAGES' // or DELETE_ONE_PACKAGE or LEGACY
+}, function(err, res) {
+  if (err) {
+    return console.log(util.inspect(err, {depth: null}));
+  }
 
-//   console.log(util.inspect(res, {depth: 4}));
-// });
+  console.log(util.inspect(res, {depth: 4}));
+});
 
 // const tracker = require('delivery-tracker');
 // const courier = tracker.courier(tracker.COURIER.FEDEX.CODE);
