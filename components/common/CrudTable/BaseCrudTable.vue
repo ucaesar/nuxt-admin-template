@@ -57,6 +57,7 @@
         />
         <loading-overlay :loading="loading" :loading-text="loadingText" />
         <slot
+            v-if="editorDialogVisible"
             name="editor"
             :visible="editorDialogVisible"
             :item-todo="itemTodo"
