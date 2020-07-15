@@ -112,3 +112,80 @@ FedEx Office Web Services Testing Information:
 
 
 track number: 774557410164
+
+
+
+
+Test Account Information
+
+Test URL: https://wsbeta.fedex.com:443/web-services
+Test Password: 78Ix3kkoKh7QdhyUP6jrIsH8z
+
+	
+	
+FedEx Web Services Testing Information:
+
+ 	FedEx Shipping Account Number: 510087500
+	
+ 	FedEx Meter Number: 119118039
+	
+ 	
+	
+FedEx SmartPost® Returns Testing Information:
+
+ 	FedEx Shipping Account Number: 510087020
+	
+ 	FedEx Meter Number: 119118040
+	
+ 	FedEx Hub ID (Outbound and Returns): 5531
+		
+	
+	
+	
+FedEx Web Services Freight LTL Testing Information (used in the Freight Shipment Detail):
+
+ 	FedEx Freight LTL Shipper
+	
+ 	Account Number: 510087020
+	
+ 	Address Line 1: 1202 Chalet Ln
+	
+ 	Address Line 2: Do Not Delete - Test Account
+	
+ 	City: Harrison
+	
+ 	State: AR
+	
+ 	ZIP: 72601
+	
+ 	FedEx Freight LTL Bill-To
+	
+ 	Account Number: 510051408
+	
+ 	Address Line 1: 2000 Freight LTL Testing
+	
+ 	Address Line 2: Do Not Delete - Test Account
+	
+ 	City: Harrison
+	
+ 	State: AR
+	
+ 	ZIP: 72601
+				
+	
+	
+	
+FedEx Office Web Services Testing Information:
+
+ 	FedEx Integrator ID: 123
+	
+ 	FedEx Client Product ID: TEST
+	
+ 	FedEx Client Product Version: 9999
+		
+	
+	
+	
+FedEx Web Services for Office and Print
+
+By default, your Developer Test Key is disabled for FedEx Web Services for Office and Print. Please complete the Office and Print Test Key Enablement Request form and submit it in order to enable your key to use these services.
