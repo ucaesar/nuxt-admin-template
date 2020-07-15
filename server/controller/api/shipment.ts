@@ -9,7 +9,9 @@ const shipmentRouter = new Router();
 const util = require('util');
 const FedExAPI = require('fedex-manager');
 
-shipmentRouter.post('/delete', ctx => {});
+shipmentRouter.post('/delete', ctx => {
+    const trackno: any = (ctx.req as any).body;
+});
 
 shipmentRouter.post('/track', async ctx => {
     let result: any = 'a';
@@ -121,7 +123,10 @@ shipmentRouter.post('/create', async ctx => {
         const res: ShipService.IProcessShipmentReply = await ship({
             RequestedShipment: packages.master
         });
-        if (res.HighestSeverity === 'ERROR' || res.HighestSeverity === 'FAILURE') {
+        if (
+            res.HighestSeverity === 'ERROR' ||
+            res.HighestSeverity === 'FAILURE'
+        ) {
             console.log('code:' + res.Notifications[0].Code);
             console.log('message:' + res.Notifications[0].Message);
             console.log('severity:' + res.Notifications[0].Severity);
