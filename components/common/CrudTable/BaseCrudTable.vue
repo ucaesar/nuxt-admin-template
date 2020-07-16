@@ -42,9 +42,12 @@
                     :item="item"
                     @delete="beforeDelete"
                 />
+                <template v-for="action in customActions">
+                    <slot :name="action" :item="item" />
+                </template>
             </template>
             <template
-                v-for="columnName in customColumnNames"
+                v-for="columnName in customColumns"
                 v-slot:[`item.${columnName}`]="{ item }"
             >
                 <slot :name="columnName" :item="item" />
@@ -121,10 +124,11 @@ class BaseCrudTable extends Vue {
     @Prop({ type: Array, required: true }) readonly headersConf!: any[];
     @Prop({ type: Object, required: false }) readonly crudApi!: ICrudTableApi;
     @Prop({ type: Array }) readonly value!: any[];
-    @Prop({ type: Array }) readonly customColumnNames!: string[];
+    @Prop({ type: Array }) readonly customColumns!: string[];
+    @Prop({ type: Array }) readonly customActions!: string[];
 
     get actionColumnState() {
-        return this.deleteAction || this.editAction;
+        return this.deleteAction || this.editAction || this.customActions;
     }
 
     get headers() {

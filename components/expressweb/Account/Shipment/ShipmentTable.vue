@@ -4,8 +4,12 @@
         v-bind="$attrs"
         :headers-conf="headersConf"
         :crud-api="api"
-        :custom-column-names="customColumnNames"
+        :custom-columns="customColumns"
+        :custom-actions="customActions"
     >
+        <template v-slot:watchAction="{ item }">
+            <watch-action :item="item" />
+        </template>
         <template v-slot:senderAddress="{ item }">
             {{ addressText(item.senderAddress) }}
         </template>
@@ -23,6 +27,8 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Ref } from 'nuxt-property-decorator';
+
+import WatchAction from './WatchAction.vue';
 
 import BaseCrudTable from '@/components/common/CrudTable/BaseCrudTable.vue';
 
@@ -86,7 +92,8 @@ const SHIPMENT_TABLE_HEADER_TEXT = {
 
 @Component({
     components: {
-        BaseCrudTable
+        BaseCrudTable,
+        WatchAction
     },
     inheritAttrs: false
 })
@@ -99,12 +106,8 @@ class ShipmentTable extends Vue {
         SHIPMENT_TABLE_HEADER_TEXT.receiverInfo
     ];
 
-    customColumnNames = [
-        'senderAddress',
-        'receiverAddress',
-        'fee',
-        'createdAt'
-    ];
+    customColumns = ['senderAddress', 'receiverAddress', 'fee', 'createdAt'];
+    customActions = ['watchAction'];
 
     api = new Api();
 

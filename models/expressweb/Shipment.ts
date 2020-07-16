@@ -6,14 +6,14 @@ export interface IShipment {
     senderAddress: IAddress;
     receiverAddress: IAddress;
     pac: IPackage;
-    products: IProduct[];
+    products: IProduct[] | undefined;
 }
 
 export class ShipmentData implements IShipment {
     senderAddress = new Address();
     receiverAddress = new Address();
     pac = new Package();
-    products = [new Product()];
+    products: IProduct[] | undefined = [new Product()];
 
     constructor() {
         this.senderAddress.country = 'CA';
