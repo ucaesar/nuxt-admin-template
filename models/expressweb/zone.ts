@@ -4,6 +4,7 @@ export interface ICountry {
 }
 
 export interface IProvince {
+    countryCode: string;
     code: string;
     name: string;
 }

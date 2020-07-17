@@ -231,7 +231,7 @@ class CreateShipmentForm extends Vue {
         formData.receiverAddress.name = 'Caesar You';
         formData.receiverAddress.phone = '123';
         formData.receiverAddress.country = 'CA';
-        formData.receiverAddress.province = 'FZ';
+        formData.receiverAddress.province = 'BC';
         formData.receiverAddress.city = 'Vancouver';
         formData.receiverAddress.postcode = 'V6B 2T9';
         formData.receiverAddress.address = '1111 Mainland St';

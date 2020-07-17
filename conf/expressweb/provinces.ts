@@ -276,8 +276,9 @@ const usStatesOrigin = {
     }
 };
 
-function mapProvince(obj: any): IProvince {
+function mapProvince(countryCode: string, obj: any): IProvince {
     return {
+        countryCode,
         code: obj.abbreviation,
         name: obj.name
     };
@@ -285,10 +286,10 @@ function mapProvince(obj: any): IProvince {
 
 export const provinces = {
     get CA(): IProvince[] {
-        return _.map(caStatesOrigin, mapProvince);
+        return _.map(caStatesOrigin, obj => mapProvince('CA', obj));
     },
     get US(): IProvince[] {
-        return _.map(usStatesOrigin, mapProvince);
+        return _.map(usStatesOrigin, obj => mapProvince('US', obj));
     }
 };
 

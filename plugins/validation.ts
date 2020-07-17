@@ -4,6 +4,7 @@ import validator from 'validator';
 
 import { registerExtend } from './validation/register';
 import { packageExtend } from './validation/expressweb/package';
+import { addressExtend } from './validation/expressweb/address';
 
 export default ({ app }) => {
     const i18n = app.i18n;
@@ -25,4 +26,5 @@ export default ({ app }) => {
 
     registerExtend(i18n);
     packageExtend(i18n);
+    addressExtend(i18n);
 };

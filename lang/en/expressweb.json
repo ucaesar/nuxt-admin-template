@@ -15,7 +15,10 @@
         "cityLabel": "City",
         "postcodeLabel": "Postcode",
         "addressLabel": "Address",
-        "address2Label": "Address 2"
+        "address2Label": "Address 2",
+        "error": {
+            "provinceCode": "Select one from list"
+        }
     },
     "package": {
         "configUnitButtonLabel": "Config Units",
