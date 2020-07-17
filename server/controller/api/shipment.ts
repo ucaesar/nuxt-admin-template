@@ -44,11 +44,15 @@ shipmentRouter.delete('/:trackno', async ctx => {
             throw res.Notifications[0].Message;
         }
         await sequelize.transaction(async t => {
-            const shipmentDetail = (await shipment.$get(
-                'shipmentDetail'
-            )) as ShipmentDetail;
-            await shipment.destroy();
-            await shipmentDetail.destroy();
+            const shipmentDetail = (await shipment.$get('shipmentDetail', {
+                transaction: t
+            })) as ShipmentDetail;
+            await shipment.destroy({
+                transaction: t
+            });
+            await shipmentDetail.destroy({
+                transaction: t
+            });
         });
     } catch (err) {
         console.log(err);
@@ -291,15 +295,21 @@ shipmentRouter.post('/create', async ctx => {
         sd.recipientCountryCode = packages.master.Recipient.Address!.CountryCode!;
 
         await sequelize.transaction(async t => {
-            const shipmentDetail = await ShipmentDetail.create(sd);
+            const shipmentDetail = await ShipmentDetail.create(sd, {
+                transaction: t
+            });
 
             for (const sr of shipmentResults) {
                 sr.detailId = shipmentDetail.id;
-                await Shipment.create(sr);
+                await Shipment.create(sr, {
+                    transaction: t
+                });
             }
 
             for (const pr of packageResults) {
-                await ShipmentPackage.create(pr);
+                await ShipmentPackage.create(pr, {
+                    transaction: t
+                });
             }
         });
     } catch (err) {
