@@ -3,7 +3,30 @@ const fs = require('fs');
 import chai from 'chai';
 const expect = require('chai').expect;
 const FedExAPI = require('fedex-manager');
+import * as ShipService from '../types/ShipService';
 console.log(FedExAPI);
+
+function sortTrackTimestamp(
+    trackTimestamps: ShipService.ITrackingDateOrTimestamp[]
+): ShipService.ITrackingDateOrTimestamp[] {
+    return trackTimestamps.sort(
+        (
+            a: ShipService.ITrackingDateOrTimestamp,
+            b: ShipService.ITrackingDateOrTimestamp
+        ) => {
+            const astr = a.DateOrTimestamp;
+            const bstr = b.DateOrTimestamp;
+            if (!astr || !bstr) {
+                throw 'timestamp error';
+            }
+            const aMilliseconds = Date.parse(astr);
+            const bMilliseconds = Date.parse(bstr);
+            if (aMilliseconds > bMilliseconds) return 1;
+            else if (aMilliseconds < bMilliseconds) return -1;
+            else return 0;
+        }
+    );
+}
 
 // const fedex = new FedExAPI({
 //     environment: 'live', // or live
@@ -18,7 +41,7 @@ const fedex = new FedExAPI({
     environment: 'sandbox', // or live
     debug: false,
     key: 'DtKE3OM6Kb5RrLHt',
-    password: 'hS8OZSrhAnlcMafNaRFSDRVUo',
+    password: '78Ix3kkoKh7QdhyUP6jrIsH8z',
     account_number: '510087500',
     meter_number: '119118039',
     imperial: false // set to false for metric
@@ -377,7 +400,7 @@ const childItem = {
 //     }
 
 //     //   console.log(util.inspect(res, {depth: null}));
-//     if (res.HighestSeverity === 'ERROR') {
+//     if (res.HighestSeverity === 'ERROR'|| res.HighestSeverity === 'FAILURE') {
 //         console.log('code:' + res.Notifications[0].Code);
 //         console.log('message:' + res.Notifications[0].Message);
 //         console.log('severity:' + res.Notifications[0].Severity);
@@ -530,7 +553,7 @@ const rateItem = {
 //         SelectionDetails: {
 //             PackageIdentifier: {
 //                 Type: 'TRACKING_NUMBER_OR_DOORTAG',
-//                 Value: '774557410164'
+//                 Value: '123456789012'
 //             }
 //         }
 //     },
@@ -540,13 +563,16 @@ const rateItem = {
 //         }
 
 //         console.log(res);
+//         const response = res as ShipService.ITrackReply;
+//         const sorted = sortTrackTimestamp(response.CompletedTrackDetails[0].TrackDetails[0].DatesOrTimes);
+//         console.log(sorted);
 //     }
 // );
 
 fedex.deleteshipment({
     TrackingId: {
         TrackingIdType: 'FEDEX', // EXPRESS || FEDEX || GROUND || USPS
-        TrackingNumber: '794616047257'
+        TrackingNumber: '794619051432'
     },
     DeletionControl: 'DELETE_ALL_PACKAGES' // or DELETE_ONE_PACKAGE or LEGACY
 }, function(err, res) {
@@ -560,7 +586,7 @@ fedex.deleteshipment({
 // const tracker = require('delivery-tracker');
 // const courier = tracker.courier(tracker.COURIER.FEDEX.CODE);
 // const trace_number = '774557410164';
-// courier.trace('774557410164', function(err, result) {
+// courier.trace(trace_number, function(err, result) {
 //     if (err) {
 //         return console.log(err);
 //     }

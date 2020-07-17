@@ -9,6 +9,7 @@
                 :items="provinces"
                 :item-value="provinceValue"
                 :item-text="provinceText"
+                no-data-text="ERROR"
                 @input="onUpdate"
             />
         </template>
@@ -46,6 +47,7 @@ class ProvinceInput extends Vue {
     @Prop({ type: String, default: '' }) readonly aliasLabel!: string;
 
     @Ref('input') readonly input!: InstanceType<typeof ValidationProvider>;
+
     @Watch('countryCode')
     onChangeCountry() {
         this.$emit('input', '');

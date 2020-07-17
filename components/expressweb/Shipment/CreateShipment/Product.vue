@@ -2,6 +2,7 @@
     <v-card flat>
         <v-card-text class="px-md-12">
             <product-form
+                :disabled="disabled"
                 :value="value"
                 :weight-unit="weightUnit"
                 @input="onUpdate"
@@ -35,6 +36,7 @@ class ProductComponent extends Vue {
     @Prop({ type: Array, required: true }) readonly value;
     @Prop({ type: String, required: true }) readonly weightUnit!: String;
     @Prop({ required: false }) readonly failed!: boolean;
+    @Prop({ type: Boolean, default: false }) readonly disabled!: boolean;
 
     @Watch('failed')
     failedChanged(val) {

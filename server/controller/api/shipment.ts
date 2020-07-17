@@ -4,11 +4,65 @@ import * as ShipService from '../../types/ShipService';
 import User from '../../model/User';
 import Shipment from '../../model/Shipment';
 import ShipmentDetail from '../../model/ShipmentDetail';
+import ShipmentPackage from '../../model/ShipmentPackage';
+import { sequelize } from '../../db';
 const shipmentRouter = new Router();
 const util = require('util');
 const FedExAPI = require('fedex-manager');
 
-shipmentRouter.post('/delete', ctx => {});
+shipmentRouter.delete('/:trackno', async ctx => {
+    const trackno = ctx.params.trackno;
+    const fedex = new FedExAPI(fedexConfig);
+    const deleteshipment = util.promisify(fedex.deleteshipment);
+    let result: any = {};
+    try {
+        const shipment = await Shipment.findOne({
+            where: {
+                trackno,
+                masterno: null
+            }
+        });
+        if (!shipment) {
+            throw 'tracking number not exist';
+        }
+        const res = await deleteshipment({
+            TrackingId: {
+                TrackingIdType: 'FEDEX', // EXPRESS || FEDEX || GROUND || USPS
+                TrackingNumber: trackno
+            },
+            DeletionControl: 'DELETE_ALL_PACKAGES' // or DELETE_ONE_PACKAGE or LEGACY
+        });
+        if (
+            res.HighestSeverity === 'ERROR' ||
+            res.HighestSeverity === 'FAILURE' ||
+            res.HighestSeverity === 'NOTE'
+        ) {
+            console.log('code:' + res.Notifications[0].Code);
+            console.log('message:' + res.Notifications[0].Message);
+            console.log('severity:' + res.Notifications[0].Severity);
+            console.log('source:' + res.Notifications[0].Source);
+            throw res.Notifications[0].Message;
+        }
+        await sequelize.transaction(async t => {
+            const shipmentDetail = (await shipment.$get('shipmentDetail', {
+                transaction: t
+            })) as ShipmentDetail;
+            await shipment.destroy({
+                transaction: t
+            });
+            await shipmentDetail.destroy({
+                transaction: t
+            });
+        });
+    } catch (err) {
+        console.log(err);
+        result = { error: err };
+    } finally {
+        ctx.response.type = 'text/json';
+        ctx.response.status = 200;
+        ctx.response.body = result;
+    }
+});
 
 shipmentRouter.post('/track', async ctx => {
     let result: any = 'a';
@@ -79,6 +133,7 @@ shipmentRouter.post('/create', async ctx => {
     let result: any = 'a';
     const ship = util.promisify(fedex.ship);
     const shipmentResults: any[] = [];
+    const packageResults: any[] = [];
     const sd = {
         id: 0,
         shipperPersonName: '',
@@ -119,7 +174,10 @@ shipmentRouter.post('/create', async ctx => {
         const res: ShipService.IProcessShipmentReply = await ship({
             RequestedShipment: packages.master
         });
-        if (res.HighestSeverity === 'ERROR') {
+        if (
+            res.HighestSeverity === 'ERROR' ||
+            res.HighestSeverity === 'FAILURE'
+        ) {
             console.log('code:' + res.Notifications[0].Code);
             console.log('message:' + res.Notifications[0].Message);
             console.log('severity:' + res.Notifications[0].Severity);
@@ -141,6 +199,29 @@ shipmentRouter.post('/create', async ctx => {
             // fee: JSON.stringify((ctx as any).session.money),
             fee: (ctx as any).session.money,
             userId: u.id
+        });
+        const masterPackage = packages.master.RequestedPackageLineItems[0];
+        packageResults.push({
+            id: 0,
+            sequenceNumber: masterPackage.SequenceNumber,
+            groupNumber: masterPackage.GroupNumber,
+            groupPackageCount: masterPackage.GroupPackageCount,
+            weightUnits: masterPackage.Weight!.Units,
+            weight: masterPackage.Weight!.Value,
+            linearUnits: masterPackage.Dimensions
+                ? masterPackage.Dimensions.Units
+                : null,
+            length: masterPackage.Dimensions
+                ? masterPackage.Dimensions.Length
+                : null,
+            width: masterPackage.Dimensions
+                ? masterPackage.Dimensions.Width
+                : null,
+            height: masterPackage.Dimensions
+                ? masterPackage.Dimensions.Height
+                : null,
+            trackno: res.CompletedShipmentDetail!.CompletedPackageDetails[0]!
+                .TrackingIds[0].TrackingNumber
         });
 
         for (const child of packages.children) {
@@ -166,6 +247,24 @@ shipmentRouter.post('/create', async ctx => {
                     .CompletedPackageDetails[0]!.Label!.Parts[0].Image,
                 userId: u.id,
                 masterno: masterid!.TrackingNumber
+            });
+            packageResults.push({
+                id: 0,
+                sequenceNumber:
+                    child.RequestedPackageLineItems[0].SequenceNumber,
+                groupNumber: child.RequestedPackageLineItems[0].GroupNumber,
+                groupPackageCount:
+                    child.RequestedPackageLineItems[0].GroupPackageCount,
+                weightUnits: packages.master.RequestedPackageLineItems[0]
+                    .Weight!.Units,
+                weight: child.RequestedPackageLineItems[0].Weight!.Value,
+                linearUnits: child.RequestedPackageLineItems[0].Dimensions!
+                    .Units,
+                length: child.RequestedPackageLineItems[0].Dimensions!.Length,
+                width: child.RequestedPackageLineItems[0].Dimensions!.Width,
+                height: child.RequestedPackageLineItems[0].Dimensions!.Height,
+                trackno: childRes.CompletedShipmentDetail!
+                    .CompletedPackageDetails[0]!.TrackingIds[0].TrackingNumber
             });
         }
 
@@ -195,12 +294,24 @@ shipmentRouter.post('/create', async ctx => {
         sd.recipientPostalCode = packages.master.Recipient.Address!.PostalCode!;
         sd.recipientCountryCode = packages.master.Recipient.Address!.CountryCode!;
 
-        const shipmentDetail = await ShipmentDetail.create(sd);
+        await sequelize.transaction(async t => {
+            const shipmentDetail = await ShipmentDetail.create(sd, {
+                transaction: t
+            });
 
-        for (const sr of shipmentResults) {
-            sr.detailId = shipmentDetail.id;
-            await Shipment.create(sr);
-        }
+            for (const sr of shipmentResults) {
+                sr.detailId = shipmentDetail.id;
+                await Shipment.create(sr, {
+                    transaction: t
+                });
+            }
+
+            for (const pr of packageResults) {
+                await ShipmentPackage.create(pr, {
+                    transaction: t
+                });
+            }
+        });
     } catch (err) {
         console.log(err);
         result = { error: err };
@@ -241,7 +352,8 @@ shipmentRouter.get('/', async ctx => {
         attributes: ['trackno', 'fee', 'detailId'],
         where: {
             masterno: null
-        }
+        },
+        order: [['createdAt', 'DESC']]
     });
     const results: any[] = [];
     for (const shipment of shipments) {
@@ -272,6 +384,134 @@ shipmentRouter.get('/', async ctx => {
         results,
         total
     };
+});
+
+shipmentRouter.get('/:trackno', async ctx => {
+    const trackno = ctx.params.trackno;
+    const packageTypeMap = {
+        FEDEX_BOX: '0',
+        FEDEX_ENVELOPE: '1',
+        FEDEX_PAK: '2',
+        FEDEX_TUBE: '3',
+        YOUR_PACKAGING: '4'
+    };
+    const fedex = new FedExAPI(fedexConfig);
+    const track = util.promisify(fedex.track);
+    let result: any = {};
+    try {
+        const shipment = await Shipment.findOne({
+            where: {
+                trackno
+            }
+        });
+        const labels: any[] = [];
+        if (!shipment) {
+            throw 'can not find this package, check tracking number please';
+        }
+        labels.push(shipment.image);
+        const detail = (await shipment.$get(
+            'shipmentDetail'
+        )) as ShipmentDetail;
+        const pac = (await shipment.$get('pac')) as ShipmentPackage;
+        if (!detail || !pac) {
+            throw 'shipment information error';
+        }
+        result.senderAddress = {
+            name: detail.shipperPersonName,
+            phone: detail.shipperPhoneNumber,
+            address: detail.shipperStreetLine1,
+            address2:
+                detail.shipperStreetLine2.length > 0
+                    ? detail.shipperStreetLine2
+                    : undefined,
+            city: detail.shipperCity,
+            province: detail.shipperStateOrProvinceCode,
+            postcode: detail.shipperPostalCode,
+            country: detail.shipperCountryCode
+        };
+        result.receiverAddress = {
+            name: detail.recipientPersonName,
+            phone: detail.recipientPhoneNumber,
+            address: detail.recipientStreetLine1,
+            address2:
+                detail.recipientStreetLine2.length > 0
+                    ? detail.recipientStreetLine2
+                    : undefined,
+            city: detail.recipientCity,
+            province: detail.recipientStateOrProvinceCode,
+            postcode: detail.recipientPostalCode,
+            country: detail.recipientCountryCode
+        };
+        result.pac = {
+            packageType: packageTypeMap[detail.packagingType]
+        };
+        if (detail.packagingType !== 'YOUR_PACKAGING') {
+            result.pac.trackno = pac.trackno;
+            result.pac.weightUnit = pac.weightUnits;
+            result.pac.weight = pac.weight;
+        } else {
+            result.pac.weightUnit = pac.weightUnits;
+            result.pac.dimensionUnit = pac.linearUnits;
+            const packages: any[] = [];
+            packages.push({
+                trackno: pac.trackno,
+                weight: pac.weight,
+                length: pac.length,
+                width: pac.width,
+                height: pac.height
+            });
+            let shipmentChildren = await shipment.$get('children');
+            shipmentChildren = Array.isArray(shipmentChildren)
+                ? shipmentChildren
+                : [shipmentChildren];
+            for (const child of shipmentChildren) {
+                const childPac = (await (child as Shipment).$get(
+                    'pac'
+                )) as ShipmentPackage;
+                packages.push({
+                    trackno: childPac.trackno,
+                    weight: childPac.weight,
+                    length: childPac.length,
+                    width: childPac.width,
+                    height: childPac.height
+                });
+                labels.push((child as Shipment).image);
+            }
+            result.pac.packages = packages;
+        }
+        result.labels = labels;
+        const trackRes: ShipService.ITrackReply = await track({
+            SelectionDetails: {
+                PackageIdentifier: {
+                    Type: 'TRACKING_NUMBER_OR_DOORTAG',
+                    Value: '123456789012' // 测试sandbox服务器暂用此运单号
+                }
+            }
+        });
+        if (
+            trackRes.HighestSeverity === 'ERROR' ||
+            trackRes.HighestSeverity === 'FAILURE'
+        ) {
+            console.log('code:' + trackRes.Notifications[0].Code);
+            console.log('message:' + trackRes.Notifications[0].Message);
+            console.log('severity:' + trackRes.Notifications[0].Severity);
+            console.log('source:' + trackRes.Notifications[0].Source);
+            throw trackRes.Notifications[0].Message;
+        }
+        const timelines = sortTrackTimestamp(
+            trackRes.CompletedTrackDetails[0].TrackDetails[0].DatesOrTimes
+        );
+        result.timelines = timelines;
+    } catch (err) {
+        console.log(err);
+        result = { error: err };
+        // throw err;
+    } finally {
+        (ctx as any).session.money = result.money;
+        ctx.response.type = 'text/json';
+        ctx.response.status = 200;
+        ctx.response.body = result;
+    }
 });
 
 interface IRequestedShipmentResult {
@@ -478,9 +718,7 @@ function newRequestedShipment(
     const date = new Date();
     if (packagetype === 'YOUR_PACKAGING')
         return {
-            ShipTimestamp: new Date(
-                date.getTime() + 24 * 60 * 60 * 1000
-            ).toISOString(),
+            ShipTimestamp: new Date(date.getTime()).toISOString(),
             DropoffType: dropoff,
             ServiceType: service,
             PackagingType: packagetype,
@@ -513,9 +751,7 @@ function newRequestedShipment(
         };
     else
         return {
-            ShipTimestamp: new Date(
-                date.getTime() + 24 * 60 * 60 * 1000
-            ).toISOString(),
+            ShipTimestamp: new Date(date.getTime()).toISOString(),
             DropoffType: dropoff,
             ServiceType: service,
             PackagingType: packagetype,
@@ -535,6 +771,28 @@ function newRequestedShipment(
                 }
             ]
         };
+}
+
+function sortTrackTimestamp(
+    trackTimestamps: ShipService.ITrackingDateOrTimestamp[]
+): ShipService.ITrackingDateOrTimestamp[] {
+    return trackTimestamps.sort(
+        (
+            a: ShipService.ITrackingDateOrTimestamp,
+            b: ShipService.ITrackingDateOrTimestamp
+        ) => {
+            const astr = a.DateOrTimestamp;
+            const bstr = b.DateOrTimestamp;
+            if (!astr || !bstr) {
+                throw 'timestamp error';
+            }
+            const aMilliseconds = Date.parse(astr);
+            const bMilliseconds = Date.parse(bstr);
+            if (aMilliseconds > bMilliseconds) return 1;
+            else if (aMilliseconds < bMilliseconds) return -1;
+            else return 0;
+        }
+    );
 }
 
 export default shipmentRouter;

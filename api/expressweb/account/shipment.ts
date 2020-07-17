@@ -15,13 +15,20 @@ export interface IShipment {
         currency: string;
         amount: number;
     };
-    createAt: string;
+    createdAt: string;
     senderAddress: IAddress;
     receiverAddress: IAddress;
 }
 
 function getBaseUrl() {
     return '/api/shipment';
+}
+
+export async function $delete(shipment: IShipment) {
+    const url = getBaseUrl() + `/${shipment.trackno}`;
+    const $axios = getNuxtAxiosInstance();
+
+    await $axios.$delete(url);
 }
 
 export async function $list(
@@ -35,8 +42,6 @@ export async function $list(
 
     return serverData;
 }
-
-export function $delete() {}
 
 export function $add() {}
 

@@ -1,5 +1,5 @@
 <template>
-    <v-form>
+    <v-form :disabled="disabled">
         <v-row>
             <v-col cols="12" md="6">
                 <name-input
@@ -85,6 +85,7 @@ import { VForm } from '@/utils/form';
 class AddressForm extends Vue {
     @Prop({ type: Object, required: true }) readonly value!: Address;
     @Prop({ type: Boolean, default: false }) readonly sender!: boolean;
+    @Prop({ type: Boolean, default: false }) readonly disabled!: boolean;
 
     onUpdate(field, value) {
         this.$emit('input', field, value);

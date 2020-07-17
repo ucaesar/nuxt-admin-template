@@ -842,7 +842,7 @@ export interface IPagingDetail {
 
 export interface ITrackReply {
     HighestSeverity: NotificationSeverityType;
-    Notifications: Notification[];
+    Notifications: INotification[];
     TransactionDetail?: ITransactionDetail;
     Version: IVersionId;
     CompletedTrackDetails: ICompletedTrackDetail[];

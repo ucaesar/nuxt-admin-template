@@ -12,7 +12,7 @@ class BaseEditorDialog extends Vue {
     @Prop({ type: Boolean, required: true }) readonly visible!: boolean;
     @Prop({ required: true }) readonly item!: any | undefined;
 
-    @Watch('visible')
+    /* @Watch('visible')
     onOpenDialog(val: boolean, oldVal: boolean) {
         if (!oldVal && val) {
             if (typeof this.item === 'undefined')
@@ -21,9 +21,15 @@ class BaseEditorDialog extends Vue {
 
             this.reset();
         }
-    }
+    } */
 
     clonedItem = this.newItemFactory();
+
+    mounted() {
+        if (typeof this.item === 'undefined')
+            this.clonedItem = this.newItemFactory();
+        else this.clonedItem = _.cloneDeep(this.item);
+    }
 
     onCancel() {
         this.$emit('close', false);

@@ -4,8 +4,13 @@
         v-bind="$attrs"
         :headers-conf="headersConf"
         :crud-api="api"
-        :custom-column-names="customColumnNames"
+        :custom-columns="customColumns"
+        :custom-actions="customActions"
+        delete-action
     >
+        <template v-slot:watchAction="{ item }">
+            <watch-action :item="item" />
+        </template>
         <template v-slot:senderAddress="{ item }">
             {{ addressText(item.senderAddress) }}
         </template>
@@ -15,11 +20,16 @@
         <template v-slot:fee="{ item }">
             {{ moneyText(item) }}
         </template>
+        <template v-slot:createdAt="{ item }">
+            {{ dateText(item) }}
+        </template>
     </base-crud-table>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop, Ref } from 'nuxt-property-decorator';
+
+import WatchAction from './WatchAction.vue';
 
 import BaseCrudTable from '@/components/common/CrudTable/BaseCrudTable.vue';
 
@@ -83,7 +93,8 @@ const SHIPMENT_TABLE_HEADER_TEXT = {
 
 @Component({
     components: {
-        BaseCrudTable
+        BaseCrudTable,
+        WatchAction
     },
     inheritAttrs: false
 })
@@ -96,18 +107,25 @@ class ShipmentTable extends Vue {
         SHIPMENT_TABLE_HEADER_TEXT.receiverInfo
     ];
 
-    customColumnNames = ['senderAddress', 'receiverAddress', 'fee'];
+    customColumns = ['senderAddress', 'receiverAddress', 'fee', 'createdAt'];
+    customActions = ['watchAction'];
 
     api = new Api();
 
     addressText(item: ShipmentApi.IAddress) {
         const country = getCountryNameByCode(item.country);
         const province = getProvinceNameByCode(item.country, item.province);
-        return `${item.name}, ${item.city}, ${province}, ${country}`;
+        return `${item.name} @ ${item.city}, ${province}, ${country}`;
     }
 
     moneyText(item: ShipmentApi.IShipment) {
         return `${item.fee.amount} ${item.fee.currency}`;
+    }
+
+    dateText(item: ShipmentApi.IShipment) {
+        return new Date(Date.parse(item.createdAt)).toLocaleString(
+            this.$i18n.locale
+        );
     }
 }
 

@@ -1,7 +1,7 @@
 <template>
     <!-- this.$emit('submit', formData) -->
     <v-card flat>
-        <v-card-title
+        <v-card-title v-if="!disabled"
             ><v-toolbar flat dense>
                 <v-btn text color="primary"
                     ><v-icon>mdi-plus</v-icon>读取运单</v-btn
@@ -12,7 +12,6 @@
         <v-card-text class="px-0">
             <v-tabs
                 :vertical="!$breakpoint.isMobile"
-                show-arrows
                 center-active
                 :class="$breakpoint.isMobile ? '' : 'my-tabs'"
                 :color="silderColor"
@@ -46,6 +45,7 @@
                     icon="mdi-package-variant"
                 ></form-tab>
                 <form-tab
+                    v-if="showProductForm"
                     :label="
                         $t('expressweb.shipment.completeForm.productHeaderText')
                     "
@@ -59,6 +59,7 @@
                         v-slot="{ failed }"
                     >
                         <sender-address-form
+                            :disabled="disabled"
                             :value="formData.senderAddress"
                             :failed="failed"
                             @input="val => onUpdate('senderAddress', val)"
@@ -75,6 +76,7 @@
                         v-slot="{ failed }"
                     >
                         <receiver-address-form
+                            :disabled="disabled"
                             :value="formData.receiverAddress"
                             :failed="failed"
                             @input="val => onUpdate('receiverAddress', val)"
@@ -87,18 +89,20 @@
                 <v-tab-item eager
                     ><validation-observer ref="packageForm" v-slot="{ failed }">
                         <package-form
+                            :disabled="disabled"
                             :value="formData.pac"
                             :failed="failed"
                             @input="val => onUpdate('pac', val)"
                             @failed="val => setFailedFlags(PACKAGE_STEP, val)"
                         /> </validation-observer
                 ></v-tab-item>
-                <v-tab-item eager
+                <v-tab-item v-if="showProductForm" eager
                     ><validation-observer
                         ref="productsForm"
                         v-slot="{ failed }"
                     >
                         <product-form
+                            :disabled="disabled"
                             :value="formData.products"
                             :failed="failed"
                             :weight-unit="formData.pac.weightUnit"
@@ -108,7 +112,7 @@
                 ></v-tab-item>
             </v-tabs>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions v-if="!disabled">
             <v-toolbar flat dense>
                 <v-btn color="primary" dark @click="onSubmit">{{
                     $t('components.stepper.nextButtonText')
@@ -118,12 +122,11 @@
                 }}</v-btn></v-toolbar
             >
         </v-card-actions>
-        <label-carousel v-if="labels.length > 0" :pdf-list="labels" />
     </v-card>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Ref } from 'nuxt-property-decorator';
+import { Vue, Component, Ref, Prop } from 'nuxt-property-decorator';
 import { ValidationObserver } from 'vee-validate';
 import _ from 'lodash';
 
@@ -132,7 +135,6 @@ import SenderAddressForm from './SenderAddress.vue';
 import ReceiverAddressForm from './ReceiverAddress.vue';
 import PackageForm from './Package.vue';
 import ProductForm from './Product.vue';
-import LabelCarousel from './LabelCarousel.vue';
 
 import { ShipmentData } from '@/models/expressweb/Shipment';
 
@@ -145,11 +147,12 @@ import * as Api from '@/api/expressweb/shipment/create';
         PackageForm,
         ProductForm,
         ValidationObserver,
-        FormTab,
-        LabelCarousel
+        FormTab
     }
 })
 class CreateShipmentForm extends Vue {
+    @Prop({ type: Boolean, default: false }) readonly disabled!: boolean;
+
     @Ref('senderAddressForm') readonly senderAddressForm!: InstanceType<
         typeof ValidationObserver
     >;
@@ -167,6 +170,12 @@ class CreateShipmentForm extends Vue {
         return this.failedFlags[this.curStep] ? 'red' : '';
     }
 
+    get showProductForm() {
+        if (!this.formData.products || this.formData.products.length === 0)
+            return false;
+        return true;
+    }
+
     // formData = new ShipmentData();
     formData = this.getTestFormData();
 
@@ -177,8 +186,6 @@ class CreateShipmentForm extends Vue {
     RECEIVER_ADDRESS_STEP = 1;
     PACKAGE_STEP = 2;
     PRODUCTS_STEP = 3;
-
-    labels: string[] = [];
 
     onUpdate(field, value) {
         this.formData[field] = value;
@@ -196,7 +203,9 @@ class CreateShipmentForm extends Vue {
         const senderAddressValid = await this.senderAddressForm.validate();
         const receiverAddressValid = await this.receiverAddressForm.validate();
         const packageValid = await this.packageForm.validate();
-        const productsValid = await this.productsForm.validate();
+        const productsValid = this.showProductForm
+            ? await this.productsForm.validate()
+            : true;
 
         if (
             senderAddressValid &&
@@ -222,7 +231,7 @@ class CreateShipmentForm extends Vue {
         formData.receiverAddress.name = 'Caesar You';
         formData.receiverAddress.phone = '123';
         formData.receiverAddress.country = 'CA';
-        formData.receiverAddress.province = 'BC';
+        formData.receiverAddress.province = 'FZ';
         formData.receiverAddress.city = 'Vancouver';
         formData.receiverAddress.postcode = 'V6B 2T9';
         formData.receiverAddress.address = '1111 Mainland St';
@@ -232,6 +241,7 @@ class CreateShipmentForm extends Vue {
         formData.pac.packageType = '1';
         formData.pac.weight = '0.1';
 
+        /* formData.products = [];
         formData.products[0] = {
             description: 'desc',
             origin: 'CN',
@@ -239,7 +249,7 @@ class CreateShipmentForm extends Vue {
             quantity: '1',
             unit: 'piece',
             pricePerUnit: '35'
-        };
+        }; */
 
         return formData;
     }
