@@ -5,12 +5,63 @@ import User from '../../model/User';
 import Shipment from '../../model/Shipment';
 import ShipmentDetail from '../../model/ShipmentDetail';
 import ShipmentPackage from '../../model/ShipmentPackage';
+import { sequelize } from '../../db';
 const shipmentRouter = new Router();
 const util = require('util');
 const FedExAPI = require('fedex-manager');
 
-shipmentRouter.post('/delete', ctx => {
-    const trackno: any = (ctx.req as any).body;
+shipmentRouter.delete('/:trackno', async ctx => {
+    const trackno = ctx.params.trackno;
+    const fedex = new FedExAPI(fedexConfig);
+    const deleteshipment = util.promisify(fedex.deleteshipment);
+    let result: any = {};
+    try {
+        const shipment = await Shipment.findOne({
+            where: {
+                trackno,
+                masterno: null
+            }
+        });
+        if (!shipment) {
+            throw 'tracking number not exist';
+        }
+        const res = await deleteshipment({
+            TrackingId: {
+                TrackingIdType: 'FEDEX', // EXPRESS || FEDEX || GROUND || USPS
+                TrackingNumber: trackno
+            },
+            DeletionControl: 'DELETE_ALL_PACKAGES' // or DELETE_ONE_PACKAGE or LEGACY
+        });
+        if (
+            res.HighestSeverity === 'ERROR' ||
+            res.HighestSeverity === 'FAILURE' ||
+            res.HighestSeverity === 'NOTE'
+        ) {
+            console.log('code:' + res.Notifications[0].Code);
+            console.log('message:' + res.Notifications[0].Message);
+            console.log('severity:' + res.Notifications[0].Severity);
+            console.log('source:' + res.Notifications[0].Source);
+            throw res.Notifications[0].Message;
+        }
+        await sequelize.transaction(async t => {
+            const shipmentDetail = (await shipment.$get('shipmentDetail', {
+                transaction: t
+            })) as ShipmentDetail;
+            await shipment.destroy({
+                transaction: t
+            });
+            await shipmentDetail.destroy({
+                transaction: t
+            });
+        });
+    } catch (err) {
+        console.log(err);
+        result = { error: err };
+    } finally {
+        ctx.response.type = 'text/json';
+        ctx.response.status = 200;
+        ctx.response.body = result;
+    }
 });
 
 shipmentRouter.post('/track', async ctx => {
@@ -243,16 +294,24 @@ shipmentRouter.post('/create', async ctx => {
         sd.recipientPostalCode = packages.master.Recipient.Address!.PostalCode!;
         sd.recipientCountryCode = packages.master.Recipient.Address!.CountryCode!;
 
-        const shipmentDetail = await ShipmentDetail.create(sd);
+        await sequelize.transaction(async t => {
+            const shipmentDetail = await ShipmentDetail.create(sd, {
+                transaction: t
+            });
 
-        for (const sr of shipmentResults) {
-            sr.detailId = shipmentDetail.id;
-            await Shipment.create(sr);
-        }
+            for (const sr of shipmentResults) {
+                sr.detailId = shipmentDetail.id;
+                await Shipment.create(sr, {
+                    transaction: t
+                });
+            }
 
-        for (const pr of packageResults) {
-            await ShipmentPackage.create(pr);
-        }
+            for (const pr of packageResults) {
+                await ShipmentPackage.create(pr, {
+                    transaction: t
+                });
+            }
+        });
     } catch (err) {
         console.log(err);
         result = { error: err };
@@ -336,6 +395,8 @@ shipmentRouter.get('/:trackno', async ctx => {
         FEDEX_TUBE: '3',
         YOUR_PACKAGING: '4'
     };
+    const fedex = new FedExAPI(fedexConfig);
+    const track = util.promisify(fedex.track);
     let result: any = {};
     try {
         const shipment = await Shipment.findOne({
@@ -419,6 +480,28 @@ shipmentRouter.get('/:trackno', async ctx => {
             result.pac.packages = packages;
         }
         result.labels = labels;
+        const trackRes: ShipService.ITrackReply = await track({
+            SelectionDetails: {
+                PackageIdentifier: {
+                    Type: 'TRACKING_NUMBER_OR_DOORTAG',
+                    Value: '123456789012' // 测试sandbox服务器暂用此运单号
+                }
+            }
+        });
+        if (
+            trackRes.HighestSeverity === 'ERROR' ||
+            trackRes.HighestSeverity === 'FAILURE'
+        ) {
+            console.log('code:' + trackRes.Notifications[0].Code);
+            console.log('message:' + trackRes.Notifications[0].Message);
+            console.log('severity:' + trackRes.Notifications[0].Severity);
+            console.log('source:' + trackRes.Notifications[0].Source);
+            throw trackRes.Notifications[0].Message;
+        }
+        const timelines = sortTrackTimestamp(
+            trackRes.CompletedTrackDetails[0].TrackDetails[0].DatesOrTimes
+        );
+        result.timelines = timelines;
     } catch (err) {
         console.log(err);
         result = { error: err };
@@ -688,6 +771,28 @@ function newRequestedShipment(
                 }
             ]
         };
+}
+
+function sortTrackTimestamp(
+    trackTimestamps: ShipService.ITrackingDateOrTimestamp[]
+): ShipService.ITrackingDateOrTimestamp[] {
+    return trackTimestamps.sort(
+        (
+            a: ShipService.ITrackingDateOrTimestamp,
+            b: ShipService.ITrackingDateOrTimestamp
+        ) => {
+            const astr = a.DateOrTimestamp;
+            const bstr = b.DateOrTimestamp;
+            if (!astr || !bstr) {
+                throw 'timestamp error';
+            }
+            const aMilliseconds = Date.parse(astr);
+            const bMilliseconds = Date.parse(bstr);
+            if (aMilliseconds > bMilliseconds) return 1;
+            else if (aMilliseconds < bMilliseconds) return -1;
+            else return 0;
+        }
+    );
 }
 
 export default shipmentRouter;
