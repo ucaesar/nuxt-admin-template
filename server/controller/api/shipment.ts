@@ -5,6 +5,7 @@ import User from '../../model/User';
 import Shipment from '../../model/Shipment';
 import ShipmentDetail from '../../model/ShipmentDetail';
 import ShipmentPackage from '../../model/ShipmentPackage';
+import { sequelize } from '../../db';
 const shipmentRouter = new Router();
 const util = require('util');
 const FedExAPI = require('fedex-manager');
@@ -42,11 +43,13 @@ shipmentRouter.delete('/:trackno', async ctx => {
             console.log('source:' + res.Notifications[0].Source);
             throw res.Notifications[0].Message;
         }
-        const shipmentDetail = (await shipment.$get(
-            'shipmentDetail'
-        )) as ShipmentDetail;
-        await shipment.destroy();
-        await shipmentDetail.destroy();
+        await sequelize.transaction(async t => {
+            const shipmentDetail = (await shipment.$get(
+                'shipmentDetail'
+            )) as ShipmentDetail;
+            await shipment.destroy();
+            await shipmentDetail.destroy();
+        });
     } catch (err) {
         console.log(err);
         result = { error: err };
@@ -287,16 +290,18 @@ shipmentRouter.post('/create', async ctx => {
         sd.recipientPostalCode = packages.master.Recipient.Address!.PostalCode!;
         sd.recipientCountryCode = packages.master.Recipient.Address!.CountryCode!;
 
-        const shipmentDetail = await ShipmentDetail.create(sd);
+        await sequelize.transaction(async t => {
+            const shipmentDetail = await ShipmentDetail.create(sd);
 
-        for (const sr of shipmentResults) {
-            sr.detailId = shipmentDetail.id;
-            await Shipment.create(sr);
-        }
+            for (const sr of shipmentResults) {
+                sr.detailId = shipmentDetail.id;
+                await Shipment.create(sr);
+            }
 
-        for (const pr of packageResults) {
-            await ShipmentPackage.create(pr);
-        }
+            for (const pr of packageResults) {
+                await ShipmentPackage.create(pr);
+            }
+        });
     } catch (err) {
         console.log(err);
         result = { error: err };
