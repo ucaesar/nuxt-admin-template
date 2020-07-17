@@ -17,7 +17,8 @@ shipmentRouter.delete('/:trackno', async ctx => {
     try {
         const shipment = await Shipment.findOne({
             where: {
-                trackno
+                trackno,
+                masterno: null
             }
         });
         if (!shipment) {
