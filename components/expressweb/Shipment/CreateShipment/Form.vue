@@ -1,7 +1,7 @@
 <template>
     <!-- this.$emit('submit', formData) -->
     <v-card flat>
-        <v-card-title
+        <v-card-title v-if="!disabled"
             ><v-toolbar flat dense>
                 <v-btn text color="primary"
                     ><v-icon>mdi-plus</v-icon>读取运单</v-btn
@@ -46,6 +46,7 @@
                     icon="mdi-package-variant"
                 ></form-tab>
                 <form-tab
+                    v-if="showProductForm"
                     :label="
                         $t('expressweb.shipment.completeForm.productHeaderText')
                     "
@@ -96,7 +97,7 @@
                             @failed="val => setFailedFlags(PACKAGE_STEP, val)"
                         /> </validation-observer
                 ></v-tab-item>
-                <v-tab-item eager
+                <v-tab-item v-if="showProductForm" eager
                     ><validation-observer
                         ref="productsForm"
                         v-slot="{ failed }"
@@ -112,7 +113,7 @@
                 ></v-tab-item>
             </v-tabs>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions v-if="!disabled">
             <v-toolbar flat dense>
                 <v-btn color="primary" dark @click="onSubmit">{{
                     $t('components.stepper.nextButtonText')
@@ -170,6 +171,12 @@ class CreateShipmentForm extends Vue {
         return this.failedFlags[this.curStep] ? 'red' : '';
     }
 
+    get showProductForm() {
+        if (!this.formData.products || this.formData.products.length === 0)
+            return false;
+        return true;
+    }
+
     // formData = new ShipmentData();
     formData = this.getTestFormData();
 
@@ -197,7 +204,9 @@ class CreateShipmentForm extends Vue {
         const senderAddressValid = await this.senderAddressForm.validate();
         const receiverAddressValid = await this.receiverAddressForm.validate();
         const packageValid = await this.packageForm.validate();
-        const productsValid = await this.productsForm.validate();
+        const productsValid = this.showProductForm
+            ? await this.productsForm.validate()
+            : true;
 
         if (
             senderAddressValid &&
@@ -233,14 +242,15 @@ class CreateShipmentForm extends Vue {
         formData.pac.packageType = '1';
         formData.pac.weight = '0.1';
 
-        formData.products[0] = {
+        /* formData.products[0] = {
             description: 'desc',
             origin: 'CN',
             weight: '1',
             quantity: '1',
             unit: 'piece',
             pricePerUnit: '35'
-        };
+        }; */
+        formData.products = undefined;
 
         return formData;
     }
