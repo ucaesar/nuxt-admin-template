@@ -12,7 +12,6 @@
         <v-card-text class="px-0">
             <v-tabs
                 :vertical="!$breakpoint.isMobile"
-                show-arrows
                 center-active
                 :class="$breakpoint.isMobile ? '' : 'my-tabs'"
                 :color="silderColor"
@@ -232,7 +231,7 @@ class CreateShipmentForm extends Vue {
         formData.receiverAddress.name = 'Caesar You';
         formData.receiverAddress.phone = '123';
         formData.receiverAddress.country = 'CA';
-        formData.receiverAddress.province = 'BC';
+        formData.receiverAddress.province = 'FZ';
         formData.receiverAddress.city = 'Vancouver';
         formData.receiverAddress.postcode = 'V6B 2T9';
         formData.receiverAddress.address = '1111 Mainland St';
@@ -242,7 +241,8 @@ class CreateShipmentForm extends Vue {
         formData.pac.packageType = '1';
         formData.pac.weight = '0.1';
 
-        /* formData.products[0] = {
+        /* formData.products = [];
+        formData.products[0] = {
             description: 'desc',
             origin: 'CN',
             weight: '1',
@@ -250,7 +250,6 @@ class CreateShipmentForm extends Vue {
             unit: 'piece',
             pricePerUnit: '35'
         }; */
-        formData.products = undefined;
 
         return formData;
     }

@@ -6,6 +6,7 @@
         :crud-api="api"
         :custom-columns="customColumns"
         :custom-actions="customActions"
+        delete-action
     >
         <template v-slot:watchAction="{ item }">
             <watch-action :item="item" />

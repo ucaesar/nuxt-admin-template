@@ -24,6 +24,13 @@ function getBaseUrl() {
     return '/api/shipment';
 }
 
+export async function $delete(shipment: IShipment) {
+    const url = getBaseUrl() + `/${shipment.trackno}`;
+    const $axios = getNuxtAxiosInstance();
+
+    await $axios.$delete(url);
+}
+
 export async function $list(
     paginationParams?: IPaginationParams
 ): Promise<ITableDataFromServer> {
@@ -35,8 +42,6 @@ export async function $list(
 
     return serverData;
 }
-
-export function $delete() {}
 
 export function $add() {}
 

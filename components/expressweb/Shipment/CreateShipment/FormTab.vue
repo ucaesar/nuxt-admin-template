@@ -1,6 +1,6 @@
 <template>
     <v-tab :style="colorStyle">
-        <v-icon left :style="colorStyle">{{ iconString }}</v-icon>
+        <!-- <v-icon left :style="colorStyle">{{ iconString }}</v-icon>  -->
         {{ label }}
     </v-tab>
 </template>

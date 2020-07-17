@@ -13,7 +13,7 @@ export class ShipmentData implements IShipment {
     senderAddress = new Address();
     receiverAddress = new Address();
     pac = new Package();
-    products: IProduct[] | undefined = [new Product()];
+    products: IProduct[] | undefined = undefined;
 
     constructor() {
         this.senderAddress.country = 'CA';
