@@ -210,7 +210,7 @@ shipmentRouter.post('/create', async ctx => {
             weight: masterPackage.Weight!.Value,
             linearUnits: masterPackage.Dimensions
                 ? masterPackage.Dimensions.Units
-                : null,
+                : (masterPackage.Weight!.Units === 'KG' ? 'CM' : 'IN'),
             length: masterPackage.Dimensions
                 ? masterPackage.Dimensions.Length
                 : null,
@@ -447,11 +447,12 @@ shipmentRouter.get('/:trackno', async ctx => {
         };
         if (detail.packagingType !== 'YOUR_PACKAGING') {
             result.pac.trackno = pac.trackno;
-            result.pac.weightUnit = pac.weightUnits;
+            result.pac.weightUnit = pac.weightUnits.toLowerCase();
+            result.pac.dimensionUnit = pac.linearUnits.toLowerCase();
             result.pac.weight = pac.weight;
         } else {
-            result.pac.weightUnit = pac.weightUnits;
-            result.pac.dimensionUnit = pac.linearUnits;
+            result.pac.weightUnit = pac.weightUnits.toLowerCase();
+            result.pac.dimensionUnit = pac.linearUnits.toLowerCase();
             const packages: any[] = [];
             packages.push({
                 trackno: pac.trackno,
