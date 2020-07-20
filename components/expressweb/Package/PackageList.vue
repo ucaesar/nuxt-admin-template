@@ -46,7 +46,7 @@
                 <validation-provider
                     v-slot="{ errors }"
                     :style="{ width: '100%' }"
-                    rules="package.required|package.weightType|package.dimensionType|package.dimensionSum"
+                    :rules="dimensionRules"
                 >
                     <package-input
                         :value="item"
@@ -92,6 +92,14 @@ class PackageList extends Vue {
     @Prop({ required: true, default: 'cm' }) readonly dimensionUnit!: string;
     @Prop({ required: true, default: 'kg' }) readonly weightUnit!: string;
     @Prop({ type: Boolean, default: false }) readonly disabled!: boolean;
+
+    get dimensionLimit() {
+        return this.dimensionUnit === 'cm' ? 330 : 125;
+    }
+
+    get dimensionRules() {
+        return `package.required|package.weightType|package.dimensionType|package.dimensionSum:${this.dimensionLimit}`;
+    }
 
     get inlineChip() {
         /* const name = this.$vuetify.breakpoint.name;

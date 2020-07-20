@@ -10,16 +10,6 @@ export class PackageItem implements IPackageItem {
     length: string | undefined = undefined;
     width: string | undefined = undefined;
     height: string | undefined = undefined;
-
-    setData(packageItem: PackageItem) {
-        Object.assign(this, packageItem);
-    }
-
-    dimensionSum() {
-        return (
-            Number(this.length!) + Number(this.width!) + Number(this.height!)
-        );
-    }
 }
 
 export interface IPackage {

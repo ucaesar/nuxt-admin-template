@@ -1,10 +1,10 @@
 import validator from 'validator';
 import { extend } from 'vee-validate';
 
-import { PackageItem } from '@/models/expressweb/Package';
+// import { PackageItem } from '@/models/expressweb/Package';
 
-export function fieldRequired(packageItem: PackageItem) {
-    function notEmpty(value: any) {
+export function fieldRequired(packageItem) {
+    function notEmpty(value) {
         return !!value;
     }
 
@@ -21,16 +21,16 @@ export function fieldRequired(packageItem: PackageItem) {
 }
 
 /** positive float */
-export function weightType(packageItem: PackageItem) {
-    function gt0(val: any) {
+export function weightType(packageItem) {
+    function gt0(val) {
         const v = val === undefined ? '' : val;
         return validator.isFloat(v.toString(), { gt: 0 });
     }
     return gt0(packageItem.weight);
 }
 
-export function dimensionType(packageItem: PackageItem) {
-    function gt0Int(val: any) {
+export function dimensionType(packageItem) {
+    function gt0Int(val) {
         const v = val === undefined ? '' : val;
         return validator.isInt(v.toString(), { gt: 0 });
     }
@@ -46,14 +46,25 @@ export function dimensionType(packageItem: PackageItem) {
     return false;
 }
 
-export function dimensionSum(packageItem: PackageItem) {
-    const limit = 330;
-    if (packageItem.dimensionSum() > limit) return false;
-    return true;
+export function dimensionSum(packageItem, limit) {
+    // const limit = 330;
+    // if (packageItem.dimensionSum() > limit) return false;
+    const d = [
+        Number(packageItem.length),
+        Number(packageItem.width),
+        Number(packageItem.height)
+    ];
+    d.sort((x, y) => {
+        return y - x;
+    });
+
+    const sum = d[0] + (d[1] + d[2]) * 2;
+
+    return sum < limit;
 }
 
 /** add to vee-validate rules */
-export function packageExtend(i18n: any) {
+export function packageExtend(i18n) {
     extend('package.required', {
         validate: value => {
             return { valid: fieldRequired(value), required: true };
@@ -73,7 +84,11 @@ export function packageExtend(i18n: any) {
     });
 
     extend('package.dimensionSum', {
-        validate: value => dimensionSum(value),
+        params: ['limit'],
+        // validate: value => dimensionSum(value),
+        validate(value, { limit }) {
+            return dimensionSum(value, limit);
+        },
         message: i18n.t('expressweb.package.error.dimensionSum')
     });
 }
