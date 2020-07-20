@@ -1,28 +1,35 @@
 <template>
-    <validation-provider ref="input" v-slot="{ errors }" rules="required">
-        <template v-if="asAutoComplete">
-            <v-autocomplete
-                :value="value"
+    <div>
+        <validation-provider
+            v-if="asComboBox"
+            ref="input"
+            v-slot="{ errors }"
+            rules="required|address.provinceCode"
+        >
+            <v-combobox
+                :value="comboBoxObject"
                 :error-messages="errors[0]"
                 v-bind="$attrs"
                 :label="aliasLabel === '' ? label : aliasLabel"
                 :items="provinces"
-                :item-value="provinceValue"
                 :item-text="provinceText"
-                no-data-text="ERROR"
                 @input="onUpdate"
             />
-        </template>
-        <template v-else>
+        </validation-provider>
+        <validation-provider
+            v-if="!asComboBox"
+            ref="input"
+            v-slot="{ errors }"
+            rules="required"
+        >
             <v-text-field
                 :value="value"
                 :error-messages="errors[0]"
                 v-bind="$attrs"
                 :label="aliasLabel === '' ? label : aliasLabel"
                 @input="onUpdate"
-            />
-        </template>
-    </validation-provider>
+        /></validation-provider>
+    </div>
 </template>
 
 <script lang="ts">
@@ -48,30 +55,32 @@ class ProvinceInput extends Vue {
 
     @Ref('input') readonly input!: InstanceType<typeof ValidationProvider>;
 
-    @Watch('countryCode')
-    onChangeCountry() {
-        this.$emit('input', '');
-        this.input.reset();
-    }
-
     get label() {
         return $t('expressweb.address.provinceLabel');
     }
 
     get provinces() {
-        if (this.asAutoComplete && typeof this.countryCode === 'string') {
+        if (this.asComboBox && typeof this.countryCode === 'string') {
             return provinces[this.countryCode];
         }
         return [];
     }
 
-    get asAutoComplete() {
+    get asComboBox() {
         switch (this.countryCode) {
             case 'CA':
             case 'US':
                 return true;
         }
         return false;
+    }
+
+    get comboBoxObject() {
+        if (this.value === null || this.value === undefined) return '';
+        for (const province of this.provinces) {
+            if (province.code === this.value) return province;
+        }
+        return this.value;
     }
 
     provinceValue(province: IProvince) {
@@ -83,7 +92,9 @@ class ProvinceInput extends Vue {
     }
 
     onUpdate(val) {
-        this.$emit('input', val);
+        if (val === null || val === undefined) this.$emit('input', '');
+        else if (typeof val === 'string') this.$emit('input', val);
+        else this.$emit('input', (val as IProvince).code);
     }
 }
 

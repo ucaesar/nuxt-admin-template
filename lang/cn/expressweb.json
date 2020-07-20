@@ -15,7 +15,10 @@
         "cityLabel": "城市",
         "postcodeLabel": "邮编",
         "addressLabel": "地址",
-        "address2Label": "地址2"
+        "address2Label": "地址2",
+        "error": {
+            "provinceCode": "请从列表中选择省份"
+        }
     },
     "package": {
         "configUnitButtonLabel": "配置计量单位",
