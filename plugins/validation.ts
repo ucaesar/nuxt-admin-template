@@ -15,12 +15,12 @@ export default ({ app }) => {
     });
 
     extend('gt0', {
-        validate: v => validator.isFloat(v, { gt: 0 }),
+        validate: v => validator.isFloat(v.toString(), { gt: 0 }),
         message: i18n.t('formValidation.error.gt0')
     });
 
     extend('gt0Int', {
-        validate: v => validator.isInt(v, { gt: 0 }),
+        validate: v => validator.isInt(v.toString(), { gt: 0 }),
         message: i18n.t('formValidation.error.gt0Int')
     });
 

@@ -136,7 +136,7 @@ import ReceiverAddressForm from './ReceiverAddress.vue';
 import PackageForm from './Package.vue';
 import ProductForm from './Product.vue';
 
-import { ShipmentData } from '@/models/expressweb/Shipment';
+import { IShipment } from '@/models/expressweb/Shipment';
 
 import * as Api from '@/api/expressweb/shipment/create';
 
@@ -152,6 +152,7 @@ import * as Api from '@/api/expressweb/shipment/create';
 })
 class CreateShipmentForm extends Vue {
     @Prop({ type: Boolean, default: false }) readonly disabled!: boolean;
+    @Prop({ type: Object, required: true }) readonly formData!: IShipment;
 
     @Ref('senderAddressForm') readonly senderAddressForm!: InstanceType<
         typeof ValidationObserver
@@ -176,9 +177,6 @@ class CreateShipmentForm extends Vue {
         return true;
     }
 
-    // formData = new ShipmentData();
-    formData = this.getTestFormData();
-
     failedFlags = [false, false, false, false];
 
     curStep = 0;
@@ -188,7 +186,8 @@ class CreateShipmentForm extends Vue {
     PRODUCTS_STEP = 3;
 
     onUpdate(field, value) {
-        this.formData[field] = value;
+        // this.formData[field] = value;
+        this.$emit('input', field, value);
     }
 
     onTabChanged(number) {
@@ -213,45 +212,8 @@ class CreateShipmentForm extends Vue {
             packageValid &&
             productsValid
         ) {
-            this.$emit('submit', this.formData);
+            this.$emit('submit', true);
         }
-    }
-
-    getTestFormData() {
-        const formData = new ShipmentData();
-
-        formData.senderAddress.name = 'James Wang';
-        formData.senderAddress.phone = '123';
-        formData.senderAddress.country = 'CA';
-        formData.senderAddress.province = 'BC';
-        formData.senderAddress.city = 'Burnaby';
-        formData.senderAddress.postcode = 'V5C 3J1';
-        formData.senderAddress.address = '3845 William St';
-
-        formData.receiverAddress.name = 'Caesar You';
-        formData.receiverAddress.phone = '123';
-        formData.receiverAddress.country = 'CA';
-        formData.receiverAddress.province = 'BC';
-        formData.receiverAddress.city = 'Vancouver';
-        formData.receiverAddress.postcode = 'V6B 2T9';
-        formData.receiverAddress.address = '1111 Mainland St';
-
-        formData.pac.weightUnit = 'kg';
-        formData.pac.dimensionUnit = 'cm';
-        formData.pac.packageType = '1';
-        formData.pac.weight = '0.1';
-
-        /* formData.products = [];
-        formData.products[0] = {
-            description: 'desc',
-            origin: 'CN',
-            weight: '1',
-            quantity: '1',
-            unit: 'piece',
-            pricePerUnit: '35'
-        }; */
-
-        return formData;
     }
 }
 

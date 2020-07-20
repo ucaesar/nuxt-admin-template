@@ -16,7 +16,10 @@
                         "
                     />
                     <v-expansion-panel-content
-                        ><shipment-form @submit="rateStep"
+                        ><shipment-form
+                            :form-data="formData"
+                            @submit="rateStep"
+                            @input="onChangeFormData"
                     /></v-expansion-panel-content>
                 </v-expansion-panel>
 
@@ -65,7 +68,7 @@ import LoadingOverlay from '@/components/common/LoadingOverlay.vue';
 
 import * as RateApi from '@/api/expressweb/shipment/rate';
 import * as CreateApi from '@/api/expressweb/shipment/create';
-import { IShipment } from '@/models/expressweb/Shipment';
+import { IShipment, ShipmentData } from '@/models/expressweb/Shipment';
 
 @Component({
     components: {
@@ -85,7 +88,7 @@ class IndexPage extends Vue {
     minStep = 0;
     maxStep = 2;
 
-    formData: IShipment;
+    formData: IShipment = this.getTestFormData();
     rateData: RateApi.IReturnData = {};
     labelData: CreateApi.IReturnData = {};
 
@@ -104,14 +107,19 @@ class IndexPage extends Vue {
             : (this.curStep = this.curStep - 1);
     }
 
-    async rateStep(formData: IShipment) {
+    onChangeFormData(field, value) {
+        this.formData[field] = value;
+    }
+
+    async rateStep(retVal: boolean) {
+        if (!retVal) return;
+
         this.loading = true;
         this.loadingText = this.$t(
             'expressweb.shipment.rate.loadingText'
         ) as string;
 
-        this.formData = formData;
-        this.rateData = await RateApi.$post(formData);
+        this.rateData = await RateApi.$post(this.formData);
 
         this.loading = false;
         this.next();
@@ -127,6 +135,43 @@ class IndexPage extends Vue {
 
         this.loading = false;
         this.next();
+    }
+
+    getTestFormData() {
+        const formData = new ShipmentData();
+
+        formData.senderAddress.name = 'James Wang';
+        formData.senderAddress.phone = '123';
+        formData.senderAddress.country = 'CA';
+        formData.senderAddress.province = 'BC';
+        formData.senderAddress.city = 'Burnaby';
+        formData.senderAddress.postcode = 'V5C 3J1';
+        formData.senderAddress.address = '3845 William St';
+
+        formData.receiverAddress.name = 'Caesar You';
+        formData.receiverAddress.phone = '123';
+        formData.receiverAddress.country = 'CA';
+        formData.receiverAddress.province = 'BC';
+        formData.receiverAddress.city = 'Vancouver';
+        formData.receiverAddress.postcode = 'V6B 2T9';
+        formData.receiverAddress.address = '1111 Mainland St';
+
+        formData.pac.weightUnit = 'kg';
+        formData.pac.dimensionUnit = 'cm';
+        formData.pac.packageType = '1';
+        formData.pac.weight = '0.1';
+
+        /* formData.products = [];
+        formData.products[0] = {
+            description: 'desc',
+            origin: 'CN',
+            weight: '1',
+            quantity: '1',
+            unit: 'piece',
+            pricePerUnit: '35'
+        }; */
+
+        return formData;
     }
 }
 

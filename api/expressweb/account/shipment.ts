@@ -1,6 +1,7 @@
 import { getNuxtAxiosInstance } from '@/utils/NuxtOptions';
 
 import { ITableDataFromServer, IPaginationParams } from '@/api/admin/crudTable';
+import { IShipment } from '@/models/expressweb/Shipment';
 
 export interface IAddress {
     name: string;
@@ -9,7 +10,7 @@ export interface IAddress {
     city: string;
 }
 
-export interface IShipment {
+export interface IShipmentItem {
     trackno: string;
     fee: {
         currency: string;
@@ -20,11 +21,15 @@ export interface IShipment {
     receiverAddress: IAddress;
 }
 
+export interface IShipmentDetais extends IShipment {
+    labels: string[];
+}
+
 function getBaseUrl() {
     return '/api/shipment';
 }
 
-export async function $delete(shipment: IShipment) {
+export async function $delete(shipment: IShipmentItem) {
     const url = getBaseUrl() + `/${shipment.trackno}`;
     const $axios = getNuxtAxiosInstance();
 
@@ -47,4 +52,12 @@ export function $add() {}
 
 export function $edit() {}
 
-export function $detail() {}
+export async function $detail(
+    shipment: IShipmentItem
+): Promise<IShipmentDetais> {
+    const url = getBaseUrl() + `/${shipment.trackno}`;
+    const $axios = getNuxtAxiosInstance();
+
+    const ret = await $axios.$get(url);
+    return ret;
+}

@@ -1,5 +1,6 @@
 <template>
     <base-crud-table
+        ref="crudTable"
         :table-title="$t('expressweb.account.shipment.tableTitle')"
         v-bind="$attrs"
         :headers-conf="headersConf"
@@ -9,7 +10,11 @@
         delete-action
     >
         <template v-slot:watchAction="{ item }">
-            <watch-action :item="item" />
+            <watch-action
+                :item="item"
+                @overlay="onOverlay"
+                @unOverlay="onUnOverlay"
+            />
         </template>
         <template v-slot:senderAddress="{ item }">
             {{ addressText(item.senderAddress) }}
@@ -99,6 +104,8 @@ const SHIPMENT_TABLE_HEADER_TEXT = {
     inheritAttrs: false
 })
 class ShipmentTable extends Vue {
+    @Ref('crudTable') readonly crudTable!: CrudTableComponent;
+
     headersConf = [
         SHIPMENT_TABLE_HEADER_TEXT.trackno,
         SHIPMENT_TABLE_HEADER_TEXT.createdTime,
@@ -118,14 +125,22 @@ class ShipmentTable extends Vue {
         return `${item.name} @ ${item.city}, ${province}, ${country}`;
     }
 
-    moneyText(item: ShipmentApi.IShipment) {
+    moneyText(item: ShipmentApi.IShipmentItem) {
         return `${item.fee.amount} ${item.fee.currency}`;
     }
 
-    dateText(item: ShipmentApi.IShipment) {
+    dateText(item: ShipmentApi.IShipmentItem) {
         return new Date(Date.parse(item.createdAt)).toLocaleString(
             this.$i18n.locale
         );
+    }
+
+    onOverlay() {
+        this.crudTable.loadingOverlay();
+    }
+
+    onUnOverlay() {
+        this.crudTable.unOverlay();
     }
 }
 

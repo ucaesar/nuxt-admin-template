@@ -24,7 +24,7 @@ export function fieldRequired(packageItem: PackageItem) {
 export function weightType(packageItem: PackageItem) {
     function gt0(val: any) {
         const v = val === undefined ? '' : val;
-        return validator.isFloat(v, { gt: 0 });
+        return validator.isFloat(v.toString(), { gt: 0 });
     }
     return gt0(packageItem.weight);
 }
@@ -32,7 +32,7 @@ export function weightType(packageItem: PackageItem) {
 export function dimensionType(packageItem: PackageItem) {
     function gt0Int(val: any) {
         const v = val === undefined ? '' : val;
-        return validator.isInt(v, { gt: 0 });
+        return validator.isInt(v.toString(), { gt: 0 });
     }
 
     if (
