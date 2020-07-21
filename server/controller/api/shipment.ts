@@ -737,7 +737,6 @@ function newRequestedShipment(
             ShippingChargesPayment: payment,
             LabelSpecification: label,
             MasterTrackingId: {},
-            RateRequestTypes: [ShipService.RateRequestType.PREFERRED],
             PackageCount: 1,
             RequestedPackageLineItems: [
                 {
@@ -754,7 +753,8 @@ function newRequestedShipment(
                         Units: ShipService.LinearUnits.CM
                     }
                 }
-            ]
+            ],
+            // RateRequestTypes: [ShipService.RateRequestType.PREFERRED]
         };
     else
         return {
