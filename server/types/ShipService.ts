@@ -3,13 +3,33 @@ export interface IRequestedShipment {
     DropoffType: DropoffType;
     ServiceType: ServiceType;
     PackagingType: PackagingType;
+    // <xs:element name="ManifestDetail" type="ns:ShipmentManifestDetail" minOccurs="0">
     TotalWeight?: IWeight;
+    // <xs:element name="TotalInsuredValue" type="ns:Money" minOccurs="0">
+    PreferredCurrency?:string;
+    // <xs:element name="ShipmentAuthorizationDetail" type="ns:ShipmentAuthorizationDetail" minOccurs="0">
     Shipper: IParty;
     Recipient: IParty;
+    // <xs:element name="RecipientLocationNumber" type="xs:string" minOccurs="0"/>
+    // <xs:element name="Origin" type="ns:ContactAndAddress" minOccurs="0">
+    // <xs:element name="SoldTo" type="ns:Party" minOccurs="0"/>
     ShippingChargesPayment?: IPayment;
+    // <xs:element name="SpecialServicesRequested" type="ns:ShipmentSpecialServicesRequested" minOccurs="0"/>
+    // <xs:element name="ExpressFreightDetail" type="ns:ExpressFreightDetail" minOccurs="0"/>
+    // <xs:element name="FreightShipmentDetail" type="ns:FreightShipmentDetail" minOccurs="0">
+    // <xs:element name="DeliveryInstructions" type="xs:string" minOccurs="0">
+    // <xs:element name="VariableHandlingChargeDetail" type="ns:VariableHandlingChargeDetail" minOccurs="0"/>
+    // <xs:element name="CustomsClearanceDetail" type="ns:CustomsClearanceDetail" minOccurs="0">
+    // <xs:element name="PickupDetail" type="ns:PickupDetail" minOccurs="0">
+    // <xs:element name="SmartPostDetail" type="ns:SmartPostShipmentDetail" minOccurs="0">
+    // <xs:element name="BlockInsightVisibility" type="xs:boolean" minOccurs="0">
+    // <xs:element name="ShippingDocumentSpecification" type="ns:ShippingDocumentSpecification" minOccurs="0">
+    RateRequestTypes?:RateRequestType[];
+    // <xs:element name="EdtRequestType" type="ns:EdtRequestType" minOccurs="0">
     LabelSpecification: ILabelSpecification;
     MasterTrackingId?: ITrackingId;
     PackageCount: number;
+    // <xs:element name="ConfigurationData" type="ns:ShipmentConfigurationData" minOccurs="0">
     RequestedPackageLineItems: IRequestedPackageLineItem[];
 }
 
@@ -2204,4 +2224,10 @@ export enum TrackReturnMovementStatusType {
 export enum TrackReturnLabelType {
     EMAIL = 'EMAIL',
     PRINT = 'PRINT'
+}
+
+export enum RateRequestType {
+    LIST = 'LIST',
+    NONE = 'NONE',
+    PREFERRED = 'PREFERRED'
 }
