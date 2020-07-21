@@ -9,6 +9,7 @@
     "dialog": {
         "okButtonText": "确定",
         "cancelButtonText": "取消",
+        "closeButtonText": "关闭",
         "submitButtonText": "提交",
         "makeSureToDeleteTitle": "确定要删除这个吗？"
     },

@@ -32,6 +32,9 @@
                 </v-toolbar>
             </template>
             <template v-if="actionColumnState" v-slot:item.actions="{ item }">
+                <template v-for="action in customActions">
+                    <slot :name="action" :item="item" />
+                </template>
                 <edit-action
                     v-if="editAction"
                     :item="item"
@@ -42,9 +45,6 @@
                     :item="item"
                     @delete="beforeDelete"
                 />
-                <template v-for="action in customActions">
-                    <slot :name="action" :item="item" />
-                </template>
             </template>
             <template
                 v-for="columnName in customColumns"

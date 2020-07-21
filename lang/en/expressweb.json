@@ -100,7 +100,17 @@
             "createdTimeHeaderText": "Created At",
             "moneyHeaderText": "Fee",
             "senderInfoHeaderText": "Sender",
-            "receiverInfoHeaderText": "Receiver"
+            "receiverInfoHeaderText": "Receiver",
+            "detailDialogTitleText": "Shipment Details",
+            "statusTabHeaderText": "Status",
+            "labelTabHeaderText": "Labels",
+            "formTabHeaderText": "Origin Form",
+
+            "statusText": {
+                "ACTUAL_PICKUP": "Pick Up",
+                "SHIP": "Shipping",
+                "ACTUAL_DELIVERY": "Delivery"
+            }
         }
     }
 }

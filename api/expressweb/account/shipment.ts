@@ -21,8 +21,14 @@ export interface IShipmentItem {
     receiverAddress: IAddress;
 }
 
-export interface IShipmentDetais extends IShipment {
+export interface ITimeline {
+    Type: string;
+    DateOrTimestamp: string;
+}
+
+export interface IShipmentDetails extends IShipment {
     labels: string[];
+    timelines: ITimeline[];
 }
 
 function getBaseUrl() {
@@ -54,7 +60,7 @@ export function $edit() {}
 
 export async function $detail(
     shipment: IShipmentItem
-): Promise<IShipmentDetais> {
+): Promise<IShipmentDetails> {
     const url = getBaseUrl() + `/${shipment.trackno}`;
     const $axios = getNuxtAxiosInstance();
 

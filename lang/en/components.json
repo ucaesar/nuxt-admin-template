@@ -9,6 +9,7 @@
     "dialog": {
         "okButtonText": "OK",
         "cancelButtonText": "Cancel",
+        "closeButtonText": "Close",
         "submitButtonText": "Submit",
         "makeSureToDeleteTitle": "Make Sure to DELETE?"
     },
