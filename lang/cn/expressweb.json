@@ -100,7 +100,17 @@
             "createdTimeHeaderText": "创建时间",
             "moneyHeaderText": "费用",
             "senderInfoHeaderText": "发送方",
-            "receiverInfoHeaderText": "接收方"
+            "receiverInfoHeaderText": "接收方",
+            "detailDialogTitleText": "运单详细信息",
+            "statusTabHeaderText": "运单状态",
+            "labelTabHeaderText": "运单标签",
+            "formTabHeaderText": "原始表单信息",
+
+            "statusText": {
+                "ACTUAL_PICKUP": "取件",
+                "SHIP": "运输",
+                "ACTUAL_DELIVERY": "派送"
+            }
         }
     }
 }
