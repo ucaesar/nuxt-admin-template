@@ -108,7 +108,9 @@ shipmentRouter.post('/rate', async ctx => {
             console.log('source:' + res.Notifications[0].Source);
             throw res.Notifications[0].Message;
         }
-        const money = res.RateReplyDetails[0].RatedShipmentDetails[0]
+        // const money = res.RateReplyDetails[0].RatedShipmentDetails[0]
+        //     .ShipmentRateDetail!.TotalBaseCharge;
+        const money = res.RateReplyDetails[0].RatedShipmentDetails[1]
             .ShipmentRateDetail!.TotalBaseCharge;
         result = {
             money: {
@@ -210,7 +212,9 @@ shipmentRouter.post('/create', async ctx => {
             weight: masterPackage.Weight!.Value,
             linearUnits: masterPackage.Dimensions
                 ? masterPackage.Dimensions.Units
-                : (masterPackage.Weight!.Units === 'KG' ? 'CM' : 'IN'),
+                : masterPackage.Weight!.Units === 'KG'
+                ? 'CM'
+                : 'IN',
             length: masterPackage.Dimensions
                 ? masterPackage.Dimensions.Length
                 : null,
@@ -727,11 +731,13 @@ function newRequestedShipment(
                 Units: ShipService.WeightUnits.KG,
                 Value: 0
             },
+            PreferredCurrency: 'CAD',
             Shipper: shipper,
             Recipient: recipient,
             ShippingChargesPayment: payment,
             LabelSpecification: label,
             MasterTrackingId: {},
+            RateRequestTypes: [ShipService.RateRequestType.PREFERRED],
             PackageCount: 1,
             RequestedPackageLineItems: [
                 {
@@ -756,10 +762,12 @@ function newRequestedShipment(
             DropoffType: dropoff,
             ServiceType: service,
             PackagingType: packagetype,
+            PreferredCurrency: 'CAD',
             Shipper: shipper,
             Recipient: recipient,
             ShippingChargesPayment: payment,
             LabelSpecification: label,
+            RateRequestTypes: [ShipService.RateRequestType.PREFERRED],
             PackageCount: 1,
             RequestedPackageLineItems: [
                 {
