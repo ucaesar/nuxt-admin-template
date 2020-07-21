@@ -121,7 +121,7 @@ shipmentRouter.post('/rate', async ctx => {
     } catch (err) {
         console.log(err);
         result = { error: err };
-        // throw err;
+        throw err;
     } finally {
         (ctx as any).session.money = result.money;
         ctx.response.type = 'text/json';
@@ -736,8 +736,10 @@ function newRequestedShipment(
             Recipient: recipient,
             ShippingChargesPayment: payment,
             LabelSpecification: label,
+            RateRequestTypes: [ShipService.RateRequestType.PREFERRED],
             MasterTrackingId: {},
             PackageCount: 1,
+            // CustomerSelectedActualRateType: ShipService.ReturnedRateType.PREFERRED_ACCOUNT_SHIPMENT,
             RequestedPackageLineItems: [
                 {
                     SequenceNumber: 1,
