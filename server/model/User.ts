@@ -4,15 +4,17 @@ import {
     Table,
     BelongsToMany,
     HasMany,
+    HasOne,
     Scopes,
     CreatedAt,
     UpdatedAt
 } from 'sequelize-typescript';
-import { DataTypes } from 'sequelize';
+import { DataTypes, Transaction } from 'sequelize';
 import getEnforcer from '../lib/enforcer';
 import RoleUser from './RoleUser';
 import Role from './Role';
 import Shipment from './Shipment';
+import Account from './Account';
 
 @Table({ tableName: 'userabcs' })
 class User extends Model<User> {
@@ -47,6 +49,9 @@ class User extends Model<User> {
     @HasMany(() => Shipment)
     shipments: Shipment[];
 
+    @HasOne(() => Account, { onDelete: 'CASCADE' })
+    account: Account;
+
     @CreatedAt
     @Column
     createdAt!: Date;
@@ -54,6 +59,21 @@ class User extends Model<User> {
     @UpdatedAt
     @Column
     updatedAt!: Date;
+
+    public async isAccountEnough(amount: number): Promise<boolean> {
+        const acc = (await this.$get('account')) as Account;
+        return acc.amount + amount >= 0;
+    }
+
+    public async changeAccount(
+        amount: number,
+        operation: string,
+        t: Transaction
+    ) {
+        const acc = (await this.$get('account')) as Account;
+        acc.amount = acc.amount + amount;
+        await acc.save();
+    }
 
     // 返回当前用户的所有角色
     public async getRoles() {
