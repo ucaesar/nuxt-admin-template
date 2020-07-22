@@ -16,6 +16,15 @@ shipmentRouter.delete('/:trackno', async ctx => {
     const deleteshipment = util.promisify(fedex.deleteshipment);
     let result: any = {};
     try {
+        const u = ctx.state.currentUser;
+        const user = await User.findOne({
+            where: {
+                id: u.id
+            }
+        });
+        if (!user) {
+            throw 'User info error, login again';
+        }
         const shipment = await Shipment.findOne({
             where: {
                 trackno,
@@ -25,6 +34,7 @@ shipmentRouter.delete('/:trackno', async ctx => {
         if (!shipment) {
             throw 'tracking number not exist';
         }
+        const fee = (shipment.fee as any).amount;
         const res = await deleteshipment({
             TrackingId: {
                 TrackingIdType: 'FEDEX', // EXPRESS || FEDEX || GROUND || USPS
@@ -53,7 +63,9 @@ shipmentRouter.delete('/:trackno', async ctx => {
             await shipmentDetail.destroy({
                 transaction: t
             });
+            // await user.changeAccount(fee, 'cancel shipment', t);
         });
+        await user.changeAccount(+fee, 'cancel shipment');
     } catch (err) {
         console.log(err);
         result = { error: err };
@@ -173,10 +185,10 @@ shipmentRouter.post('/create', async ctx => {
                 id: u.id
             }
         });
-        if(!user) {
+        if (!user) {
             throw 'User info error, login again';
         }
-        if(!(await user.isAccountEnough(fee.amount))){
+        if (!(await user.isAccountEnough(-fee.amount))) {
             throw 'Balance of Account is not enough';
         }
         const packages = bulidRequestedShipments(ctx);
@@ -323,7 +335,7 @@ shipmentRouter.post('/create', async ctx => {
                 });
             }
 
-            user.changeAccount(-fee.amount,'create shipment',t);
+            user.changeAccount(-fee.amount, 'create shipment', t);
         });
     } catch (err) {
         console.log(err);
@@ -764,7 +776,7 @@ function newRequestedShipment(
                         Units: ShipService.LinearUnits.CM
                     }
                 }
-            ],
+            ]
             // RateRequestTypes: [ShipService.RateRequestType.PREFERRED]
         };
     else

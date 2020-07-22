@@ -15,6 +15,7 @@ import RoleUser from './RoleUser';
 import Role from './Role';
 import Shipment from './Shipment';
 import Account from './Account';
+import AccountHistory from './AccountHistory';
 
 @Table({ tableName: 'userabcs' })
 class User extends Model<User> {
@@ -68,11 +69,17 @@ class User extends Model<User> {
     public async changeAccount(
         amount: number,
         operation: string,
-        t: Transaction
+        t?: Transaction
     ) {
         const acc = (await this.$get('account')) as Account;
         acc.amount = acc.amount + amount;
         await acc.save();
+        const history = await AccountHistory.create({
+            id: 0,
+            amount,
+            operation
+        });
+        await acc.$add('histories', history);
     }
 
     // 返回当前用户的所有角色
