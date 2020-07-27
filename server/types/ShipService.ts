@@ -6,7 +6,7 @@ export interface IRequestedShipment {
     // <xs:element name="ManifestDetail" type="ns:ShipmentManifestDetail" minOccurs="0">
     TotalWeight?: IWeight;
     // <xs:element name="TotalInsuredValue" type="ns:Money" minOccurs="0">
-    PreferredCurrency?:string;
+    PreferredCurrency?: string;
     // <xs:element name="ShipmentAuthorizationDetail" type="ns:ShipmentAuthorizationDetail" minOccurs="0">
     Shipper: IParty;
     Recipient: IParty;
@@ -24,7 +24,8 @@ export interface IRequestedShipment {
     // <xs:element name="SmartPostDetail" type="ns:SmartPostShipmentDetail" minOccurs="0">
     // <xs:element name="BlockInsightVisibility" type="xs:boolean" minOccurs="0">
     // <xs:element name="ShippingDocumentSpecification" type="ns:ShippingDocumentSpecification" minOccurs="0">
-    RateRequestTypes?:RateRequestType[];
+    RateRequestTypes?: RateRequestType[];
+    CustomerSelectedActualRateType?: ReturnedRateType;
     // <xs:element name="EdtRequestType" type="ns:EdtRequestType" minOccurs="0">
     LabelSpecification: ILabelSpecification;
     MasterTrackingId?: ITrackingId;
@@ -1605,19 +1606,19 @@ export enum CarrierCodeType {
     FXSP = 'FXSP'
 }
 
-export enum ReturnedRateType {
-    INCENTIVE = 'INCENTIVE',
-    NEGOTIATED = 'NEGOTIATED',
-    PAYOR_ACCOUNT_PACKAGE = 'PAYOR_ACCOUNT_PACKAGE',
-    PAYOR_ACCOUNT_SHIPMENT = 'PAYOR_ACCOUNT_SHIPMENT',
-    PAYOR_LIST_PACKAGE = 'PAYOR_LIST_PACKAGE',
-    PAYOR_LIST_SHIPMENT = 'PAYOR_LIST_SHIPMENT',
-    PREFERRED_ACCOUNT_PACKAGE = 'PREFERRED_ACCOUNT_PACKAGE',
-    PREFERRED_ACCOUNT_SHIPMENT = 'PREFERRED_ACCOUNT_SHIPMENT',
-    PREFERRED_LIST_PACKAGE = 'PREFERRED_LIST_PACKAGE',
-    PREFERRED_LIST_SHIPMENT = 'PREFERRED_LIST_SHIPMENT',
-    PREFERRED_NEGOTIATED = 'PREFERRED_NEGOTIATED'
-}
+// export enum ReturnedRateType {
+//     INCENTIVE = 'INCENTIVE',
+//     NEGOTIATED = 'NEGOTIATED',
+//     PAYOR_ACCOUNT_PACKAGE = 'PAYOR_ACCOUNT_PACKAGE',
+//     PAYOR_ACCOUNT_SHIPMENT = 'PAYOR_ACCOUNT_SHIPMENT',
+//     PAYOR_LIST_PACKAGE = 'PAYOR_LIST_PACKAGE',
+//     PAYOR_LIST_SHIPMENT = 'PAYOR_LIST_SHIPMENT',
+//     PREFERRED_ACCOUNT_PACKAGE = 'PREFERRED_ACCOUNT_PACKAGE',
+//     PREFERRED_ACCOUNT_SHIPMENT = 'PREFERRED_ACCOUNT_SHIPMENT',
+//     PREFERRED_LIST_PACKAGE = 'PREFERRED_LIST_PACKAGE',
+//     PREFERRED_LIST_SHIPMENT = 'PREFERRED_LIST_SHIPMENT',
+//     PREFERRED_NEGOTIATED = 'PREFERRED_NEGOTIATED'
+// }
 
 export enum PricingCodeType {
     ACTUAL = 'ACTUAL',
@@ -2230,4 +2231,35 @@ export enum RateRequestType {
     LIST = 'LIST',
     NONE = 'NONE',
     PREFERRED = 'PREFERRED'
+}
+
+export enum ReturnedRateType {
+    INCENTIVE = 'INCENTIVE',
+    NEGOTIATED = 'NEGOTIATED',
+    PAYOR_ACCOUNT_PACKAGE = 'PAYOR_ACCOUNT_PACKAGE',
+    PAYOR_ACCOUNT_SHIPMENT = 'PAYOR_ACCOUNT_SHIPMENT',
+    PAYOR_CUSTOM_PACKAGE = 'PAYOR_CUSTOM_PACKAGE',
+    PAYOR_CUSTOM_SHIPMENT = 'PAYOR_CUSTOM_SHIPMENT',
+    PAYOR_LIST_PACKAGE = 'PAYOR_LIST_PACKAGE',
+    PAYOR_LIST_SHIPMENT = 'PAYOR_LIST_SHIPMENT',
+    PAYOR_RETAIL_PACKAGE = 'PAYOR_RETAIL_PACKAGE',
+    PAYOR_RETAIL_SHIPMENT = 'PAYOR_RETAIL_SHIPMENT',
+    PREFERRED_ACCOUNT_PACKAGE = 'PREFERRED_ACCOUNT_PACKAGE',
+    PREFERRED_ACCOUNT_SHIPMENT = 'PREFERRED_ACCOUNT_SHIPMENT',
+    PREFERRED_CUSTOM_PACKAGE = 'PREFERRED_CUSTOM_PACKAGE',
+    PREFERRED_CUSTOM_SHIPMENT = 'PREFERRED_CUSTOM_SHIPMENT',
+    PREFERRED_INCENTIVE = 'PREFERRED_INCENTIVE',
+    PREFERRED_LIST_PACKAGE = 'PREFERRED_LIST_PACKAGE',
+    PREFERRED_LIST_SHIPMENT = 'PREFERRED_LIST_SHIPMENT',
+    PREFERRED_NEGOTIATED = 'PREFERRED_NEGOTIATED',
+    PREFERRED_RETAIL_PACKAGE = 'PREFERRED_RETAIL_PACKAGE',
+    PREFERRED_RETAIL_SHIPMENT = 'PREFERRED_RETAIL_SHIPMENT',
+    RATED_ACCOUNT_PACKAGE = 'RATED_ACCOUNT_PACKAGE',
+    RATED_ACCOUNT_SHIPMENT = 'RATED_ACCOUNT_SHIPMENT',
+    RATED_CUSTOM_PACKAGE = 'RATED_CUSTOM_PACKAGE',
+    RATED_CUSTOM_SHIPMENT = 'RATED_CUSTOM_SHIPMENT',
+    RATED_LIST_PACKAGE = 'RATED_LIST_PACKAGE',
+    RATED_LIST_SHIPMENT = 'RATED_LIST_SHIPMENT',
+    RATED_RETAIL_PACKAGE = 'RATED_RETAIL_PACKAGE',
+    RATED_RETAIL_SHIPMENT = 'RATED_RETAIL_SHIPMENT'
 }

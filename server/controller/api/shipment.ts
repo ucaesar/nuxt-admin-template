@@ -16,6 +16,15 @@ shipmentRouter.delete('/:trackno', async ctx => {
     const deleteshipment = util.promisify(fedex.deleteshipment);
     let result: any = {};
     try {
+        const u = ctx.state.currentUser;
+        const user = await User.findOne({
+            where: {
+                id: u.id
+            }
+        });
+        if (!user) {
+            throw 'User info error, login again';
+        }
         const shipment = await Shipment.findOne({
             where: {
                 trackno,
@@ -25,6 +34,7 @@ shipmentRouter.delete('/:trackno', async ctx => {
         if (!shipment) {
             throw 'tracking number not exist';
         }
+        const fee = (shipment.fee as any).amount;
         const res = await deleteshipment({
             TrackingId: {
                 TrackingIdType: 'FEDEX', // EXPRESS || FEDEX || GROUND || USPS
@@ -53,7 +63,9 @@ shipmentRouter.delete('/:trackno', async ctx => {
             await shipmentDetail.destroy({
                 transaction: t
             });
+            // await user.changeAccount(fee, 'cancel shipment', t);
         });
+        await user.changeAccount(+fee, 'cancel shipment');
     } catch (err) {
         console.log(err);
         result = { error: err };
@@ -121,7 +133,7 @@ shipmentRouter.post('/rate', async ctx => {
     } catch (err) {
         console.log(err);
         result = { error: err };
-        // throw err;
+        throw err;
     } finally {
         (ctx as any).session.money = result.money;
         ctx.response.type = 'text/json';
@@ -164,7 +176,8 @@ shipmentRouter.post('/create', async ctx => {
     };
     try {
         const u = ctx.state.currentUser;
-        if (!(ctx as any).session.money) {
+        const fee = (ctx as any).session.money;
+        if (!fee) {
             throw 'Please Rate first';
         }
         const user = await User.findOne({
@@ -172,6 +185,12 @@ shipmentRouter.post('/create', async ctx => {
                 id: u.id
             }
         });
+        if (!user) {
+            throw 'User info error, login again';
+        }
+        if (!(await user.isAccountEnough(-fee.amount))) {
+            throw 'Balance of Account is not enough';
+        }
         const packages = bulidRequestedShipments(ctx);
         const res: ShipService.IProcessShipmentReply = await ship({
             RequestedShipment: packages.master
@@ -315,6 +334,8 @@ shipmentRouter.post('/create', async ctx => {
                     transaction: t
                 });
             }
+
+            user.changeAccount(-fee.amount, 'create shipment', t);
         });
     } catch (err) {
         console.log(err);
@@ -736,9 +757,10 @@ function newRequestedShipment(
             Recipient: recipient,
             ShippingChargesPayment: payment,
             LabelSpecification: label,
-            MasterTrackingId: {},
             RateRequestTypes: [ShipService.RateRequestType.PREFERRED],
+            MasterTrackingId: {},
             PackageCount: 1,
+            // CustomerSelectedActualRateType: ShipService.ReturnedRateType.PREFERRED_ACCOUNT_SHIPMENT,
             RequestedPackageLineItems: [
                 {
                     SequenceNumber: 1,
@@ -755,6 +777,7 @@ function newRequestedShipment(
                     }
                 }
             ]
+            // RateRequestTypes: [ShipService.RateRequestType.PREFERRED]
         };
     else
         return {
