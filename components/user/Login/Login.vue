@@ -1,29 +1,45 @@
 <template>
-    <v-card>
-        <v-card-title>
-            {{ $t('login.toolbarText') }}
-        </v-card-title>
-        <validation-observer ref="form" v-slot="{}">
-            <v-card-text>
-                <v-form>
-                    <username-text-field v-model="loginForm.username" />
-                    <password-text-field v-model="loginForm.password" />
-                </v-form>
-            </v-card-text>
-            <v-card-actions>
-                <v-spacer />
-                <div class="mb-1">
-                    <lang-switch-button />
-                    <v-btn color="primary" text @click="onRegister">
-                        {{ $t('register.submitButtonText') }}
-                    </v-btn>
-                    <v-btn color="primary" :loading="loading" @click="onSubmit">
-                        {{ $t('login.submitButtonText') }}
-                    </v-btn>
-                </div>
-            </v-card-actions>
-        </validation-observer>
-    </v-card>
+    <v-container class="fill-height" fluid>
+        <v-row align="center" justify="center">
+            <v-col cols="12">
+                <v-card>
+                    <v-card-title class="pa-0">
+                        <v-toolbar color="primary" dark>
+                            {{ $t('login.toolbarText') }}
+                        </v-toolbar>
+                    </v-card-title>
+                    <validation-observer ref="form" v-slot="{}">
+                        <v-card-text>
+                            <v-form>
+                                <username-text-field
+                                    v-model="loginForm.username"
+                                />
+                                <password-text-field
+                                    v-model="loginForm.password"
+                                />
+                            </v-form>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer />
+                            <div class="mb-1">
+                                <lang-switch-button />
+                                <v-btn color="primary" text @click="onRegister">
+                                    {{ $t('register.submitButtonText') }}
+                                </v-btn>
+                                <v-btn
+                                    color="primary"
+                                    :loading="loading"
+                                    @click="onSubmit"
+                                >
+                                    {{ $t('login.submitButtonText') }}
+                                </v-btn>
+                            </div>
+                        </v-card-actions>
+                    </validation-observer>
+                </v-card>
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 <script lang="ts">
@@ -48,7 +64,7 @@ class LoginForm {
         LangSwitchButton,
         ValidationObserver,
         UsernameTextField,
-        PasswordTextField,
+        PasswordTextField
     }
 })
 class Login extends Vue {

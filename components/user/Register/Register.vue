@@ -5,8 +5,10 @@
             <v-col cols="12">
                 <validation-observer ref="form" v-slot="{}">
                     <v-card>
-                        <v-card-title>
-                            {{ $t('register.toolbarText') }}
+                        <v-card-title class="pa-0">
+                            <v-toolbar color="primary" dark>
+                                {{ $t('register.toolbarText') }}
+                            </v-toolbar>
                         </v-card-title>
                         <!--
                     <v-toolbar color="primary" dark flat>

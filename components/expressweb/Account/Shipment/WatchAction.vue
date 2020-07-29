@@ -56,6 +56,7 @@
                         </v-tab-item>
                     </v-tabs-items>
                 </v-card-text>
+                <v-divider></v-divider>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="primary" text @click="visible = false">{{
