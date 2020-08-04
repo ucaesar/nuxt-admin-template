@@ -4,6 +4,7 @@ import userRouter from './user';
 import resourceGroupRouter from './resource-group';
 import resourceRouter from './resource';
 import shipmentRouter from './shipment';
+import accountRouter from './account';
 import Router from 'koa-router';
 
 const apiRouter = new Router();
@@ -18,4 +19,5 @@ apiRouter.use('/api/user', userRouter.routes());
 apiRouter.use('/api/resource-group', resourceGroupRouter.routes());
 apiRouter.use('/api/resource', resourceRouter.routes());
 apiRouter.use('/api/shipment', shipmentRouter.routes());
+apiRouter.use('/api/account', accountRouter.routes());
 export default apiRouter;
